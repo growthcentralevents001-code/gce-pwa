@@ -9,6 +9,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState("")
 
   const navLinks = [
+{ name: "Partner", href: "/partner-dashboard" },
     { name: "Events", href: "/events" },
     { name: "Memberships", href: "/memberships" },
     { name: "The Circle", href: "/the-circle" },

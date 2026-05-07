@@ -1,11 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Growth Central Events",
   description: "Creating Similar Interest and Business Networking Events",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
+    apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {
@@ -19,11 +23,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen bg-white">
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-      </body>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

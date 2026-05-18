@@ -12,7 +12,7 @@ export default function RatingsModeration() {
     { id: 2, stakeholder: 'Rohan Mehta', type: 'Member', reviewer: 'Admin', rating: 4.5, review: 'Active participant, great networking skills.', date: '22 May 2025', status: 'approved' },
     { id: 3, stakeholder: 'Amit Verma', type: 'BDM', reviewer: 'Neha Kapoor', rating: 4.2, review: 'Very helpful and responsive BDM.', date: '21 May 2025', status: 'pending' },
     { id: 4, stakeholder: 'FreshMart Pvt Ltd', type: 'Partner', reviewer: 'Vikram Singh', rating: 3.5, review: 'Good products but delivery was slow.', date: '20 May 2025', status: 'pending' },
-    { id: 5, stakeholder: 'Startup Networking Meetup', type: 'Event', reviewer: 'Anjali Desai', rating: 4.9, review: 'Amazing event, great speakers!', date: '19 May 2025', status: 'approved' },
+    { id: 5, stakeholder: 'Startup GCE Marketplace Meetup', type: 'Event', reviewer: 'Anjali Desai', rating: 4.9, review: 'Amazing event, great speakers!', date: '19 May 2025', status: 'approved' },
     { id: 6, stakeholder: 'Priya Sharma', type: 'Member', reviewer: 'Rajesh Kumar', rating: 5.0, review: 'Very professional and collaborative.', date: '18 May 2025', status: 'pending' },
   ])
 

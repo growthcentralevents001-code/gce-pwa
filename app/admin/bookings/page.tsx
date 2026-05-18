@@ -59,7 +59,7 @@ export default function BookingsManagement() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b">
-              <tr><th className="p-3 text-left">Event</th><th className="p-3 text-left">Customer</th><th className="p-3 text-left">Date</th><th className="p-3 text-left">Advance</th><th className="p-3 text-left">Final Bill</th><th className="p-3 text-left">Status</th><th className="p-3 text-center">Actions</th></tr>
+              <tr><th className="p-3 text-left">Event</th><th className="p-3 text-left">GCE Enterpriseer</th><th className="p-3 text-left">Date</th><th className="p-3 text-left">Advance</th><th className="p-3 text-left">Final Bill</th><th className="p-3 text-left">Status</th><th className="p-3 text-center">Actions</th></tr>
             </thead>
             <tbody>
               {filteredBookings.map(b => (
@@ -86,7 +86,7 @@ export default function BookingsManagement() {
             <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold">Booking Details</h3><button onClick={() => setShowViewModal(null)}><X size={24} /></button></div>
             <div className="space-y-3">
               <div><p className="text-sm text-gray-500">Event</p><p className="font-medium">{showViewModal.event}</p></div>
-              <div><p className="text-sm text-gray-500">Customer</p><p>{showViewModal.customer}<br /><span className="text-sm text-gray-500">{showViewModal.email} | {showViewModal.phone}</span></p></div>
+              <div><p className="text-sm text-gray-500">GCE Enterpriseer</p><p>{showViewModal.customer}<br /><span className="text-sm text-gray-500">{showViewModal.email} | {showViewModal.phone}</span></p></div>
               <div><p className="text-sm text-gray-500">Venue</p><p>{showViewModal.venue}</p></div>
               <div><p className="text-sm text-gray-500">Date</p><p>{showViewModal.date}</p></div>
               <div className="border-t pt-3"><p className="text-sm text-gray-500">Advance Paid</p><p className="text-primary font-bold">₹{showViewModal.advance}</p><p className="text-xs text-gray-500">Paid on: {showViewModal.advanceDate}</p></div>

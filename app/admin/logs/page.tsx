@@ -8,7 +8,7 @@ export default function SystemLogs() {
   const [dateRange, setDateRange] = useState('7days')
 
   const [logs, setLogs] = useState([
-    { id: 1, timestamp: '2026-05-07 10:30:25', user: 'admin@gce.com', action: 'Created new event "Startup Networking Meetup"', type: 'admin_action', ip: '103.58.32.11', status: 'success' },
+    { id: 1, timestamp: '2026-05-07 10:30:25', user: 'admin@gce.com', action: 'Created new event "Startup GCE Marketplace Meetup"', type: 'admin_action', ip: '103.58.32.11', status: 'success' },
     { id: 2, timestamp: '2026-05-07 09:15:42', user: 'rohan@gmail.com', action: 'Logged in successfully', type: 'user_login', ip: '106.219.67.103', status: 'success' },
     { id: 3, timestamp: '2026-05-06 18:45:10', user: 'neha@gmail.com', action: 'Failed login attempt', type: 'security', ip: '45.112.68.91', status: 'failed' },
     { id: 4, timestamp: '2026-05-06 14:20:33', user: 'admin@gce.com', action: 'Updated membership plan prices', type: 'admin_action', ip: '103.58.32.11', status: 'success' },

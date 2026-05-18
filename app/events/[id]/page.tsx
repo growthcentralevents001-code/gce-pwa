@@ -1,169 +1,188 @@
-'use client'
-import { useParams } from 'next/navigation'
-import { useState } from 'react'
-import Link from 'next/link'
-import { Calendar, Bell, CreditCard } from 'lucide-react'
+"use client";
 
-const eventsData = {
-  '1': {
-    id: '1',
-    title: 'Startup Networking Meetup',
-    venue: 'WeWork, BKC, Bandra Kurla Complex',
-    city: 'Mumbai',
-    date: '2025-05-25',
-    displayDate: '25 May 2025',
-    day: 'Sunday',
-    startTime: '17:00',
-    endTime: '20:00',
-    duration: '3 Hours',
-    interested: 120,
-    capacity: 100,
-    registered: 60,
-    description: 'Join entrepreneurs, founders, and professionals for an evening of meaningful connections, idea sharing, and collaboration opportunities.',
-    image: '🚀',
-    benefits: ['Networking Opportunities', 'Industry Insights', 'Refreshments Included', 'Business Connections'],
-    ticketTiers: [
-      { name: 'Member', price: 499, validTill: '20 May 2025', description: 'Access for members' },
-      { name: 'Early Bird', price: 399, validTill: '20 May 2025', description: 'Limited seats' },
-      { name: 'VIP', price: 999, validTill: '20 May 2025', description: 'Front row seating + Networking pass' }
-    ]
-  },
-  '2': {
-    id: '2',
-    title: 'Digital Marketing Masterclass',
-    venue: 'Taj Lands End, Bandra',
-    city: 'Mumbai',
-    date: '2025-06-01',
-    displayDate: '01 Jun 2025',
-    day: 'Sunday',
-    startTime: '10:00',
-    endTime: '13:00',
-    duration: '3 Hours',
-    interested: 85,
-    capacity: 100,
-    registered: 85,
-    description: 'Learn digital marketing strategies from industry experts. Master SEO, social media, and content marketing.',
-    image: '📊',
-    benefits: ['SEO Mastery', 'Social Media Strategies', 'Content Marketing', 'Certificate of Participation'],
-    ticketTiers: [
-      { name: 'Member', price: 699, validTill: '25 May 2025', description: 'Access for members' },
-      { name: 'Early Bird', price: 549, validTill: '25 May 2025', description: 'Limited seats' },
-      { name: 'VIP', price: 1299, validTill: '25 May 2025', description: 'Front row + Lunch + Certificate' }
-    ]
-  }
-}
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Calendar, MapPin, Share2, Bell, Heart, Users } from "lucide-react";
+import Header from "@/components/Header";
 
-export default function EventDetailPage() {
-  const params = useParams()
-  const eventId = params.id as string
-  const event = eventsData[eventId as keyof typeof eventsData]
-  const [selectedTier, setSelectedTier] = useState(event?.ticketTiers[0]?.name || 'Member')
-  const [reminderMsg, setReminderMsg] = useState('')
+const getEventData = (id: string) => {
+  return {
+    id: id,
+    title: "Startup Founders Roundtable",
+    tagline: "Network. Share. Grow.",
+    date: "24 May 2026",
+    day: "Friday",
+    time: "6:30 PM",
+    venue: "The Leela, Mumbai",
+    location: "Sahar, Mumbai",
+    price: "₹399",
+    originalPrice: "₹999",
+    discount: "60% OFF",
+    description: "An exclusive roundtable for startup founders, investors and innovation leaders to connect, share insights and explore collaboration opportunities.",
+    category: "Networking",
+    capacity: "50–100 People",
+    dressCode: "Smart Casual",
+    attendees: ["Rahul", "Sneha", "Aman", "Karan", "Neha"],
+    totalAttendees: 124,
+  };
+};
 
-  if (!event) {
-    return <div className="max-w-6xl mx-auto px-4 py-12 text-center">Event not found</div>
-  }
+export default function EventDetailPage({ params }: { params: { id: string } }) {
+  const [event, setEvent] = useState<any>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [showPostConnect, setShowPostConnect] = useState(false);
 
-  const percentFull = (event.registered / event.capacity) * 100
-  const selectedPrice = event.ticketTiers.find(t => t.name === selectedTier)?.price || event.ticketTiers[0]?.price
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    const eventEndTime = new Date(2026, 4, 24, 22, 0, 0);
+    if (new Date() > eventEndTime) setShowPostConnect(true);
+    setEvent(getEventData(params.id));
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [params.id]);
 
-  // Generate .ics file for calendar
-  const addToCalendar = () => {
-    const startDateTime = `${event.date}T${event.startTime}:00`
-    const endDateTime = `${event.date}T${event.endTime}:00`
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//GCE//Event Calendar//EN
-BEGIN:VEVENT
-UID:${event.id}@growthcentralevents.com
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTSTART:${startDateTime.replace(/-/g, '').replace(/:/g, '')}
-DTEND:${endDateTime.replace(/-/g, '').replace(/:/g, '')}
-SUMMARY:${event.title}
-DESCRIPTION:${event.description}
-LOCATION:${event.venue}, ${event.city}
-END:VEVENT
-END:VCALENDAR`
-    
-    const blob = new Blob([icsContent], { type: 'text/calendar' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = `${event.title.replace(/\s/g, '_')}.ics`
-    link.click()
-    URL.revokeObjectURL(link.href)
-  }
+  const handleWhatsAppShare = () => {
+    const text = `Join me at ${event?.title} on GCE! ${window.location.href}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+  };
 
-  const remindMe = () => {
-    // Store in localStorage or send to backend
-    const reminders = JSON.parse(localStorage.getItem('gce_reminders') || '[]')
-    if (!reminders.includes(event.id)) {
-      reminders.push(event.id)
-      localStorage.setItem('gce_reminders', JSON.stringify(reminders))
-      setReminderMsg('✅ Reminder set! We will notify you before the event.')
-      setTimeout(() => setReminderMsg(''), 3000)
-    } else {
-      setReminderMsg('⚠️ Reminder already set for this event.')
-      setTimeout(() => setReminderMsg(''), 3000)
-    }
-  }
+  const handleReminder = () => alert("✅ Reminder set!");
+  const handlePostConnect = () => alert("🔗 Connect with attendees coming soon!");
+
+  if (!event) return <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>;
+
+  const containerStyle = {
+    width: "100%",
+    margin: "0",
+    padding: isMobile ? "16px" : "24px",
+    fontFamily: "'Inter', sans-serif",
+    background: "white",
+    minHeight: "100vh"
+  };
+
+  const innerStyle = {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    width: "100%"
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <div className="mb-6">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-              <Link href="/events" className="hover:text-primary">Events</Link> / <span className="text-primary">{event.title}</span>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-800">{event.title}</h1>
-            <div className="flex flex-wrap gap-4 mt-2 text-gray-600 text-sm">
-              <span>📍 {event.venue}, {event.city}</span>
-              <span>📅 {event.displayDate} · {event.day}</span>
-              <span>🕒 {event.startTime}:00 – {event.endTime}:00 ({event.duration})</span>
+    <div style={containerStyle}>
+      <Header />
+      <div style={innerStyle}>
+        
+        {/* Back & Heart */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+          <Link href="/">
+            <button style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "50%", width: "44px", height: "44px", cursor: "pointer" }}>←</button>
+          </Link>
+          <button onClick={() => setIsLiked(!isLiked)} style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "50%", width: "44px", height: "44px", cursor: "pointer" }}>
+            <Heart size={20} style={{ color: isLiked ? "#f97316" : "#94a3b8", fill: isLiked ? "#f97316" : "none" }} />
+          </button>
+        </div>
+
+        {/* Title */}
+        <div style={{ marginBottom: "24px" }}>
+          <h1 style={{ fontSize: isMobile ? "28px" : "36px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>{event.title}</h1>
+          <p style={{ color: "#f97316", fontSize: "14px", fontWeight: "500" }}>{event.tagline}</p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "32px" }}>
+          
+          {/* Left Column */}
+          <div>
+            <p style={{ color: "#475569", lineHeight: "1.6", marginBottom: "24px" }}>{event.description}</p>
+            
+            <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>About the Event</h2>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                <span style={{ background: "#f1f5f9", padding: "6px 14px", borderRadius: "20px", fontSize: "13px" }}>{event.category}</span>
+                <span style={{ background: "#f1f5f9", padding: "6px 14px", borderRadius: "20px", fontSize: "13px" }}>{event.capacity}</span>
+                <span style={{ background: "#f1f5f9", padding: "6px 14px", borderRadius: "20px", fontSize: "13px" }}>{event.dressCode}</span>
+              </div>
             </div>
           </div>
 
-          <div className="bg-orange-50 rounded-xl p-4 mb-6">
-            <div className="flex justify-between text-sm mb-1">
-              <span>🎉 {event.interested}+ interested</span>
-              <span>{Math.round(percentFull)}% Full · {event.registered}/{event.capacity} seats</span>
-            </div>
-            <div className="capacity-bar"><div className="capacity-bar-fill" style={{ width: `${percentFull}%` }}></div></div>
-          </div>
+          {/* Right Column - Booking Card */}
+          <div>
+            <div style={{ background: "white", borderRadius: "24px", padding: "24px", border: "1px solid #eef2ff", position: "sticky", top: "20px" }}>
+              
+              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "20px" }}>
+                <span style={{ fontSize: "36px", fontWeight: "800", color: "#f97316" }}>{event.price}</span>
+                <span style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "line-through" }}>{event.originalPrice}</span>
+                <span style={{ background: "#f97316", color: "white", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "600" }}>{event.discount}</span>
+              </div>
 
-          <div className="mb-6">
-            <h2 className="text-xl font-bold mb-3">Select Ticket Type</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {event.ticketTiers.map((tier) => (
-                <div key={tier.name} onClick={() => setSelectedTier(tier.name)} className={`card cursor-pointer text-center transition ${selectedTier === tier.name ? 'border-primary ring-2 ring-primary' : ''}`}>
-                  <h3 className="font-bold text-lg">{tier.name}</h3>
-                  <p className="text-2xl font-bold text-primary">₹{tier.price}</p>
-                  <p className="text-xs text-gray-500">{tier.description}</p>
-                  <p className="text-xs text-gray-400 mt-1">Valid till {tier.validTill}</p>
+              <Link href="/booking">
+                <button style={{ width: "100%", background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "14px", fontSize: "16px", fontWeight: "700", cursor: "pointer", marginBottom: "20px" }}>
+                  Book Now →
+                </button>
+              </Link>
+
+              <div style={{ borderTop: "1px solid #eef2ff", paddingTop: "16px", marginBottom: "16px" }}>
+                <div style={{ display: "flex", gap: "12px", marginBottom: "12px", alignItems: "center" }}>
+                  <Calendar size={16} style={{ color: "#f97316" }} />
+                  <span style={{ fontSize: "13px" }}>{event.date} • {event.day} • {event.time}</span>
                 </div>
-              ))}
+                <div style={{ display: "flex", gap: "12px", marginBottom: "12px", alignItems: "center" }}>
+                  <MapPin size={16} style={{ color: "#f97316" }} />
+                  <span style={{ fontSize: "13px" }}>{event.venue}, {event.location}</span>
+                </div>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                  <Users size={16} style={{ color: "#f97316" }} />
+                  <span style={{ fontSize: "13px" }}>{event.totalAttendees}+ going</span>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #eef2ff", borderBottom: "1px solid #eef2ff", padding: "12px 0", marginBottom: "20px", fontSize: "12px" }}>
+                <span>✅ Free cancellation</span>
+                <span>🔒 Secure payment</span>
+              </div>
+
+              <h3 style={{ fontSize: "14px", fontWeight: "700", marginBottom: "12px" }}>Your Network Attending</h3>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "20px" }}>
+                {event.attendees.map((name: string, idx: number) => (
+                  <div key={idx} style={{ textAlign: "center" }}>
+                    <div style={{ width: "44px", height: "44px", background: "#f97316", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "600", fontSize: "16px" }}>{name.charAt(0)}</div>
+                    <div style={{ fontSize: "11px", marginTop: "4px" }}>{name}</div>
+                  </div>
+                ))}
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ width: "44px", height: "44px", background: "#f1f5f9", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: "600" }}>+{event.totalAttendees - event.attendees.length}</div>
+                  <div style={{ fontSize: "11px", marginTop: "4px" }}>More</div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: "12px" }}>
+                <button onClick={handleWhatsAppShare} style={{ flex: 1, background: "#25D366", color: "white", border: "none", borderRadius: "40px", padding: "10px", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}>📱 Share</button>
+                <button onClick={handleReminder} style={{ flex: 1, background: "#f1f5f9", color: "#333", border: "none", borderRadius: "40px", padding: "10px", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}>🔔 Remind</button>
+              </div>
             </div>
-            <p className="text-xs text-gray-500 mt-3">✅ Free cancellation up to 24 hours before the event</p>
-          </div>
-
-          <div className="flex flex-wrap gap-4 mb-8">
-            <button className="btn-primary flex items-center gap-2 px-8 py-3 text-lg"><CreditCard size={20} /> Pay Now (Full Amount) ₹{selectedPrice}</button>
-            <button onClick={addToCalendar} className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-gray-200"><Calendar size={18} /> Add to Calendar</button>
-            <button onClick={remindMe} className="bg-gray-100 text-gray-700 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-gray-200"><Bell size={18} /> Remind Me</button>
-          </div>
-          {reminderMsg && <div className="mb-4 text-sm text-green-600">{reminderMsg}</div>}
-
-          <div className="mb-6"><h2 className="text-xl font-bold mb-3">Description</h2><p className="text-gray-600">{event.description}</p></div>
-          <div><h2 className="text-xl font-bold mb-3">Event Benefits</h2><ul className="grid grid-cols-1 md:grid-cols-2 gap-2">{event.benefits.map((benefit, idx) => (<li key={idx} className="flex items-center gap-2 text-gray-600">✓ {benefit}</li>))}</ul></div>
-        </div>
-
-        <div className="lg:col-span-1">
-          <div className="sticky top-24">
-            <div className="bg-gray-100 rounded-xl p-4 text-center mb-4"><p className="text-gray-500">📸 Event Gallery</p><div className="text-6xl my-4">{event.image}</div><p className="text-sm text-gray-500">1/8 · View Gallery</p></div>
-            <div className="bg-orange-50 rounded-xl p-4 text-center"><p className="font-semibold">⭐ Best Value</p><p className="text-sm">Get the VIP pass for premium experience</p></div>
           </div>
         </div>
+
+        {/* Post-Event Connect */}
+        {showPostConnect && (
+          <div style={{ background: "linear-gradient(135deg, #f97316, #ea580c)", borderRadius: "20px", padding: "24px", color: "white", textAlign: "center", marginTop: "32px" }}>
+            <h3 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "8px" }}>🤝 Post Event Connect</h3>
+            <p style={{ fontSize: "13px", marginBottom: "16px" }}>Connect with attendees after the event and grow your network.</p>
+            <button onClick={handlePostConnect} style={{ background: "white", color: "#f97316", border: "none", borderRadius: "40px", padding: "10px 24px", fontWeight: "700", cursor: "pointer" }}>Connect Now →</button>
+          </div>
+        )}
+
+        {/* Bottom Navigation - Mobile Only */}
+        {isMobile && (
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "white", borderTop: "1px solid #eef2ff", padding: "12px 20px", marginTop: "32px" }}>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <Link href="/"><div style={{ fontSize: "22px" }}>🏠</div><div style={{ fontSize: "10px", color: "#64748b" }}>Home</div></Link>
+              <Link href="/events"><div style={{ fontSize: "22px" }}>🔍</div><div style={{ fontSize: "10px", color: "#64748b" }}>Explore</div></Link>
+              <Link href="/dashboard/user"><div style={{ fontSize: "22px" }}>👤</div><div style={{ fontSize: "10px", color: "#f97316", fontWeight: "600" }}>Profile</div></Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }

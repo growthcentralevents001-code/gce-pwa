@@ -23,7 +23,7 @@ export default function AnalyticsReports() {
   ]
 
   const topEvents = [
-    { id: 1, title: 'Startup Networking Meetup', registrations: 120, revenue: 59880 },
+    { id: 1, title: 'Startup GCE Marketplace Meetup', registrations: 120, revenue: 59880 },
     { id: 2, title: 'Digital Marketing Masterclass', registrations: 85, revenue: 59415 },
     { id: 3, title: 'AI & Future of Work Summit', registrations: 180, revenue: 143820 },
   ]

@@ -28,9 +28,9 @@ export default function EventsManagement() {
   })
 
   const [events, setEvents] = useState<Event[]>([
-    { id: 1, title: 'Startup Networking Meetup', venue: 'WeWork, BKC', city: 'Mumbai', date: '24 May 2025', time: '5:00 PM', price: 499, capacity: 100, registered: 72, category: 'Business', status: 'upcoming' },
+    { id: 1, title: 'Startup GCE Marketplace Meetup', venue: 'WeWork, BKC', city: 'Mumbai', date: '24 May 2025', time: '5:00 PM', price: 499, capacity: 100, registered: 72, category: 'Business', status: 'upcoming' },
     { id: 2, title: 'Digital Marketing Masterclass', venue: 'Taj Lands End', city: 'Mumbai', date: '01 Jun 2025', time: '10:00 AM', price: 699, capacity: 100, registered: 85, category: 'Workshop', status: 'upcoming' },
-    { id: 3, title: 'Women Entrepreneurs Networking', venue: 'The St. Regis', city: 'Mumbai', date: '26 May 2025', time: '6:30 PM', price: 499, capacity: 80, registered: 45, category: 'Networking', status: 'upcoming' },
+    { id: 3, title: 'Women Entrepreneurs GCE Marketplace', venue: 'The St. Regis', city: 'Mumbai', date: '26 May 2025', time: '6:30 PM', price: 499, capacity: 80, registered: 45, category: 'GCE Marketplace', status: 'upcoming' },
     { id: 4, title: 'AI & Future of Work Summit', venue: 'Jio World Centre', city: 'Mumbai', date: '30 May 2025', time: '9:00 AM', price: 799, capacity: 200, registered: 180, category: 'Conference', status: 'upcoming' },
   ])
 
@@ -60,7 +60,7 @@ export default function EventsManagement() {
     return matchesSearch && matchesStatus && matchesType
   })
 
-  const categories = ['All', 'Business', 'Workshop', 'Networking', 'Conference', 'Social']
+  const categories = ['All', 'Business', 'Workshop', 'GCE Marketplace', 'Conference', 'Social']
   const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad', 'Pune']
 
   return (
@@ -127,7 +127,7 @@ export default function EventsManagement() {
               <select value={newEvent.city} onChange={(e) => setNewEvent({...newEvent, city: e.target.value})} className="w-full p-2 border rounded">{cities.map(c => <option key={c} value={c}>{c}</option>)}</select>
               <div className="grid grid-cols-2 gap-3"><input type="date" placeholder="Date" value={newEvent.date} onChange={(e) => setNewEvent({...newEvent, date: e.target.value})} className="p-2 border rounded" /><input type="time" placeholder="Time" value={newEvent.time} onChange={(e) => setNewEvent({...newEvent, time: e.target.value})} className="p-2 border rounded" /></div>
               <div className="grid grid-cols-2 gap-3"><input type="number" placeholder="Price (₹)" value={newEvent.price} onChange={(e) => setNewEvent({...newEvent, price: parseInt(e.target.value)})} className="p-2 border rounded" /><input type="number" placeholder="Capacity" value={newEvent.capacity} onChange={(e) => setNewEvent({...newEvent, capacity: parseInt(e.target.value)})} className="p-2 border rounded" /></div>
-              <select value={newEvent.category} onChange={(e) => setNewEvent({...newEvent, category: e.target.value})} className="w-full p-2 border rounded"><option value="Business">Business</option><option value="Workshop">Workshop</option><option value="Networking">Networking</option><option value="Conference">Conference</option><option value="Social">Social</option></select>
+              <select value={newEvent.category} onChange={(e) => setNewEvent({...newEvent, category: e.target.value})} className="w-full p-2 border rounded"><option value="Business">Business</option><option value="Workshop">Workshop</option><option value="GCE Marketplace">GCE Marketplace</option><option value="Conference">Conference</option><option value="Social">Social</option></select>
               <select value={newEvent.status} onChange={(e) => setNewEvent({...newEvent, status: e.target.value})} className="w-full p-2 border rounded"><option value="upcoming">Upcoming</option><option value="ongoing">Ongoing</option><option value="completed">Completed</option></select>
               <button onClick={handleAddEvent} className="w-full bg-primary text-white py-2 rounded font-semibold">Create Event</button>
             </div>

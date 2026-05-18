@@ -1,57 +1,187 @@
-'use client'
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Extract name from email (before @) - temporary solution
-    const nameFromEmail = email.split('@')[0]
-    localStorage.setItem('gce_user', JSON.stringify({ 
-      name: nameFromEmail, 
-      email: email, 
-      tier: 'Gold',
-      memberSince: new Date().toLocaleDateString()
-    }))
-    router.push('/dashboard')
-  }
-
-  const handleGoogleLogin = () => {
-    localStorage.setItem('gce_user', JSON.stringify({ 
-      name: 'Google_User', 
-      email: 'user@gmail.com', 
-      tier: 'Gold',
-      memberSince: new Date().toLocaleDateString()
-    }))
-    router.push('/dashboard')
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    
+    // TODO: Connect to Supabase Auth
+    // Temporary mock login
+    setTimeout(() => {
+      if (email && password) {
+        router.push("/dashboard/user");
+      } else {
+        setError("Please enter email and password");
+      }
+      setLoading(false);
+    }, 500);
+  };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8"><div className="text-4xl font-bold text-primary mb-2">GCE</div><h1 className="text-2xl font-bold text-gray-800">Growth Central Events</h1><p className="text-gray-500 text-sm mt-1">Connect. Collaborate. Grow Together.</p></div>
-        <div className="flex gap-4 mb-6"><button className="flex-1 py-2 border-b-2 border-primary text-primary font-semibold">Login</button><Link href="/signup" className="flex-1 py-2 text-gray-500 hover:text-gray-700 text-center">Sign Up</Link></div>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">Email</label><div className="relative"><Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} /><input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email" required /></div></div>
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">Password</label><div className="relative"><Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} /><input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your password" required /><button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></div></div>
-          <div className="text-right"><Link href="/forgot-password" className="text-sm text-primary hover:underline">Forgot password?</Link></div>
-          <button type="submit" className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition">Login</button>
-        </form>
-        <div className="relative my-6"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300"></div></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">or</span></div></div>
-        <div className="space-y-3">
-          <button onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-50 transition">🔐 Login with Google</button>
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-50 transition">🍎 Login with Apple</button>
-          <button className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-50 transition">🔗 Login with LinkedIn</button>
+    <div style={{ 
+      minHeight: "100vh", 
+      background: "linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px"
+    }}>
+      <div style={{ 
+        maxWidth: "440px", 
+        width: "100%", 
+        background: "white", 
+        borderRadius: "32px", 
+        padding: "40px 32px",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
+        border: "1px solid #fef3c7"
+      }}>
+        
+        {/* Logo */}
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <h1 style={{ fontSize: "36px", fontWeight: "800", color: "#f97316", margin: 0 }}>GCE</h1>
+          <p style={{ fontSize: "13px", color: "#6b7280", marginTop: "4px" }}>Growth Central Events</p>
         </div>
-        <p className="text-center text-sm text-gray-500 mt-6">Don't have an account? <Link href="/signup" className="text-primary font-semibold hover:underline">Sign Up</Link></p>
+
+        {/* Title */}
+        <div style={{ marginBottom: "28px" }}>
+          <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1f2937", marginBottom: "8px" }}>Welcome back</h2>
+          <p style={{ fontSize: "14px", color: "#6b7280" }}>Sign in to discover events, book tickets, and grow your network</p>
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <div style={{ background: "#fee2e2", color: "#dc2626", padding: "12px 16px", borderRadius: "12px", fontSize: "13px", marginBottom: "20px" }}>
+            {error}
+          </div>
+        )}
+
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          {/* Email Field */}
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+              Email or Phone Number
+            </label>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: "14px", padding: "12px 16px", background: "#fafafa", transition: "all 0.2s" }}>
+              <Mail size={18} style={{ color: "#9ca3af", marginRight: "10px" }} />
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "14px" }}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password Field */}
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+              Password
+            </label>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: "14px", padding: "12px 16px", background: "#fafafa" }}>
+              <Lock size={18} style={{ color: "#9ca3af", marginRight: "10px" }} />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "14px" }}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af" }}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Remember & Forgot */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                style={{ width: "16px", height: "16px", cursor: "pointer" }}
+              />
+              <span style={{ fontSize: "13px", color: "#6b7280" }}>Remember me</span>
+            </label>
+            <Link href="/forgot-password" style={{ fontSize: "13px", color: "#f97316", textDecoration: "none", fontWeight: "500" }}>
+              Forgot password?
+            </Link>
+          </div>
+
+          {/* Sign In Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%",
+              background: "#f97316",
+              color: "white",
+              border: "none",
+              borderRadius: "40px",
+              padding: "14px",
+              fontSize: "15px",
+              fontWeight: "600",
+              cursor: loading ? "not-allowed" : "pointer",
+              opacity: loading ? 0.7 : 1,
+              marginBottom: "24px",
+              boxShadow: "0 4px 12px rgba(249,115,22,0.25)"
+            }}
+          >
+            {loading ? "Signing in..." : "Sign In →"}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+          <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }}></div>
+          <span style={{ fontSize: "12px", color: "#9ca3af" }}>or</span>
+          <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }}></div>
+        </div>
+
+        {/* Social Login Options */}
+        <div style={{ display: "flex", gap: "12px", marginBottom: "32px" }}>
+          <button style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "10px", border: "1px solid #e5e7eb", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+            <span style={{ fontSize: "18px" }}>G</span>
+            <span style={{ fontSize: "13px", fontWeight: "500" }}>Google</span>
+          </button>
+          <button style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "10px", border: "1px solid #e5e7eb", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+            <span style={{ fontSize: "18px" }}>📘</span>
+            <span style={{ fontSize: "13px", fontWeight: "500" }}>Facebook</span>
+          </button>
+        </div>
+
+        {/* Sign Up Link */}
+        <div style={{ textAlign: "center" }}>
+          <p style={{ fontSize: "14px", color: "#6b7280" }}>
+            Don't have an account?{" "}
+            <Link href="/signup" style={{ color: "#f97316", fontWeight: "600", textDecoration: "none" }}>
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
-  )
+  );
 }

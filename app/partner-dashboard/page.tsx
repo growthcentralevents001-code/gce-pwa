@@ -9,7 +9,7 @@ export default function PartnerDashboard() {
 
   // Sample hosted events
   const [hostedEvents, setHostedEvents] = useState([
-    { id: 1, title: 'Startup Networking Meetup', venue: 'WeWork, BKC', date: '24 May 2025', time: '5:00 PM', bookings: 80, revenue: 24000, status: 'upcoming' },
+    { id: 1, title: 'Startup GCE Marketplace Meetup', venue: 'WeWork, BKC', date: '24 May 2025', time: '5:00 PM', bookings: 80, revenue: 24000, status: 'upcoming' },
     { id: 2, title: 'Digital Marketing Masterclass', venue: 'WeWork, BKC', date: '01 Jun 2025', time: '10:00 AM', bookings: 60, revenue: 18500, status: 'upcoming' },
     { id: 3, title: 'AI & Future of Work Summit', venue: 'WeWork, BKC', date: '30 May 2025', time: '9:30 AM', bookings: 120, revenue: 40000, status: 'upcoming' },
   ])
@@ -22,7 +22,7 @@ export default function PartnerDashboard() {
 
   // Sample bookings
   const [bookings, setBookings] = useState([
-    { id: 1, event: 'Startup Networking Meetup', customer: 'Rohan Sharma', date: '24 May 2025', amount: 499, status: 'confirmed' },
+    { id: 1, event: 'Startup GCE Marketplace Meetup', customer: 'Rohan Sharma', date: '24 May 2025', amount: 499, status: 'confirmed' },
     { id: 2, event: 'Digital Marketing Masterclass', customer: 'Neha Kapoor', date: '01 Jun 2025', amount: 699, status: 'pending' },
   ])
 
@@ -127,7 +127,7 @@ export default function PartnerDashboard() {
         <div className="space-y-4">
           {bookings.map(booking => (
             <div key={booking.id} className="card flex flex-wrap justify-between items-center">
-              <div><h3 className="font-bold">{booking.event}</h3><p className="text-sm text-gray-500">Customer: {booking.customer} · {booking.date}</p><p className="text-primary font-bold">₹{booking.amount}</p></div>
+              <div><h3 className="font-bold">{booking.event}</h3><p className="text-sm text-gray-500">GCE Enterpriseer: {booking.customer} · {booking.date}</p><p className="text-primary font-bold">₹{booking.amount}</p></div>
               <div><span className={`px-2 py-1 rounded-full text-xs ${booking.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{booking.status === 'confirmed' ? 'Confirmed' : 'Pending'}</span><button className={`ml-2 ${booking.status === 'pending' ? 'btn-primary text-sm px-3 py-1' : 'bg-gray-200 text-sm px-3 py-1 rounded-lg'}`}>{booking.status === 'pending' ? 'Confirm' : 'View'}</button></div>
             </div>
           ))}

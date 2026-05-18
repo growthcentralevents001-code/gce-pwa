@@ -8,7 +8,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <h3 className="text-xl font-bold text-primary mb-3">Growth Central Events</h3>
-            <p className="text-sm">Creating Similar Interest and Business Networking Events</p>
+            <p className="text-sm">Creating Similar Interest and Business GCE Marketplace Events</p>
           </div>
 
           {/* Quick Links */}

@@ -29,7 +29,7 @@ export default function TheCirclePage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold text-center text-primary mb-2">The Circle</h1>
-      <p className="text-center text-gray-500 mb-8">Exclusive Business Networking for Non‑Competitive Professionals</p>
+      <p className="text-center text-gray-500 mb-8">Exclusive Business GCE Marketplace for Non‑Competitive Professionals</p>
 
       {/* Overview Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

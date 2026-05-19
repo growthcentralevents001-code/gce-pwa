@@ -1,0 +1,26 @@
+name: CD (Auto Deploy to Production)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /root/gce-pwa-prod
+            git pull origin main
+            rm -rf .next
+            npm install
+            npm run build
+            pm2 restart gce-prod
+            pm2 save
+            systemctl reload nginx

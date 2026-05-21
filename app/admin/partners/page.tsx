@@ -1,143 +1,320 @@
-'use client'
-import { useState } from 'react'
-import { Search, Eye, Edit, Trash2, UserPlus, X, Filter, Building, CheckCircle, XCircle } from 'lucide-react'
+"use client";
 
-export default function PartnersManagement() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [tierFilter, setTierFilter] = useState('all')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showApproveModal, setShowApproveModal] = useState<number | null>(null)
-  const [newPartner, setNewPartner] = useState({ name: '', email: '', phone: '', type: 'Venue', tier: 'Basic', status: 'pending' })
+import { useState } from "react";
+import { 
+  LayoutDashboard, Users, Building2, Calendar, Tag, CreditCard, 
+  Settings, LogOut, Menu, X, Search, Filter, Download, Eye, 
+  UserPlus, Mail, Phone, CheckCircle, XCircle, Star, MapPin 
+} from "lucide-react";
+
+export default function AdminPartners() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const [partners, setPartners] = useState([
-    { id: 1, name: 'WeWork India', email: 'contact@wework.com', phone: '9876543210', type: 'Venue', tier: 'Gold', status: 'approved', revenue: 125000, joined: '01 Jan 2025' },
-    { id: 2, name: 'Taj Hotels', email: 'events@taj.com', phone: '9876543211', type: 'Venue', tier: 'Silver', status: 'approved', revenue: 89000, joined: '15 Jan 2025' },
-    { id: 3, name: 'FreshMart Pvt Ltd', email: 'info@freshmart.com', phone: '9876543212', type: 'Supplier', tier: 'Basic', status: 'pending', revenue: 0, joined: '01 Feb 2025' },
-    { id: 4, name: 'TechZone', email: 'sales@techzone.com', phone: '9876543213', type: 'Supplier', tier: 'Silver', status: 'approved', revenue: 45000, joined: '10 Feb 2025' },
-    { id: 5, name: 'Organic Bazaar', email: 'hello@organicbazaar.com', phone: '9876543214', type: 'Supplier', tier: 'Basic', status: 'pending', revenue: 0, joined: '20 Mar 2025' },
-  ])
+    { id: 1, name: "The Leela Mumbai", email: "events@theleela.com", phone: "+91 22 1234 5678", type: "Elite", status: "Active", city: "Mumbai", venueType: "5-Star Hotel", totalEvents: 45, totalRevenue: "₹12,50,000", joined: "15 Jan 2025" },
+    { id: 2, name: "JW Marriott Pune", email: "sales@jwmarriott.com", phone: "+91 20 9876 5432", type: "Pro", status: "Active", city: "Pune", venueType: "5-Star Hotel", totalEvents: 32, totalRevenue: "₹8,20,000", joined: "10 Feb 2025" },
+    { id: 3, name: "Social Offline", email: "partners@social.com", phone: "+91 80 4567 8901", type: "Basic", status: "Active", city: "Bangalore", venueType: "Cafe/Restaurant", totalEvents: 28, totalRevenue: "₹4,50,000", joined: "05 Mar 2025" },
+    { id: 4, name: "Taj Lands End", email: "events@taj.com", phone: "+91 22 9876 5432", type: "Elite", status: "Inactive", city: "Mumbai", venueType: "5-Star Hotel", totalEvents: 18, totalRevenue: "₹6,20,000", joined: "20 Dec 2024" },
+    { id: 5, name: "The Rooftop Co.", email: "hello@rooftop.com", phone: "+91 99 8888 7777", type: "Basic", status: "Active", city: "Delhi", venueType: "Rooftop Venue", totalEvents: 12, totalRevenue: "₹2,30,000", joined: "01 Apr 2025" },
+    { id: 6, name: "St. Regis Goa", email: "bookings@stregis.com", phone: "+91 832 1234 567", type: "Pro", status: "Pending", city: "Goa", venueType: "Resort", totalEvents: 5, totalRevenue: "₹1,80,000", joined: "10 May 2025" },
+  ]);
 
-  const handleAddPartner = () => {
-    if (!newPartner.name || !newPartner.email) { alert('Please fill name and email'); return }
-    const newId = Math.max(...partners.map(p => p.id), 0) + 1
-    const partner = { id: newId, ...newPartner, revenue: 0, joined: new Date().toLocaleDateString() }
-    setPartners([partner, ...partners])
-    setShowAddModal(false)
-    setNewPartner({ name: '', email: '', phone: '', type: 'Venue', tier: 'Basic', status: 'pending' })
-    alert('Partner added successfully!')
-  }
-
-  const handleApprovePartner = (id: number) => {
-    setPartners(partners.map(p => p.id === id ? { ...p, status: 'approved' } : p))
-    setShowApproveModal(null)
-    alert('Partner approved successfully!')
-  }
-
-  const handleDeletePartner = (id: number) => {
-    if (confirm('Are you sure you want to delete this partner?')) {
-      setPartners(partners.filter(p => p.id !== id))
-      alert('Partner deleted successfully!')
-    }
-  }
+  const [newPartner, setNewPartner] = useState({
+    name: "", email: "", phone: "", type: "Basic", city: "Mumbai", venueType: "Restaurant"
+  });
 
   const filteredPartners = partners.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.email.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesTier = tierFilter === 'all' || p.tier === tierFilter
-    const matchesStatus = statusFilter === 'all' || p.status === statusFilter
-    return matchesSearch && matchesTier && matchesStatus
-  })
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          p.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          p.phone.includes(searchQuery);
+    const matchesType = typeFilter === "all" || p.type.toLowerCase() === typeFilter.toLowerCase();
+    const matchesStatus = statusFilter === "all" || p.status.toLowerCase() === statusFilter.toLowerCase();
+    return matchesSearch && matchesType && matchesStatus;
+  });
 
-  const getTierBadge = (tier: string) => {
-    const colors = { Gold: 'bg-yellow-100 text-yellow-700', Silver: 'bg-gray-100 text-gray-700', Basic: 'bg-orange-100 text-orange-700' }
-    return <span className={`px-2 py-1 rounded-full text-xs ${colors[tier as keyof typeof colors]}`}>{tier}</span>
-  }
+  const handleAddPartner = () => {
+    if (!newPartner.name || !newPartner.email) {
+      alert("Please fill name and email");
+      return;
+    }
+    const newId = partners.length + 1;
+    setPartners([...partners, {
+      id: newId,
+      name: newPartner.name,
+      email: newPartner.email,
+      phone: newPartner.phone || "+91 XXXXX XXXXX",
+      type: newPartner.type,
+      status: "Pending",
+      city: newPartner.city,
+      venueType: newPartner.venueType,
+      totalEvents: 0,
+      totalRevenue: "₹0",
+      joined: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    }]);
+    setShowAddModal(false);
+    setNewPartner({ name: "", email: "", phone: "", type: "Basic", city: "Mumbai", venueType: "Restaurant" });
+    alert("Partner added successfully! Waiting for approval.");
+  };
+
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
+    { id: "members", label: "Members", icon: Users, href: "/admin/members" },
+    { id: "partners", label: "Partners", icon: Building2, href: "/admin/partners" },
+    { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
+    { id: "offers", label: "Offers", icon: Tag, href: "/admin/offers" },
+    { id: "payments", label: "Payments", icon: CreditCard, href: "/admin/payments" },
+    { id: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
+  ];
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Partners Management</h1>
-        <button onClick={() => setShowAddModal(true)} className="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2"><UserPlus size={18} /> Add Partner</button>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl p-4 shadow-sm"><div className="flex items-center gap-3"><Building size={24} className="text-primary" /><div><p className="text-2xl font-bold">{partners.length}</p><p className="text-sm">Total Partners</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-green-500"><div className="flex items-center gap-3"><CheckCircle size={24} className="text-green-500" /><div><p className="text-2xl font-bold">{partners.filter(p => p.status === 'approved').length}</p><p className="text-sm">Approved</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-yellow-500"><div className="flex items-center gap-3"><XCircle size={24} className="text-yellow-500" /><div><p className="text-2xl font-bold">{partners.filter(p => p.status === 'pending').length}</p><p className="text-sm">Pending</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-purple-500"><div className="flex items-center gap-3"><Building size={24} className="text-purple-500" /><div><p className="text-2xl font-bold">₹{(partners.reduce((s,p) => s + p.revenue, 0)/100000).toFixed(1)}L</p><p className="text-sm">Total Revenue</p></div></div></div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="relative"><Search size={18} className="absolute left-3 top-2.5 text-gray-400" /><input type="text" placeholder="Search by name or email..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-9 pr-4 py-2 border rounded-lg" /></div>
-          <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)} className="p-2 border rounded-lg"><option value="all">All Tiers</option><option value="Gold">Gold</option><option value="Silver">Silver</option><option value="Basic">Basic</option></select>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="p-2 border rounded-lg"><option value="all">All Status</option><option value="approved">Approved</option><option value="pending">Pending</option></select>
-          <button onClick={() => { setSearchTerm(''); setTierFilter('all'); setStatusFilter('all') }} className="bg-gray-100 px-4 py-2 rounded-lg flex items-center gap-2"><Filter size={18} /> Clear</button>
+    <div style={{ display: "flex", background: "#f1f5f9", minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <div style={{
+        width: sidebarOpen ? "280px" : "80px",
+        background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+        color: "white",
+        transition: "width 0.3s",
+        position: "fixed",
+        height: "100vh",
+        overflowY: "auto",
+        zIndex: 50
+      }}>
+        <div style={{ padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #334155" }}>
+          {sidebarOpen && <span style={{ fontSize: "20px", fontWeight: "bold" }}>GCE Admin</span>}
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
+        <nav style={{ padding: "16px" }}>
+          {navItems.map((item) => (
+            <a key={item.id} href={item.href} style={{
+              display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px",
+              marginBottom: "4px", borderRadius: "12px", background: item.id === "partners" ? "#f97316" : "transparent",
+              color: "white", textDecoration: "none", cursor: "pointer"
+            }}>
+              <item.icon size={20} />
+              {sidebarOpen && <span>{item.label}</span>}
+            </a>
+          ))}
+          <div style={{ marginTop: "20px", borderTop: "1px solid #334155", paddingTop: "16px" }}>
+            <a href="#" style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", borderRadius: "12px", color: "#94a3b8", textDecoration: "none", cursor: "pointer" }}>
+              <LogOut size={20} />
+              {sidebarOpen && <span>Logout</span>}
+            </a>
+          </div>
+        </nav>
       </div>
 
-      {/* Partners Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr><th className="p-3 text-left">Name</th><th className="p-3 text-left">Type</th><th className="p-3 text-left">Tier</th><th className="p-3 text-left">Status</th><th className="p-3 text-left">Revenue</th><th className="p-3 text-left">Joined</th><th className="p-3 text-center">Actions</th></tr>
-            </thead>
-            <tbody>
-              {filteredPartners.map(p => (
-                <tr key={p.id} className="border-b hover:bg-gray-50">
-                  <td className="p-3"><div><p className="font-medium">{p.name}</p><p className="text-xs text-gray-400">{p.email}</p></div></td>
-                  <td className="p-3">{p.type}</td>
-                  <td className="p-3">{getTierBadge(p.tier)}</td>
-                  <td className="p-3"><span className={`px-2 py-1 rounded-full text-xs ${p.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{p.status}</span></td>
-                  <td className="p-3">₹{(p.revenue/1000).toFixed(0)}K</td>
-                  <td className="p-3">{p.joined}</td>
-                  <td className="p-3 text-center">
-                    <div className="flex justify-center gap-2">
-                      <button className="text-blue-500"><Eye size={18} /></button>
-                      <button className="text-orange-500"><Edit size={18} /></button>
-                      {p.status === 'pending' && <button onClick={() => setShowApproveModal(p.id)} className="text-green-500"><CheckCircle size={18} /></button>}
-                      <button onClick={() => handleDeletePartner(p.id)} className="text-red-500"><Trash2 size={18} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Main Content */}
+      <div style={{
+        marginLeft: sidebarOpen ? "280px" : "80px",
+        flex: 1,
+        padding: "24px",
+        transition: "margin-left 0.3s"
+      }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", flexWrap: "wrap", gap: "16px" }}>
+            <div>
+              <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a", marginBottom: "4px" }}>Partners Management</h1>
+              <p style={{ color: "#64748b" }}>Manage venue partners, approve applications, track performance</p>
+            </div>
+            <button onClick={() => setShowAddModal(true)} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#f97316", color: "white", border: "none", padding: "10px 20px", borderRadius: "40px", cursor: "pointer" }}>
+              <UserPlus size={18} /> Add New Partner
+            </button>
+          </div>
+
+          {/* Stats Cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "24px" }}>
+            <div style={{ background: "white", borderRadius: "16px", padding: "16px", border: "1px solid #eef2ff" }}>
+              <div style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a" }}>{partners.length}</div>
+              <div style={{ color: "#64748b", fontSize: "14px" }}>Total Partners</div>
+            </div>
+            <div style={{ background: "white", borderRadius: "16px", padding: "16px", border: "1px solid #eef2ff" }}>
+              <div style={{ fontSize: "24px", fontWeight: "800", color: "#22c55e" }}>{partners.filter(p => p.status === "Active").length}</div>
+              <div style={{ color: "#64748b", fontSize: "14px" }}>Active</div>
+            </div>
+            <div style={{ background: "white", borderRadius: "16px", padding: "16px", border: "1px solid #eef2ff" }}>
+              <div style={{ fontSize: "24px", fontWeight: "800", color: "#f97316" }}>{partners.filter(p => p.type === "Elite").length}</div>
+              <div style={{ color: "#64748b", fontSize: "14px" }}>Elite Partners</div>
+            </div>
+            <div style={{ background: "white", borderRadius: "16px", padding: "16px", border: "1px solid #eef2ff" }}>
+              <div style={{ fontSize: "24px", fontWeight: "800", color: "#8b5cf6" }}>{partners.reduce((sum, p) => sum + p.totalEvents, 0)}</div>
+              <div style={{ color: "#64748b", fontSize: "14px" }}>Total Events</div>
+            </div>
+          </div>
+
+          {/* Search & Filters */}
+          <div style={{ background: "white", borderRadius: "20px", padding: "20px", border: "1px solid #eef2ff", marginBottom: "24px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+              <div style={{ display: "flex", gap: "12px", flex: 1, maxWidth: "400px" }}>
+                <div style={{ display: "flex", alignItems: "center", background: "#f1f5f9", borderRadius: "40px", padding: "10px 16px", flex: 1 }}>
+                  <Search size={18} style={{ color: "#94a3b8", marginRight: "8px" }} />
+                  <input type="text" placeholder="Search by name, email or phone..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ background: "transparent", border: "none", outline: "none", flex: 1 }} />
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: "12px" }}>
+                <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} style={{ padding: "8px 16px", border: "1px solid #e2e8f0", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+                  <option value="all">All Types</option>
+                  <option value="basic">Basic</option>
+                  <option value="pro">Pro</option>
+                  <option value="elite">Elite</option>
+                </select>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ padding: "8px 16px", border: "1px solid #e2e8f0", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                <button style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 16px", border: "1px solid #e2e8f0", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+                  <Filter size={16} /> Filter
+                </button>
+                <button style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 16px", border: "1px solid #e2e8f0", borderRadius: "40px", background: "white", cursor: "pointer" }}>
+                  <Download size={16} /> Export CSV
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Partners Table */}
+          <div style={{ background: "white", borderRadius: "20px", border: "1px solid #eef2ff", overflow: "hidden" }}>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+                    <th style={{ padding: "16px", textAlign: "left" }}>Partner</th>
+                    <th style={{ padding: "16px", textAlign: "left" }}>Contact</th>
+                    <th style={{ padding: "16px", textAlign: "left" }}>Type</th>
+                    <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
+                    <th style={{ padding: "16px", textAlign: "left" }}>City/Venue</th>
+                    <th style={{ padding: "16px", textAlign: "left" }}>Events/Revenue</th>
+                    <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPartners.map((partner) => (
+                    <tr key={partner.id} style={{ borderBottom: "1px solid #eef2ff" }}>
+                      <td style={{ padding: "16px" }}>
+                        <div style={{ fontWeight: "600", color: "#0f172a" }}>{partner.name}</div>
+                        <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "2px" }}>Joined: {partner.joined}</div>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <div style={{ fontSize: "13px" }}><Mail size={12} style={{ display: "inline", marginRight: "4px" }} /> {partner.email}</div>
+                        <div style={{ fontSize: "13px", color: "#64748b", marginTop: "4px" }}><Phone size={12} style={{ display: "inline", marginRight: "4px" }} /> {partner.phone}</div>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <span style={{ 
+                          background: partner.type === "Elite" ? "#fef3c7" : partner.type === "Pro" ? "#e0e7ff" : "#f1f5f9",
+                          color: partner.type === "Elite" ? "#92400e" : partner.type === "Pro" ? "#3730a3" : "#475569",
+                          padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "500"
+                        }}>
+                          {partner.type} {partner.type === "Elite" && <Star size={10} style={{ display: "inline", marginLeft: "4px" }} />}
+                        </span>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <span style={{ 
+                          background: partner.status === "Active" ? "#dcfce7" : partner.status === "Pending" ? "#fef3c7" : "#fee2e2",
+                          color: partner.status === "Active" ? "#166534" : partner.status === "Pending" ? "#92400e" : "#991b1b",
+                          padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "500"
+                        }}>
+                          {partner.status === "Active" ? <CheckCircle size={12} style={{ display: "inline", marginRight: "4px" }} /> : null}
+                          {partner.status}
+                        </span>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <div><MapPin size={12} style={{ display: "inline", marginRight: "4px", color: "#f97316" }} /> {partner.city}</div>
+                        <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>{partner.venueType}</div>
+                      </td>
+                      <td style={{ padding: "16px" }}>
+                        <div style={{ fontWeight: "600" }}>{partner.totalEvents} events</div>
+                        <div style={{ fontSize: "13px", color: "#f97316" }}>{partner.totalRevenue}</div>
+                      </td>
+                      <td style={{ padding: "16px", textAlign: "center" }}>
+                        <Eye size={18} style={{ color: "#f97316", cursor: "pointer" }} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+               </table>
+              {filteredPartners.length === 0 && (
+                <div style={{ padding: "40px", textAlign: "center", color: "#94a3b8" }}>No partners found</div>
+              )}
+            </div>
+          </div>
+
+          {/* Pagination */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "24px" }}>
+            <div style={{ color: "#64748b", fontSize: "14px" }}>Showing {filteredPartners.length} of {partners.length} partners</div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button style={{ padding: "8px 12px", border: "1px solid #e2e8f0", borderRadius: "8px", background: "white", cursor: "pointer" }}>Previous</button>
+              <button style={{ padding: "8px 12px", background: "#f97316", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>1</button>
+              <button style={{ padding: "8px 12px", border: "1px solid #e2e8f0", borderRadius: "8px", background: "white", cursor: "pointer" }}>2</button>
+              <button style={{ padding: "8px 12px", border: "1px solid #e2e8f0", borderRadius: "8px", background: "white", cursor: "pointer" }}>Next</button>
+            </div>
+          </div>
         </div>
-        <div className="p-4 border-t flex justify-between items-center"><p className="text-sm text-gray-500">Showing {filteredPartners.length} of {partners.length} partners</p><div className="flex gap-2"><button className="px-3 py-1 border rounded">Previous</button><button className="px-3 py-1 bg-primary text-white rounded">1</button><button className="px-3 py-1 border rounded">Next</button></div></div>
       </div>
 
       {/* Add Partner Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold">Add New Partner</h3><button onClick={() => setShowAddModal(false)}><X size={24} /></button></div>
-            <div className="space-y-4">
-              <input type="text" placeholder="Partner Name *" value={newPartner.name} onChange={(e) => setNewPartner({...newPartner, name: e.target.value})} className="w-full p-2 border rounded" />
-              <input type="email" placeholder="Email *" value={newPartner.email} onChange={(e) => setNewPartner({...newPartner, email: e.target.value})} className="w-full p-2 border rounded" />
-              <input type="tel" placeholder="Phone" value={newPartner.phone} onChange={(e) => setNewPartner({...newPartner, phone: e.target.value})} className="w-full p-2 border rounded" />
-              <select value={newPartner.type} onChange={(e) => setNewPartner({...newPartner, type: e.target.value})} className="w-full p-2 border rounded"><option value="Venue">Venue / Hotel</option><option value="Supplier">Supplier / Vendor</option></select>
-              <select value={newPartner.tier} onChange={(e) => setNewPartner({...newPartner, tier: e.target.value})} className="w-full p-2 border rounded"><option value="Basic">Basic</option><option value="Silver">Silver</option><option value="Gold">Gold</option></select>
-              <button onClick={handleAddPartner} className="w-full bg-primary text-white py-2 rounded">Add Partner</button>
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000
+        }}>
+          <div style={{ background: "white", borderRadius: "24px", padding: "32px", maxWidth: "500px", width: "90%" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px" }}>
+              <h2 style={{ fontSize: "24px", fontWeight: "700" }}>Add New Partner</h2>
+              <button onClick={() => setShowAddModal(false)} style={{ background: "none", border: "none", fontSize: "24px", cursor: "pointer" }}>×</button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Approve Confirm Modal */}
-      {showApproveModal !== null && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-center">
-            <div className="mb-4"><CheckCircle size={48} className="text-green-500 mx-auto" /></div>
-            <h3 className="text-xl font-bold mb-2">Approve Partner?</h3>
-            <p className="text-gray-500 mb-4">This partner will get access to partner dashboard.</p>
-            <div className="flex gap-3"><button onClick={() => handleApprovePartner(showApproveModal)} className="flex-1 bg-green-500 text-white py-2 rounded">Approve</button><button onClick={() => setShowApproveModal(null)} className="flex-1 bg-gray-200 py-2 rounded">Cancel</button></div>
+            
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Partner Name *</label>
+              <input type="text" value={newPartner.name} onChange={(e) => setNewPartner({...newPartner, name: e.target.value})} placeholder="e.g., The Leela Mumbai" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Email *</label>
+              <input type="email" value={newPartner.email} onChange={(e) => setNewPartner({...newPartner, email: e.target.value})} placeholder="events@example.com" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Phone</label>
+              <input type="tel" value={newPartner.phone} onChange={(e) => setNewPartner({...newPartner, phone: e.target.value})} placeholder="+91 XXXXX XXXXX" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Partner Type</label>
+              <select value={newPartner.type} onChange={(e) => setNewPartner({...newPartner, type: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+                <option value="Basic">Basic</option>
+                <option value="Pro">Pro</option>
+                <option value="Elite">Elite</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>City</label>
+              <select value={newPartner.city} onChange={(e) => setNewPartner({...newPartner, city: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Pune">Pune</option>
+                <option value="Goa">Goa</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: "24px" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Venue Type</label>
+              <select value={newPartner.venueType} onChange={(e) => setNewPartner({...newPartner, venueType: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+                <option value="Restaurant">Restaurant</option>
+                <option value="5-Star Hotel">5-Star Hotel</option>
+                <option value="Rooftop Venue">Rooftop Venue</option>
+                <option value="Resort">Resort</option>
+                <option value="Banquet Hall">Banquet Hall</option>
+              </select>
+            </div>
+            <button onClick={handleAddPartner} style={{ width: "100%", background: "#f97316", color: "white", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer", fontWeight: "500" }}>Add Partner</button>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

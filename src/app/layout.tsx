@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <main style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>{children}</main>
+        {children}
       </body>
     </html>
   );

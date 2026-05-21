@@ -1,16 +1,16 @@
 import './globals.css';
-import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import { Inter } from 'next/font/google';
 
-export const metadata: Metadata = {
-  title: 'Growth Centralevents',
-  description: 'Event and dashboard platform',
-};
+const inter = Inter({ subsets: ['latin'] });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

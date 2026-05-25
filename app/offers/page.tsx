@@ -1,130 +1,61 @@
-'use client'
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { ShoppingBag, Package, Truck, CheckCircle } from 'lucide-react'
+"use client";
 
-// Sample offers data
-const allOffers = [
-  { id: 1, code: 'GCE20', discount: '20% OFF', description: 'on all products', supplier: 'FreshMart Pvt Ltd', claimed: 4, limit: 10, expiry: '25 May 2025', category: 'Dining', image: '🛒' },
-  { id: 2, code: 'TECH15', discount: '15% OFF', description: 'on gadgets', supplier: 'TechZone', claimed: 4, limit: 10, expiry: '28 May 2025', category: 'Electronics', image: '📱' },
-  { id: 3, code: 'ORG10', discount: '10% OFF', description: 'on organic items', supplier: 'Organic Bazaar', claimed: 4, limit: 10, expiry: '31 May 2025', category: 'Grocery', image: '🥬' },
-  { id: 4, code: 'FIT20', discount: '20% OFF', description: 'on fitness gear', supplier: 'FitLife Supplies', claimed: 4, limit: 10, expiry: '29 May 2025', category: 'Fitness', image: '💪' },
-]
+import { useState } from "react";
+import { Percent, Gift, Clock, Filter } from "lucide-react";
 
 export default function OffersPage() {
-  const [offers, setOffers] = useState(allOffers)
-  const [myOrders, setMyOrders] = useState<any[]>([])
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const [showToast, setShowToast] = useState('')
+  const [activeFilter, setActiveFilter] = useState("all");
+  
+  const offers = [
+    { id: 1, name: "20% OFF on Business Events", discount: "20%", type: "Discount", validTill: "30 Jun 2025", code: "GCE20", usage: "All members", color: "#f97316" },
+    { id: 2, name: "Flat ₹100 OFF", discount: "₹100", type: "Discount", validTill: "15 Jul 2025", code: "GCE100", usage: "New members only", color: "#22c55e" },
+    { id: 3, name: "Buy 1 Get 1 Free", discount: "BOGO", type: "Free", validTill: "10 Jul 2025", code: "GCEBOGO", usage: "Premium members", color: "#8b5cf6" },
+    { id: 4, name: "Free Drink with Ticket", discount: "1 Free Drink", type: "Free", validTill: "25 Jun 2025", code: "GCEFREE", usage: "All members", color: "#3b82f6" },
+  ];
 
-  useEffect(() => {
-    const savedOrders = localStorage.getItem('gce_orders')
-    if (savedOrders) setMyOrders(JSON.parse(savedOrders))
-  }, [])
+  const filteredOffers = activeFilter === "all" ? offers : offers.filter(o => o.type.toLowerCase() === activeFilter);
 
-  const saveOrder = (order: any) => {
-    const updatedOrders = [order, ...myOrders]
-    setMyOrders(updatedOrders)
-    localStorage.setItem('gce_orders', JSON.stringify(updatedOrders))
-  }
-
-  const handleClaim = (offer: any) => {
-    // Check user login
-    const user = localStorage.getItem('gce_user')
-    if (!user) {
-      setShowToast('Please login to claim offers!')
-      setTimeout(() => setShowToast(''), 3000)
-      return
-    }
-
-    // Create order
-    const order = {
-      id: 'ORD' + Date.now(),
-      offerCode: offer.code,
-      offerDiscount: offer.discount,
-      supplier: offer.supplier,
-      amount: 499,
-      status: 'paid',
-      statusDate: new Date().toLocaleDateString(),
-      tracking: {
-        paid: true,
-        received: false,
-        shipped: false
-      }
-    }
-    saveOrder(order)
-    setShowToast(`✅ ${offer.code} claimed successfully!`)
-    setTimeout(() => setShowToast(''), 3000)
-  }
-
-  const getTrackingIcon = (status: string, isComplete: boolean) => {
-    if (isComplete) return <CheckCircle size={20} className="text-green-500" />
-    return status === 'paid' ? <Package size={20} className="text-gray-400" /> : 
-           status === 'received' ? <Package size={20} className="text-orange-500" /> :
-           <Truck size={20} className="text-gray-400" />
-  }
-
-  const filteredOffers = selectedCategory === 'All' ? offers : offers.filter(o => o.category === selectedCategory)
-  const categories = ['All', 'Dining', 'Electronics', 'Grocery', 'Fitness']
+  const copyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    alert(`Code ${code} copied!`);
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold text-center text-primary mb-2">Exclusive Offers</h1>
-      <p className="text-center text-gray-500 mb-6">Limited claims – grab them before they run out!</p>
+    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
+      <div style={{ marginBottom: "32px" }}>
+        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Exclusive Offers</h1>
+        <p style={{ color: "#64748b" }}>Save on your next event with these special deals</p>
+      </div>
 
-      {/* Category Filters */}
-      <div className="flex flex-wrap gap-2 justify-center mb-8">
-        {categories.map(cat => (
-          <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-4 py-1 rounded-full text-sm ${selectedCategory === cat ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'}`}>{cat}</button>
+      <div style={{ display: "flex", gap: "12px", marginBottom: "24px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
+        {["all", "discount", "free"].map(filter => (
+          <button key={filter} onClick={() => setActiveFilter(filter)} style={{ padding: "8px 20px", borderRadius: "40px", border: "none", background: activeFilter === filter ? "#f97316" : "white", color: activeFilter === filter ? "white" : "#64748b", cursor: "pointer", fontWeight: "500" }}>
+            {filter === "all" ? "All Offers" : filter === "discount" ? "Discounts" : "Free Offers"}
+          </button>
         ))}
       </div>
 
-      {/* Offers Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "20px" }}>
         {filteredOffers.map(offer => (
-          <div key={offer.id} className="card bg-orange-50 border-orange-200 hover:shadow-lg transition">
-            <div className="text-4xl mb-2">{offer.image}</div>
-            <div className="flex justify-between items-start">
-              <div><span className="text-2xl font-bold text-primary">{offer.code}</span><p className="text-lg font-semibold">{offer.discount}</p><p className="text-sm text-gray-600">{offer.description}</p></div>
-              <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">{offer.claimed}/{offer.limit} claimed</span>
+          <div key={offer.id} style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: "1px solid #eef2ff" }}>
+            <div style={{ background: `linear-gradient(135deg, ${offer.color}20, ${offer.color}10)`, padding: "20px", textAlign: "center" }}>
+              {offer.type === "Discount" ? <Percent size={40} style={{ color: offer.color }} /> : <Gift size={40} style={{ color: offer.color }} />}
+              <div style={{ fontSize: "28px", fontWeight: "800", color: offer.color, marginTop: "8px" }}>{offer.discount}</div>
+              <div style={{ fontSize: "14px", color: "#64748b" }}>{offer.name}</div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">Supplier: {offer.supplier}</p>
-            <p className="text-xs text-gray-400">Exp: {offer.expiry}</p>
-            <button onClick={() => handleClaim(offer)} className="btn-primary w-full mt-3 text-sm py-2">Claim & Pay</button>
+            <div style={{ padding: "20px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
+                <span style={{ fontSize: "13px", color: "#64748b" }}>Valid till {offer.validTill}</span>
+                <span style={{ background: "#f1f5f9", padding: "4px 8px", borderRadius: "12px", fontSize: "11px" }}>{offer.usage}</span>
+              </div>
+              <div style={{ display: "flex", gap: "12px" }}>
+                <button onClick={() => copyCode(offer.code)} style={{ flex: 1, background: "#f97316", color: "white", border: "none", padding: "10px", borderRadius: "40px", cursor: "pointer", fontWeight: "500" }}>Copy Code</button>
+                <button style={{ background: "white", border: "1px solid #e2e8f0", padding: "10px", borderRadius: "40px", cursor: "pointer" }}>View Events</button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-
-      {/* My Orders Section */}
-      {myOrders.length > 0 && (
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-4">My Orders (Order Tracking)</h2>
-          <div className="space-y-4">
-            {myOrders.map(order => (
-              <div key={order.id} className="card bg-white">
-                <div className="flex justify-between items-start flex-wrap gap-2">
-                  <div><p className="font-bold text-primary">{order.offerCode}</p><p className="text-sm">{order.offerDiscount}</p><p className="text-xs text-gray-500">Supplier: {order.supplier}</p></div>
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Order ID: {order.id}</span>
-                </div>
-                
-                {/* Order Tracking Timeline */}
-                <div className="mt-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col items-center text-center flex-1"><div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">{getTrackingIcon('paid', true)}</div><p className="text-xs mt-1 font-medium">Paid</p><p className="text-xs text-gray-400">{order.statusDate}</p></div>
-                    <div className="flex-1 h-0.5 bg-gray-200 mx-1"></div>
-                    <div className="flex flex-col items-center text-center flex-1"><div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">{getTrackingIcon('received', order.tracking?.received)}</div><p className="text-xs mt-1 font-medium">Received from Supplier</p><p className="text-xs text-gray-400">{order.tracking?.received ? order.statusDate : 'Pending'}</p></div>
-                    <div className="flex-1 h-0.5 bg-gray-200 mx-1"></div>
-                    <div className="flex flex-col items-center text-center flex-1"><div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">{getTrackingIcon('shipped', order.tracking?.shipped)}</div><p className="text-xs mt-1 font-medium">Shipped to Member</p><p className="text-xs text-gray-400">{order.tracking?.shipped ? order.statusDate : 'Pending'}</p></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Toast Notification */}
-      {showToast && <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">{showToast}</div>}
     </div>
-  )
+  );
 }

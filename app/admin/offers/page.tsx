@@ -1,126 +1,261 @@
-'use client'
-import { useState } from 'react'
-import { Search, Eye, Edit, Trash2, Plus, X, Filter, Gift, Tag, Calendar, DollarSign } from 'lucide-react'
+"use client";
 
-export default function OffersManagement() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(null)
-  
-  const [newOffer, setNewOffer] = useState({ 
-    code: '', discount: '', description: '', supplier: '', claimed: 0, limit: 10, expiry: '', category: 'Dining', status: 'active'
-  })
+import { useState } from "react";
+import { 
+  LayoutDashboard, Users, Building2, Calendar, Tag, CreditCard, 
+  Settings, LogOut, Menu, X, Search, Eye, Plus, CheckCircle, XCircle, AlertCircle, Percent, Gift
+} from "lucide-react";
+
+export default function AdminOffers() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<any>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const [offers, setOffers] = useState([
-    { id: 1, code: 'GCE20', discount: '20% OFF', description: 'on all products', supplier: 'FreshMart Pvt Ltd', claimed: 4, limit: 10, expiry: '25 May 2025', category: 'Dining', status: 'active' },
-    { id: 2, code: 'TECH15', discount: '15% OFF', description: 'on gadgets', supplier: 'TechZone', claimed: 4, limit: 10, expiry: '28 May 2025', category: 'Electronics', status: 'active' },
-    { id: 3, code: 'ORG10', discount: '10% OFF', description: 'on organic items', supplier: 'Organic Bazaar', claimed: 4, limit: 10, expiry: '31 May 2025', category: 'Grocery', status: 'active' },
-    { id: 4, code: 'FIT20', discount: '20% OFF', description: 'on fitness gear', supplier: 'FitLife Supplies', claimed: 4, limit: 10, expiry: '29 May 2025', category: 'Fitness', status: 'expired' },
-  ])
+    { id: 1, name: "Flat ₹100 OFF", type: "Discount", discount: "₹100", vertical: "Connect", status: "Active", validTill: "30 Jun 2025", redeemed: 45, total: 200, createdBy: "GCE Admin" },
+    { id: 2, name: "20% OFF on Business Events", type: "Discount", discount: "20%", vertical: "Enterprise", status: "Active", validTill: "15 Jul 2025", redeemed: 128, total: 500, createdBy: "Fintech Council" },
+    { id: 3, name: "Buy 1 Get 1 Free", type: "Free Units", discount: "BOGO", vertical: "Marketplace", status: "Pending", validTill: "10 Jun 2025", redeemed: 0, total: 100, createdBy: "JW Marriott" },
+    { id: 4, name: "₹500 Off on First Booking", type: "Discount", discount: "₹500", vertical: "Connect", status: "Expired", validTill: "15 May 2025", redeemed: 67, total: 150, createdBy: "GCE Admin" },
+    { id: 5, name: "Free Drink with Ticket", type: "Free Units", discount: "1 Free Drink", vertical: "Marketplace", status: "Rejected", validTill: "25 Jun 2025", redeemed: 0, total: 50, createdBy: "SOHO House" },
+  ]);
 
-  const handleAddOffer = () => {
-    if (!newOffer.code || !newOffer.discount || !newOffer.supplier) { alert('Please fill required fields'); return }
-    const newId = Math.max(...offers.map(o => o.id), 0) + 1
-    const offer = { id: newId, ...newOffer, claimed: 0 }
-    setOffers([offer, ...offers])
-    setShowAddModal(false)
-    setNewOffer({ code: '', discount: '', description: '', supplier: '', claimed: 0, limit: 10, expiry: '', category: 'Dining', status: 'active' })
-    alert('Offer created successfully!')
-  }
-
-  const handleDeleteOffer = (id: number) => {
-    setOffers(offers.filter(o => o.id !== id))
-    setShowDeleteConfirm(null)
-    alert('Offer deleted successfully!')
-  }
+  const stats = [
+    { label: "Total Offers", value: offers.length },
+    { label: "Active Offers", value: offers.filter(o => o.status === "Active").length },
+    { label: "Pending Approval", value: offers.filter(o => o.status === "Pending").length },
+    { label: "Total Redeemed", value: offers.reduce((sum, o) => sum + o.redeemed, 0) },
+  ];
 
   const filteredOffers = offers.filter(o => {
-    const matchesSearch = o.code.toLowerCase().includes(searchTerm.toLowerCase()) || o.supplier.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || o.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+    const matchesSearch = o.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === "all" || o.status.toLowerCase() === statusFilter.toLowerCase();
+    return matchesSearch && matchesStatus;
+  });
 
-  const categories = ['Dining', 'Electronics', 'Grocery', 'Fitness', 'Travel', 'Wellness']
+  const getStatusBadge = (status: string) => {
+    switch(status) {
+      case "Active": return { bg: "#dcfce7", color: "#166534", icon: <CheckCircle size={12} /> };
+      case "Pending": return { bg: "#fef3c7", color: "#92400e", icon: <AlertCircle size={12} /> };
+      case "Expired": return { bg: "#e2e8f0", color: "#475569", icon: null };
+      case "Rejected": return { bg: "#fee2e2", color: "#991b1b", icon: <XCircle size={12} /> };
+      default: return { bg: "#f1f5f9", color: "#475569", icon: null };
+    }
+  };
+
+  const handleApprove = (id: number) => {
+    setOffers(offers.map(o => o.id === id ? { ...o, status: "Active" } : o));
+    alert("Offer approved!");
+  };
+
+  const handleReject = (id: number) => {
+    setOffers(offers.map(o => o.id === id ? { ...o, status: "Rejected" } : o));
+    alert("Offer rejected.");
+  };
+
+  const [newOffer, setNewOffer] = useState({
+    name: "", type: "Discount", discount: "", vertical: "Connect", validTill: "", total: 100
+  });
+
+  const handleAddOffer = () => {
+    if (!newOffer.name || !newOffer.discount) {
+      alert("Please fill name and discount");
+      return;
+    }
+    const newId = offers.length + 1;
+    setOffers([...offers, {
+      id: newId, name: newOffer.name, type: newOffer.type, discount: newOffer.discount,
+      vertical: newOffer.vertical, status: "Pending", validTill: newOffer.validTill || "30 Jun 2025",
+      redeemed: 0, total: newOffer.total, createdBy: "GCE Admin"
+    }]);
+    setShowAddModal(false);
+    setNewOffer({ name: "", type: "Discount", discount: "", vertical: "Connect", validTill: "", total: 100 });
+    alert("Offer created! Pending approval.");
+  };
+
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
+    { id: "members", label: "Members", icon: Users, href: "/admin/members" },
+    { id: "partners", label: "Partners", icon: Building2, href: "/admin/partners" },
+    { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
+    { id: "offers", label: "Offers", icon: Tag, href: "/admin/offers" },
+    { id: "payments", label: "Payments", icon: CreditCard, href: "/admin/payments" },
+    { id: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
+  ];
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Offers Management (Dropshipping)</h1>
-        <button onClick={() => setShowAddModal(true)} className="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2"><Plus size={18} /> Create Offer</button>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-primary"><div className="flex items-center gap-3"><Gift size={24} className="text-primary" /><div><p className="text-2xl font-bold">{offers.length}</p><p className="text-sm">Total Offers</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-green-500"><div className="flex items-center gap-3"><Tag size={24} className="text-green-500" /><div><p className="text-2xl font-bold">{offers.filter(o => o.status === 'active').length}</p><p className="text-sm">Active Offers</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-red-500"><div className="flex items-center gap-3"><Calendar size={24} className="text-red-500" /><div><p className="text-2xl font-bold">{offers.filter(o => o.status === 'expired').length}</p><p className="text-sm">Expired</p></div></div></div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-purple-500"><div className="flex items-center gap-3"><DollarSign size={24} className="text-purple-500" /><div><p className="text-2xl font-bold">{offers.reduce((s,o) => s + o.claimed, 0)}</p><p className="text-sm">Total Claims</p></div></div></div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative"><Search size={18} className="absolute left-3 top-2.5 text-gray-400" /><input type="text" placeholder="Search by code or supplier..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-9 pr-4 py-2 border rounded-lg" /></div>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="p-2 border rounded-lg"><option value="all">All Status</option><option value="active">Active</option><option value="expired">Expired</option></select>
-          <button onClick={() => { setSearchTerm(''); setStatusFilter('all') }} className="bg-gray-100 px-4 py-2 rounded-lg flex items-center gap-2"><Filter size={18} /> Clear</button>
+    <div style={{ display: "flex", background: "#f1f5f9", minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <div style={{
+        width: sidebarOpen ? "280px" : "80px",
+        background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+        color: "white",
+        transition: "width 0.3s",
+        position: "fixed",
+        height: "100vh",
+        overflowY: "auto",
+        zIndex: 50
+      }}>
+        <div style={{ padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #334155" }}>
+          {sidebarOpen && <span style={{ fontSize: "20px", fontWeight: "bold" }}>GCE Admin</span>}
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
+        <nav style={{ padding: "16px" }}>
+          {navItems.map((item) => (
+            <a key={item.id} href={item.href} style={{
+              display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px",
+              marginBottom: "4px", borderRadius: "12px", background: item.id === "offers" ? "#f97316" : "transparent",
+              color: "white", textDecoration: "none", cursor: "pointer"
+            }}>
+              <item.icon size={20} />
+              {sidebarOpen && <span>{item.label}</span>}
+            </a>
+          ))}
+          <div style={{ marginTop: "20px", borderTop: "1px solid #334155", paddingTop: "16px" }}>
+            <a href="#" style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", borderRadius: "12px", color: "#94a3b8", textDecoration: "none", cursor: "pointer" }}>
+              <LogOut size={20} />
+              {sidebarOpen && <span>Logout</span>}
+            </a>
+          </div>
+        </nav>
       </div>
 
-      {/* Offers Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr><th className="p-3 text-left">Code</th><th className="p-3 text-left">Discount</th><th className="p-3 text-left">Supplier</th><th className="p-3 text-left">Claimed</th><th className="p-3 text-left">Expiry</th><th className="p-3 text-left">Category</th><th className="p-3 text-left">Status</th><th className="p-3 text-center">Actions</th></tr>
-            </thead>
-            <tbody>
-              {filteredOffers.map(o => (
-                <tr key={o.id} className="border-b hover:bg-gray-50">
-                  <td className="p-3 font-bold text-primary">{o.code}</td>
-                  <td className="p-3">{o.discount}<br /><span className="text-xs text-gray-400">{o.description}</span></td>
-                  <td className="p-3">{o.supplier}</td>
-                  <td className="p-3">{o.claimed}/{o.limit} <div className="w-16 mt-1"><div className="h-1.5 bg-gray-200 rounded-full"><div className="h-1.5 bg-primary rounded-full" style={{ width: `${(o.claimed/o.limit)*100}%` }}></div></div></div></td>
-                  <td className="p-3">{o.expiry}</td>
-                  <td className="p-3"><span className="px-2 py-1 rounded-full text-xs bg-gray-100">{o.category}</span></td>
-                  <td className="p-3"><span className={`px-2 py-1 rounded-full text-xs ${o.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{o.status}</span></td>
-                  <td className="p-3 text-center"><div className="flex justify-center gap-2"><button className="text-blue-500"><Eye size={18} /></button><button className="text-orange-500"><Edit size={18} /></button><button onClick={() => setShowDeleteConfirm(o.id)} className="text-red-500"><Trash2 size={18} /></button></div></td>
+      {/* Main Content */}
+      <div style={{
+        marginLeft: sidebarOpen ? "280px" : "80px",
+        flex: 1,
+        padding: "24px",
+        transition: "margin-left 0.3s"
+      }}>
+        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+            <div>
+              <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Offers Management</h1>
+              <p style={{ color: "#64748b" }}>Manage discounts, promotions, and enterprise offers</p>
+            </div>
+            <button onClick={() => setShowAddModal(true)} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#f97316", color: "white", border: "none", padding: "10px 20px", borderRadius: "40px", cursor: "pointer" }}>
+              <Plus size={18} /> Create Offer
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", marginBottom: "24px" }}>
+            {stats.map((stat, i) => (
+              <div key={i} style={{ background: "white", borderRadius: "16px", padding: "16px" }}>
+                <div style={{ fontSize: "28px", fontWeight: "800" }}>{stat.value}</div>
+                <div style={{ color: "#64748b" }}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Search & Filter */}
+          <div style={{ background: "white", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <div style={{ flex: 1, display: "flex", alignItems: "center", background: "#f1f5f9", borderRadius: "40px", padding: "10px 16px" }}>
+                <Search size={18} style={{ marginRight: "8px" }} />
+                <input type="text" placeholder="Search offers..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ background: "transparent", border: "none", outline: "none", flex: 1 }} />
+              </div>
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ padding: "8px 16px", borderRadius: "40px", border: "1px solid #e2e8f0" }}>
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="expired">Expired</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Offers Table */}
+          <div style={{ background: "white", borderRadius: "20px", overflow: "hidden" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Offer Name</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Type</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Discount</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Vertical</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Valid Till</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Redeemed</th>
+                  <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
+                  <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredOffers.map((offer) => {
+                  const statusStyle = getStatusBadge(offer.status);
+                  return (
+                    <tr key={offer.id} style={{ borderBottom: "1px solid #eef2ff" }}>
+                      <td style={{ padding: "16px" }}><div style={{ fontWeight: "600" }}>{offer.name}</div><div style={{ fontSize: "12px", color: "#94a3b8" }}>by {offer.createdBy}</div></td>
+                      <td style={{ padding: "16px" }}><span style={{ display: "flex", alignItems: "center", gap: "4px" }}>{offer.type === "Discount" ? <Percent size={14} /> : <Gift size={14} />} {offer.type}</span></td>
+                      <td style={{ padding: "16px" }}><span style={{ fontWeight: "600", color: "#f97316" }}>{offer.discount}</span></td>
+                      <td style={{ padding: "16px" }}>{offer.vertical}</td>
+                      <td style={{ padding: "16px" }}>{offer.validTill}</td>
+                      <td style={{ padding: "16px" }}>{offer.redeemed} / {offer.total}</td>
+                      <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "4px" }}>{statusStyle.icon} {offer.status}</span></td>
+                      <td style={{ padding: "16px", textAlign: "center" }}>
+                        <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
+                          <button onClick={() => { setSelectedOffer(offer); setShowViewModal(true); }} style={{ background: "none", border: "none", cursor: "pointer" }}><Eye size={18} style={{ color: "#f97316" }} /></button>
+                          {offer.status === "Pending" && (
+                            <>
+                              <button onClick={() => handleApprove(offer.id)} style={{ background: "#dcfce7", border: "none", padding: "4px 8px", borderRadius: "8px", cursor: "pointer", fontSize: "11px", color: "#166534" }}>Approve</button>
+                              <button onClick={() => handleReject(offer.id)} style={{ background: "#fee2e2", border: "none", padding: "4px 8px", borderRadius: "8px", cursor: "pointer", fontSize: "11px", color: "#991b1b" }}>Reject</button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="p-4 border-t flex justify-between items-center"><p className="text-sm text-gray-500">Showing {filteredOffers.length} of {offers.length} offers</p><div className="flex gap-2"><button className="px-3 py-1 border rounded">Previous</button><button className="px-3 py-1 bg-primary text-white rounded">1</button><button className="px-3 py-1 border rounded">Next</button></div></div>
       </div>
 
-      {/* Add Offer Modal */}
+      {/* View Modal */}
+      {showViewModal && selectedOffer && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ background: "white", borderRadius: "24px", padding: "32px", maxWidth: "450px", width: "90%" }}>
+            <h2 style={{ fontSize: "22px", fontWeight: "700", marginBottom: "16px" }}>{selectedOffer.name}</h2>
+            <p><strong>Type:</strong> {selectedOffer.type}</p>
+            <p><strong>Discount:</strong> {selectedOffer.discount}</p>
+            <p><strong>Vertical:</strong> {selectedOffer.vertical}</p>
+            <p><strong>Valid Till:</strong> {selectedOffer.validTill}</p>
+            <p><strong>Redeemed:</strong> {selectedOffer.redeemed} / {selectedOffer.total}</p>
+            <p><strong>Created By:</strong> {selectedOffer.createdBy}</p>
+            <p><strong>Status:</strong> {selectedOffer.status}</p>
+            <button onClick={() => setShowViewModal(false)} style={{ marginTop: "20px", width: "100%", background: "#f97316", color: "white", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6">
-            <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold">Create New Offer</h3><button onClick={() => setShowAddModal(false)}><X size={24} /></button></div>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3"><input type="text" placeholder="Offer Code (e.g., GCE30) *" value={newOffer.code} onChange={(e) => setNewOffer({...newOffer, code: e.target.value.toUpperCase()})} className="p-2 border rounded" /><input type="text" placeholder="Discount (e.g., 20% OFF) *" value={newOffer.discount} onChange={(e) => setNewOffer({...newOffer, discount: e.target.value})} className="p-2 border rounded" /></div>
-              <input type="text" placeholder="Description" value={newOffer.description} onChange={(e) => setNewOffer({...newOffer, description: e.target.value})} className="w-full p-2 border rounded" />
-              <input type="text" placeholder="Supplier Name *" value={newOffer.supplier} onChange={(e) => setNewOffer({...newOffer, supplier: e.target.value})} className="w-full p-2 border rounded" />
-              <div className="grid grid-cols-2 gap-3"><input type="number" placeholder="Claim Limit" value={newOffer.limit} onChange={(e) => setNewOffer({...newOffer, limit: parseInt(e.target.value)})} className="p-2 border rounded" /><input type="date" placeholder="Expiry Date" value={newOffer.expiry} onChange={(e) => setNewOffer({...newOffer, expiry: e.target.value})} className="p-2 border rounded" /></div>
-              <select value={newOffer.category} onChange={(e) => setNewOffer({...newOffer, category: e.target.value})} className="w-full p-2 border rounded">{categories.map(c => <option key={c} value={c}>{c}</option>)}</select>
-              <select value={newOffer.status} onChange={(e) => setNewOffer({...newOffer, status: e.target.value})} className="w-full p-2 border rounded"><option value="active">Active</option><option value="expired">Expired</option></select>
-              <button onClick={handleAddOffer} className="w-full bg-primary text-white py-2 rounded font-semibold">Create Offer</button>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ background: "white", borderRadius: "24px", padding: "32px", maxWidth: "450px", width: "90%" }}>
+            <h2 style={{ fontSize: "22px", fontWeight: "700", marginBottom: "16px" }}>Create Offer</h2>
+            <div style={{ marginBottom: "12px" }}><input type="text" placeholder="Offer Name" value={newOffer.name} onChange={(e) => setNewOffer({...newOffer, name: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} /></div>
+            <div style={{ marginBottom: "12px", display: "flex", gap: "12px" }}>
+              <select value={newOffer.type} onChange={(e) => setNewOffer({...newOffer, type: e.target.value})} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }}><option>Discount</option><option>Free Units</option></select>
+              <input type="text" placeholder="e.g., ₹100 or 20%" value={newOffer.discount} onChange={(e) => setNewOffer({...newOffer, discount: e.target.value})} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} />
+            </div>
+            <div style={{ marginBottom: "12px", display: "flex", gap: "12px" }}>
+              <select value={newOffer.vertical} onChange={(e) => setNewOffer({...newOffer, vertical: e.target.value})} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }}><option>Connect</option><option>Marketplace</option><option>Enterprise</option></select>
+              <input type="number" placeholder="Total Units" value={newOffer.total} onChange={(e) => setNewOffer({...newOffer, total: parseInt(e.target.value)})} style={{ flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} />
+            </div>
+            <div style={{ marginBottom: "20px" }}><input type="text" placeholder="Valid Till (e.g., 30 Jun 2025)" value={newOffer.validTill} onChange={(e) => setNewOffer({...newOffer, validTill: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} /></div>
+            <div style={{ display: "flex", gap: "12px" }}>
+              <button onClick={handleAddOffer} style={{ flex: 1, background: "#f97316", color: "white", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Create</button>
+              <button onClick={() => setShowAddModal(false)} style={{ flex: 1, background: "#f1f5f9", color: "#64748b", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Cancel</button>
             </div>
           </div>
         </div>
       )}
-
-      {/* Delete Confirm Modal */}
-      {showDeleteConfirm !== null && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-center">
-            <h3 className="text-xl font-bold mb-2">Delete Offer?</h3>
-            <p className="text-gray-500 mb-4">This action cannot be undone.</p>
-            <div className="flex gap-3"><button onClick={() => handleDeleteOffer(showDeleteConfirm)} className="flex-1 bg-red-500 text-white py-2 rounded">Delete</button><button onClick={() => setShowDeleteConfirm(null)} className="flex-1 bg-gray-200 py-2 rounded">Cancel</button></div>
-          </div>
-        </div>
-      )}
     </div>
-  )
+  );
 }

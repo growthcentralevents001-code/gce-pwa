@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - GCE</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f8fafc; padding: 24px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: #666; margin-bottom: 24px; }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px; }
+        .stat-card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #eef2ff; }
+        .stat-number { font-size: 28px; font-weight: 800; color: #f97316; margin-bottom: 8px; }
+        .stat-label { color: #64748b; }
+        .stat-change { font-size: 12px; color: #22c55e; margin-top: 8px; }
+        
+        /* Two Column Layout */
+        .two-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+        .card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #eef2ff; }
+        .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        canvas { max-height: 250px; width: 100%; }
+        
+        /* Recent Activities */
+        .activity-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eef2ff; align-items: center; }
+        .activity-icon { font-size: 24px; }
+        .activity-text { flex: 1; }
+        .activity-title { font-weight: 600; font-size: 14px; }
+        .activity-time { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+        
+        /* Quick Actions */
+        .quick-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+        .btn-primary { background: #f97316; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+        .btn-primary:hover { background: #ea580c; }
+        .btn-outline { background: white; color: #f97316; border: 1px solid #f97316; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        .btn-outline:hover { background: #fff7ed; }
+        
+        /* Table */
+        .table-card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #eef2ff; overflow-x: auto; margin-bottom: 24px; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .search-input { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 40px; width: 250px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 12px; text-align: left; border-bottom: 1px solid #eef2ff; }
+        th { color: #64748b; font-weight: 600; font-size: 13px; }
+        .badge-active { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
+        .badge-inactive { background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
+        .badge-gold { background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
+        .membership-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+        
+        @media (max-width: 768px) { .two-columns { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Manage members, events, partners and analytics</p>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="btn-primary" onclick="alert('Add Member form will open')">+ Add New Member</button>
+        <button class="btn-primary" onclick="alert('Create Event form will open')">+ Create Event</button>
+        <button class="btn-outline" onclick="alert('Franchisee application form')">+ Add Franchisee</button>
+        <button class="btn-outline" onclick="alert('Process payouts page')">Process Payouts</button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number">320</div><div class="stat-label">Total Partners</div><div class="stat-change">↑ 12% vs last month</div></div>
+        <div class="stat-card"><div class="stat-number">1,250</div><div class="stat-label">Total Events</div><div class="stat-change">↑ 8% vs last month</div></div>
+        <div class="stat-card"><div class="stat-number">₹82.5L</div><div class="stat-label">Total Revenue</div><div class="stat-change">↑ 15% vs last month</div></div>
+    </div>
+
+    <!-- Two Column: Revenue Chart + Recent Activities -->
+    <div class="two-columns">
+        <!-- Revenue Chart -->
+        <div class="card">
+            <h2>📊 Revenue Overview (Last 6 Months)</h2>
+            <canvas id="revenueChart"></canvas>
+            <div style="margin-top: 16px; text-align: center;">
+                <span style="font-size: 24px; font-weight: 800; color: #f97316;">₹82.5L</span>
+                <span style="font-size: 13px; color: #22c55e; margin-left: 8px;">↑ 15% vs last month</span>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="card">
+            <h2>🔄 Recent Activities</h2>
+            <div class="activity-item"><div class="activity-icon">👤</div><div class="activity-text"><div class="activity-title">New member Rohan Mehta joined as Gold Member</div><div class="activity-time">23 May 2025, 10:30 AM · 2h ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon">📅</div><div class="activity-text"><div class="activity-title">New event "Startup Networking Meetup" created by Partner WeWork</div><div class="activity-time">23 May 2025, 09:15 AM · 3h ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon">💰</div><div class="activity-text"><div class="activity-title">Payment of ₹24,000 received from Neha Kapoor</div><div class="activity-time">23 May 2025, 08:45 AM · 4h ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon">🤝</div><div class="activity-text"><div class="activity-title">New franchise application received from TechNova Solutions</div><div class="activity-time">23 May 2025, 08:10 AM · 5h ago</div></div></div>
+        </div>
+    </div>
+
+    <!-- Recent Members Table -->
+    <div class="table-card">
+        <div class="table-header">
+            <h2>Recent Members</h2>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search members..." onkeyup="renderTable()">
+        </div>
+        <table id="membersTable">
+            <thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Membership Overview -->
+    <div class="table-card">
+        <h2>Membership Overview</h2>
+        <div class="membership-grid">
+            <div><strong>Gold</strong><br>3,450 (28%)</div>
+            <div><strong>Silver</strong><br>4,800 (37%)</div>
+            <div><strong>Bronze</strong><br>2,600 (21%)</div>
+            <div><strong>Free</strong><br>1,600 (12%)</div>
+        </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;">
+        <a href="/admin-members" class="btn-primary" style="text-decoration: none; display: inline-block;">Manage Members</a>
+        <a href="/admin-bdms" class="btn-primary" style="text-decoration: none; display: inline-block;">Manage BDMs</a>
+        <a href="/admin-partners" class="btn-primary" style="text-decoration: none; display: inline-block;">Manage Partners</a>
+    </div>
+</div>
+
+<script>
+    // Revenue Chart
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Revenue (₹ Lakhs)',
+                data: [42, 48, 55, 62, 71, 82.5],
+                borderColor: '#f97316',
+                backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#f97316',
+                pointBorderColor: 'white',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+
+    // Members Data
+    const members = [
+        { name: "Rohan Mehta", email: "rohan@gmail.com", type: "Gold", status: "Active", date: "23 May 2025" },
+        { name: "Neha Kapoor", email: "neha@gmail.com", type: "Silver", status: "Active", date: "22 May 2025" },
+        { name: "Vikram Singh", email: "vikram@gmail.com", type: "Gold", status: "Active", date: "21 May 2025" },
+        { name: "Anjali Desai", email: "anjali@gmail.com", type: "Silver", status: "Inactive", date: "20 May 2025" },
+        { name: "Rahul Sharma", email: "rahul@gmail.com", type: "Bronze", status: "Active", date: "19 May 2025" }
+    ];
+
+    function getTypeClass(type) {
+        if (type === 'Gold') return 'badge-gold';
+        return '';
+    }
+
+    function renderTable() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = members.filter(m => m.name.toLowerCase().includes(search) || m.email.toLowerCase().includes(search));
+        const html = filtered.map(m => `<tr><td style="padding:12px 12px;">${m.name}</td><td style="padding:12px 12px;">${m.email}</td><td style="padding:12px 12px;"><span class="${getTypeClass(m.type)}">${m.type}</span></td><td style="padding:12px 12px;"><span class="${m.status === 'Active' ? 'badge-active' : 'badge-inactive'}">${m.status}</span></td><td style="padding:12px 12px;">${m.date}</td></tr>`).join('');
+        document.getElementById('tableBody').innerHTML = html;
+    }
+    renderTable();
+</script>
+</body>
+</html>

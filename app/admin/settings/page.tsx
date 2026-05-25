@@ -1,118 +1,319 @@
-'use client'
-import { useState } from 'react'
-import { Settings, CreditCard, Users, Mail, Bell, Shield, Save, Edit2, Plus, Trash2 } from 'lucide-react'
+"use client";
 
-export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState('general')
-  const [generalSettings, setGeneralSettings] = useState({
-    siteName: 'Growth Central Events',
-    siteEmail: 'admin@growthcentralevents.com',
-    contactEmail: 'info@growthcentralevents.com',
-    timezone: 'Asia/Kolkata',
-    currency: 'INR',
-  })
+import { useState, useEffect } from "react";
+import { 
+  LayoutDashboard, Users, Building2, Calendar, Tag, CreditCard, 
+  Settings, LogOut, Menu, X, User, Bell, DollarSign, Percent, 
+  CreditCard as Card, Mail, Shield, Database, Save, Lock, Globe
+} from "lucide-react";
 
-  const [membershipPlans, setMembershipPlans] = useState([
-    { id: 1, name: 'Individual', price: 100, features: ['View all events', 'Member discounts'] },
-    { id: 2, name: 'Family', price: 200, features: ['Everything in Individual', '4 family members', 'Priority support'] },
-    { id: 3, name: 'Business', price: 500, features: ['All Family benefits', 'Access to The Circle', 'Lead opportunities'] },
-  ])
+export default function AdminSettings() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState("profile");
+  const [saved, setSaved] = useState(false);
 
-  const [commissionRates, setCommissionRates] = useState({
-    bdmCommission: 12,
-    partnerCommission: 10,
-    offerCommission: 8,
-  })
+  // Profile Settings
+  const [profile, setProfile] = useState({
+    name: "Super Admin",
+    email: "admin@gce.com",
+    phone: "+91 98765 43210",
+    role: "Super Admin",
+  });
 
-  const [general, setGeneral] = useState(generalSettings)
+  // Commission Settings
+  const [commission, setCommission] = useState({
+    connect: "20",
+    marketplace: "18",
+    enterprise: "15",
+  });
 
-  const handleSaveGeneral = () => {
-    setGeneralSettings(general)
-    alert('Settings saved successfully!')
-  }
+  // Discount Settings
+  const [discount, setDiscount] = useState({
+    memberDiscount: "10",
+    earlyBird: "15",
+    bulkBooking: "20",
+  });
 
-  const handleSaveCommissions = () => {
-    alert('Commission rates saved successfully!')
-  }
+  // Payment Settings
+  const [payment, setPayment] = useState({
+    razorpayKey: "rzp_test_xxxxxxxxxxxxx",
+    razorpaySecret: "xxxxxxxxxxxxxxxxxxxx",
+    currency: "INR",
+  });
+
+  // Notification Settings
+  const [notifications, setNotifications] = useState({
+    emailAlerts: true,
+    whatsappAlerts: false,
+    newEventAlert: true,
+    payoutAlert: true,
+  });
+
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
+    { id: "members", label: "Members", icon: Users, href: "/admin/members" },
+    { id: "partners", label: "Partners", icon: Building2, href: "/admin/partners" },
+    { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
+    { id: "offers", label: "Offers", icon: Tag, href: "/admin/offers" },
+    { id: "payments", label: "Payments", icon: CreditCard, href: "/admin/payments" },
+    { id: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
+  ];
+
+  const tabs = [
+    { id: "profile", label: "Profile", icon: User },
+    { id: "commission", label: "Commission", icon: Percent },
+    { id: "discount", label: "Discount", icon: DollarSign },
+    { id: "payment", label: "Payment", icon: Card },
+    { id: "notifications", label: "Notifications", icon: Bell },
+    { id: "security", label: "Security", icon: Shield },
+    { id: "backup", label: "Backup", icon: Database },
+  ];
+
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
+  };
 
   return (
-    <div className="p-6">
-      <div className="mb-6"><h1 className="text-2xl font-bold text-gray-800">Settings</h1><p className="text-gray-500 text-sm">Manage platform configuration</p></div>
-
-      {/* Settings Tabs */}
-      <div className="flex flex-wrap gap-2 border-b mb-6">
-        <button onClick={() => setActiveTab('general')} className={`px-4 py-2 text-sm font-medium rounded-t-lg ${activeTab === 'general' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700'}`}><Settings size={16} className="inline mr-1" /> General</button>
-        <button onClick={() => setActiveTab('membership')} className={`px-4 py-2 text-sm font-medium rounded-t-lg ${activeTab === 'membership' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700'}`}><CreditCard size={16} className="inline mr-1" /> Membership Plans</button>
-        <button onClick={() => setActiveTab('commission')} className={`px-4 py-2 text-sm font-medium rounded-t-lg ${activeTab === 'commission' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700'}`}><Users size={16} className="inline mr-1" /> Commissions</button>
-        <button onClick={() => setActiveTab('email')} className={`px-4 py-2 text-sm font-medium rounded-t-lg ${activeTab === 'email' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700'}`}><Mail size={16} className="inline mr-1" /> Email Templates</button>
-        <button onClick={() => setActiveTab('security')} className={`px-4 py-2 text-sm font-medium rounded-t-lg ${activeTab === 'security' ? 'bg-primary text-white' : 'text-gray-500 hover:text-gray-700'}`}><Shield size={16} className="inline mr-1" /> Security</button>
+    <div style={{ display: "flex", background: "#f1f5f9", minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <div style={{
+        width: sidebarOpen ? "280px" : "80px",
+        background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
+        color: "white",
+        transition: "width 0.3s",
+        position: "fixed",
+        height: "100vh",
+        overflowY: "auto",
+        zIndex: 50
+      }}>
+        <div style={{ padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #334155" }}>
+          {sidebarOpen && <span style={{ fontSize: "20px", fontWeight: "bold" }}>GCE Admin</span>}
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+        <nav style={{ padding: "16px" }}>
+          {navItems.map((item) => (
+            <a key={item.id} href={item.href} style={{
+              display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px",
+              marginBottom: "4px", borderRadius: "12px", background: item.id === "settings" ? "#f97316" : "transparent",
+              color: "white", textDecoration: "none", cursor: "pointer"
+            }}>
+              <item.icon size={20} />
+              {sidebarOpen && <span>{item.label}</span>}
+            </a>
+          ))}
+          <div style={{ marginTop: "20px", borderTop: "1px solid #334155", paddingTop: "16px" }}>
+            <a href="#" style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", borderRadius: "12px", color: "#94a3b8", textDecoration: "none", cursor: "pointer" }}>
+              <LogOut size={20} />
+              {sidebarOpen && <span>Logout</span>}
+            </a>
+          </div>
+        </nav>
       </div>
 
-      {/* General Settings Tab */}
-      {activeTab === 'general' && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-bold mb-4">General Settings</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div><label className="block text-sm font-medium mb-1">Site Name</label><input type="text" value={general.siteName} onChange={(e) => setGeneral({...general, siteName: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
-            <div><label className="block text-sm font-medium mb-1">Admin Email</label><input type="email" value={general.siteEmail} onChange={(e) => setGeneral({...general, siteEmail: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
-            <div><label className="block text-sm font-medium mb-1">Contact Email</label><input type="email" value={general.contactEmail} onChange={(e) => setGeneral({...general, contactEmail: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
-            <div><label className="block text-sm font-medium mb-1">Timezone</label><select value={general.timezone} onChange={(e) => setGeneral({...general, timezone: e.target.value})} className="w-full p-2 border rounded-lg"><option value="Asia/Kolkata">IST (Asia/Kolkata)</option><option value="Asia/Dubai">GST (Asia/Dubai)</option><option value="America/New_York">EST (America/New_York)</option></select></div>
-            <div><label className="block text-sm font-medium mb-1">Currency</label><select value={general.currency} onChange={(e) => setGeneral({...general, currency: e.target.value})} className="w-full p-2 border rounded-lg"><option value="INR">Indian Rupee (₹)</option><option value="USD">US Dollar ($)</option><option value="EUR">Euro (€)</option></select></div>
+      {/* Main Content */}
+      <div style={{
+        marginLeft: sidebarOpen ? "280px" : "80px",
+        flex: 1,
+        padding: "24px",
+        transition: "margin-left 0.3s"
+      }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ marginBottom: "24px" }}>
+            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a", marginBottom: "4px" }}>Settings</h1>
+            <p style={{ color: "#64748b" }}>Manage platform configuration and preferences</p>
           </div>
-          <button onClick={handleSaveGeneral} className="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2"><Save size={16} /> Save Changes</button>
-        </div>
-      )}
 
-      {/* Membership Plans Tab */}
-      {activeTab === 'membership' && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <div className="flex justify-between items-center mb-4"><h3 className="text-lg font-bold">Membership Plans</h3><button className="bg-primary text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"><Plus size={16} /> Add Plan</button></div>
-          <div className="space-y-4">
-            {membershipPlans.map(plan => (
-              <div key={plan.id} className="border rounded-lg p-4"><div className="flex justify-between items-start"><div><h4 className="font-bold">{plan.name}</h4><p className="text-primary font-bold">₹{plan.price}/month</p><ul className="mt-2 space-y-1">{plan.features.map((f, i) => (<li key={i} className="text-sm text-gray-600">✓ {f}</li>))}</ul></div><div className="flex gap-2"><button className="text-orange-500"><Edit2 size={18} /></button><button className="text-red-500"><Trash2 size={18} /></button></div></div></div>
+          {/* Tabs */}
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: "flex", alignItems: "center", gap: "8px", padding: "10px 20px",
+                  borderRadius: "40px", border: "none", cursor: "pointer",
+                  background: activeTab === tab.id ? "#f97316" : "transparent",
+                  color: activeTab === tab.id ? "white" : "#64748b",
+                  fontWeight: activeTab === tab.id ? "500" : "normal"
+                }}
+              >
+                <tab.icon size={18} /> {tab.label}
+              </button>
             ))}
           </div>
-        </div>
-      )}
 
-      {/* Commission Rates Tab */}
-      {activeTab === 'commission' && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-bold mb-4">Commission Rates</h3>
-          <div className="space-y-4">
-            <div><label className="block text-sm font-medium mb-1">BDM Commission (%)</label><input type="number" value={commissionRates.bdmCommission} onChange={(e) => setCommissionRates({...commissionRates, bdmCommission: parseInt(e.target.value)})} className="w-32 p-2 border rounded-lg" /><p className="text-xs text-gray-500 mt-1">Commission earned by BDMs on event revenue</p></div>
-            <div><label className="block text-sm font-medium mb-1">Partner Commission (%)</label><input type="number" value={commissionRates.partnerCommission} onChange={(e) => setCommissionRates({...commissionRates, partnerCommission: parseInt(e.target.value)})} className="w-32 p-2 border rounded-lg" /><p className="text-xs text-gray-500 mt-1">Commission earned by partners on F&B</p></div>
-            <div><label className="block text-sm font-medium mb-1">Offer Commission (%)</label><input type="number" value={commissionRates.offerCommission} onChange={(e) => setCommissionRates({...commissionRates, offerCommission: parseInt(e.target.value)})} className="w-32 p-2 border rounded-lg" /><p className="text-xs text-gray-500 mt-1">Commission earned by GCE on offer sales</p></div>
-          </div>
-          <button onClick={handleSaveCommissions} className="mt-4 bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2"><Save size={16} /> Save Commission Rates</button>
-        </div>
-      )}
+          {/* Profile Settings */}
+          {activeTab === "profile" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Profile Information</h2>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Full Name</label>
+                <input type="text" value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Email Address</label>
+                <input type="email" value={profile.email} onChange={(e) => setProfile({...profile, email: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Phone Number</label>
+                <input type="tel" value={profile.phone} onChange={(e) => setProfile({...profile, phone: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Role</label>
+                <input type="text" value={profile.role} disabled style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px", background: "#f1f5f9" }} />
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
+            </div>
+          )}
 
-      {/* Email Templates Tab */}
-      {activeTab === 'email' && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-bold mb-4">Email Templates</h3>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Welcome Email</p><p className="text-sm text-gray-500">Sent when a new member joins</p></div><button className="text-primary text-sm">Edit Template</button></div>
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Event Registration Confirmation</p><p className="text-sm text-gray-500">Sent after event booking</p></div><button className="text-primary text-sm">Edit Template</button></div>
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Booking Confirmation (Advance)</p><p className="text-sm text-gray-500">Sent after ₹500 advance payment</p></div><button className="text-primary text-sm">Edit Template</button></div>
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Lead Verification Status</p><p className="text-sm text-gray-500">Sent to BDM when lead is approved/rejected</p></div><button className="text-primary text-sm">Edit Template</button></div>
-          </div>
-        </div>
-      )}
+          {/* Commission Settings */}
+          {activeTab === "commission" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Commission Rates (%)</h2>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Connect</label>
+                <input type="number" value={commission.connect} onChange={(e) => setCommission({...commission, connect: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Connect events</p>
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Marketplace</label>
+                <input type="number" value={commission.marketplace} onChange={(e) => setCommission({...commission, marketplace: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Marketplace events</p>
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Enterprise</label>
+                <input type="number" value={commission.enterprise} onChange={(e) => setCommission({...commission, enterprise: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Enterprise events</p>
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
+            </div>
+          )}
 
-      {/* Security Tab */}
-      {activeTab === 'security' && (
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-bold mb-4">Security Settings</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Two-Factor Authentication (2FA)</p><p className="text-sm text-gray-500">Add an extra layer of security to your account</p></div><button className="bg-gray-200 px-3 py-1 rounded-lg text-sm">Enable</button></div>
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Session Timeout</p><p className="text-sm text-gray-500">Automatically log out inactive users</p></div><select className="border rounded-lg px-2 py-1 text-sm"><option>30 minutes</option><option>1 hour</option><option>2 hours</option><option>Never</option></select></div>
-            <div className="flex justify-between items-center p-3 border rounded-lg"><div><p className="font-medium">Login Alerts</p><p className="text-sm text-gray-500">Receive email when someone logs into your account</p></div><button className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">Enabled</button></div>
-            <div className="border-t pt-4"><button className="text-red-500 border border-red-500 px-4 py-2 rounded-lg">Clear All Cache</button></div>
-          </div>
+          {/* Discount Settings */}
+          {activeTab === "discount" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Discount Settings (%)</h2>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Member Discount (Marketplace)</label>
+                <input type="number" value={discount.memberDiscount} onChange={(e) => setDiscount({...discount, memberDiscount: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Early Bird Discount</label>
+                <input type="number" value={discount.earlyBird} onChange={(e) => setDiscount({...discount, earlyBird: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Bulk Booking Discount</label>
+                <input type="number" value={discount.bulkBooking} onChange={(e) => setDiscount({...discount, bulkBooking: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
+            </div>
+          )}
+
+          {/* Payment Settings */}
+          {activeTab === "payment" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Payment Gateway</h2>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Razorpay Key ID</label>
+                <input type="text" value={payment.razorpayKey} onChange={(e) => setPayment({...payment, razorpayKey: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Razorpay Key Secret</label>
+                <input type="password" value={payment.razorpaySecret} onChange={(e) => setPayment({...payment, razorpaySecret: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Currency</label>
+                <select value={payment.currency} onChange={(e) => setPayment({...payment, currency: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
+                  <option value="INR">INR (Indian Rupee)</option>
+                  <option value="USD">USD (US Dollar)</option>
+                  <option value="EUR">EUR (Euro)</option>
+                </select>
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
+            </div>
+          )}
+
+          {/* Notification Settings */}
+          {activeTab === "notifications" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Notification Preferences</h2>
+              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span><strong>Email Alerts</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>Receive email notifications</span></span>
+                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
+                  <input type="checkbox" checked={notifications.emailAlerts} onChange={(e) => setNotifications({...notifications, emailAlerts: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
+                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.emailAlerts ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
+                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.emailAlerts ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
+                  </span>
+                </label>
+              </div>
+              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span><strong>WhatsApp Alerts</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>Receive WhatsApp notifications</span></span>
+                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
+                  <input type="checkbox" checked={notifications.whatsappAlerts} onChange={(e) => setNotifications({...notifications, whatsappAlerts: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
+                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.whatsappAlerts ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
+                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.whatsappAlerts ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
+                  </span>
+                </label>
+              </div>
+              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span><strong>New Event Alert</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>When new event is created</span></span>
+                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
+                  <input type="checkbox" checked={notifications.newEventAlert} onChange={(e) => setNotifications({...notifications, newEventAlert: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
+                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.newEventAlert ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
+                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.newEventAlert ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
+                  </span>
+                </label>
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
+            </div>
+          )}
+
+          {/* Security Settings */}
+          {activeTab === "security" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Security</h2>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Current Password</label>
+                <input type="password" placeholder="Enter current password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>New Password</label>
+                <input type="password" placeholder="Enter new password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Confirm Password</label>
+                <input type="password" placeholder="Confirm new password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+              </div>
+              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Change Password</button>
+            </div>
+          )}
+
+          {/* Backup Settings */}
+          {activeTab === "backup" && (
+            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Backup</h2>
+              <div style={{ marginBottom: "20px", padding: "16px", background: "#f1f5f9", borderRadius: "12px" }}>
+                <p><strong>Last Backup:</strong> 21 May 2025, 08:54 AM</p>
+                <p><strong>Backup Size:</strong> 194 MB</p>
+                <p><strong>Location:</strong> /root/gce-pwa-dev-backup-20260521-085357.tar.gz</p>
+              </div>
+              <button style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer", marginRight: "12px" }}>Create Backup Now</button>
+              <button style={{ background: "#f1f5f9", color: "#64748b", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Download Backup</button>
+            </div>
+          )}
+
+          {/* Save Success Message */}
+          {saved && (
+            <div style={{ position: "fixed", bottom: "24px", right: "24px", background: "#22c55e", color: "white", padding: "12px 24px", borderRadius: "40px", zIndex: 1000 }}>
+              ✓ Settings saved successfully!
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
-  )
+  );
 }

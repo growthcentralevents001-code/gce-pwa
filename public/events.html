@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Management - GCE Admin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #f8fafc; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+        h1 { font-size: 28px; font-weight: 700; color: #0f172a; }
+        .btn-add { background: #f97316; color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #eef2ff; text-align: center; }
+        .stat-number { font-size: 32px; font-weight: 800; color: #f97316; }
+        .stat-label { color: #64748b; font-size: 14px; margin-top: 4px; }
+        .toolbar { display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .search-input { padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 40px; width: 280px; font-size: 14px; }
+        .filter-select { padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 40px; background: white; font-size: 14px; }
+        .table-card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #eef2ff; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid #eef2ff; }
+        th { color: #64748b; font-weight: 600; font-size: 13px; }
+        .badge-live { background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 30px; font-size: 12px; display: inline-block; }
+        .badge-upcoming { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 30px; font-size: 12px; display: inline-block; }
+        .badge-draft { background: #e2e8f0; color: #475569; padding: 4px 12px; border-radius: 30px; font-size: 12px; display: inline-block; }
+        .btn-edit { background: #3b82f6; color: white; border: none; padding: 6px 14px; border-radius: 30px; cursor: pointer; font-size: 12px; margin-right: 6px; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 30px; cursor: pointer; font-size: 12px; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #f97316; text-decoration: none; font-weight: 500; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/admin-panel/" class="back-link">← Back to Dashboard</a>
+    
+    <div class="header">
+        <h1>Events Management</h1>
+        <button class="btn-add" onclick="alert('Create Event form will open')">+ Create New Event</button>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number" id="totalEvents">0</div><div class="stat-label">Total Events</div></div>
+        <div class="stat-card"><div class="stat-number" id="liveEvents">0</div><div class="stat-label">Live Events</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalTickets">0</div><div class="stat-label">Tickets Sold</div></div>
+        <div class="stat-card"><div class="stat-number" id="totalRevenue">0</div><div class="stat-label">Total Revenue (₹)</div></div>
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by title or venue..." onkeyup="renderTable()">
+        <select id="verticalFilter" class="filter-select" onchange="renderTable()">
+            <option value="All">All Verticals</option><option value="Connect">GCE Connect</option><option value="Marketplace">GCE Marketplace</option><option value="Enterprise">GCE Enterprise</option>
+        </select>
+        <select id="statusFilter" class="filter-select" onchange="renderTable()">
+            <option value="All">All Status</option><option value="Live">Live</option><option value="Upcoming">Upcoming</option><option value="Draft">Draft</option>
+        </select>
+    </div>
+
+    <div class="table-card">
+        <table id="eventsTable">
+            <thead><tr><th>Event Title</th><th>Vertical</th><th>Date</th><th>Venue</th><th>Tickets</th><th>Revenue</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const events = [
+        { id: 1, title: "Startup Founders Mixer", vertical: "Connect", date: "24 May 2026", venue: "The Leela, Mumbai", tickets: 124, status: "Live", price: 399 },
+        { id: 2, title: "Bollywood Night Party", vertical: "Marketplace", date: "25 May 2026", venue: "Juhu, Mumbai", tickets: 89, status: "Live", price: 799 },
+        { id: 3, title: "Brewery Tour Experience", vertical: "Marketplace", date: "25 May 2026", venue: "Andheri, Mumbai", tickets: 56, status: "Live", price: 699 },
+        { id: 4, title: "Fintech Leaders Roundtable", vertical: "Connect", date: "28 May 2026", venue: "BKC, Mumbai", tickets: 234, status: "Upcoming", price: 1299 },
+        { id: 5, title: "Wellness & Yoga Session", vertical: "Marketplace", date: "30 May 2026", venue: "Juhu Beach", tickets: 45, status: "Upcoming", price: 299 },
+        { id: 6, title: "Corporate Summit", vertical: "Enterprise", date: "1 Jun 2026", venue: "Jio World Centre", tickets: 320, status: "Draft", price: 4999 }
+    ];
+
+    function updateStats() {
+        document.getElementById('totalEvents').innerText = events.length;
+        document.getElementById('liveEvents').innerText = events.filter(e => e.status === 'Live').length;
+        document.getElementById('totalTickets').innerText = events.reduce((sum, e) => sum + e.tickets, 0).toLocaleString();
+        document.getElementById('totalRevenue').innerText = '₹' + (events.reduce((sum, e) => sum + (e.tickets * e.price), 0) / 100000).toFixed(1) + 'L';
+    }
+
+    function getStatusBadge(status) {
+        if (status === 'Live') return '<span class="badge-live">Live</span>';
+        if (status === 'Upcoming') return '<span class="badge-upcoming">Upcoming</span>';
+        return '<span class="badge-draft">Draft</span>';
+    }
+
+    function renderTable() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const vertical = document.getElementById('verticalFilter').value;
+        const status = document.getElementById('statusFilter').value;
+        
+        const filtered = events.filter(e => 
+            (vertical === 'All' || e.vertical === vertical) &&
+            (status === 'All' || e.status === status) &&
+            (e.title.toLowerCase().includes(search) || e.venue.toLowerCase().includes(search))
+        );
+        
+        const html = filtered.map(e => `
+            <tr>
+                <td style="padding:14px 12px;"><strong>${e.title}</strong></td>
+                <td style="padding:14px 12px;">${e.vertical}</td>
+                <td style="padding:14px 12px;">${e.date}</td>
+                <td style="padding:14px 12px;">${e.venue}</td>
+                <td style="padding:14px 12px;">${e.tickets}</td>
+                <td style="padding:14px 12px;">₹${(e.tickets * e.price).toLocaleString()}</td>
+                <td style="padding:14px 12px;">${getStatusBadge(e.status)}</td>
+                <td style="padding:14px 12px;">
+                    <button class="btn-edit" onclick="alert('Edit ${e.title}')">Edit</button>
+                    <button class="btn-delete" onclick="alert('Delete ${e.title}')">Delete</button>
+                 </td>
+             </tr>
+        `).join('');
+        
+        document.getElementById('tableBody').innerHTML = html;
+        updateStats();
+    }
+    renderTable();
+</script>
+</body>
+</html>

@@ -1,71 +1,100 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Header() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
   return (
-    <div style={{ 
-      display: "flex", 
-      justifyContent: "space-between", 
-      alignItems: "center", 
-      gap: "16px", 
-      flexWrap: isMobile ? "wrap" : "nowrap",
-      padding: "16px 20px",
+    <header style={{
       background: "white",
-      borderBottom: "1px solid #eef2ff"
+      borderBottom: "1px solid #eef2ff",
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+      width: "100%"
     }}>
-      {/* Logo */}
-      <Link href="/" style={{ textDecoration: "none" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#f97316", margin: 0 }}>GCE</h1>
-      </Link>
-
-      {/* Search Bar - Wider now */}
-      <div style={{ 
-        flex: 1, 
-        display: "flex", 
-        alignItems: "center", 
-        gap: "8px", 
-        background: "#f8fafc", 
-        border: "1px solid #e2e8f0", 
-        borderRadius: "60px", 
-        padding: "8px 16px", 
-        maxWidth: isMobile ? "100%" : "500px" 
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: "20px",
+        padding: "12px 20px",
+        maxWidth: "1400px",
+        margin: "0 auto",
+        flexWrap: "wrap"
       }}>
-        <span style={{ fontSize: "14px" }}>🔍</span>
-        <input 
-          type="text" 
-          placeholder="Search events, venues, people..." 
-          style={{ flex: 1, border: "none", outline: "none", fontSize: "14px", background: "transparent" }} 
-        />
-        <button style={{ background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "6px 16px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}>
-          Search
-        </button>
-      </div>
-
-      {/* Actions */}
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <button style={{ background: "white", border: "1px solid #ddd", borderRadius: "40px", padding: "8px 16px", fontSize: "13px", cursor: "pointer" }}>📍 Mumbai</button>
-        <button style={{ background: "white", border: "1px solid #ddd", borderRadius: "50%", width: "36px", height: "36px", cursor: "pointer", position: "relative", fontSize: "14px" }}>
-          🔔
-          <span style={{ position: "absolute", top: "-4px", right: "-4px", background: "#f97316", color: "white", fontSize: "9px", borderRadius: "50%", width: "16px", height: "16px", display: "flex", alignItems: "center", justifyContent: "center" }}>3</span>
-        </button>
-        <Link href="/login">
-          <button style={{ background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "8px 20px", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}>Sign In</button>
+        {/* Logo */}
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#f97316", margin: 0 }}>GCE</h1>
         </Link>
+
+        {/* Location button */}
+        <button style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          background: "white",
+          border: "1px solid #e2e8f0",
+          borderRadius: "40px",
+          padding: "8px 16px",
+          fontSize: "14px",
+          fontWeight: "500",
+          cursor: "pointer",
+          whiteSpace: "nowrap"
+        }}>
+          📍 Mumbai <span style={{ fontSize: "12px", color: "#94a3b8" }}>▼</span>
+        </button>
+
+        {/* Search bar */}
+        <div style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          background: "#f8fafc",
+          border: "1px solid #e2e8f0",
+          borderRadius: "40px",
+          padding: "10px 20px",
+          minWidth: "200px"
+        }}>
+          <span style={{ fontSize: "16px", marginRight: "8px", color: "#94a3b8" }}>🔍</span>
+          <input
+            type="text"
+            placeholder="Search events, venues, or people..."
+            style={{
+              flex: 1,
+              border: "none",
+              outline: "none",
+              fontSize: "14px",
+              background: "transparent"
+            }}
+          />
+        </div>
+
+        {/* Login & Sign Up buttons */}
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <Link href="/login">
+            <button style={{
+              background: "white",
+              border: "none",
+              fontSize: "14px",
+              fontWeight: "500",
+              cursor: "pointer",
+              color: "#1f2937"
+            }}>Log in</button>
+          </Link>
+          <Link href="/signup">
+            <button style={{
+              background: "#f97316",
+              color: "white",
+              border: "none",
+              borderRadius: "40px",
+              padding: "8px 20px",
+              fontSize: "14px",
+              fontWeight: "600",
+              cursor: "pointer"
+            }}>Sign up</button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }
-// CI test trigger
-// CI test
-// CI test

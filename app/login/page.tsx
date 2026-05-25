@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -19,167 +20,52 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     
-    // TODO: Connect to Supabase Auth
-    // Temporary mock login
-    setTimeout(() => {
-      if (email && password) {
-        router.push("/dashboard/user");
-      } else {
-        setError("Please enter email and password");
-      }
-      setLoading(false);
-    }, 500);
+    const success = await login(email, password);
+    if (success) {
+      router.push("/");
+    } else {
+      setError("Invalid email or password");
+    }
+    setLoading(false);
   };
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
-      background: "linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "20px"
-    }}>
-      <div style={{ 
-        maxWidth: "440px", 
-        width: "100%", 
-        background: "white", 
-        borderRadius: "32px", 
-        padding: "40px 32px",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-        border: "1px solid #fef3c7"
-      }}>
-        
-        {/* Logo */}
+    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div style={{ maxWidth: "450px", width: "100%", background: "white", borderRadius: "32px", padding: "40px", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" }}>
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <h1 style={{ fontSize: "36px", fontWeight: "800", color: "#f97316", margin: 0 }}>GCE</h1>
-          <p style={{ fontSize: "13px", color: "#6b7280", marginTop: "4px" }}>Growth Central Events</p>
+          <span style={{ fontSize: "32px", fontWeight: "bold", background: "linear-gradient(135deg, #f97316, #ea580c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>GCE</span>
+          <span style={{ fontSize: "24px", fontWeight: "600", marginLeft: "4px" }}>Events</span>
+          <h1 style={{ fontSize: "28px", fontWeight: "700", marginTop: "16px", color: "#0f172a" }}>Welcome back</h1>
+          <p style={{ color: "#64748b", marginTop: "8px" }}>Login to discover amazing events</p>
         </div>
 
-        {/* Title */}
-        <div style={{ marginBottom: "28px" }}>
-          <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1f2937", marginBottom: "8px" }}>Welcome back</h2>
-          <p style={{ fontSize: "14px", color: "#6b7280" }}>Sign in to discover events, book tickets, and grow your network</p>
-        </div>
-
-        {/* Error Message */}
-        {error && (
-          <div style={{ background: "#fee2e2", color: "#dc2626", padding: "12px 16px", borderRadius: "12px", fontSize: "13px", marginBottom: "20px" }}>
-            {error}
-          </div>
-        )}
-
-        {/* Form */}
         <form onSubmit={handleSubmit}>
-          {/* Email Field */}
           <div style={{ marginBottom: "20px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
-              Email or Phone Number
-            </label>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: "14px", padding: "12px 16px", background: "#fafafa", transition: "all 0.2s" }}>
-              <Mail size={18} style={{ color: "#9ca3af", marginRight: "10px" }} />
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "14px" }}
-                required
-              />
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#0f172a" }}>Email address</label>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e2e8f0", borderRadius: "16px", padding: "12px 16px", background: "#f8fafc" }}>
+              <Mail size={18} style={{ color: "#94a3b8", marginRight: "12px" }} />
+              <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ flex: 1, border: "none", background: "transparent", outline: "none", fontSize: "15px" }} />
             </div>
           </div>
 
-          {/* Password Field */}
-          <div style={{ marginBottom: "20px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
-              Password
-            </label>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e5e7eb", borderRadius: "14px", padding: "12px 16px", background: "#fafafa" }}>
-              <Lock size={18} style={{ color: "#9ca3af", marginRight: "10px" }} />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "14px" }}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af" }}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+          <div style={{ marginBottom: "24px" }}>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "500", color: "#0f172a" }}>Password</label>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid #e2e8f0", borderRadius: "16px", padding: "12px 16px", background: "#f8fafc" }}>
+              <Lock size={18} style={{ color: "#94a3b8", marginRight: "12px" }} />
+              <input type={showPassword ? "text" : "password"} placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ flex: 1, border: "none", background: "transparent", outline: "none", fontSize: "15px" }} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ background: "none", border: "none", cursor: "pointer" }}>{showPassword ? <EyeOff size={18} style={{ color: "#94a3b8" }} /> : <Eye size={18} style={{ color: "#94a3b8" }} />}</button>
             </div>
           </div>
 
-          {/* Remember & Forgot */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
-            <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                style={{ width: "16px", height: "16px", cursor: "pointer" }}
-              />
-              <span style={{ fontSize: "13px", color: "#6b7280" }}>Remember me</span>
-            </label>
-            <Link href="/forgot-password" style={{ fontSize: "13px", color: "#f97316", textDecoration: "none", fontWeight: "500" }}>
-              Forgot password?
-            </Link>
-          </div>
+          {error && <div style={{ background: "#fee2e2", color: "#991b1b", padding: "12px", borderRadius: "12px", marginBottom: "20px", fontSize: "14px" }}>{error}</div>}
 
-          {/* Sign In Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              width: "100%",
-              background: "#f97316",
-              color: "white",
-              border: "none",
-              borderRadius: "40px",
-              padding: "14px",
-              fontSize: "15px",
-              fontWeight: "600",
-              cursor: loading ? "not-allowed" : "pointer",
-              opacity: loading ? 0.7 : 1,
-              marginBottom: "24px",
-              boxShadow: "0 4px 12px rgba(249,115,22,0.25)"
-            }}
-          >
-            {loading ? "Signing in..." : "Sign In →"}
+          <button type="submit" disabled={loading} style={{ width: "100%", background: "#f97316", color: "white", border: "none", padding: "14px", borderRadius: "40px", fontSize: "16px", fontWeight: "600", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+            {loading ? "Logging in..." : "Login"} {!loading && <ArrowRight size={18} />}
           </button>
         </form>
 
-        {/* Divider */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
-          <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }}></div>
-          <span style={{ fontSize: "12px", color: "#9ca3af" }}>or</span>
-          <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }}></div>
-        </div>
-
-        {/* Social Login Options */}
-        <div style={{ display: "flex", gap: "12px", marginBottom: "32px" }}>
-          <button style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "10px", border: "1px solid #e5e7eb", borderRadius: "40px", background: "white", cursor: "pointer" }}>
-            <span style={{ fontSize: "18px" }}>G</span>
-            <span style={{ fontSize: "13px", fontWeight: "500" }}>Google</span>
-          </button>
-          <button style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "10px", border: "1px solid #e5e7eb", borderRadius: "40px", background: "white", cursor: "pointer" }}>
-            <span style={{ fontSize: "18px" }}>📘</span>
-            <span style={{ fontSize: "13px", fontWeight: "500" }}>Facebook</span>
-          </button>
-        </div>
-
-        {/* Sign Up Link */}
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "14px", color: "#6b7280" }}>
-            Don't have an account?{" "}
-            <Link href="/signup" style={{ color: "#f97316", fontWeight: "600", textDecoration: "none" }}>
-              Sign up
-            </Link>
-          </p>
+        <div style={{ marginTop: "24px", textAlign: "center", borderTop: "1px solid #eef2ff", paddingTop: "24px" }}>
+          <p style={{ color: "#64748b" }}>Don't have an account? <Link href="/signup" style={{ color: "#f97316", fontWeight: "500", textDecoration: "none" }}>Sign up</Link></p>
         </div>
       </div>
     </div>

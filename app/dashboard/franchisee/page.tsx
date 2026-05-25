@@ -1,254 +1,261 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { TrendingUp, Users, DollarSign, Award, PlusCircle, ChevronRight, Star, Calendar, MapPin } from "lucide-react";
-
-// Mock data — TODO: Connect to Supabase
-const mockFranchisee = {
-  id: "f1",
-  name: "Rahul Sharma",
-  zone: "Mumbai West",
-  tier: 2, // Phase 2
-  revenueSplit: "40:60",
-  totalSales: 35000, // ₹35,000
-  nextTierTarget: 50000,
-  commissionEarned: 32500,
-  thisMonthCommission: 8450,
-  venues: [
-    { id: "v1", name: "Taj Lands End", status: "Live", events: 12, earnings: 25000 },
-    { id: "v2", name: "The Leela", status: "Live", events: 8, earnings: 18000 },
-    { id: "v3", name: "JW Marriott", status: "Pending", events: 0, earnings: 0 },
-  ],
-  leaderboardRank: 3,
-  topPerformers: [
-    { name: "Amit Patel", zone: "Mumbai South", commission: 52000 },
-    { name: "Priya Singh", zone: "Mumbai Central", commission: 48500 },
-    { name: "Rahul Sharma", zone: "Mumbai West", commission: 32500 },
-    { name: "Neha Gupta", zone: "Mumbai East", commission: 29800 },
-    { name: "Vikram Mehta", zone: "Mumbai North", commission: 27400 },
-  ],
-};
+import { useState } from "react";
+import { 
+  Building2, Calendar, TrendingUp, CreditCard, Plus, 
+  Eye, Edit, Trophy, CheckCircle, AlertCircle, X
+} from "lucide-react";
 
 export default function FranchiseeDashboard() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [franchisee, setFranchisee] = useState(mockFranchisee);
-  const [showOnboardForm, setShowOnboardForm] = useState(false);
-  const [newVenue, setNewVenue] = useState({ name: "", gstin: "", address: "", bankAccount: "", type: "Basic" });
+  const [activeTab, setActiveTab] = useState("venues");
+  const [showVenueModal, setShowVenueModal] = useState(false);
+  const [editingVenue, setEditingVenue] = useState<any>(null);
+  
+  const [venues, setVenues] = useState([
+    { id: 1, name: "The Leela Mumbai", address: "Mumbai", type: "5-Star Hotel", status: "Active", events: 12, revenue: "₹8,45,000", rating: 4.8, contact: "+91 22 1234 5678" },
+    { id: 2, name: "JW Marriott Pune", address: "Pune", type: "5-Star Hotel", status: "Active", events: 8, revenue: "₹5,20,000", rating: 4.7, contact: "+91 20 9876 5432" },
+    { id: 3, name: "SOHO House Mumbai", address: "Mumbai", type: "Club", status: "Pending", events: 0, revenue: "₹0", rating: 0, contact: "+91 22 4567 8901" },
+    { id: 4, name: "St. Regis Goa", address: "Goa", type: "Resort", status: "Active", events: 5, revenue: "₹3,80,000", rating: 4.9, contact: "+91 832 1234 567" },
+  ]);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const [newVenue, setNewVenue] = useState({ name: "", address: "", type: "5-Star Hotel", contact: "" });
 
-  const handleOnboardSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Insert into Supabase venues table
-    alert(`Venue "${newVenue.name}" onboarded successfully!`);
-    setShowOnboardForm(false);
-    setNewVenue({ name: "", gstin: "", address: "", bankAccount: "", type: "Basic" });
+  const commissionHistory = [
+    { id: 1, month: "May 2025", amount: "₹45,000", status: "Paid", date: "15 May 2025" },
+    { id: 2, month: "Apr 2025", amount: "₹52,000", status: "Paid", date: "15 Apr 2025" },
+    { id: 3, month: "Mar 2025", amount: "₹38,000", status: "Paid", date: "15 Mar 2025" },
+  ];
+
+  const leaderboard = [
+    { rank: 1, name: "Mumbai West Ventures", revenue: "₹12,50,000", commission: "₹1,25,000", growth: "+15%" },
+    { rank: 2, name: "Delhi North Enterprises", revenue: "₹9,80,000", commission: "₹98,000", growth: "+12%" },
+    { rank: 3, name: "Bangalore East Solutions", revenue: "₹7,20,000", commission: "₹72,000", growth: "+8%" },
+  ];
+
+  const [activities] = useState([
+    { id: 1, action: "New venue onboarded", name: "SOHO House Mumbai", time: "2 hours ago" },
+    { id: 2, action: "Commission credited", name: "₹45,000 for May 2025", time: "1 day ago" },
+  ]);
+
+  const stats = [
+    { label: "Venues Onboarded", value: venues.length.toString(), icon: Building2, color: "#f97316" },
+    { label: "Total Events", value: venues.reduce((acc, v) => acc + v.events, 0).toString(), icon: Calendar, color: "#22c55e" },
+    { label: "Commission Earned", value: "₹2,45,000", icon: TrendingUp, color: "#3b82f6" },
+    { label: "This Month", value: "₹45,000", icon: CreditCard, color: "#8b5cf6" },
+  ];
+
+  const getStatusBadge = (status: string) => {
+    if (status === "Active") return { bg: "#dcfce7", color: "#166534", icon: <CheckCircle size={12} /> };
+    return { bg: "#fef3c7", color: "#92400e", icon: <AlertCircle size={12} /> };
   };
 
-  const progressToNextTier = ((franchisee.totalSales / franchisee.nextTierTarget) * 100);
-  const tierName = franchisee.tier === 1 ? "Phase 1" : franchisee.tier === 2 ? "Phase 2" : franchisee.tier === 3 ? "Phase 3" : "Phase 4";
-  const splitParts = franchisee.revenueSplit.split(":");
-
-  const containerStyle = {
-    width: "100%",
-    margin: "0",
-    padding: isMobile ? "16px" : "24px",
-    fontFamily: "'Inter', sans-serif",
-    background: "white",
-    minHeight: "100vh"
+  const handleAddVenue = () => {
+    if (!newVenue.name || !newVenue.address) return alert("Fill required fields");
+    const newId = venues.length + 1;
+    setVenues([...venues, {
+      id: newId, name: newVenue.name, address: newVenue.address, type: newVenue.type,
+      status: "Pending", events: 0, revenue: "₹0", rating: 0, contact: newVenue.contact || "N/A"
+    }]);
+    setShowVenueModal(false);
+    setNewVenue({ name: "", address: "", type: "5-Star Hotel", contact: "" });
+    alert("Venue onboarded successfully!");
   };
 
-  const innerStyle = {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    width: "100%"
-  };
-
-  const cardStyle = {
-    background: "white",
-    borderRadius: "24px",
-    padding: "24px",
-    border: "1px solid #eef2ff",
-    marginBottom: "24px",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-  };
-
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
-    gap: "20px",
-    marginBottom: "24px"
-  };
+  const currentTier = "Silver";
+  const nextTier = "Gold";
+  const tierProgress = 65;
+  const revenueSplit = "40:60";
 
   return (
-    <div style={containerStyle}>
-      <div style={innerStyle}>
-        
-        {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", flexWrap: "wrap", gap: "16px" }}>
+    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
+      <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Franchisee Dashboard</h1>
+      <p style={{ color: "#64748b", marginBottom: "32px" }}>Manage onboarded venues, track commission, and monitor performance</p>
+
+      {/* Tier Progress */}
+      <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", marginBottom: "24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a", margin: 0 }}>Franchise Dashboard</h1>
-            <p style={{ color: "#666", marginTop: "4px" }}>Welcome back, {franchisee.name}</p>
-          </div>
-          <div style={{ display: "flex", gap: "12px" }}>
-            <button style={{ background: "white", border: "1px solid #ddd", borderRadius: "40px", padding: "8px 16px", fontSize: "13px", cursor: "pointer" }}>📍 {franchisee.zone}</button>
-            <button style={{ background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "8px 20px", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}>Help</button>
-          </div>
-        </div>
-
-        {/* Quick Stats Cards */}
-        <div style={gridStyle}>
-          <div style={cardStyle}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-              <DollarSign size={24} style={{ color: "#f97316" }} />
-              <span style={{ fontWeight: "600" }}>Total Commission</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+              <Trophy size={20} style={{ color: "#f97316" }} />
+              <span>Current Tier: <strong style={{ color: "#f97316" }}>{currentTier}</strong></span>
             </div>
-            <div style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a" }}>₹{franchisee.commissionEarned.toLocaleString()}</div>
-            <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>Lifetime earnings</div>
+            <div style={{ fontSize: "14px", color: "#64748b" }}>Next Tier: {nextTier} · Split: {revenueSplit} (GCE:Franchisee)</div>
           </div>
-          <div style={cardStyle}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-              <TrendingUp size={24} style={{ color: "#f97316" }} />
-              <span style={{ fontWeight: "600" }}>This Month</span>
-            </div>
-            <div style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a" }}>₹{franchisee.thisMonthCommission.toLocaleString()}</div>
-            <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>+12% from last month</div>
-          </div>
-          <div style={cardStyle}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-              <Users size={24} style={{ color: "#f97316" }} />
-              <span style={{ fontWeight: "600" }}>Active Venues</span>
-            </div>
-            <div style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a" }}>{franchisee.venues.filter(v => v.status === "Live").length}</div>
-            <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>Total onboarded: {franchisee.venues.length}</div>
-          </div>
-        </div>
-
-        {/* Tier Progress Card */}
-        <div style={cardStyle}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "12px" }}>
-            <h2 style={{ fontSize: "18px", fontWeight: "700", margin: 0 }}>Current Tier: {tierName}</h2>
-            <span style={{ background: "#f1f5f9", padding: "4px 12px", borderRadius: "20px", fontSize: "13px", fontWeight: "600", color: "#f97316" }}>
-              {splitParts[0]}:{splitParts[1]} Revenue Split
-            </span>
-          </div>
-          <div style={{ marginBottom: "8px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", marginBottom: "4px" }}>
-              <span>Progress to {franchisee.tier === 4 ? "Max" : `Phase ${franchisee.tier + 1}`}</span>
-              <span>₹{franchisee.totalSales.toLocaleString()} / ₹{franchisee.nextTierTarget.toLocaleString()}</span>
+          <div style={{ width: "60%" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", marginBottom: "4px" }}>
+              <span>Progress to {nextTier}</span>
+              <span>{tierProgress}%</span>
             </div>
             <div style={{ background: "#e2e8f0", borderRadius: "10px", height: "8px" }}>
-              <div style={{ width: `${Math.min(progressToNextTier, 100)}%`, background: "#f97316", borderRadius: "10px", height: "8px" }}></div>
+              <div style={{ width: `${tierProgress}%`, background: "#f97316", height: "8px", borderRadius: "10px" }}></div>
             </div>
           </div>
-          {franchisee.tier < 4 && (
-            <p style={{ fontSize: "13px", color: "#666", marginTop: "8px" }}>
-              Earn ₹{(franchisee.nextTierTarget - franchisee.totalSales).toLocaleString()} more to reach Phase {franchisee.tier + 1}
-            </p>
-          )}
         </div>
+      </div>
 
-        {/* Venue Onboarding Form (Toggle) */}
-        <div style={{ marginBottom: "24px" }}>
-          <button
-            onClick={() => setShowOnboardForm(!showOnboardForm)}
-            style={{ background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "12px 24px", fontSize: "14px", fontWeight: "600", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <PlusCircle size={18} /> Onboard New Venue
-          </button>
-          {showOnboardForm && (
-            <div style={{ ...cardStyle, marginTop: "16px" }}>
-              <h3 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>Venue Onboarding Form</h3>
-              <form onSubmit={handleOnboardSubmit}>
-                <input type="text" placeholder="Venue Name *" required value={newVenue.name} onChange={(e) => setNewVenue({ ...newVenue, name: e.target.value })} style={{ width: "100%", padding: "10px 12px", border: "1px solid #e2e8f0", borderRadius: "12px", marginBottom: "12px" }} />
-                <input type="text" placeholder="GSTIN *" required value={newVenue.gstin} onChange={(e) => setNewVenue({ ...newVenue, gstin: e.target.value })} style={{ width: "100%", padding: "10px 12px", border: "1px solid #e2e8f0", borderRadius: "12px", marginBottom: "12px" }} />
-                <input type="text" placeholder="Address *" required value={newVenue.address} onChange={(e) => setNewVenue({ ...newVenue, address: e.target.value })} style={{ width: "100%", padding: "10px 12px", border: "1px solid #e2e8f0", borderRadius: "12px", marginBottom: "12px" }} />
-                <input type="text" placeholder="Bank Account Number *" required value={newVenue.bankAccount} onChange={(e) => setNewVenue({ ...newVenue, bankAccount: e.target.value })} style={{ width: "100%", padding: "10px 12px", border: "1px solid #e2e8f0", borderRadius: "12px", marginBottom: "12px" }} />
-                <select value={newVenue.type} onChange={(e) => setNewVenue({ ...newVenue, type: e.target.value })} style={{ width: "100%", padding: "10px 12px", border: "1px solid #e2e8f0", borderRadius: "12px", marginBottom: "16px" }}>
-                  <option value="Basic">Basic</option>
-                  <option value="Pro">Pro</option>
-                  <option value="Elite">Elite</option>
-                </select>
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <button type="submit" style={{ background: "#f97316", color: "white", border: "none", borderRadius: "40px", padding: "10px 20px", fontWeight: "600", cursor: "pointer" }}>Submit</button>
-                  <button type="button" onClick={() => setShowOnboardForm(false)} style={{ background: "white", border: "1px solid #ddd", borderRadius: "40px", padding: "10px 20px", fontWeight: "600", cursor: "pointer" }}>Cancel</button>
-                </div>
-              </form>
-            </div>
-          )}
-        </div>
-
-        {/* My Venues List */}
-        <div style={cardStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>My Venues</h2>
-          {franchisee.venues.map((venue) => (
-            <div key={venue.id} style={{ background: "#f8fafc", borderRadius: "16px", padding: "12px", marginBottom: "12px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "32px" }}>
+        {stats.map((stat, i) => (
+          <div key={i} style={{ background: "white", borderRadius: "20px", padding: "20px", border: "1px solid #eef2ff" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontWeight: "600", marginBottom: "4px" }}>{venue.name}</div>
-                <div style={{ fontSize: "12px", color: "#666" }}>Events: {venue.events} | Earnings: ₹{venue.earnings.toLocaleString()}</div>
+                <div style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a" }}>{stat.value}</div>
+                <div style={{ color: "#64748b", fontSize: "14px" }}>{stat.label}</div>
               </div>
-              <span style={{ background: venue.status === "Live" ? "#dcfce7" : "#fef3c7", color: venue.status === "Live" ? "#166534" : "#92400e", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "600" }}>{venue.status}</span>
+              <stat.icon size={28} style={{ color: stat.color, opacity: 0.7 }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: "12px", borderBottom: "1px solid #e2e8f0", marginBottom: "24px", overflowX: "auto" }}>
+        {["venues", "commission", "leaderboard", "activities"].map(tab => (
+          <button key={tab} onClick={() => setActiveTab(tab)} style={{
+            padding: "10px 20px", border: "none", background: "none",
+            borderBottom: activeTab === tab ? "2px solid #f97316" : "none",
+            color: activeTab === tab ? "#f97316" : "#64748b", fontWeight: "500", cursor: "pointer"
+          }}>
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+        <button onClick={() => setShowVenueModal(true)} style={{ marginLeft: "auto", background: "#f97316", color: "white", border: "none", padding: "8px 20px", borderRadius: "40px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+          <Plus size={16} /> Onboard Venue
+        </button>
+      </div>
+
+      {/* Venues Tab */}
+      {activeTab === "venues" && (
+        <div style={{ background: "white", borderRadius: "20px", overflow: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "600px" }}>
+            <thead>
+              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+                <th style={{ padding: "16px", textAlign: "left" }}>Venue Name</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Address</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Type</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Events</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Revenue</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
+                <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {venues.map(venue => {
+                const statusStyle = getStatusBadge(venue.status);
+                return (
+                  <tr key={venue.id} style={{ borderBottom: "1px solid #eef2ff" }}>
+                    <td style={{ padding: "16px" }}><div style={{ fontWeight: "600" }}>{venue.name}</div><div style={{ fontSize: "12px", color: "#64748b" }}>⭐ {venue.rating} · {venue.contact}</div></td>
+                    <td style={{ padding: "16px" }}>{venue.address}</td>
+                    <td style={{ padding: "16px" }}>{venue.type}</td>
+                    <td style={{ padding: "16px" }}>{venue.events}</td>
+                    <td style={{ padding: "16px", fontWeight: "600", color: "#22c55e" }}>{venue.revenue}</td>
+                    <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "4px" }}>{statusStyle.icon} {venue.status}</span></td>
+                    <td style={{ padding: "16px", textAlign: "center" }}>
+                      <button onClick={() => alert(`Details:\n${venue.name}\nAddress: ${venue.address}\nContact: ${venue.contact}\nRating: ${venue.rating}⭐`)} style={{ background: "none", border: "none", cursor: "pointer" }}><Eye size={18} style={{ color: "#f97316" }} /></button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Commission Tab */}
+      {activeTab === "commission" && (
+        <div style={{ background: "white", borderRadius: "20px", overflow: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "500px" }}>
+            <thead>
+              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+                <th style={{ padding: "16px", textAlign: "left" }}>Month</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Amount</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Payment Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {commissionHistory.map(comm => (
+                <tr key={comm.id} style={{ borderBottom: "1px solid #eef2ff" }}>
+                  <td style={{ padding: "16px" }}>{comm.month}</td>
+                  <td style={{ padding: "16px", fontWeight: "600", color: "#22c55e" }}>{comm.amount}</td>
+                  <td style={{ padding: "16px" }}><span style={{ background: "#dcfce7", color: "#166534", padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{comm.status}</span></td>
+                  <td style={{ padding: "16px" }}>{comm.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Leaderboard Tab */}
+      {activeTab === "leaderboard" && (
+        <div style={{ background: "white", borderRadius: "20px", overflow: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "500px" }}>
+            <thead>
+              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+                <th style={{ padding: "16px", textAlign: "left" }}>Rank</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Franchisee</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Revenue</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Commission</th>
+                <th style={{ padding: "16px", textAlign: "left" }}>Growth</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map(item => (
+                <tr key={item.rank} style={{ borderBottom: "1px solid #eef2ff" }}>
+                  <td style={{ padding: "16px" }}>{item.rank === 1 ? "🏆" : item.rank === 2 ? "🥈" : item.rank === 3 ? "🥉" : `#${item.rank}`}</td>
+                  <td style={{ padding: "16px", fontWeight: "500" }}>{item.name}</td>
+                  <td style={{ padding: "16px" }}>{item.revenue}</td>
+                  <td style={{ padding: "16px", fontWeight: "600", color: "#f97316" }}>{item.commission}</td>
+                  <td style={{ padding: "16px", color: "#22c55e" }}>{item.growth}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Activities Tab */}
+      {activeTab === "activities" && (
+        <div style={{ background: "white", borderRadius: "20px", padding: "24px" }}>
+          {activities.map(activity => (
+            <div key={activity.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eef2ff" }}>
+              <div><div style={{ fontWeight: "500" }}>{activity.action}</div><div style={{ fontSize: "14px", color: "#64748b" }}>{activity.name}</div></div>
+              <div style={{ fontSize: "12px", color: "#94a3b8" }}>{activity.time}</div>
             </div>
           ))}
         </div>
+      )}
 
-        {/* Leaderboard */}
-        <div style={cardStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>Leaderboard - {franchisee.zone}</h2>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", background: "#f1f5f9", padding: "8px 12px", borderRadius: "12px" }}>
-            <Award size={20} style={{ color: "#f97316" }} />
-            <span style={{ fontWeight: "600" }}>Your Rank: #{franchisee.leaderboardRank}</span>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            {franchisee.topPerformers.map((performer, idx) => (
-              <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #eef2ff", paddingBottom: "8px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <span style={{ fontWeight: "600", width: "24px" }}>#{idx+1}</span>
-                  <span>{performer.name}</span>
-                  <span style={{ fontSize: "12px", color: "#666" }}>{performer.zone}</span>
-                </div>
-                <span style={{ fontWeight: "700", color: "#f97316" }}>₹{performer.commission.toLocaleString()}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Activity Feed (mock) */}
-        <div style={cardStyle}>
-          <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>Recent Activity</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ width: "32px", height: "32px", background: "#f97316", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>✓</div>
-              <div><div style={{ fontWeight: "500" }}>New venue onboarded: Taj Lands End</div><div style={{ fontSize: "11px", color: "#666" }}>2 hours ago</div></div>
+      {/* Venue Modal */}
+      {showVenueModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ background: "white", borderRadius: "24px", padding: "32px", maxWidth: "500px", width: "90%" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+              <h2 style={{ fontSize: "22px", fontWeight: "700" }}>Onboard New Venue</h2>
+              <button onClick={() => setShowVenueModal(false)} style={{ background: "none", border: "none", fontSize: "24px", cursor: "pointer" }}><X size={24} /></button>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ width: "32px", height: "32px", background: "#f97316", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>💰</div>
-              <div><div style={{ fontWeight: "500" }}>Commission credited: ₹5,200</div><div style={{ fontSize: "11px", color: "#666" }}>Yesterday</div></div>
+            <div style={{ marginBottom: "16px" }}>
+              <input type="text" placeholder="Venue Name *" value={newVenue.name} onChange={(e) => setNewVenue({...newVenue, name: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} />
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ width: "32px", height: "32px", background: "#f97316", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white" }}>🎉</div>
-              <div><div style={{ fontWeight: "500" }}>Reached Phase 2 milestone</div><div style={{ fontSize: "11px", color: "#666" }}>3 days ago</div></div>
+            <div style={{ marginBottom: "16px" }}>
+              <input type="text" placeholder="Address *" value={newVenue.address} onChange={(e) => setNewVenue({...newVenue, address: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} />
+            </div>
+            <div style={{ marginBottom: "16px" }}>
+              <select value={newVenue.type} onChange={(e) => setNewVenue({...newVenue, type: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <option>5-Star Hotel</option><option>Club</option><option>Resort</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: "24px" }}>
+              <input type="text" placeholder="Contact Number" value={newVenue.contact} onChange={(e) => setNewVenue({...newVenue, contact: e.target.value})} style={{ width: "100%", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0" }} />
+            </div>
+            <div style={{ display: "flex", gap: "12px" }}>
+              <button onClick={handleAddVenue} style={{ flex: 1, background: "#f97316", color: "white", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Add Venue</button>
+              <button onClick={() => setShowVenueModal(false)} style={{ flex: 1, background: "#f1f5f9", color: "#64748b", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Cancel</button>
             </div>
           </div>
         </div>
-
-        {/* Bottom Navigation - Mobile Only */}
-        {isMobile && (
-          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "white", borderTop: "1px solid #eef2ff", padding: "12px 20px", marginTop: "32px" }}>
-            <div style={{ display: "flex", justifyContent: "space-around", maxWidth: "500px", margin: "0 auto" }}>
-              <Link href="/"><div style={{ fontSize: "22px" }}>🏠</div><div style={{ fontSize: "10px", color: "#64748b" }}>Home</div></Link>
-              <Link href="/events"><div style={{ fontSize: "22px" }}>🔍</div><div style={{ fontSize: "10px", color: "#64748b" }}>Explore</div></Link>
-              <Link href="/dashboard/franchisee"><div style={{ fontSize: "22px" }}>👤</div><div style={{ fontSize: "10px", color: "#f97316", fontWeight: "600" }}>BDM</div></Link>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }

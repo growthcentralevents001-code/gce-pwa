@@ -1,203 +1,224 @@
 "use client";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
-import { useState } from "react";
-import { 
-  Calendar, Users, CreditCard, TrendingUp, Plus, 
-  Eye, Edit, Trash2, Clock, MapPin, DollarSign,
-  CheckCircle, XCircle, AlertCircle, BarChart3
-} from "lucide-react";
+interface VenueProfile {
+  id: string;
+  name: string;
+  city: string;
+  subscription_status: string;
+  rating: number;
+  rating_name: string;
+  monthly_fee: number;
+}
+
+interface Event {
+  id: string;
+  title: string;
+  date: string;
+  price: number;
+  registered: number;
+  capacity: number;
+  status: string;
+}
+
+interface Booking {
+  id: string;
+  event_id: string;
+  tickets: number;
+  amount: number;
+  created_at: string;
+  event_title?: string;
+}
+
+interface Payout {
+  id: string;
+  amount: number;
+  status: string;
+  created_at: string;
+}
 
 export default function VenueDashboard() {
+  const router = useRouter();
+  const [profile, setProfile] = useState<VenueProfile | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [payouts, setPayouts] = useState<Payout[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("events");
-  
-  // Mock data for venue
-  const stats = [
-    { label: "Total Events", value: "12", icon: Calendar, color: "#f97316" },
-    { label: "Total Bookings", value: "245", icon: Users, color: "#22c55e" },
-    { label: "Total Revenue", value: "₹8,45,000", icon: CreditCard, color: "#3b82f6" },
-    { label: "Pending Payout", value: "₹1,20,000", icon: TrendingUp, color: "#8b5cf6" },
-  ];
+  const [editingEventId, setEditingEventId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const [events, setEvents] = useState([
-    { id: 1, name: "Startup Founders Mixer", date: "24 May 2025", time: "6:30 PM", venue: "The Leela, Mumbai", price: "₹1,500", bookings: 45, capacity: 100, status: "Live" },
-    { id: 2, name: "Sunday Brunch Buffet", date: "28 May 2025", time: "11:00 AM", venue: "JW Marriott, Pune", price: "₹2,500", bookings: 32, capacity: 80, status: "Live" },
-    { id: 3, name: "Wine Tasting Evening", date: "1 Jun 2025", time: "7:00 PM", venue: "SOHO House, Mumbai", price: "₹3,000", bookings: 18, capacity: 50, status: "Draft" },
-  ]);
+  useEffect(() => {
+    fetchAllData();
+  }, []);
 
-  const bookings = [
-    { id: 101, event: "Startup Founders Mixer", customer: "Rohan Mehta", tickets: 2, amount: "₹3,000", status: "Confirmed", date: "20 May 2025" },
-    { id: 102, event: "Startup Founders Mixer", customer: "Neha Kapoor", tickets: 1, amount: "₹1,500", status: "Confirmed", date: "21 May 2025" },
-    { id: 103, event: "Sunday Brunch Buffet", customer: "Vikram Singh", tickets: 4, amount: "₹10,000", status: "Pending", date: "22 May 2025" },
-  ];
-
-  const payouts = [
-    { id: 201, event: "Startup Founders Mixer", amount: "₹45,000", status: "Completed", date: "15 May 2025" },
-    { id: 202, event: "Sunday Brunch Buffet", amount: "₹32,000", status: "Processing", date: "22 May 2025" },
-  ];
-
-  const getStatusBadge = (status: string) => {
-    switch(status) {
-      case "Live": return { bg: "#dcfce7", color: "#166534", icon: <CheckCircle size={12} /> };
-      case "Draft": return { bg: "#f1f5f9", color: "#475569", icon: null };
-      case "Pending": return { bg: "#fef3c7", color: "#92400e", icon: <AlertCircle size={12} /> };
-      case "Completed": return { bg: "#dcfce7", color: "#166534", icon: <CheckCircle size={12} /> };
-      case "Processing": return { bg: "#e0e7ff", color: "#3730a3", icon: <AlertCircle size={12} /> };
-      default: return { bg: "#f1f5f9", color: "#475569", icon: null };
+  async function fetchAllData() {
+    setLoading(true);
+    setError(null);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      router.push("/login");
+      return;
     }
+
+    // Get venue profile
+    const { data: venue, error: venueError } = await supabase
+      .from("venues")
+      .select("id, name, city, subscription_status, rating, rating_name, monthly_fee")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (venueError) {
+      setError("Error fetching venue: " + venueError.message);
+    } else if (!venue) {
+      setError("No venue profile found. Please contact admin.");
+    } else {
+      setProfile(venue);
+    }
+
+    // Get events
+    const { data: eventsData } = await supabase
+      .from("events")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("date", { ascending: false });
+    if (eventsData) setEvents(eventsData as Event[]);
+
+    // Get bookings for these events
+    if (eventsData && eventsData.length > 0) {
+      const eventIds = eventsData.map(e => e.id);
+      const { data: bookingsData } = await supabase
+        .from("bookings")
+        .select("*, events(title)")
+        .in("event_id", eventIds);
+      if (bookingsData) {
+        const enriched = bookingsData.map((b: any) => ({
+          ...b,
+          event_title: b.events?.title
+        }));
+        setBookings(enriched);
+      }
+    }
+
+    // Get payouts for this venue
+    if (profile?.id) {
+      const { data: payoutsData } = await supabase
+        .from("payouts")
+        .select("*")
+        .eq("venue_id", profile.id)
+        .order("created_at", { ascending: false });
+      if (payoutsData) setPayouts(payoutsData);
+    }
+
+    setLoading(false);
+  }
+
+  async function deleteEvent(id: string) {
+    if (confirm("Delete this event permanently?")) {
+      const { error } = await supabase.from("events").delete().eq("id", id);
+      if (!error) fetchAllData();
+      else alert("Delete failed: " + error.message);
+    }
+  }
+
+  async function startEdit(event: Event) {
+    setEditingEventId(event.id);
+    setEditTitle(event.title);
+  }
+
+  async function saveEdit(id: string) {
+    const { error } = await supabase.from("events").update({ title: editTitle }).eq("id", id);
+    if (!error) {
+      setEditingEventId(null);
+      fetchAllData();
+    } else {
+      alert("Update failed: " + error.message);
+    }
+  }
+
+  const stats = {
+    totalEvents: events.length,
+    totalBookings: bookings.reduce((sum, b) => sum + b.tickets, 0),
+    totalRevenue: bookings.reduce((sum, b) => sum + b.amount, 0),
   };
 
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading dashboard...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Error: {error}</div>;
+  if (!profile) return <div className="min-h-screen flex items-center justify-center">No venue profile found.</div>;
+
   return (
-    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
-      {/* Header */}
-      <div style={{ marginBottom: "32px" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Venue Dashboard</h1>
-        <p style={{ color: "#64748b" }}>Manage your events, track bookings, and view payouts</p>
-      </div>
+    <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Venue Dashboard</h1>
 
-      {/* Stats Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "32px" }}>
-        {stats.map((stat, i) => (
-          <div key={i} style={{ background: "white", borderRadius: "20px", padding: "20px", border: "1px solid #eef2ff" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <div style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a" }}>{stat.value}</div>
-                <div style={{ color: "#64748b", fontSize: "14px", marginTop: "4px" }}>{stat.label}</div>
-              </div>
-              <stat.icon size={28} style={{ color: stat.color, opacity: 0.7 }} />
-            </div>
+        {/* Profile Card */}
+        <div className="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6 border border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">Venue Profile</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div><p className="text-xs text-gray-500">Venue Name</p><p className="font-medium">{profile.name}</p></div>
+            <div><p className="text-xs text-gray-500">City</p><p className="font-medium">{profile.city}</p></div>
+            <div><p className="text-xs text-gray-500">Status</p><p className="font-medium text-green-600">{profile.subscription_status}</p></div>
+            <div><p className="text-xs text-gray-500">Rating</p><p className="font-medium">{profile.rating_name}</p></div>
+            <div><p className="text-xs text-gray-500">Monthly Fee</p><p className="font-medium text-orange-600">₹{profile.monthly_fee}</p></div>
           </div>
-        ))}
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-orange-600">{stats.totalEvents}</div><div className="text-sm text-gray-600">Total Events</div></div>
+          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-orange-600">{stats.totalBookings}</div><div className="text-sm text-gray-600">Total Bookings</div></div>
+          <div className="bg-white rounded-xl shadow p-4 text-center"><div className="text-2xl font-bold text-orange-600">₹{stats.totalRevenue}</div><div className="text-sm text-gray-600">Total Revenue</div></div>
+        </div>
+
+        {/* Tabs */}
+        <div className="border-b border-gray-200 mb-4 flex flex-wrap gap-2">
+          {["events", "bookings", "payouts"].map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 text-sm font-medium ${activeTab === tab ? "border-b-2 border-orange-500 text-orange-600" : "text-gray-500 hover:text-gray-700"}`}>
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Events Tab */}
+        {activeTab === "events" && (
+          <div>
+            <button onClick={() => router.push("/dashboard/venue/create-event")} className="mb-4 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition">+ Create New Event</button>
+            {events.length === 0 ? <p className="text-gray-500 text-center py-8">No events yet.</p> : events.map(event => (
+              <div key={event.id} className="bg-white rounded-lg shadow p-4 mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                {editingEventId === event.id ? (
+                  <div className="flex flex-wrap gap-2 w-full">
+                    <input value={editTitle} onChange={e => setEditTitle(e.target.value)} className="flex-1 border rounded px-3 py-1" />
+                    <button onClick={() => saveEdit(event.id)} className="bg-green-600 text-white px-3 py-1 rounded">Save</button>
+                    <button onClick={() => setEditingEventId(null)} className="bg-gray-400 text-white px-3 py-1 rounded">Cancel</button>
+                  </div>
+                ) : (
+                  <>
+                    <div><div className="font-semibold">{event.title}</div><div className="text-sm text-gray-500">{event.date} | ₹{event.price} | {event.registered}/{event.capacity} booked</div></div>
+                    <div className="flex gap-2"><button onClick={() => startEdit(event)} className="bg-blue-500 text-white px-3 py-1 rounded text-sm">Edit</button><button onClick={() => deleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button></div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Bookings Tab */}
+        {activeTab === "bookings" && (
+          <div>{bookings.length === 0 ? <p className="text-gray-500 text-center py-8">No bookings yet.</p> : bookings.map(booking => (
+            <div key={booking.id} className="bg-white rounded-lg shadow p-4 mb-3"><div className="font-semibold">{booking.event_title}</div><div>Tickets: {booking.tickets} | Amount: ₹{booking.amount}</div><div className="text-xs text-gray-400">{new Date(booking.created_at).toLocaleString()}</div></div>
+          ))}</div>
+        )}
+
+        {/* Payouts Tab */}
+        {activeTab === "payouts" && (
+          <div>{payouts.length === 0 ? <p className="text-gray-500 text-center py-8">No payouts yet.</p> : payouts.map(payout => (
+            <div key={payout.id} className="bg-white rounded-lg shadow p-4 mb-3 flex justify-between items-center"><div>₹{payout.amount}</div><div className={payout.status === "paid" ? "text-green-600 font-medium" : "text-yellow-600"}>{payout.status}</div><div className="text-xs text-gray-400">{new Date(payout.created_at).toDateString()}</div></div>
+          ))}</div>
+        )}
       </div>
-
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: "12px", borderBottom: "1px solid #e2e8f0", marginBottom: "24px" }}>
-        {["events", "bookings", "payouts", "analytics"].map(tab => (
-          <button key={tab} onClick={() => setActiveTab(tab)} style={{
-            padding: "10px 20px",
-            border: "none",
-            background: "none",
-            borderBottom: activeTab === tab ? "2px solid #f97316" : "none",
-            color: activeTab === tab ? "#f97316" : "#64748b",
-            fontWeight: "500",
-            cursor: "pointer"
-          }}>
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-        <button style={{ marginLeft: "auto", background: "#f97316", color: "white", border: "none", padding: "8px 20px", borderRadius: "40px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
-          <Plus size={16} /> Create Event
-        </button>
-      </div>
-
-      {/* Events Tab */}
-      {activeTab === "events" && (
-        <div style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: "1px solid #eef2ff" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
-                <th style={{ padding: "16px", textAlign: "left" }}>Event Name</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Date & Time</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Price</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Bookings</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
-                <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map(event => {
-                const statusStyle = getStatusBadge(event.status);
-                return (
-                  <tr key={event.id} style={{ borderBottom: "1px solid #eef2ff" }}>
-                    <td style={{ padding: "16px" }}><div style={{ fontWeight: "600" }}>{event.name}</div></td>
-                    <td style={{ padding: "16px" }}><div><Calendar size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.date} at {event.time}</div></td>
-                    <td style={{ padding: "16px" }}>{event.price}</td>
-                    <td style={{ padding: "16px" }}>{event.bookings} / {event.capacity}</td>
-                    <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{statusStyle.icon} {event.status}</span></td>
-                    <td style={{ padding: "16px", textAlign: "center" }}>
-                      <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
-                        <button style={{ background: "none", border: "none", cursor: "pointer" }}><Eye size={18} style={{ color: "#f97316" }} /></button>
-                        <button style={{ background: "none", border: "none", cursor: "pointer" }}><Edit size={18} style={{ color: "#3b82f6" }} /></button>
-                        <button style={{ background: "none", border: "none", cursor: "pointer" }}><Trash2 size={18} style={{ color: "#ef4444" }} /></button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Bookings Tab */}
-      {activeTab === "bookings" && (
-        <div style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: "1px solid #eef2ff" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
-                <th style={{ padding: "16px", textAlign: "left" }}>Event</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Customer</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Tickets</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Amount</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map(booking => {
-                const statusStyle = getStatusBadge(booking.status);
-                return (
-                  <tr key={booking.id} style={{ borderBottom: "1px solid #eef2ff" }}>
-                    <td style={{ padding: "16px" }}>{booking.event}</td>
-                    <td style={{ padding: "16px" }}>{booking.customer}</td>
-                    <td style={{ padding: "16px" }}>{booking.tickets}</td>
-                    <td style={{ padding: "16px" }}>{booking.amount}</td>
-                    <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{statusStyle.icon} {booking.status}</span></td>
-                    <td style={{ padding: "16px" }}>{booking.date}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Payouts Tab */}
-      {activeTab === "payouts" && (
-        <div style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: "1px solid #eef2ff" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
-                <th style={{ padding: "16px", textAlign: "left" }}>Event</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Amount</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
-                <th style={{ padding: "16px", textAlign: "left" }}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payouts.map(payout => {
-                const statusStyle = getStatusBadge(payout.status);
-                return (
-                  <tr key={payout.id} style={{ borderBottom: "1px solid #eef2ff" }}>
-                    <td style={{ padding: "16px" }}>{payout.event}</td>
-                    <td style={{ padding: "16px" }}>{payout.amount}</td>
-                    <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{statusStyle.icon} {payout.status}</span></td>
-                    <td style={{ padding: "16px" }}>{payout.date}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Analytics Tab */}
-      {activeTab === "analytics" && (
-        <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", textAlign: "center" }}>
-          <BarChart3 size={48} style={{ color: "#94a3b8", marginBottom: "16px" }} />
-          <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "8px" }}>Analytics Dashboard</h3>
-          <p style={{ color: "#64748b" }}>Revenue trends, booking patterns, and performance metrics will appear here soon.</p>
-        </div>
-      )}
     </div>
   );
 }

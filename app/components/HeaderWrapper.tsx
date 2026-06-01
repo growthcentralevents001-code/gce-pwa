@@ -33,7 +33,7 @@ export default function HeaderWrapper() {
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
           <span style={{ fontSize: "24px", fontWeight: "bold", background: "linear-gradient(135deg, #f97316, #ea580c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>GCE</span>
-          <span style={{ fontSize: "18px", fontWeight: "600", color: "#0f172a" }}>Events</span>
+          
         </Link>
 
         <div style={{ flex: 1, maxWidth: "400px", margin: "0 16px" }}>
@@ -60,6 +60,7 @@ export default function HeaderWrapper() {
                   </div>
                   <div style={{ padding: "8px" }}>
                     <Link href="/profile" onClick={() => setShowDropdown(false)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px", textDecoration: "none", color: "#0f172a" }}><User size={16} /> My Profile</Link>
+                    <Link href="/bookings" onClick={() => setShowDropdown(false)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px", textDecoration: "none", color: "#0f172a" }}><Calendar size={16} /> My Bookings</Link>
                     <Link href="/wishlist" onClick={() => setShowDropdown(false)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px", textDecoration: "none", color: "#0f172a" }}><Heart size={16} /> Saved Events</Link>
                     <Link href="/dashboard/member" onClick={() => setShowDropdown(false)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px", textDecoration: "none", color: "#0f172a" }}><Award size={16} /> My Dashboard</Link>
                     <Link href="/offers" onClick={() => setShowDropdown(false)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 12px", borderRadius: "10px", textDecoration: "none", color: "#0f172a" }}><Settings size={16} /> Offers</Link>

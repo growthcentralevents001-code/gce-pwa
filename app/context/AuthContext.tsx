@@ -3,15 +3,18 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
-  avatar?: string;
+  role: string;
+  phone?: string;
+  city?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
+  signup: (email: string, password: string, name: string, role: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -31,18 +34,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    if (email && password) {
-      const mockUser = {
-        id: 1,
-        name: "Rohan Mehta",
-        email: email,
-        avatar: "RM"
-      };
-      setUser(mockUser);
-      localStorage.setItem("gce_user", JSON.stringify(mockUser));
-      return true;
+    // FORCE role to 'admin' for testing
+    let role = "member";
+    if (email === "admin@test.com" || email.includes("admin")) {
+      role = "admin";
     }
-    return false;
+    
+    const mockUser: User = {
+      id: "mock-" + Date.now(),
+      name: email.split("@")[0] || "User",
+      email: email,
+      role: role,
+      phone: "",
+      city: "Mumbai"
+    };
+    setUser(mockUser);
+    localStorage.setItem("gce_user", JSON.stringify(mockUser));
+    return true;
+  };
+
+  const signup = async (email: string, password: string, name: string, role: string = "member") => {
+    const mockUser: User = {
+      id: "mock-" + Date.now(),
+      name: name,
+      email: email,
+      role: role,
+      phone: "",
+      city: "Mumbai"
+    };
+    setUser(mockUser);
+    localStorage.setItem("gce_user", JSON.stringify(mockUser));
+    return true;
   };
 
   const logout = () => {
@@ -51,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

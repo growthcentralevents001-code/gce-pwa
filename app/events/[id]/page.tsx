@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Reviews from "../../components/Reviews";
 import { useParams, useRouter } from "next/navigation";
 import { 
   Calendar, Clock, MapPin, Users, Share2, Bell, 
@@ -248,6 +249,8 @@ export default function EventDetailPage() {
         </div>
       </div>
 
+      {/* Reviews Section */}
+      <Reviews eventId={id as string} eventName={event.name} />
       {/* Post-Event Survey */}
       {showSurvey && !isEventEnded && (
         <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", marginTop: "24px" }}>

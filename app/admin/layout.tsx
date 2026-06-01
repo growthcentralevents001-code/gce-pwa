@@ -1,4 +1,11 @@
-import type { ReactNode } from 'react';
-export default function AdminLayout({ children }: { children: ReactNode }) {
-  return <div className="dashboard-shell">{children}</div>;
+"use client";
+
+import { AuthProvider } from "@/app/context/AuthContext";
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <AuthProvider>{children}</AuthProvider>;
 }

@@ -1,219 +1,339 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 import { 
-  LayoutDashboard, Users, Building2, Calendar, Tag, CreditCard, 
-  Settings, LogOut, Menu, X, Search, Download, Eye, Plus
+  Calendar, MapPin, IndianRupee, Users, CheckCircle, 
+  XCircle, AlertCircle, Edit2, Trash2, Save, X 
 } from "lucide-react";
 
 interface Event {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   vertical: string;
-  status: string;
   date: string;
-  time: string;
   venue: string;
-  price: string;
-  attendees: number;
+  city: string;
+  price: number;
+  registered: number;
   capacity: number;
-  organizer: string;
+  status: string;
 }
 
 export default function AdminEvents() {
-  const router = useRouter();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [verticalFilter, setVerticalFilter] = useState("all");
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
-  const [events, setEvents] = useState<Event[]>([
-    { id: 1, name: "Startup Founders Mixer", vertical: "Connect", status: "Live", date: "24 May 2025", time: "6:30 PM", venue: "The Leela, Mumbai", price: "₹1,500", attendees: 124, capacity: 200, organizer: "GCE Admin" },
-    { id: 2, name: "Sunday Brunch Buffet", vertical: "Marketplace", status: "Live", date: "28 May 2025", time: "11:00 AM", venue: "JW Marriott, Pune", price: "₹2,500", attendees: 45, capacity: 100, organizer: "JW Marriott" },
-    { id: 3, name: "Fintech Leadership Summit", vertical: "Enterprise", status: "Live", date: "30 May 2025", time: "10:00 AM", venue: "Taj Lands End, Mumbai", price: "₹5,000", attendees: 180, capacity: 250, organizer: "Fintech Council" },
-    { id: 4, name: "Wine Tasting Evening", vertical: "Marketplace", status: "Rejected", date: "01 Jun 2025", time: "7:00 PM", venue: "SOHO House, Mumbai", price: "₹3,000", attendees: 0, capacity: 50, organizer: "SOHO House" },
-    { id: 5, name: "Yoga & Wellness Retreat", vertical: "Connect", status: "Draft", date: "05 Jun 2025", time: "8:00 AM", venue: "St. Regis, Goa", price: "₹4,000", attendees: 0, capacity: 80, organizer: "GCE Admin" },
-    { id: 6, name: "AI & Future of Work", vertical: "Enterprise", status: "Pending", date: "10 Jun 2025", time: "9:30 AM", venue: "WeWork, BKC", price: "₹3,500", attendees: 95, capacity: 150, organizer: "Tech Corp" },
-  ]);
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
-  const filteredEvents = events.filter(e => {
-    const matchesSearch = e.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          e.venue.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "all" || e.status.toLowerCase() === statusFilter.toLowerCase();
-    const matchesVertical = verticalFilter === "all" || e.vertical.toLowerCase() === verticalFilter.toLowerCase();
-    return matchesSearch && matchesStatus && matchesVertical;
+  async function fetchEvents() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .order("date", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching events:", error);
+    } else if (data) {
+      setEvents(data as Event[]);
+    }
+    setLoading(false);
+  }
+
+  async function handleStatusChange(id: string, newStatus: string) {
+    const { error } = await supabase
+      .from("events")
+      .update({ status: newStatus })
+      .eq("id", id);
+
+    if (error) {
+      alert("Error updating event: " + error.message);
+    } else {
+      fetchEvents();
+      alert(`Event marked as ${newStatus}!`);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (confirm("Are you sure you want to permanently delete this event?")) {
+      const { error } = await supabase.from("events").delete().eq("id", id);
+      if (error) {
+        alert("Error deleting event: " + error.message);
+      } else {
+        fetchEvents();
+        alert("Event deleted successfully!");
+      }
+    }
+  }
+
+  async function handleEdit(id: string) {
+    if (editingId === id) {
+      // Save the edited title
+      const { error } = await supabase
+        .from("events")
+        .update({ title: editingTitle })
+        .eq("id", id);
+      if (error) {
+        alert("Error updating event: " + error.message);
+      } else {
+        fetchEvents();
+      }
+      setEditingId(null);
+      setEditingTitle("");
+    } else {
+      // Start editing
+      const event = events.find(e => e.id === id);
+      if (event) {
+        setEditingId(id);
+        setEditingTitle(event.title);
+      }
+    }
+  }
+
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "all" || event.status === statusFilter;
+    return matchesSearch && matchesStatus;
   });
 
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case "Live": return { bg: "#dcfce7", color: "#166534" };
-      case "Pending": return { bg: "#fef3c7", color: "#92400e" };
-      case "Rejected": return { bg: "#fee2e2", color: "#991b1b" };
-      default: return { bg: "#f1f5f9", color: "#475569" };
+  const stats = {
+    total: events.length,
+    live: events.filter(e => e.status === "Live").length,
+    pending: events.filter(e => e.status === "Pending").length,
+    attendees: events.reduce((sum, e) => sum + (e.registered || 0), 0),
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "Live":
+        return { icon: <CheckCircle size={14} />, text: "Live", bg: "bg-green-100", textColor: "text-green-700" };
+      case "Pending":
+        return { icon: <AlertCircle size={14} />, text: "Pending", bg: "bg-yellow-100", textColor: "text-yellow-700" };
+      case "Draft":
+        return { icon: <XCircle size={14} />, text: "Draft", bg: "bg-gray-100", textColor: "text-gray-700" };
+      default:
+        return { icon: null, text: status, bg: "bg-gray-100", textColor: "text-gray-700" };
     }
   };
 
-  const getVerticalColor = (vertical: string) => {
-    switch(vertical) {
-      case "Connect": return { bg: "#fef3c7", color: "#92400e" };
-      case "Marketplace": return { bg: "#e0e7ff", color: "#3730a3" };
-      case "Enterprise": return { bg: "#dcfce7", color: "#166534" };
-      default: return { bg: "#f1f5f9", color: "#475569" };
-    }
-  };
-
-  const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { id: "members", label: "Members", icon: Users, href: "/admin/members" },
-    { id: "partners", label: "Partners", icon: Building2, href: "/admin/partners" },
-    { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
-    { id: "offers", label: "Offers", icon: Tag, href: "/admin/offers" },
-    { id: "payments", label: "Payments", icon: CreditCard, href: "/admin/payments" },
-    { id: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
-  ];
+  if (loading) {
+    return <div className="flex justify-center items-center h-64">Loading events...</div>;
+  }
 
   return (
-    <div style={{ display: "flex", background: "#f1f5f9", minHeight: "100vh" }}>
-      <div style={{
-        width: sidebarOpen ? "280px" : "80px",
-        background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
-        color: "white",
-        transition: "width 0.3s",
-        position: "fixed",
-        height: "100vh",
-        overflowY: "auto",
-        zIndex: 50
-      }}>
-        <div style={{ padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #334155" }}>
-          {sidebarOpen && <span style={{ fontSize: "20px", fontWeight: "bold" }}>GCE Admin</span>}
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Event Management</h1>
+          <p className="text-gray-500 mt-1">Manage all events across your platform</p>
         </div>
-        <nav style={{ padding: "16px" }}>
-          {navItems.map((item) => (
-            <a key={item.id} href={item.href} style={{
-              display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px",
-              marginBottom: "4px", borderRadius: "12px", background: item.id === "events" ? "#f97316" : "transparent",
-              color: "white", textDecoration: "none", cursor: "pointer"
-            }}>
-              <item.icon size={20} />
-              {sidebarOpen && <span>{item.label}</span>}
-            </a>
-          ))}
-          <div style={{ marginTop: "20px", borderTop: "1px solid #334155", paddingTop: "16px" }}>
-            <a href="#" style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", borderRadius: "12px", color: "#94a3b8", textDecoration: "none", cursor: "pointer" }}>
-              <LogOut size={20} />
-              {sidebarOpen && <span>Logout</span>}
-            </a>
-          </div>
-        </nav>
-      </div>
 
-      <div style={{
-        marginLeft: sidebarOpen ? "280px" : "80px",
-        flex: 1,
-        padding: "24px",
-        transition: "margin-left 0.3s"
-      }}>
-        <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-            <div>
-              <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Events Management</h1>
-              <p style={{ color: "#64748b" }}>Manage all events across Connect, Marketplace, and Enterprise</p>
-            </div>
-            <button 
-              onClick={() => router.push("/admin/events/create")}
-              style={{ display: "flex", alignItems: "center", gap: "8px", background: "#f97316", color: "white", border: "none", padding: "10px 20px", borderRadius: "40px", cursor: "pointer" }}
-            >
-              <Plus size={18} /> Create Event
-            </button>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", marginBottom: "24px" }}>
-            <div style={{ background: "white", borderRadius: "16px", padding: "16px" }}><div style={{ fontSize: "28px", fontWeight: "800" }}>{events.length}</div><div style={{ color: "#64748b" }}>Total Events</div></div>
-            <div style={{ background: "white", borderRadius: "16px", padding: "16px" }}><div style={{ fontSize: "28px", fontWeight: "800" }}>{events.filter(e => e.status === "Live").length}</div><div style={{ color: "#64748b" }}>Live Events</div></div>
-            <div style={{ background: "white", borderRadius: "16px", padding: "16px" }}><div style={{ fontSize: "28px", fontWeight: "800" }}>{events.filter(e => e.status === "Pending").length}</div><div style={{ color: "#64748b" }}>Pending</div></div>
-            <div style={{ background: "white", borderRadius: "16px", padding: "16px" }}><div style={{ fontSize: "28px", fontWeight: "800" }}>{events.reduce((s, e) => s + e.attendees, 0)}</div><div style={{ color: "#64748b" }}>Attendees</div></div>
-          </div>
-
-          <div style={{ background: "white", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <div style={{ flex: 1, display: "flex", alignItems: "center", background: "#f1f5f9", borderRadius: "40px", padding: "10px 16px" }}>
-                <Search size={18} style={{ marginRight: "8px" }} />
-                <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ background: "transparent", border: "none", outline: "none", flex: 1 }} />
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Total Events</p>
+                <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
               </div>
-              <select value={verticalFilter} onChange={(e) => setVerticalFilter(e.target.value)} style={{ padding: "8px 16px", borderRadius: "40px", border: "1px solid #e2e8f0" }}>
-                <option value="all">All Verticals</option>
-                <option value="connect">Connect</option>
-                <option value="marketplace">Marketplace</option>
-                <option value="enterprise">Enterprise</option>
-              </select>
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ padding: "8px 16px", borderRadius: "40px", border: "1px solid #e2e8f0" }}>
-                <option value="all">All Status</option>
-                <option value="live">Live</option>
-                <option value="pending">Pending</option>
-              </select>
-              <button style={{ padding: "8px 16px", borderRadius: "40px", border: "1px solid #e2e8f0", background: "white" }}><Download size={16} /> Export</button>
+              <div className="bg-orange-100 p-3 rounded-full">
+                <Calendar className="text-orange-600" size={24} />
+              </div>
             </div>
           </div>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Live Events</p>
+                <p className="text-3xl font-bold text-green-600">{stats.live}</p>
+              </div>
+              <div className="bg-green-100 p-3 rounded-full">
+                <CheckCircle className="text-green-600" size={24} />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Pending Events</p>
+                <p className="text-3xl font-bold text-yellow-600">{stats.pending}</p>
+              </div>
+              <div className="bg-yellow-100 p-3 rounded-full">
+                <AlertCircle className="text-yellow-600" size={24} />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Total Attendees</p>
+                <p className="text-3xl font-bold text-purple-600">{stats.attendees}</p>
+              </div>
+              <div className="bg-purple-100 p-3 rounded-full">
+                <Users className="text-purple-600" size={24} />
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div style={{ background: "white", borderRadius: "20px", overflow: "hidden" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Event Name</th>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Vertical</th>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Date</th>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Venue</th>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Price</th>
-                  <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
-                  <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredEvents.map((event) => {
-                  const statusStyle = getStatusColor(event.status);
-                  const verticalStyle = getVerticalColor(event.vertical);
-                  return (
-                    <tr key={event.id} style={{ borderBottom: "1px solid #eef2ff" }}>
-                      <td style={{ padding: "16px" }}><div style={{ fontWeight: "600" }}>{event.name}</div><div style={{ fontSize: "12px", color: "#94a3b8" }}>by {event.organizer}</div></td>
-                      <td style={{ padding: "16px" }}><span style={{ background: verticalStyle.bg, color: verticalStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{event.vertical}</span></td>
-                      <td style={{ padding: "16px" }}>{event.date}</td>
-                      <td style={{ padding: "16px" }}>{event.venue}</td>
-                      <td style={{ padding: "16px" }}>{event.price}</td>
-                      <td style={{ padding: "16px" }}><span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{event.status}</span></td>
-                      <td style={{ padding: "16px", textAlign: "center" }}>
-                        <button onClick={() => { setSelectedEvent(event); setShowViewModal(true); }} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                          <Eye size={18} style={{ color: "#f97316" }} />
+        {/* Search and Filter */}
+        <div className="bg-white rounded-xl shadow-sm p-4 mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <input
+                type="text"
+                placeholder="Search events by title..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              />
+            </div>
+            <div>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              >
+                <option value="all">All Status</option>
+                <option value="Live">Live</option>
+                <option value="Pending">Pending</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Events Grid */}
+        {filteredEvents.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+            <p className="text-gray-500">No events found.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map((event) => {
+              const statusStyle = getStatusBadge(event.status);
+              const progress = (event.registered / event.capacity) * 100;
+              return (
+                <div key={event.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                  <div className="p-5">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex gap-2">
+                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusStyle.bg} ${statusStyle.textColor}`}>
+                          {statusStyle.icon} {statusStyle.text}
+                        </span>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                          {event.vertical || "General"}
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => handleEdit(event.id)}
+                          className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                          title="Edit Event Title"
+                        >
+                          {editingId === event.id ? <Save size={16} /> : <Edit2 size={16} />}
                         </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                        <button
+                          onClick={() => handleDelete(event.id)}
+                          className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                          title="Delete Event"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
 
-      {showViewModal && selectedEvent && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div style={{ background: "white", borderRadius: "24px", padding: "32px", maxWidth: "500px", width: "90%" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: "700", marginBottom: "16px" }}>{selectedEvent.name}</h2>
-            <p><strong>Date:</strong> {selectedEvent.date} at {selectedEvent.time}</p>
-            <p><strong>Venue:</strong> {selectedEvent.venue}</p>
-            <p><strong>Price:</strong> {selectedEvent.price}</p>
-            <p><strong>Attendees:</strong> {selectedEvent.attendees}/{selectedEvent.capacity}</p>
-            <p><strong>Organizer:</strong> {selectedEvent.organizer}</p>
-            <p><strong>Status:</strong> {selectedEvent.status}</p>
-            <button onClick={() => setShowViewModal(false)} style={{ marginTop: "20px", width: "100%", background: "#f97316", color: "white", border: "none", padding: "12px", borderRadius: "40px", cursor: "pointer" }}>Close</button>
+                    {editingId === event.id ? (
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          value={editingTitle}
+                          onChange={(e) => setEditingTitle(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-bold"
+                          autoFocus
+                        />
+                        <button
+                          onClick={() => handleEdit(event.id)}
+                          className="mt-2 text-sm text-green-600 hover:text-green-700"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="mt-2 ml-2 text-sm text-gray-500 hover:text-gray-700"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-2">{event.title}</h3>
+                    )}
+
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-gray-400" />
+                        <span>{new Date(event.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={14} className="text-gray-400" />
+                        <span>{event.venue}, {event.city}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IndianRupee size={14} className="text-gray-400" />
+                        <span className="font-medium text-orange-600">₹{event.price}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Users size={14} className="text-gray-400" />
+                          <span>{event.registered || 0} / {event.capacity} registered</span>
+                        </div>
+                        <div className="w-24 bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-orange-500 h-1.5 rounded-full" style={{ width: `${progress}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {event.status === "Pending" && (
+                      <div className="mt-4 flex gap-2">
+                        <button
+                          onClick={() => handleStatusChange(event.id, "Live")}
+                          className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => handleStatusChange(event.id, "Draft")}
+                          className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
+
+                    {event.status === "Live" && (
+                      <div className="mt-4">
+                        <button
+                          onClick={() => handleStatusChange(event.id, "Draft")}
+                          className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg transition-colors"
+                        >
+                          Move to Draft
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

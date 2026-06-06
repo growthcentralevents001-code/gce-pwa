@@ -1,156 +1,116 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { Building2, TrendingUp, DollarSign, Users, Link2, Copy, CheckCircle } from "lucide-react";
+import { RefreshCw, Copy, CheckCircle, DollarSign, Users, TrendingUp } from "lucide-react";
 
 export default function AffiliateDashboard() {
-  const router = useRouter();
-  const { user, isLoading } = useAuth();
-  const [affiliateData, setAffiliateData] = useState<any>(null);
-  const [venues, setVenues] = useState<any[]>([]);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showPayoutModal, setShowPayoutModal] = useState(false);
+  const [payoutAmount, setPayoutAmount] = useState("");
+  const [payoutStatus, setPayoutStatus] = useState("");
   const [copied, setCopied] = useState(false);
-  const [referralLink] = useState(`https://dev.growthcentralevents.com/?ref=${user?.id}`);
 
-  useEffect(() => {
-    if (isLoading) return;
-    
-    if (!user) {
-      router.push("/login?redirect=/dashboard/affiliate");
-      return;
-    }
-    
-    if (user.role !== "affiliate" && user.role !== "admin") {
-      checkAffiliateStatus();
-      return;
-    }
-    
-    fetchAffiliateData();
-  }, [user, isLoading]);
+  useEffect(() => { fetchData(); }, []);
 
-  const checkAffiliateStatus = async () => {
-    const { data } = await supabase
-      .from("marketplace_affiliates")
-      .select("status")
-      .eq("user_id", user?.id)
-      .single();
-    
-    if (data) {
-      fetchAffiliateData();
-    } else {
-      setLoading(false);
-    }
-  };
-
-  const fetchAffiliateData = async () => {
+  async function fetchData() {
     setLoading(true);
-    
-    const { data: affiliate, error } = await supabase
-      .from("marketplace_affiliates")
-      .select("*")
-      .eq("user_id", user?.id)
-      .single();
-
-    if (affiliate) {
-      setAffiliateData(affiliate);
-      
-      const { data: venuesData } = await supabase
-        .from("affiliate_venues")
-        .select("*, venues(*)")
-        .eq("affiliate_id", affiliate.id);
-      setVenues(venuesData || []);
-    }
-    
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
+    const { data: affiliate } = await supabase.from("marketplace_affiliates").select("*").eq("user_id", user.id).single();
+    if (!affiliate) { setLoading(false); return; }
+    const { data: venues } = await supabase.from("affiliate_venues").select("venue_id, venues(name, city, status)").eq("affiliate_id", affiliate.id);
+    const { data: commissions } = await supabase.from("affiliate_commission_history").select("commission_amount, paid").eq("affiliate_id", affiliate.id);
+    const totalEarned = commissions?.reduce((s, c) => s + (c.commission_amount || 0), 0) || 0;
+    const pendingPayout = commissions?.filter(c => !c.paid).reduce((s, c) => s + (c.commission_amount || 0), 0) || 0;
+    const referralLink = `${window.location.origin}/signup?ref=${affiliate.id}`;
+    setData({ affiliate, venues: venues || [], stats: { totalEarned, pendingPayout, totalVenues: venues?.length || 0 }, referralLink });
     setLoading(false);
-  };
+  }
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (data?.referralLink) { navigator.clipboard.writeText(data.referralLink); setCopied(true); setTimeout(() => setCopied(false), 2000); }
   };
 
-  if (isLoading || loading) {
-    return <div style={{ textAlign: "center", padding: "48px" }}>Loading affiliate dashboard...</div>;
-  }
+  const requestPayout = async () => {
+    if (!payoutAmount || parseInt(payoutAmount) <= 0) { alert("Enter valid amount"); return; }
+    setPayoutStatus("Processing...");
+    const { error } = await supabase.from("affiliate_payout_requests").insert({ affiliate_id: data?.affiliate.id, amount: parseInt(payoutAmount), status: "pending" });
+    if (error) alert("Payout request failed: " + error.message);
+    else { alert("Request submitted!"); setShowPayoutModal(false); setPayoutAmount(""); }
+    setPayoutStatus("");
+  };
 
-  if (!user) {
-    return null;
-  }
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><RefreshCw className="w-8 h-8 text-orange-600 animate-spin" /></div>;
+  if (!data) return <div className="min-h-screen flex items-center justify-center">No affiliate record found.</div>;
 
-  if (!affiliateData) {
-    return (
-      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "48px", textAlign: "center" }}>
-        <h2>Not an Affiliate Yet</h2>
-        <p style={{ marginBottom: "24px" }}>Join our affiliate program to earn commission by referring venues.</p>
-        <a href="/affiliate/signup" style={{ background: "#f97316", color: "white", padding: "12px 24px", borderRadius: "40px", textDecoration: "none" }}>Join as Affiliate</a>
-      </div>
-    );
-  }
-
-  const stats = [
-    { label: "Commission Rate", value: `${affiliateData.commission_rate || 15}%`, icon: TrendingUp, color: "#f97316" },
-    { label: "Total Commission", value: `₹${affiliateData.total_commission_earned?.toLocaleString() || 0}`, icon: DollarSign, color: "#22c55e" },
-    { label: "Venues Onboarded", value: affiliateData.total_venues_onboarded || 0, icon: Building2, color: "#3b82f6" },
-  ];
+  const { affiliate, venues, stats, referralLink } = data;
 
   return (
-    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
-      <h1 style={{ fontSize: "28px", fontWeight: "700", marginBottom: "8px" }}>Affiliate Dashboard</h1>
-      <p style={{ color: "#64748b", marginBottom: "32px" }}>Track your commission and onboarded venues</p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginBottom: "32px" }}>
-        {stats.map((stat, i) => (
-          <div key={i} style={{ background: "white", borderRadius: "20px", padding: "20px", border: "1px solid #eef2ff" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <div style={{ fontSize: "28px", fontWeight: "800", color: "#0f172a" }}>{stat.value}</div>
-                <div style={{ color: "#64748b", fontSize: "14px", marginTop: "4px" }}>{stat.label}</div>
-              </div>
-              <stat.icon size={28} style={{ color: stat.color, opacity: 0.7 }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", marginBottom: "32px" }}>
-        <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>Your Referral Link</h2>
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <input type="text" value={referralLink} readOnly style={{ flex: 1, padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0", background: "#f8fafc" }} />
-          <button onClick={copyReferralLink} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>
-            {copied ? <CheckCircle size={16} /> : <Copy size={16} />} {copied ? "Copied!" : "Copy Link"}
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-sm font-semibold mb-2">Affiliate Program</div>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">Affiliate Dashboard</h1>
+          <p className="text-gray-500 mt-2">Track your referrals, venues, and commissions</p>
         </div>
+
+        <div className="bg-white rounded-2xl shadow-md p-6 mb-6 border-l-4 border-orange-500">
+          <div className="flex flex-wrap justify-between items-center gap-4">
+            <div><h2 className="text-xl font-bold">{affiliate.name}</h2><p className="text-sm text-gray-500">Commission Rate: <span className="font-semibold text-orange-600">{affiliate.commission_rate}%</span> | Status: <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${affiliate.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{affiliate.status}</span></p></div>
+            <button onClick={copyReferralLink} className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">{copied ? <CheckCircle size={16} /> : <Copy size={16} />} {copied ? "Copied!" : "Copy Referral Link"}</button>
+          </div>
+          {affiliate.status === 'Approved' && (
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
+              <p className="text-xs text-gray-500 mb-1">Your unique referral link:</p>
+              <div className="flex items-center gap-2"><input type="text" readOnly value={referralLink} className="flex-1 text-sm bg-white border rounded-lg px-3 py-2" /><button onClick={copyReferralLink} className="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg"><Copy size={16} /></button></div>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-orange-500"><div className="flex justify-between"><div><p className="text-sm text-gray-500">Venues Onboarded</p><p className="text-3xl font-bold text-orange-600">{stats.totalVenues}</p></div><div className="bg-orange-100 p-3 rounded-full"><Users className="text-orange-600" size={24} /></div></div></div>
+          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-green-500"><div className="flex justify-between"><div><p className="text-sm text-gray-500">Total Commission</p><p className="text-3xl font-bold text-green-600">₹{stats.totalEarned}</p></div><div className="bg-green-100 p-3 rounded-full"><DollarSign className="text-green-600" size={24} /></div></div></div>
+          <div className="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500"><div className="flex justify-between"><div><p className="text-sm text-gray-500">Pending Payout</p><p className="text-3xl font-bold text-yellow-600">₹{stats.pendingPayout}</p></div><div className="bg-yellow-100 p-3 rounded-full"><TrendingUp className="text-yellow-600" size={24} /></div></div></div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+          <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3"><h2 className="text-lg font-bold text-white">Venues You've Onboarded</h2></div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50"><tr><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Venue Name</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">City</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th></tr></thead>
+              <tbody className="divide-y divide-gray-200">
+                {venues.length === 0 && <tr><td colSpan={3} className="px-6 py-8 text-center text-gray-400">No venues onboarded yet. Share your referral link!</td></tr>}
+                {venues.map((v: any) => (<tr key={v.venue_id}><td className="px-6 py-4 text-sm font-medium text-gray-900">{v.venues?.name}</td><td className="px-6 py-4 text-sm text-gray-500">{v.venues?.city}</td><td className="px-6 py-4"><span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${v.venues?.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{v.venues?.status || 'Pending'}</span></td></tr>))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+          <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3"><h2 className="text-lg font-bold text-white">Commission History</h2></div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50"><tr><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Venue</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th></tr></thead>
+              <tbody><tr><td colSpan={4} className="px-6 py-8 text-center text-gray-400">No commission records yet.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="flex justify-center"><button onClick={() => setShowPayoutModal(true)} className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold">Request Payout</button></div>
       </div>
 
-      <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff" }}>
-        <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "16px" }}>Venues Onboarded</h2>
-        {venues.length === 0 ? (
-          <p style={{ color: "#64748b", textAlign: "center", padding: "40px" }}>No venues onboarded yet.</p>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid #eef2ff" }}>
-                <th style={{ padding: "12px", textAlign: "left" }}>Venue</th>
-                <th style={{ padding: "12px", textAlign: "left" }}>City</th>
-                <th style={{ padding: "12px", textAlign: "left" }}>Commission</th>
-              </tr>
-            </thead>
-            <tbody>
-              {venues.map((item) => (
-                <tr key={item.id} style={{ borderBottom: "1px solid #eef2ff" }}>
-                  <td style={{ padding: "12px" }}>{item.venues?.name || "Unknown"}</td>
-                  <td style={{ padding: "12px" }}>{item.venues?.city || "—"}</td>
-                  <td style={{ padding: "12px", color: "#22c55e" }}>₹{item.commission_earned?.toLocaleString() || 0}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {showPayoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h3 className="text-xl font-bold mb-4">Request Payout</h3>
+            <p className="text-sm text-gray-500 mb-2">Available balance: ₹{stats.pendingPayout}</p>
+            <input type="number" placeholder="Amount (₹)" className="w-full p-3 border border-gray-300 rounded-lg mb-4" value={payoutAmount} onChange={e => setPayoutAmount(e.target.value)} />
+            <button onClick={requestPayout} disabled={!!payoutStatus} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg font-semibold">{payoutStatus || "Submit Request"}</button>
+            <button onClick={() => setShowPayoutModal(false)} className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold mt-2">Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -8,7 +7,6 @@ import { Search, Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react
 import { supabase } from "@/lib/supabaseClient";
 
 const TrendingEvents = dynamic(() => import("./components/TrendingEvents"), { ssr: false });
-// CitySelector removed – no more city filter
 
 interface Event {
   id: string;
@@ -43,9 +41,8 @@ export default function Home() {
       .select('*')
       .eq('status', 'Live')
       .order('date', { ascending: true });
-
     if (!error && data) {
-      const formattedEvents: Event[] = data.map((event: any) => ({
+      const formatted: Event[] = data.map((event: any) => ({
         id: event.id,
         title: event.title,
         category: event.category || event.vertical,
@@ -57,15 +54,17 @@ export default function Home() {
         registered: event.registered || 0,
         capacity: event.capacity,
       }));
-      setEvents(formattedEvents);
+      setEvents(formatted);
     }
     setLoading(false);
   };
 
   const filteredEvents = events.filter(event => {
     const matchesTab = activeTab === "all" || event.category?.toLowerCase() === activeTab.toLowerCase();
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          event.venue.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery === "" ||
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.city.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
@@ -84,7 +83,7 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      {/* Hero Banner - Responsive */}
+      {/* Hero Banner */}
       <div style={{
         background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
         borderRadius: "24px",
@@ -94,7 +93,13 @@ export default function Home() {
         overflow: "hidden",
         boxShadow: "0 20px 35px -10px rgba(249,115,22,0.3)"
       }}>
-        {/* ... (hero banner content same as before) ... */}
+        <div style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1%, transparent 1%)`,
+          backgroundSize: "30px 30px",
+          pointerEvents: "none"
+        }} />
         <div style={{ position: "relative", zIndex: 2 }}>
           <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", padding: "6px 16px", borderRadius: "40px", marginBottom: "24px", fontSize: "13px", fontWeight: "500", color: "white" }}>
             ✨ India's Premier Event Platform
@@ -126,6 +131,28 @@ export default function Home() {
       </div>
 
       <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px 48px" }}>
+        {/* Search Bar */}
+        <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center" }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: "500px" }}>
+            <Search style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} size={20} />
+            <input
+              type="text"
+              placeholder="Search events by title, venue, or city..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "14px 16px 14px 48px",
+                border: "1px solid #e2e8f0",
+                borderRadius: "48px",
+                fontSize: "16px",
+                outline: "none",
+                backgroundColor: "white",
+              }}
+            />
+          </div>
+        </div>
+
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <h1 style={{ fontSize: "clamp(28px, 6vw, 48px)", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>
             Discover Amazing <span style={{ color: "#f97316" }}>Events</span> Near You

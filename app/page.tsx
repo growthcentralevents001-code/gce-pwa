@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Search, Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react";
+import { Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import SimpleSearch from "./components/SearchBar";
 
 const TrendingEvents = dynamic(() => import("./components/TrendingEvents"), { ssr: false });
 
@@ -24,7 +25,6 @@ interface Event {
 export default function Home() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
@@ -61,11 +61,7 @@ export default function Home() {
 
   const filteredEvents = events.filter(event => {
     const matchesTab = activeTab === "all" || event.category?.toLowerCase() === activeTab.toLowerCase();
-    const matchesSearch = searchQuery === "" ||
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.city.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTab && matchesSearch;
+    return matchesTab;
   });
 
   const getVerticalColor = (category: string) => {
@@ -131,26 +127,9 @@ export default function Home() {
       </div>
 
       <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px 48px" }}>
-        {/* Search Bar */}
+        {/* Search Bar Component */}
         <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center" }}>
-          <div style={{ position: "relative", width: "100%", maxWidth: "500px" }}>
-            <Search style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} size={20} />
-            <input
-              type="text"
-              placeholder="Search events by title, venue, or city..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "14px 16px 14px 48px",
-                border: "1px solid #e2e8f0",
-                borderRadius: "48px",
-                fontSize: "16px",
-                outline: "none",
-                backgroundColor: "white",
-              }}
-            />
-          </div>
+          <SimpleSearch />
         </div>
 
         <div style={{ textAlign: "center", marginBottom: "40px" }}>

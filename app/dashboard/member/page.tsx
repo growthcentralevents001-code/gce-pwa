@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { Wallet, Users, TrendingUp, Share2, Calendar } from "lucide-react";
+import { Wallet, Users, Share2, Calendar, Ticket } from "lucide-react";
+import Link from "next/link";
 
 interface Credits {
   balance: number;
@@ -34,25 +35,21 @@ export default function MemberDashboard() {
         return;
       }
 
-      // Fetch credits
+      // Credits
       const { data: wallet } = await supabase
         .from('user_wallets')
         .select('balance, expiry_date')
         .eq('user_id', user.id)
         .single();
-
       if (wallet) {
         setCredits({ balance: wallet.balance, expiry: wallet.expiry_date });
-      } else {
-        setCredits({ balance: 0, expiry: null });
       }
 
-      // Fetch referrals
+      // Referrals
       const { data: referralsData } = await supabase
         .from('referrals')
         .select('points')
         .eq('referrer_id', user.id);
-
       const totalReferrals = referralsData?.length || 0;
       const totalPoints = referralsData?.reduce((sum, r) => sum + (r.points || 0), 0) || 0;
       setReferrals({
@@ -61,13 +58,12 @@ export default function MemberDashboard() {
         link: `${window.location.origin}/signup?ref=${user.id}`
       });
 
-      // Fetch milestone (attended events count)
+      // Milestone
       const { data: attendance } = await supabase
         .from('event_attendance')
         .select('id')
         .eq('user_id', user.id)
         .eq('attended', true);
-
       const count = attendance?.length || 0;
       let tier = 'Explorer';
       let next = 'Insider (6)';
@@ -91,6 +87,17 @@ export default function MemberDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
+        {/* My Tickets Button */}
+        <div className="mb-4">
+          <Link
+            href="/dashboard/member/tickets"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
+          >
+            <Ticket size={18} />
+            My Tickets
+          </Link>
+        </div>
+
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Member Dashboard</h1>
         <p className="text-gray-500 mb-6">Welcome back! Here's your activity summary.</p>
 
@@ -109,8 +116,8 @@ export default function MemberDashboard() {
           {/* Milestone Tracker Widget */}
           <div className="bg-white rounded-2xl shadow-md p-5 border-l-4 border-green-500">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg font-semibold">Milestone Tracker</h2>
-              <TrendingUp className="w-5 h-5 text-green-500" />
+              <h2 className="text-lg font-semibold">Milestone</h2>
+              <Users className="w-5 h-5 text-green-500" />
             </div>
             <div className="text-3xl font-bold text-gray-800">{milestone.attended}</div>
             <div className="text-sm text-gray-500">Events attended</div>
@@ -127,22 +134,27 @@ export default function MemberDashboard() {
           <div className="bg-white rounded-2xl shadow-md p-5 border-l-4 border-purple-500">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-lg font-semibold">Refer & Earn</h2>
-              <Users className="w-5 h-5 text-purple-500" />
+              <Share2 className="w-5 h-5 text-purple-500" />
             </div>
             <div className="text-3xl font-bold text-purple-600">{referrals.count}</div>
             <div className="text-sm text-gray-500">Friends referred</div>
             <div className="text-sm font-semibold mt-1">Points: {referrals.points}</div>
-            <button onClick={copyReferralLink} className="mt-3 w-full bg-purple-600 text-white py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+            <button
+              onClick={copyReferralLink}
+              className="mt-3 w-full bg-purple-600 text-white py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2"
+            >
               <Share2 size={14} /> Invite Friends
             </button>
           </div>
         </div>
 
-        {/* Upcoming Events Placeholder */}
+        {/* Upcoming Events */}
         <div className="bg-white rounded-2xl shadow-md p-5">
           <h2 className="text-lg font-semibold mb-3">Upcoming Events</h2>
           <p className="text-gray-500 text-sm">You haven't booked any upcoming events yet.</p>
-          <button className="mt-3 text-orange-600 text-sm font-medium flex items-center gap-1">Browse Events <Calendar size={14} /></button>
+          <Link href="/events" className="mt-3 inline-flex items-center gap-1 text-orange-600 text-sm font-medium">
+            Browse Events <Calendar size={14} />
+          </Link>
         </div>
       </div>
     </div>

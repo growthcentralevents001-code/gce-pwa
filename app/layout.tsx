@@ -6,15 +6,26 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "GCE Events",
   description: "Discover amazing events near you",
+  manifest: "/manifest.json",
+  themeColor: "#f97316",
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "GCE Events"
+  },
+  formatDetection: {
+    telephone: false
+  }
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </head>
       <body>
         <AuthProvider>
           <HeaderWrapper />
@@ -31,6 +42,19 @@ export default function RootLayout({
             </div>
           </footer>
         </AuthProvider>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw').then(function(reg) {
+                  console.log('✅ Service worker registered', reg);
+                }).catch(function(err) {
+                  console.log('❌ Service worker registration failed', err);
+                });
+              });
+            }
+          `
+        }} />
       </body>
     </html>
   );

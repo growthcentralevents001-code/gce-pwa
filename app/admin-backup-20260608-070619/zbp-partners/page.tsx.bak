@@ -1,0 +1,140 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { CheckCircle, XCircle } from "lucide-react";
+
+export default function AdminZBPPartners() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [partners, setPartners] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.role !== "admin") {
+      router.push("/unauthorized");
+      return;
+    }
+    fetchPartners();
+  }, [user]);
+
+  const fetchPartners = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("zbp_partners")
+      .select("*, users!inner(name, email)")
+      .in("status", ["Active", "ZoneReleased"])
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+    } else {
+      setPartners(data || []);
+    }
+    setLoading(false);
+  };
+
+  const handleReleaseZone = async (id: string) => {
+    if (confirm("Are you sure you want to release this zone?")) {
+      const { error } = await supabase
+        .from("zbp_partners")
+        .update({ status: "ZoneReleased" })
+        .eq("id", id);
+
+      if (error) {
+        alert("Error releasing zone");
+      } else {
+        alert("Zone released successfully");
+        fetchPartners();
+      }
+    }
+  };
+
+  const handleSendWarning = async (id: string) => {
+    const { error } = await supabase
+      .from("zbp_partners")
+      .update({ warning_sent: true, warning_sent_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) {
+      alert("Error sending warning");
+    } else {
+      alert("Warning sent to partner");
+      fetchPartners();
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    if (status === "Active") return { bg: "#dcfce7", color: "#166534", icon: <CheckCircle size={12} /> };
+    if (status === "ZoneReleased") return { bg: "#fee2e2", color: "#991b1b", icon: <XCircle size={12} /> };
+    return { bg: "#f1f5f9", color: "#475569", icon: null };
+  };
+
+  if (loading) return <div style={{ padding: "24px" }}>Loading partners...</div>;
+
+  return (
+    <div style={{ padding: "24px", maxWidth: "1400px", margin: "0 auto" }}>
+      <h1 style={{ fontSize: "28px", fontWeight: "700", marginBottom: "8px" }}>ZBP Partners Management</h1>
+      <p style={{ color: "#64748b", marginBottom: "24px" }}>Manage active Zonal Business Partners</p>
+
+      <div style={{ background: "white", borderRadius: "20px", overflow: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "800px" }}>
+          <thead>
+            <tr style={{ background: "#f8fafc", borderBottom: "1px solid #eef2ff" }}>
+              <th style={{ padding: "16px", textAlign: "left" }}>Partner</th>
+              <th style={{ padding: "16px", textAlign: "left" }}>Zone / City</th>
+              <th style={{ padding: "16px", textAlign: "left" }}>Tier</th>
+              <th style={{ padding: "16px", textAlign: "left" }}>Venues</th>
+              <th style={{ padding: "16px", textAlign: "left" }}>Commission</th>
+              <th style={{ padding: "16px", textAlign: "left" }}>Status</th>
+              <th style={{ padding: "16px", textAlign: "center" }}>Actions</th>
+             </tr>
+          </thead>
+          <tbody>
+            {partners.map((partner) => {
+              const statusStyle = getStatusBadge(partner.status);
+              return (
+                <tr key={partner.id} style={{ borderBottom: "1px solid #eef2ff" }}>
+                  <td style={{ padding: "16px" }}>
+                    <div style={{ fontWeight: "600" }}>{partner.users?.name}</div>
+                    <div style={{ fontSize: "12px", color: "#64748b" }}>{partner.users?.email}</div>
+                   </td>
+                  <td style={{ padding: "16px" }}>{partner.zone} / {partner.city}</td>
+                  <td style={{ padding: "16px" }}>
+                    <span style={{ background: partner.tier === "Platinum" ? "#e0e7ff" : partner.tier === "Gold" ? "#fef3c7" : "#f1f5f9", padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>
+                      {partner.tier}
+                    </span>
+                   </td>
+                  <td style={{ padding: "16px" }}>{partner.active_venues_count || 0}</td>
+                  <td style={{ padding: "16px" }}>₹{partner.total_commission_earned?.toLocaleString() || 0}</td>
+                  <td style={{ padding: "16px" }}>
+                    <span style={{ background: statusStyle.bg, color: statusStyle.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>
+                      {statusStyle.icon} {partner.status}
+                    </span>
+                   </td>
+                  <td style={{ padding: "16px", textAlign: "center" }}>
+                    <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
+                      {partner.status === "Active" && (
+                        <>
+                          <button onClick={() => handleSendWarning(partner.id)} style={{ background: "#fef3c7", color: "#92400e", border: "none", padding: "4px 12px", borderRadius: "20px", cursor: "pointer", fontSize: "12px" }}>
+                            Send Warning
+                          </button>
+                          <button onClick={() => handleReleaseZone(partner.id)} style={{ background: "#fee2e2", color: "#991b1b", border: "none", padding: "4px 12px", borderRadius: "20px", cursor: "pointer", fontSize: "12px" }}>
+                            Release Zone
+                          </button>
+                        </>
+                      )}
+                    </div>
+                   </td>
+                 </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

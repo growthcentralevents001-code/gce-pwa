@@ -18,14 +18,20 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  // Session refresh - yeh important hai
   const { data: { session } } = await supabase.auth.getSession()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const publicRoutes = ['/', '/login', '/signup', '/events', '/offers', '/api', '/unauthorized', '/test-venues', '/auth/callback', '/admin/venues', '/dashboard/zbp']
+  // Public routes – now includes PWA files
+  const publicRoutes = [
+    '/', '/login', '/signup', '/events', '/offers', '/api', '/unauthorized',
+    '/test-venues', '/auth/callback', '/admin/venues', '/dashboard/zbp',
+    '/sw.js', '/manifest.json', '/sw'  // PWA service worker & manifest
+  ]
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname === route)
+  // Also allow any path starting with /icons/ (for PWA icons)
+  const isIconRoute = request.nextUrl.pathname.startsWith('/icons/')
 
-  if (!user && !isPublicRoute) {
+  if (!user && !isPublicRoute && !isIconRoute) {
     const redirectUrl = new URL('/login', request.url)
     redirectUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
     return NextResponse.redirect(redirectUrl)

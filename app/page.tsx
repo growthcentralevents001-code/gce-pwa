@@ -1,66 +1,70 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Search, User, LogIn, Heart, Calendar, MapPin, Users } from "lucide-react";
+import { Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 
-// Dynamic import with no SSR for LocationBar
-const LocationBar = dynamic(() => import("./components/LocationBar"), { ssr: false });
+const TrendingEvents = dynamic(() => import("./components/TrendingEvents"), { ssr: false });
 
 interface Event {
-  id: number;
-  name: string;
-  vertical: string;
+  id: string;
+  title: string;
+  category: string;
   date: string;
   time: string;
   venue: string;
   city: string;
-  price: string;
-  attendees: number;
+  price: number;
+  registered: number;
   capacity: number;
 }
 
 export default function Home() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCity, setSelectedCity] = useState("Mumbai");
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
-  
-  const [events] = useState<Event[]>([
-    { id: 1, name: "Startup Founders Mixer", vertical: "Connect", date: "24 May 2025", time: "6:30 PM", venue: "The Leela, Mumbai", city: "Mumbai", price: "₹1,500", attendees: 124, capacity: 200 },
-    { id: 2, name: "Sunday Brunch Buffet", vertical: "Marketplace", date: "28 May 2025", time: "11:00 AM", venue: "JW Marriott, Pune", city: "Pune", price: "₹2,500", attendees: 45, capacity: 100 },
-    { id: 3, name: "Fintech Leadership Summit", vertical: "Enterprise", date: "30 May 2025", time: "10:00 AM", venue: "Taj Lands End, Mumbai", city: "Mumbai", price: "₹5,000", attendees: 180, capacity: 250 },
-    { id: 4, name: "Wine Tasting Evening", vertical: "Marketplace", date: "1 Jun 2025", time: "7:00 PM", venue: "SOHO House, Mumbai", city: "Mumbai", price: "₹3,000", attendees: 0, capacity: 50 },
-    { id: 5, name: "Yoga & Wellness Retreat", vertical: "Connect", date: "5 Jun 2025", time: "8:00 AM", venue: "St. Regis, Goa", city: "Goa", price: "₹4,000", attendees: 0, capacity: 80 },
-    { id: 6, name: "AI & Future of Work", vertical: "Enterprise", date: "10 Jun 2025", time: "9:30 AM", venue: "WeWork, BKC", city: "Mumbai", price: "₹3,500", attendees: 95, capacity: 150 },
-  ]);
 
   useEffect(() => {
     setIsClient(true);
-    const saved = localStorage.getItem("userCity");
-    if (saved) setSelectedCity(saved);
-    
-    const handleCityChange = () => {
-      const newCity = localStorage.getItem("userCity");
-      if (newCity) setSelectedCity(newCity);
-    };
-    window.addEventListener("cityChanged", handleCityChange);
-    return () => window.removeEventListener("cityChanged", handleCityChange);
+    fetchEvents();
   }, []);
 
+  const fetchEvents = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('status', 'Live')
+      .order('date', { ascending: true });
+    if (!error && data) {
+      const formatted: Event[] = data.map((event: any) => ({
+        id: event.id,
+        title: event.title,
+        category: event.category || event.vertical,
+        date: new Date(event.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }),
+        time: event.time || "6:30 PM",
+        venue: event.venue,
+        city: event.city,
+        price: event.price,
+        registered: event.registered || 0,
+        capacity: event.capacity,
+      }));
+      setEvents(formatted);
+    }
+    setLoading(false);
+  };
+
   const filteredEvents = events.filter(event => {
-    const matchesTab = activeTab === "all" || event.vertical.toLowerCase() === activeTab.toLowerCase();
-    const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          event.venue.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCity = event.city === selectedCity;
-    return matchesTab && matchesSearch && matchesCity;
+    const matchesTab = activeTab === "all" || event.category?.toLowerCase() === activeTab.toLowerCase();
+    return matchesTab;
   });
 
-  const getVerticalColor = (vertical: string) => {
-    switch(vertical) {
+  const getVerticalColor = (category: string) => {
+    switch(category) {
       case "Connect": return { bg: "#fef3c7", color: "#92400e", border: "#fde68a" };
       case "Marketplace": return { bg: "#e0e7ff", color: "#3730a3", border: "#c7d2fe" };
       case "Enterprise": return { bg: "#dcfce7", color: "#166534", border: "#bbf7d0" };
@@ -68,26 +72,76 @@ export default function Home() {
     }
   };
 
-  if (!isClient) {
+  if (!isClient || loading) {
     return <div style={{ minHeight: "100vh", background: "#f8fafc" }}></div>;
   }
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+      {/* Hero Banner */}
+      <div style={{
+        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+        borderRadius: "24px",
+        margin: "24px 24px 40px 24px",
+        padding: "clamp(32px, 6vw, 56px) clamp(24px, 5vw, 48px)",
+        position: "relative",
+        overflow: "hidden",
+        boxShadow: "0 20px 35px -10px rgba(249,115,22,0.3)"
+      }}>
+        <div style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1%, transparent 1%)`,
+          backgroundSize: "30px 30px",
+          pointerEvents: "none"
+        }} />
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", padding: "6px 16px", borderRadius: "40px", marginBottom: "24px", fontSize: "13px", fontWeight: "500", color: "white" }}>
+            ✨ India's Premier Event Platform
+          </div>
+          <h1 style={{ fontSize: "clamp(32px, 8vw, 56px)", fontWeight: "800", color: "white", marginBottom: "16px", lineHeight: "1.2" }}>
+            Discover, Connect & <br />
+            <span style={{ borderBottom: "4px solid #ffd700", display: "inline-block" }}>Grow Together</span>
+          </h1>
+          <p style={{ fontSize: "clamp(16px, 4vw, 20px)", color: "rgba(255,255,255,0.9)", marginBottom: "32px", maxWidth: "500px" }}>
+            Join 10,000+ members and experience the best networking, learning, and entertainment events near you.
+          </p>
+          <div style={{ display: "flex", gap: "clamp(20px, 5vw, 40px)", flexWrap: "wrap", marginBottom: "32px" }}>
+            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>10,000+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Active Members</div></div>
+            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>50+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Events Monthly</div></div>
+            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>100+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Partner Venues</div></div>
+            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>4.8★</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Member Rating</div></div>
+          </div>
+          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+            <Link href="/events" style={{ background: "white", color: "#f97316", padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontWeight: "600", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              Explore Events <ArrowRight size={16} />
+            </Link>
+            <Link href="/signup" style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", color: "white", padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontWeight: "500", border: "1px solid rgba(255,255,255,0.3)" }}>
+              Become a Member
+            </Link>
+          </div>
+        </div>
+        <div style={{ position: "absolute", right: "-50px", top: "-50px", width: "250px", height: "250px", background: "rgba(255,255,255,0.1)", borderRadius: "50%", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", right: "100px", bottom: "-80px", width: "200px", height: "200px", background: "rgba(255,255,255,0.08)", borderRadius: "50%", pointerEvents: "none" }} />
+      </div>
 
-      <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "32px 24px" }}>
+      <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px 48px" }}>
+        {/* Search Bar Component */}
+        <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center" }}>
+        </div>
+
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "48px", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>
+          <h1 style={{ fontSize: "clamp(28px, 6vw, 48px)", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>
             Discover Amazing <span style={{ color: "#f97316" }}>Events</span> Near You
           </h1>
-          <p style={{ fontSize: "18px", color: "#64748b", maxWidth: "600px", margin: "0 auto" }}>
+          <p style={{ fontSize: "clamp(14px, 3vw, 18px)", color: "#64748b", maxWidth: "600px", margin: "0 auto" }}>
             Connect, learn, and grow with India's premier event platform
           </p>
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginBottom: "32px", flexWrap: "wrap" }}>
           {["all", "connect", "marketplace", "enterprise"].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: "10px 24px", borderRadius: "40px", border: "none", background: activeTab === tab ? "#f97316" : "white", color: activeTab === tab ? "white" : "#64748b", fontWeight: "500", cursor: "pointer" }}>
+            <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: "10px 24px", borderRadius: "40px", border: "none", background: activeTab === tab ? "#f97316" : "white", color: activeTab === tab ? "white" : "#64748b", fontWeight: "500", cursor: "pointer", transition: "all 0.2s", fontSize: "14px" }}>
               {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
             </button>
           ))}
@@ -95,28 +149,28 @@ export default function Home() {
 
         {filteredEvents.length === 0 ? (
           <div style={{ textAlign: "center", padding: "60px", background: "white", borderRadius: "20px" }}>
-            <p style={{ color: "#94a3b8" }}>No events found in {selectedCity}. Try another city or search.</p>
+            <p style={{ color: "#94a3b8" }}>No events found.</p>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
             {filteredEvents.map((event) => {
-              const colors = getVerticalColor(event.vertical);
+              const colors = getVerticalColor(event.category);
               return (
                 <div key={event.id} onClick={() => router.push(`/booking/${event.id}`)} style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: `1px solid ${colors.border}`, cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s" }}>
                   <div style={{ height: "160px", background: `linear-gradient(135deg, ${colors.color}20, ${colors.color}10)`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: "48px" }}>🎉</span></div>
                   <div style={{ padding: "20px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "12px" }}>
-                      <span style={{ background: colors.bg, color: colors.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "500" }}>{event.vertical}</span>
+                      <span style={{ background: colors.bg, color: colors.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "500" }}>{event.category}</span>
                       <Heart size={18} style={{ color: "#94a3b8", cursor: "pointer" }} />
                     </div>
-                    <h3 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "12px", color: "#0f172a" }}>{event.name}</h3>
+                    <h3 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "12px", color: "#0f172a" }}>{event.title}</h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", color: "#64748b" }}><Calendar size={14} /> {event.date} at {event.time}</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", color: "#64748b" }}><MapPin size={14} /> {event.venue}</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", color: "#64748b" }}><Users size={14} /> {event.attendees} / {event.capacity} attending</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><Calendar size={14} /> {event.date} at {event.time}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><MapPin size={14} /> {event.venue}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><Users size={14} /> {event.registered} / {event.capacity} attending</div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #eef2ff", paddingTop: "16px" }}>
-                      <span style={{ fontSize: "22px", fontWeight: "700", color: "#f97316" }}>{event.price}</span>
+                      <span style={{ fontSize: "20px", fontWeight: "700", color: "#f97316" }}>₹{event.price}</span>
                       <button onClick={(e) => { e.stopPropagation(); router.push(`/booking/${event.id}`); }} style={{ background: "#f97316", color: "white", padding: "8px 24px", borderRadius: "40px", border: "none", cursor: "pointer", fontWeight: "500" }}>Book Now</button>
                     </div>
                   </div>
@@ -125,6 +179,8 @@ export default function Home() {
             })}
           </div>
         )}
+
+        <TrendingEvents />
       </main>
     </div>
   );

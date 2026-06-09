@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test Supabase</title></head>
+<body>
+<h1>Live Events (Direct Fetch)</h1>
+<div id="events"></div>
+<script>
+  const SUPABASE_URL = 'https://hvevqoltcwumcvxetxsf.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2ZXZxb2x0Y3d1bWN2eGV0eHNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQzMjU2MTQsImV4cCI6MjA0OTkwMTYxNH0.Y3N0tDQ-bVgu1N7Z9Ij1gxI7wQyLkYLgS8pBX59MqtU';
+
+  async function fetchEvents() {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/events?status=eq.Live&select=*`, {
+      headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const data = await response.json();
+    const div = document.getElementById('events');
+    if (data.length === 0) div.innerHTML = '<p>No live events found.</p>';
+    else data.forEach(event => div.innerHTML += `<div><strong>${event.title}</strong> - ${event.status}</div>`);
+  }
+  fetchEvents();
+</script>
+</body>
+</html>

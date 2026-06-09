@@ -1,127 +1,106 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, MapPin, Minus, Plus, CreditCard, Wallet } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import { Calendar, MapPin, Users, IndianRupee, Ticket, CreditCard, Clock, ChevronLeft, ChevronRight, MessageCircle, Shield, Sparkles } from "lucide-react";
 
 export default function BookingPage() {
   const params = useParams();
   const router = useRouter();
-  const eventId = params.eventId as string;
-  
-  const [event] = useState({
-    id: eventId,
-    name: "Startup Founders Mixer",
-    date: "24 May 2025",
-    time: "6:30 PM",
-    venue: "The Leela, Mumbai",
-    price: 1500,
-    image: "🎉"
-  });
-
+  const eventId = params?.eventId as string;
+  const [event, setEvent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [tickets, setTickets] = useState(1);
-  const [selectedPayment, setSelectedPayment] = useState("razorpay");
+  const [user, setUser] = useState<any>(null);
+  const [daysLeft, setDaysLeft] = useState(0);
 
-  const ticketPrice = event.price;
-  const convenienceFee = 99;
-  const gst = Math.round((ticketPrice * tickets + convenienceFee) * 0.18);
-  const total = ticketPrice * tickets + convenienceFee + gst;
+  useEffect(() => {
+    if (eventId) {
+      supabase.from("events").select("*").eq("id", eventId).single().then(({ data }) => {
+        setEvent(data);
+        if (data?.date) {
+          const days = Math.ceil((new Date(data.date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+          setDaysLeft(days > 0 ? days : 0);
+        }
+        setLoading(false);
+      });
+    }
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+  }, [eventId]);
 
-  const handleProceed = () => {
-    const bookingData = {
-      eventId: event.id,
-      eventName: event.name,
-      date: event.date,
-      time: event.time,
-      venue: event.venue,
-      tickets,
-      ticketPrice,
-      convenienceFee,
-      gst,
-      total,
-      paymentMethod: selectedPayment
-    };
-    localStorage.setItem("currentBooking", JSON.stringify(bookingData));
-    router.push("/checkout");
+  const handleBooking = async () => {
+    if (!user) {
+      router.push(`/login?redirectTo=/booking/${eventId}`);
+      return;
+    }
+    alert(`Booking ${tickets} ticket(s) for ${event?.title}. Total: ₹${event?.price * tickets}. Payment coming soon.`);
   };
 
+  const shareOnWhatsApp = () => {
+    const text = `Check out ${event?.title} at GCE Events! ${window.location.href}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div><p className="mt-4 text-gray-500">Loading...</p></div>;
+  if (!event) return <div className="min-h-screen flex items-center justify-center bg-white"><p className="text-gray-500">Event not found.</p></div>;
+
+  const totalAmount = event.price * tickets;
+  const progress = ((event.registered || 0) / event.capacity) * 100;
+
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
-      <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Book Your Tickets</h1>
-        <p style={{ color: "#64748b" }}>Complete your booking in few easy steps</p>
+    <div className="min-h-screen bg-white">
+      <div className="bg-orange-600 py-8 px-4 w-full">
+        <div className="max-w-full mx-auto text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1 mb-4"><Sparkles className="w-4 h-4 text-white" /><span className="text-white text-sm font-medium">Featured Event</span></div>
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">{event.title}</h1>
+          <div className="flex items-center justify-center gap-2 text-orange-100"><MapPin className="w-4 h-4" /> {event.city}</div>
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "24px" }}>
-        <div>
-          <div style={{ background: "white", borderRadius: "20px", padding: "20px", border: "1px solid #eef2ff", marginBottom: "24px", display: "flex", gap: "16px" }}>
-            <div style={{ width: "80px", height: "80px", background: "linear-gradient(135deg, #f97316, #ea580c)", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px" }}>{event.image}</div>
-            <div>
-              <h2 style={{ fontSize: "18px", fontWeight: "700" }}>{event.name}</h2>
-              <div style={{ fontSize: "13px", color: "#64748b", display: "flex", gap: "16px", marginTop: "4px", flexWrap: "wrap" }}>
-                <span><Calendar size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.date} at {event.time}</span>
-                <span><MapPin size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.venue}</span>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", marginBottom: "24px" }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>Select Tickets</h3>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: "1px solid #eef2ff" }}>
-              <div>
-                <div style={{ fontWeight: "500" }}>Regular Ticket</div>
-                <div style={{ fontSize: "12px", color: "#64748b" }}>Includes event access + refreshments</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                <span style={{ fontWeight: "600", color: "#f97316" }}>₹{ticketPrice}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <button onClick={() => setTickets(Math.max(1, tickets - 1))} style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #e2e8f0", background: "white", cursor: "pointer" }}><Minus size={14} /></button>
-                  <span style={{ width: "40px", textAlign: "center", fontWeight: "500" }}>{tickets}</span>
-                  <button onClick={() => setTickets(tickets + 1)} style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #e2e8f0", background: "white", cursor: "pointer" }}><Plus size={14} /></button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff" }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>Payment Method</h3>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 20px", border: selectedPayment === "razorpay" ? "2px solid #f97316" : "1px solid #e2e8f0", borderRadius: "12px", cursor: "pointer", background: selectedPayment === "razorpay" ? "#fef3c7" : "white" }}>
-                <input type="radio" name="payment" value="razorpay" checked={selectedPayment === "razorpay"} onChange={(e) => setSelectedPayment(e.target.value)} style={{ accentColor: "#f97316" }} />
-                <CreditCard size={18} style={{ color: "#f97316" }} /> Razorpay
-              </label>
-              <label style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 20px", border: selectedPayment === "wallet" ? "2px solid #f97316" : "1px solid #e2e8f0", borderRadius: "12px", cursor: "pointer", background: selectedPayment === "wallet" ? "#fef3c7" : "white" }}>
-                <input type="radio" name="payment" value="wallet" checked={selectedPayment === "wallet"} onChange={(e) => setSelectedPayment(e.target.value)} style={{ accentColor: "#f97316" }} />
-                <Wallet size={18} style={{ color: "#f97316" }} /> GCE Wallet (₹1,250)
-              </label>
-            </div>
-          </div>
+      <div className="max-w-full mx-auto px-4 py-8 md:py-12">
+        <div className="bg-orange-50 rounded-2xl p-4 mb-8 flex flex-wrap justify-between items-center gap-4">
+          <div className="flex items-center gap-3"><div className="bg-white rounded-full p-2"><Clock className="w-5 h-5 text-orange-600" /></div><div><p className="text-xs text-gray-500">Event starts in</p><p className="font-bold text-gray-900">{daysLeft} days</p></div></div>
+          <button onClick={shareOnWhatsApp} className="flex items-center gap-2 text-orange-600 hover:bg-white px-3 py-1 rounded-full"><MessageCircle className="w-4 h-4" /> Share</button>
         </div>
 
-        <div>
-          <div style={{ background: "white", borderRadius: "20px", padding: "24px", border: "1px solid #eef2ff", position: "sticky", top: "20px" }}>
-            <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>Order Summary</h3>
-            <div style={{ marginBottom: "16px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
-                <span style={{ color: "#64748b" }}>Ticket Price ({tickets} x ₹{ticketPrice})</span>
-                <span>₹{ticketPrice * tickets}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
-                <span style={{ color: "#64748b" }}>Convenience Fee</span>
-                <span>₹{convenienceFee}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
-                <span style={{ color: "#64748b" }}>GST (18%)</span>
-                <span>₹{gst}</span>
-              </div>
-              <div style={{ borderTop: "1px solid #eef2ff", marginTop: "12px", paddingTop: "12px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "700", fontSize: "18px" }}>
-                  <span>Total</span>
-                  <span style={{ color: "#f97316" }}>₹{total}</span>
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+              <div className="border-b border-gray-100 p-6 bg-orange-50/30"><h2 className="text-xl font-bold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-orange-600" /> Event Details</h2></div>
+              <div className="p-6">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="flex items-start gap-3"><div className="bg-orange-100 rounded-lg p-2"><Calendar className="w-4 h-4 text-orange-600" /></div><div><p className="text-xs text-gray-500">DATE & TIME</p><p className="font-semibold text-gray-900">{new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })} • {event.time || "6:30 PM"}</p></div></div>
+                  <div className="flex items-start gap-3"><div className="bg-orange-100 rounded-lg p-2"><MapPin className="w-4 h-4 text-orange-600" /></div><div><p className="text-xs text-gray-500">VENUE</p><p className="font-semibold text-gray-900">{event.venue}, {event.city}</p></div></div>
+                  <div className="flex items-start gap-3"><div className="bg-orange-100 rounded-lg p-2"><Users className="w-4 h-4 text-orange-600" /></div><div><p className="text-xs text-gray-500">CAPACITY</p><p className="font-semibold text-gray-900">{event.registered || 0} / {event.capacity} attending</p><div className="w-32 mt-1 h-1.5 bg-gray-200 rounded-full"><div className="h-full bg-orange-500 rounded-full" style={{ width: `${progress}%` }}></div></div></div></div>
+                  <div className="flex items-start gap-3"><div className="bg-orange-100 rounded-lg p-2"><IndianRupee className="w-4 h-4 text-orange-600" /></div><div><p className="text-xs text-gray-500">PRICE</p><p className="font-semibold text-gray-900">₹{event.price} per ticket</p></div></div>
                 </div>
               </div>
             </div>
-            <button onClick={handleProceed} style={{ width: "100%", background: "#f97316", color: "white", border: "none", padding: "14px", borderRadius: "40px", cursor: "pointer", fontWeight: "600", fontSize: "16px" }}>Proceed to Checkout</button>
+
+            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+              <div className="border-b border-gray-100 p-6 bg-orange-50/30"><h2 className="text-xl font-bold text-gray-900">📖 About This Event</h2></div>
+              <div className="p-6"><p className="text-gray-600 leading-relaxed">{event.description || "Join us for an unforgettable experience! Network with industry leaders, gain valuable insights, and create lasting memories."}</p></div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden sticky top-6 border border-orange-200">
+              <div className="bg-orange-600 p-5 text-white"><h2 className="text-xl font-bold flex items-center gap-2"><Ticket className="w-5 h-5" /> Booking Summary</h2></div>
+              <div className="p-5 space-y-4">
+                <div className="flex justify-between items-center pb-3 border-b"><span className="text-gray-600">Ticket Price</span><span className="font-bold text-gray-900">₹{event.price}</span></div>
+                <div className="flex justify-between items-center pb-3 border-b">
+                  <span className="text-gray-600">Quantity</span>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setTickets(Math.max(1, tickets - 1))} className="w-8 h-8 bg-gray-100 rounded-full hover:bg-orange-100"><ChevronLeft className="w-4 h-4" /></button>
+                    <span className="font-bold text-lg w-8 text-center">{tickets}</span>
+                    <button onClick={() => setTickets(tickets + 1)} className="w-8 h-8 bg-gray-100 rounded-full hover:bg-orange-100"><ChevronRight className="w-4 h-4" /></button>
+                  </div>
+                </div>
+                <div className="pt-2"><div className="flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total Amount</span><span className="text-2xl font-bold text-orange-600">₹{totalAmount}</span></div></div>
+                <button onClick={handleBooking} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 mt-2"><CreditCard className="w-5 h-5" /> Proceed to Payment</button>
+                <div className="flex items-center justify-center gap-3 text-xs text-gray-400"><Shield className="w-3 h-3" /> Secure payment • No hidden charges</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

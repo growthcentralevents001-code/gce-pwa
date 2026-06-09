@@ -1,0 +1,35 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+import HeaderEventSearch from "@/components/HeaderEventSearch";
+
+export default function Header() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+  }, []);
+
+  return (
+    <header className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <Link href="/" className="text-2xl font-bold text-orange-600 shrink-0">GCE</Link>
+        <div className="flex-1 max-w-md">
+          <HeaderEventSearch />
+        </div>
+        <nav className="flex items-center gap-4 shrink-0">
+          <Link href="/events" className="text-gray-600 hover:text-orange-600">Events</Link>
+          {user ? (
+            <Link href="/dashboard/member" className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm">Dashboard</Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-600 hover:text-orange-600">Login</Link>
+              <Link href="/signup" className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm">Sign Up</Link>
+            </>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
+}

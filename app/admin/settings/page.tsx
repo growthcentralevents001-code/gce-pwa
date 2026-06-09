@@ -1,315 +1,215 @@
 "use client";
-
 import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 import { 
-  LayoutDashboard, Users, Building2, Calendar, Tag, CreditCard, 
-  Settings, LogOut, Menu, X, User, Bell, DollarSign, Percent, 
-  CreditCard as Card, Mail, Shield, Database, Save, Lock, Globe
+  User, Percent, DollarSign, CreditCard, Bell, Shield, Database, 
+  Save, RefreshCw, Eye, EyeOff 
 } from "lucide-react";
 
 export default function AdminSettings() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
-  const [saved, setSaved] = useState(false);
-
-  // Profile Settings
+  const [showPassword, setShowPassword] = useState(false);
+  
+  // Profile state
   const [profile, setProfile] = useState({
-    name: "Super Admin",
-    email: "admin@gce.com",
-    phone: "+91 98765 43210",
-    role: "Super Admin",
+    full_name: "",
+    email: "",
+    phone: "",
   });
-
-  // Commission Settings
+  
+  // Commission state
   const [commission, setCommission] = useState({
-    connect: "20",
-    marketplace: "18",
-    enterprise: "15",
+    connect: 20,
+    marketplace: 18,
+    enterprise: 15,
+    franchisee: 50
   });
-
-  // Discount Settings
+  
+  // Discount state
   const [discount, setDiscount] = useState({
-    memberDiscount: "10",
-    earlyBird: "15",
-    bulkBooking: "20",
+    member_discount: 15,
+    early_bird: 10,
+    group_booking: 5
   });
-
-  // Payment Settings
+  
+  // Payment state
   const [payment, setPayment] = useState({
-    razorpayKey: "rzp_test_xxxxxxxxxxxxx",
-    razorpaySecret: "xxxxxxxxxxxxxxxxxxxx",
-    currency: "INR",
+    razorpay_key: "",
+    razorpay_secret: "",
+    mode: "test"
   });
-
-  // Notification Settings
+  
+  // Notification state
   const [notifications, setNotifications] = useState({
-    emailAlerts: true,
-    whatsappAlerts: false,
-    newEventAlert: true,
-    payoutAlert: true,
+    email: true,
+    whatsapp: true,
+    push: false
+  });
+  
+  // Password state
+  const [password, setPassword] = useState({
+    current: "",
+    new: "",
+    confirm: ""
   });
 
-  const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { id: "members", label: "Members", icon: Users, href: "/admin/members" },
-    { id: "partners", label: "Partners", icon: Building2, href: "/admin/partners" },
-    { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
-    { id: "offers", label: "Offers", icon: Tag, href: "/admin/offers" },
-    { id: "payments", label: "Payments", icon: CreditCard, href: "/admin/payments" },
-    { id: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
-  ];
+  useEffect(() => {
+    async function loadData() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.push("/login"); return; }
+      
+      // Load profile
+      const { data: userData } = await supabase.from("users").select("full_name, email, phone").eq("id", user.id).single();
+      if (userData) setProfile({ full_name: userData.full_name || "Admin", email: userData.email, phone: userData.phone || "" });
+      
+      // Load settings from platform_settings table
+      const { data: settings } = await supabase.from("platform_settings").select("*").single();
+      if (settings) {
+        if (settings.commission) setCommission(settings.commission);
+        if (settings.discount) setDiscount(settings.discount);
+        if (settings.payment) setPayment(settings.payment);
+        if (settings.notifications) setNotifications(settings.notifications);
+      }
+      setLoading(false);
+    }
+    loadData();
+  }, []);
 
-  const tabs = [
-    { id: "profile", label: "Profile", icon: User },
-    { id: "commission", label: "Commission", icon: Percent },
-    { id: "discount", label: "Discount", icon: DollarSign },
-    { id: "payment", label: "Payment", icon: Card },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "security", label: "Security", icon: Shield },
-    { id: "backup", label: "Backup", icon: Database },
-  ];
-
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+  const saveSettings = async (type: string, data: any) => {
+    setSaving(true);
+    // Get existing settings or create new
+    const { data: existing } = await supabase.from("platform_settings").select("*").single();
+    const updateData = { ...existing, [type]: data, updated_at: new Date() };
+    if (existing) {
+      await supabase.from("platform_settings").update(updateData).eq("id", existing.id);
+    } else {
+      await supabase.from("platform_settings").insert([{ id: 1, [type]: data }]);
+    }
+    alert(`${type} settings saved!`);
+    setSaving(false);
   };
 
+  const updatePassword = async () => {
+    if (password.new !== password.confirm) { alert("Passwords don't match"); return; }
+    if (password.new.length < 6) { alert("Password must be at least 6 characters"); return; }
+    setSaving(true);
+    const { error } = await supabase.auth.updateUser({ password: password.new });
+    if (!error) {
+      alert("Password updated!");
+      setPassword({ current: "", new: "", confirm: "" });
+    } else alert("Error: " + error.message);
+    setSaving(false);
+  };
+
+  if (loading) return <div className="p-8 text-center">Loading settings...</div>;
+
+  const tabs = [
+    { id: "profile", name: "Profile", icon: User },
+    { id: "commission", name: "Commission", icon: Percent },
+    { id: "discount", name: "Discount", icon: DollarSign },
+    { id: "payment", name: "Payment", icon: CreditCard },
+    { id: "notifications", name: "Notifications", icon: Bell },
+    { id: "security", name: "Security", icon: Shield },
+    { id: "backup", name: "Backup", icon: Database },
+  ];
+
   return (
-    <div style={{ display: "flex", background: "#f1f5f9", minHeight: "100vh" }}>
-      {/* Sidebar */}
-      <div style={{
-        width: sidebarOpen ? "280px" : "80px",
-        background: "linear-gradient(180deg, #1e293b 0%, #0f172a 100%)",
-        color: "white",
-        transition: "width 0.3s",
-        position: "fixed",
-        height: "100vh",
-        overflowY: "auto",
-        zIndex: 50
-      }}>
-        <div style={{ padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #334155" }}>
-          {sidebarOpen && <span style={{ fontSize: "20px", fontWeight: "bold" }}>GCE Admin</span>}
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "none", border: "none", color: "white", cursor: "pointer" }}>
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-        <nav style={{ padding: "16px" }}>
-          {navItems.map((item) => (
-            <a key={item.id} href={item.href} style={{
-              display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px",
-              marginBottom: "4px", borderRadius: "12px", background: item.id === "settings" ? "#f97316" : "transparent",
-              color: "white", textDecoration: "none", cursor: "pointer"
-            }}>
-              <item.icon size={20} />
-              {sidebarOpen && <span>{item.label}</span>}
-            </a>
+    <div className="space-y-6">
+      <div><h1 className="text-2xl font-bold">Settings</h1><p className="text-gray-500">Manage platform configuration</p></div>
+      <div className="flex gap-6">
+        <div className="w-64 bg-white rounded-xl shadow-sm p-4 space-y-1">
+          {tabs.map(tab => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm ${activeTab === tab.id ? "bg-orange-50 text-orange-600" : "hover:bg-gray-50"}`}>
+              <tab.icon size={18} /> {tab.name}
+            </button>
           ))}
-          <div style={{ marginTop: "20px", borderTop: "1px solid #334155", paddingTop: "16px" }}>
-            <a href="#" style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", borderRadius: "12px", color: "#94a3b8", textDecoration: "none", cursor: "pointer" }}>
-              <LogOut size={20} />
-              {sidebarOpen && <span>Logout</span>}
-            </a>
-          </div>
-        </nav>
-      </div>
+        </div>
 
-      {/* Main Content */}
-      <div style={{
-        marginLeft: sidebarOpen ? "280px" : "80px",
-        flex: 1,
-        padding: "24px",
-        transition: "margin-left 0.3s"
-      }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          {/* Header */}
-          <div style={{ marginBottom: "24px" }}>
-            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a", marginBottom: "4px" }}>Settings</h1>
-            <p style={{ color: "#64748b" }}>Manage platform configuration and preferences</p>
-          </div>
-
-          {/* Tabs */}
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  display: "flex", alignItems: "center", gap: "8px", padding: "10px 20px",
-                  borderRadius: "40px", border: "none", cursor: "pointer",
-                  background: activeTab === tab.id ? "#f97316" : "transparent",
-                  color: activeTab === tab.id ? "white" : "#64748b",
-                  fontWeight: activeTab === tab.id ? "500" : "normal"
-                }}
-              >
-                <tab.icon size={18} /> {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Profile Settings */}
+        <div className="flex-1 bg-white rounded-xl shadow-sm p-6">
+          {/* Profile Tab */}
           {activeTab === "profile" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Profile Information</h2>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Full Name</label>
-                <input type="text" value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            <div><h2 className="text-lg font-bold mb-4">Profile Information</h2>
+              <div className="space-y-4">
+                <div><label className="block text-sm">Full Name</label><input type="text" value={profile.full_name} onChange={e => setProfile({...profile, full_name: e.target.value})} className="w-full border rounded-lg p-2" /></div>
+                <div><label className="block text-sm">Email</label><input type="email" value={profile.email} disabled className="w-full border rounded-lg p-2 bg-gray-50" /></div>
+                <div><label className="block text-sm">Phone</label><input type="tel" value={profile.phone} onChange={e => setProfile({...profile, phone: e.target.value})} className="w-full border rounded-lg p-2" /></div>
+                <button onClick={() => saveSettings("profile", profile)} disabled={saving} className="bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">{saving ? "Saving..." : "Save Profile"}</button>
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Email Address</label>
-                <input type="email" value={profile.email} onChange={(e) => setProfile({...profile, email: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Phone Number</label>
-                <input type="tel" value={profile.phone} onChange={(e) => setProfile({...profile, phone: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Role</label>
-                <input type="text" value={profile.role} disabled style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px", background: "#f1f5f9" }} />
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
             </div>
           )}
 
-          {/* Commission Settings */}
+          {/* Commission Tab */}
           {activeTab === "commission" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Commission Rates (%)</h2>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Connect</label>
-                <input type="number" value={commission.connect} onChange={(e) => setCommission({...commission, connect: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Connect events</p>
+            <div><h2 className="text-lg font-bold mb-4">Commission Settings</h2>
+              <div className="space-y-4">
+                <div><label>GCE Connect (%)</label><input type="number" value={commission.connect} onChange={e => setCommission({...commission, connect: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Marketplace (%)</label><input type="number" value={commission.marketplace} onChange={e => setCommission({...commission, marketplace: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Enterprise (%)</label><input type="number" value={commission.enterprise} onChange={e => setCommission({...commission, enterprise: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Franchisee Share (%)</label><input type="number" value={commission.franchisee} onChange={e => setCommission({...commission, franchisee: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <button onClick={() => saveSettings("commission", commission)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Commission</button>
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Marketplace</label>
-                <input type="number" value={commission.marketplace} onChange={(e) => setCommission({...commission, marketplace: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Marketplace events</p>
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>GCE Enterprise</label>
-                <input type="number" value={commission.enterprise} onChange={(e) => setCommission({...commission, enterprise: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-                <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>GCE gets this % from Enterprise events</p>
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
             </div>
           )}
 
-          {/* Discount Settings */}
+          {/* Discount Tab */}
           {activeTab === "discount" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Discount Settings (%)</h2>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Member Discount (Marketplace)</label>
-                <input type="number" value={discount.memberDiscount} onChange={(e) => setDiscount({...discount, memberDiscount: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            <div><h2 className="text-lg font-bold mb-4">Discount Settings</h2>
+              <div className="space-y-4">
+                <div><label>Member Discount on Food Bill (%)</label><input type="number" value={discount.member_discount} onChange={e => setDiscount({...discount, member_discount: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Early Bird Discount (%)</label><input type="number" value={discount.early_bird} onChange={e => setDiscount({...discount, early_bird: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Group Booking Discount (%)</label><input type="number" value={discount.group_booking} onChange={e => setDiscount({...discount, group_booking: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
+                <button onClick={() => saveSettings("discount", discount)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Discounts</button>
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Early Bird Discount</label>
-                <input type="number" value={discount.earlyBird} onChange={(e) => setDiscount({...discount, earlyBird: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Bulk Booking Discount</label>
-                <input type="number" value={discount.bulkBooking} onChange={(e) => setDiscount({...discount, bulkBooking: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
             </div>
           )}
 
-          {/* Payment Settings */}
+          {/* Payment Tab */}
           {activeTab === "payment" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Payment Gateway</h2>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Razorpay Key ID</label>
-                <input type="text" value={payment.razorpayKey} onChange={(e) => setPayment({...payment, razorpayKey: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            <div><h2 className="text-lg font-bold mb-4">Payment Gateway</h2>
+              <div className="space-y-4">
+                <div><label>Razorpay Key ID</label><input type="text" value={payment.razorpay_key} onChange={e => setPayment({...payment, razorpay_key: e.target.value})} placeholder="rzp_test_xxx" className="w-full border rounded-lg p-2" /></div>
+                <div><label>Razorpay Secret</label><input type="password" value={payment.razorpay_secret} onChange={e => setPayment({...payment, razorpay_secret: e.target.value})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Mode</label><select value={payment.mode} onChange={e => setPayment({...payment, mode: e.target.value})} className="w-full border rounded-lg p-2"><option value="test">Test Mode</option><option value="live">Live Mode</option></select></div>
+                <button onClick={() => saveSettings("payment", payment)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Payment Settings</button>
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Razorpay Key Secret</label>
-                <input type="password" value={payment.razorpaySecret} onChange={(e) => setPayment({...payment, razorpaySecret: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Currency</label>
-                <select value={payment.currency} onChange={(e) => setPayment({...payment, currency: e.target.value})} style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }}>
-                  <option value="INR">INR (Indian Rupee)</option>
-                  <option value="USD">USD (US Dollar)</option>
-                  <option value="EUR">EUR (Euro)</option>
-                </select>
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
             </div>
           )}
 
-          {/* Notification Settings */}
+          {/* Notifications Tab */}
           {activeTab === "notifications" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Notification Preferences</h2>
-              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span><strong>Email Alerts</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>Receive email notifications</span></span>
-                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
-                  <input type="checkbox" checked={notifications.emailAlerts} onChange={(e) => setNotifications({...notifications, emailAlerts: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
-                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.emailAlerts ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
-                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.emailAlerts ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
-                  </span>
-                </label>
+            <div><h2 className="text-lg font-bold mb-4">Notification Preferences</h2>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center"><span>Email Notifications</span><button onClick={() => setNotifications({...notifications, email: !notifications.email})} className={`px-3 py-1 rounded-full text-sm ${notifications.email ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.email ? "ON" : "OFF"}</button></div>
+                <div className="flex justify-between items-center"><span>WhatsApp Notifications</span><button onClick={() => setNotifications({...notifications, whatsapp: !notifications.whatsapp})} className={`px-3 py-1 rounded-full text-sm ${notifications.whatsapp ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.whatsapp ? "ON" : "OFF"}</button></div>
+                <div className="flex justify-between items-center"><span>Push Notifications</span><button onClick={() => setNotifications({...notifications, push: !notifications.push})} className={`px-3 py-1 rounded-full text-sm ${notifications.push ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.push ? "ON" : "OFF"}</button></div>
+                <button onClick={() => saveSettings("notifications", notifications)} className="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg">Save Notifications</button>
               </div>
-              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span><strong>WhatsApp Alerts</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>Receive WhatsApp notifications</span></span>
-                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
-                  <input type="checkbox" checked={notifications.whatsappAlerts} onChange={(e) => setNotifications({...notifications, whatsappAlerts: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
-                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.whatsappAlerts ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
-                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.whatsappAlerts ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
-                  </span>
-                </label>
-              </div>
-              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span><strong>New Event Alert</strong><br /><span style={{ fontSize: "12px", color: "#64748b" }}>When new event is created</span></span>
-                <label style={{ position: "relative", display: "inline-block", width: "50px", height: "24px" }}>
-                  <input type="checkbox" checked={notifications.newEventAlert} onChange={(e) => setNotifications({...notifications, newEventAlert: e.target.checked})} style={{ opacity: 0, width: 0, height: 0 }} />
-                  <span style={{ position: "absolute", cursor: "pointer", top: 0, left: 0, right: 0, bottom: 0, background: notifications.newEventAlert ? "#f97316" : "#ccc", borderRadius: "24px", transition: "0.3s" }}>
-                    <span style={{ position: "absolute", height: "20px", width: "20px", left: notifications.newEventAlert ? "26px" : "4px", bottom: "2px", background: "white", borderRadius: "50%", transition: "0.3s" }}></span>
-                  </span>
-                </label>
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Save Changes</button>
             </div>
           )}
 
-          {/* Security Settings */}
+          {/* Security Tab */}
           {activeTab === "security" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Security</h2>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Current Password</label>
-                <input type="password" placeholder="Enter current password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
+            <div><h2 className="text-lg font-bold mb-4">Change Password</h2>
+              <div className="space-y-4">
+                <div><label>New Password</label><input type={showPassword ? "text" : "password"} value={password.new} onChange={e => setPassword({...password, new: e.target.value})} className="w-full border rounded-lg p-2" /></div>
+                <div><label>Confirm Password</label><input type={showPassword ? "text" : "password"} value={password.confirm} onChange={e => setPassword({...password, confirm: e.target.value})} className="w-full border rounded-lg p-2" /></div>
+                <div className="flex gap-2"><button onClick={() => setShowPassword(!showPassword)} className="border px-3 py-1 rounded">{showPassword ? "Hide" : "Show"}</button><button onClick={updatePassword} disabled={saving} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Update Password</button></div>
               </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>New Password</label>
-                <input type="password" placeholder="Enter new password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <div style={{ marginBottom: "20px" }}>
-                <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Confirm Password</label>
-                <input type="password" placeholder="Confirm new password" style={{ width: "100%", padding: "12px", border: "1px solid #e2e8f0", borderRadius: "12px" }} />
-              </div>
-              <button onClick={handleSave} style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Change Password</button>
             </div>
           )}
 
-          {/* Backup Settings */}
+          {/* Backup Tab */}
           {activeTab === "backup" && (
-            <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "24px" }}>Backup</h2>
-              <div style={{ marginBottom: "20px", padding: "16px", background: "#f1f5f9", borderRadius: "12px" }}>
-                <p><strong>Last Backup:</strong> 21 May 2025, 08:54 AM</p>
-                <p><strong>Backup Size:</strong> 194 MB</p>
-                <p><strong>Location:</strong> /root/gce-pwa-dev-backup-20260521-085357.tar.gz</p>
+            <div><h2 className="text-lg font-bold mb-4">Database Backup</h2>
+              <p className="text-gray-500 mb-4">Manual and automated backup options</p>
+              <div className="space-y-3">
+                <button className="bg-orange-600 text-white px-4 py-2 rounded-lg w-full">Run Manual Backup</button>
+                <button className="border px-4 py-2 rounded-lg w-full">Download Latest Backup</button>
               </div>
-              <button style={{ background: "#f97316", color: "white", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer", marginRight: "12px" }}>Create Backup Now</button>
-              <button style={{ background: "#f1f5f9", color: "#64748b", border: "none", padding: "12px 24px", borderRadius: "40px", cursor: "pointer" }}>Download Backup</button>
-            </div>
-          )}
-
-          {/* Save Success Message */}
-          {saved && (
-            <div style={{ position: "fixed", bottom: "24px", right: "24px", background: "#22c55e", color: "white", padding: "12px 24px", borderRadius: "40px", zIndex: 1000 }}>
-              ✓ Settings saved successfully!
             </div>
           )}
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 export default function OfflinePage() {
   return (
     <div style={{ textAlign: 'center', padding: '50px' }}>

@@ -5,7 +5,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import SimpleSearch from "./components/SearchBar";
 
 const TrendingEvents = dynamic(() => import("./components/TrendingEvents"), { ssr: false });
 
@@ -129,7 +128,6 @@ export default function Home() {
       <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px 48px" }}>
         {/* Search Bar Component */}
         <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center" }}>
-          <SimpleSearch />
         </div>
 
         <div style={{ textAlign: "center", marginBottom: "40px" }}>

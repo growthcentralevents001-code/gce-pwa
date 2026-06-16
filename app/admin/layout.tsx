@@ -29,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Payout Management", href: "/admin/payouts", icon: HandCoins },
     { name: "Members Management", href: "/admin/members", icon: Users },
     { name: "Partners Management", href: "/admin/partners", icon: Star },
+    { name: "Venue Referrers", href: "/admin/venue-referrers", icon: Star },
     { name: "Offers Management", href: "/admin/offers", icon: Gift },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];

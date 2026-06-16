@@ -1,59 +1,99 @@
 "use client";
-
-import { useState } from "react";
-import { Heart, Calendar, MapPin, Users, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Heart, Calendar, MapPin, Users } from "lucide-react";
 
 export default function WishlistPage() {
-  const [savedEvents, setSavedEvents] = useState([
-    { id: 1, name: "Startup Founders Mixer", date: "24 May 2025", venue: "The Leela, Mumbai", price: "₹1,500", attendees: 124, capacity: 200, vertical: "Connect" },
-    { id: 3, name: "Fintech Leadership Summit", date: "30 May 2025", venue: "Taj Lands End, Mumbai", price: "₹5,000", attendees: 180, capacity: 250, vertical: "Enterprise" },
-  ]);
+  const router = useRouter();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const removeFromWishlist = (id: number) => {
-    setSavedEvents(savedEvents.filter(e => e.id !== id));
-    alert("Removed from wishlist");
-  };
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
-  if (savedEvents.length === 0) {
-    return (
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "60px 24px", textAlign: "center", background: "#f8fafc", minHeight: "100vh" }}>
-        <Heart size={48} style={{ color: "#94a3b8", marginBottom: "16px" }} />
-        <h2 style={{ fontSize: "24px", fontWeight: "600", marginBottom: "8px" }}>No saved events yet</h2>
-        <p style={{ color: "#64748b", marginBottom: "24px" }}>Start exploring and save events you love!</p>
-        <Link href="/" style={{ background: "#f97316", color: "white", padding: "12px 24px", borderRadius: "40px", textDecoration: "none" }}>Explore Events</Link>
-      </div>
-    );
+  async function fetchWishlist() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    // Get saved event IDs
+    const { data: saved, error } = await supabase
+      .from("saved_events")
+      .select("event_id")
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error fetching wishlist:", error);
+      setEvents([]);
+      setLoading(false);
+      return;
+    }
+
+    if (!saved || saved.length === 0) {
+      setEvents([]);
+      setLoading(false);
+      return;
+    }
+
+    const eventIds = saved.map(s => s.event_id);
+    // Fetch full event details
+    const { data: eventDetails } = await supabase
+      .from("events")
+      .select("*")
+      .in("id", eventIds);
+
+    setEvents(eventDetails || []);
+    setLoading(false);
   }
 
-  return (
-    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", background: "#f8fafc", minHeight: "100vh" }}>
-      <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#0f172a" }}>Saved Events</h1>
-        <p style={{ color: "#64748b" }}>Events you've saved for later</p>
-      </div>
+  async function removeFromWishlist(eventId) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await supabase.from("saved_events").delete().eq("user_id", user.id).eq("event_id", eventId);
+    setEvents(prev => prev.filter(e => e.id !== eventId));
+  }
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "24px" }}>
-        {savedEvents.map(event => (
-          <div key={event.id} style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: "1px solid #eef2ff", position: "relative" }}>
-            <button onClick={() => removeFromWishlist(event.id)} style={{ position: "absolute", top: "12px", right: "12px", background: "white", border: "none", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}><X size={16} style={{ color: "#ef4444" }} /></button>
-            <div style={{ height: "140px", background: "linear-gradient(135deg, #f97316, #ea580c)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: "48px" }}>🎉</span></div>
-            <div style={{ padding: "20px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "12px" }}><span style={{ background: "#f1f5f9", padding: "4px 12px", borderRadius: "20px", fontSize: "12px" }}>{event.vertical}</span></div>
-              <h3 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "8px" }}>{event.name}</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "16px", fontSize: "13px", color: "#64748b" }}>
-                <div><Calendar size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.date}</div>
-                <div><MapPin size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.venue}</div>
-                <div><Users size={12} style={{ display: "inline", marginRight: "4px" }} /> {event.attendees} / {event.capacity} attending</div>
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Saved Events</h1>
+      {events.length === 0 ? (
+        <div className="text-center py-12 bg-white rounded-lg shadow">
+          <p className="text-gray-500">No saved events yet.</p>
+          <Link href="/events" className="mt-4 inline-block bg-orange-600 text-white px-4 py-2 rounded-lg">Browse Events</Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {events.map(event => (
+            <div key={event.id} className="bg-white rounded-xl shadow-md overflow-hidden relative">
+              <button onClick={() => removeFromWishlist(event.id)} className="absolute top-2 right-2 p-1 rounded-full bg-white shadow-md z-10">
+                <Heart size={18} className="fill-red-500 text-red-500" />
+              </button>
+              <div className="h-32 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                <span className="text-4xl">🎉</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #eef2ff", paddingTop: "16px" }}>
-                <span style={{ fontSize: "20px", fontWeight: "700", color: "#f97316" }}>{event.price}</span>
-                <Link href={`/events/${event.id}`} style={{ background: "#f97316", color: "white", padding: "6px 20px", borderRadius: "40px", textDecoration: "none", fontSize: "13px" }}>Book Now</Link>
+              <div className="p-4">
+                <h3 className="font-bold text-lg">{event.title}</h3>
+                <div className="space-y-1 text-sm text-gray-600 mt-2">
+                  <div className="flex items-center gap-1"><Calendar size={14} /> {new Date(event.date).toLocaleDateString()} at {event.time}</div>
+                  <div className="flex items-center gap-1"><MapPin size={14} /> {event.venue}, {event.city}</div>
+                  <div className="flex items-center gap-1"><Users size={14} /> {event.registered} / {event.capacity} attending</div>
+                </div>
+                <div className="mt-3 flex justify-between items-center">
+                  <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
+                  <Link href={`/events/${event.id}`} className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

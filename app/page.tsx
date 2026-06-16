@@ -1,17 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-import { Heart, Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-
-const TrendingEvents = dynamic(() => import("./components/TrendingEvents"), { ssr: false });
+import Link from "next/link";
+import { Search, Heart } from "lucide-react";
 
 interface Event {
   id: string;
   title: string;
-  category: string;
+  vertical: string;
   date: string;
   time: string;
   venue: string;
@@ -21,167 +17,162 @@ interface Event {
   capacity: number;
 }
 
-export default function Home() {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("all");
+export default function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
+  const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
+
+  const categories = [
+    { name: "Music", value: "music" },
+    { name: "Sports", value: "sports" },
+    { name: "Food & Drinks", value: "food" },
+    { name: "Open Mics", value: "openmic" },
+  ];
 
   useEffect(() => {
-    setIsClient(true);
     fetchEvents();
+    fetchWishlist();
   }, []);
 
-  const fetchEvents = async () => {
+  async function fetchEvents() {
     setLoading(true);
     const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .eq('status', 'Live')
-      .order('date', { ascending: true });
+      .from("events")
+      .select("*")
+      .eq("status", "Live")
+      .order("date", { ascending: true });
     if (!error && data) {
-      const formatted: Event[] = data.map((event: any) => ({
-        id: event.id,
-        title: event.title,
-        category: event.category || event.vertical,
-        date: new Date(event.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }),
-        time: event.time || "6:30 PM",
-        venue: event.venue,
-        city: event.city,
-        price: event.price,
-        registered: event.registered || 0,
-        capacity: event.capacity,
+      const formatted = data.map((ev: any) => ({
+        id: ev.id,
+        title: ev.title,
+        vertical: (ev.vertical || ev.category || "Marketplace").toLowerCase(),
+        date: new Date(ev.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }),
+        time: ev.time || "6:30 PM",
+        venue: ev.venue,
+        city: ev.city,
+        price: ev.price,
+        registered: ev.registered || 0,
+        capacity: ev.capacity,
       }));
       setEvents(formatted);
+    } else {
+      setEvents([]);
     }
     setLoading(false);
-  };
+  }
 
-  const filteredEvents = events.filter(event => {
-    const matchesTab = activeTab === "all" || event.category?.toLowerCase() === activeTab.toLowerCase();
-    return matchesTab;
-  });
+  async function fetchWishlist() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data } = await supabase.from("saved_events").select("event_id").eq("user_id", user.id);
+    if (data) setWishlistIds(new Set(data.map((item: any) => item.event_id)));
+  }
 
-  const getVerticalColor = (category: string) => {
-    switch(category) {
-      case "Connect": return { bg: "#fef3c7", color: "#92400e", border: "#fde68a" };
-      case "Marketplace": return { bg: "#e0e7ff", color: "#3730a3", border: "#c7d2fe" };
-      case "Enterprise": return { bg: "#dcfce7", color: "#166534", border: "#bbf7d0" };
-      default: return { bg: "#f1f5f9", color: "#475569", border: "#e2e8f0" };
+  async function toggleWishlist(eventId: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { alert("Please login"); return; }
+    const isIn = wishlistIds.has(eventId);
+    if (isIn) {
+      const { error } = await supabase.from("saved_events").delete().eq("user_id", user.id).eq("event_id", eventId);
+      if (!error) {
+        setWishlistIds(prev => { const s = new Set(prev); s.delete(eventId); return s; });
+        alert("Removed");
+      } else alert("Delete error: " + error.message);
+    } else {
+      const { error } = await supabase.from("saved_events").insert({ user_id: user.id, event_id: eventId });
+      if (!error) {
+        setWishlistIds(prev => new Set(prev).add(eventId));
+        alert("Added");
+      } else alert("Insert error: " + error.message);
+    }
+  }
+
+  const filteredEvents = events.filter(event => activeTab === "all" || event.vertical === activeTab);
+  const getVerticalStyle = (vertical: string) => {
+    switch (vertical) {
+      case "connect": return { bg: "#fef3c7", color: "#92400e" };
+      case "marketplace": return { bg: "#e0e7ff", color: "#3730a3" };
+      case "enterprise": return { bg: "#dcfce7", color: "#166534" };
+      default: return { bg: "#f1f5f9", color: "#475569" };
     }
   };
 
-  if (!isClient || loading) {
-    return <div style={{ minHeight: "100vh", background: "#f8fafc" }}></div>;
-  }
+  if (loading) return <div className="max-w-7xl mx-auto px-4 py-12 text-center">Loading events...</div>;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      {/* Hero Banner */}
-      <div style={{
-        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
-        borderRadius: "24px",
-        margin: "24px 24px 40px 24px",
-        padding: "clamp(32px, 6vw, 56px) clamp(24px, 5vw, 48px)",
-        position: "relative",
-        overflow: "hidden",
-        boxShadow: "0 20px 35px -10px rgba(249,115,22,0.3)"
-      }}>
-        <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1%, transparent 1%)`,
-          backgroundSize: "30px 30px",
-          pointerEvents: "none"
-        }} />
-        <div style={{ position: "relative", zIndex: 2 }}>
-          <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", padding: "6px 16px", borderRadius: "40px", marginBottom: "24px", fontSize: "13px", fontWeight: "500", color: "white" }}>
-            ✨ India's Premier Event Platform
-          </div>
-          <h1 style={{ fontSize: "clamp(32px, 8vw, 56px)", fontWeight: "800", color: "white", marginBottom: "16px", lineHeight: "1.2" }}>
-            Discover, Connect & <br />
-            <span style={{ borderBottom: "4px solid #ffd700", display: "inline-block" }}>Grow Together</span>
-          </h1>
-          <p style={{ fontSize: "clamp(16px, 4vw, 20px)", color: "rgba(255,255,255,0.9)", marginBottom: "32px", maxWidth: "500px" }}>
-            Join 10,000+ members and experience the best networking, learning, and entertainment events near you.
-          </p>
-          <div style={{ display: "flex", gap: "clamp(20px, 5vw, 40px)", flexWrap: "wrap", marginBottom: "32px" }}>
-            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>10,000+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Active Members</div></div>
-            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>50+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Events Monthly</div></div>
-            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>100+</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Partner Venues</div></div>
-            <div><div style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: "700", color: "white" }}>4.8★</div><div style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>Member Rating</div></div>
-          </div>
-          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-            <Link href="/events" style={{ background: "white", color: "#f97316", padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontWeight: "600", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-              Explore Events <ArrowRight size={16} />
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Hero Section with Category Buttons - REPLACED Discover text */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          {categories.map((cat) => (
+            <Link
+              key={cat.value}
+              href={`/events?category=${cat.value}`}
+              className="px-6 py-3 bg-orange-600 text-white rounded-full text-sm font-medium hover:bg-orange-700 transition shadow-md"
+            >
+              {cat.name}
             </Link>
-            <Link href="/signup" style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", color: "white", padding: "12px 28px", borderRadius: "40px", textDecoration: "none", fontWeight: "500", border: "1px solid rgba(255,255,255,0.3)" }}>
-              Become a Member
-            </Link>
-          </div>
-        </div>
-        <div style={{ position: "absolute", right: "-50px", top: "-50px", width: "250px", height: "250px", background: "rgba(255,255,255,0.1)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", right: "100px", bottom: "-80px", width: "200px", height: "200px", background: "rgba(255,255,255,0.08)", borderRadius: "50%", pointerEvents: "none" }} />
-      </div>
-
-      <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px 48px" }}>
-        {/* Search Bar Component */}
-        <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center" }}>
-        </div>
-
-        <div style={{ textAlign: "center", marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "clamp(28px, 6vw, 48px)", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>
-            Discover Amazing <span style={{ color: "#f97316" }}>Events</span> Near You
-          </h1>
-          <p style={{ fontSize: "clamp(14px, 3vw, 18px)", color: "#64748b", maxWidth: "600px", margin: "0 auto" }}>
-            Connect, learn, and grow with India's premier event platform
-          </p>
-        </div>
-
-        <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginBottom: "32px", flexWrap: "wrap" }}>
-          {["all", "connect", "marketplace", "enterprise"].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: "10px 24px", borderRadius: "40px", border: "none", background: activeTab === tab ? "#f97316" : "white", color: activeTab === tab ? "white" : "#64748b", fontWeight: "500", cursor: "pointer", transition: "all 0.2s", fontSize: "14px" }}>
-              {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
-            </button>
           ))}
         </div>
+        <p className="text-gray-500">Discover amazing events near you</p>
+      </div>
 
-        {filteredEvents.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px", background: "white", borderRadius: "20px" }}>
-            <p style={{ color: "#94a3b8" }}>No events found.</p>
-          </div>
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px" }}>
-            {filteredEvents.map((event) => {
-              const colors = getVerticalColor(event.category);
-              return (
-                <div key={event.id} onClick={() => router.push(`/booking/${event.id}`)} style={{ background: "white", borderRadius: "20px", overflow: "hidden", border: `1px solid ${colors.border}`, cursor: "pointer", transition: "transform 0.2s, box-shadow 0.2s" }}>
-                  <div style={{ height: "160px", background: `linear-gradient(135deg, ${colors.color}20, ${colors.color}10)`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: "48px" }}>🎉</span></div>
-                  <div style={{ padding: "20px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "12px" }}>
-                      <span style={{ background: colors.bg, color: colors.color, padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: "500" }}>{event.category}</span>
-                      <Heart size={18} style={{ color: "#94a3b8", cursor: "pointer" }} />
+      {/* Tabs */}
+      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
+        {["all", "connect", "marketplace", "enterprise"].map(tab => (
+          <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === tab ? "bg-orange-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+            {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+          </button>
+        ))}
+      </div>
+
+      {/* Events grid */}
+      {filteredEvents.length === 0 ? (
+        <div className="text-center py-12">
+          <p>No events found.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredEvents.map(event => {
+            const style = getVerticalStyle(event.vertical);
+            const isWishlisted = wishlistIds.has(event.id);
+            return (
+              <Link key={event.id} href={`/events/${event.id}`}>
+                <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition">
+                  <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                    <span className="text-5xl">🎉</span>
+                  </div>
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">{event.title}</h3>
+                      <span className="text-xs px-2 py-1 rounded-full" style={{ background: style.bg, color: style.color }}>
+                        {event.vertical === "connect" ? "GCE Connect" : event.vertical === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+                      </span>
                     </div>
-                    <h3 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "12px", color: "#0f172a" }}>{event.title}</h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><Calendar size={14} /> {event.date} at {event.time}</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><MapPin size={14} /> {event.venue}</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#64748b" }}><Users size={14} /> {event.registered} / {event.capacity} attending</div>
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <div>📅 {event.date} at {event.time}</div>
+                      <div>📍 {event.venue}, {event.city}</div>
+                      <div>👥 {event.registered} / {event.capacity} attending</div>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #eef2ff", paddingTop: "16px" }}>
-                      <span style={{ fontSize: "20px", fontWeight: "700", color: "#f97316" }}>₹{event.price}</span>
-                      <button onClick={(e) => { e.stopPropagation(); router.push(`/booking/${event.id}`); }} style={{ background: "#f97316", color: "white", padding: "8px 24px", borderRadius: "40px", border: "none", cursor: "pointer", fontWeight: "500" }}>Book Now</button>
+                    <div className="mt-3 flex justify-between items-center">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
+                        <button onClick={(e) => toggleWishlist(event.id, e)} className="focus:outline-none">
+                          <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
+                        </button>
+                      </div>
+                      <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</span>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
-
-        <TrendingEvents />
-      </main>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

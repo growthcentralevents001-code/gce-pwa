@@ -1,0 +1,156 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { Calendar, MapPin, Users, Search , Heart} from "lucide-react";
+import WishlistButton from "@/components/WishlistButton";
+
+interface Event {
+  id: string;
+  title: string;
+  category: string;
+  date: string;
+  time: string;
+  venue: string;
+  city: string;
+  price: number;
+  registered: number;
+  capacity: number;
+}
+
+export default function EventsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlQuery = searchParams.get("search") || "";
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchInput, setSearchInput] = useState(urlQuery);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [urlQuery]);
+
+  async function fetchEvents() {
+    setLoading(true);
+    let query = supabase.from("events").select("*").eq("status", "Live");
+    if (urlQuery.trim() !== "") {
+      query = query.or(`title.ilike.%${urlQuery}%,venue.ilike.%${urlQuery}%,city.ilike.%${urlQuery}%`);
+    }
+    const { data, error } = await query.order("date", { ascending: true });
+    if (!error && data) {
+      const formatted: Event[] = data.map((event: any) => ({
+        id: event.id,
+        title: event.title,
+        category: event.category || event.vertical || "Marketplace",
+        date: new Date(event.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }),
+        time: event.time || "6:30 PM",
+        venue: event.venue,
+        city: event.city,
+        price: event.price,
+        registered: event.registered || 0,
+        capacity: event.capacity,
+      }));
+      setEvents(formatted);
+    } else {
+      setEvents([]);
+    }
+    setLoading(false);
+  }
+
+  const filteredEvents = events.filter(event =>
+    activeTab === "all" || event.category?.toLowerCase() === activeTab.toLowerCase()
+  );
+
+  const getCategoryStyle = (category: string) => {
+    switch (category?.toLowerCase()) {
+      case "connect": return { bg: "#fef3c7", color: "#92400e", border: "#fde68a" };
+      case "marketplace": return { bg: "#e0e7ff", color: "#3730a3", border: "#c7d2fe" };
+      case "enterprise": return { bg: "#dcfce7", color: "#166534", border: "#bbf7d0" };
+      default: return { bg: "#f1f5f9", color: "#475569", border: "#e2e8f0" };
+    }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      router.push(`/events?search=${encodeURIComponent(searchInput.trim())}`);
+    } else {
+      router.push("/events");
+    }
+  };
+
+  if (loading) return <div className="max-w-7xl mx-auto px-4 py-12 text-center">Loading events...</div>;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* ONLY ONE SEARCH BAR - no duplicate */}
+      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
+        {["all", "connect", "marketplace", "enterprise"].map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+              activeTab === tab
+                ? "bg-orange-600 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+          </button>
+        ))}
+      </div>
+
+      {filteredEvents.length === 0 ? (
+        <div className="text-center py-12 bg-white rounded-lg shadow">
+          <p className="text-gray-500">No events found.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredEvents.map((event) => {
+            const colors = getCategoryStyle(event.category);
+            return (
+              <div
+                key={event.id}
+                onClick={() => router.push(`/events/${event.id}`)}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition relative cursor-pointer"
+              >
+                <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                  <span className="text-5xl">🎉</span>
+                </div>
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg">{event.title}</h3>
+                    <span
+                      className="text-xs px-2 py-1 rounded-full"
+                      style={{ background: colors.bg, color: colors.color }}
+                    >
+                      {event.category}
+                    </span>
+                  </div>
+                  <div className="space-y-1 text-sm text-gray-600">
+                    <div className="flex items-center gap-1"><Calendar size={14} /> {event.date} at {event.time}</div>
+                    <div className="flex items-center gap-1"><MapPin size={14} /> {event.venue}, {event.city}</div>
+                    <div className="flex items-center gap-1"><Users size={14} /> {event.registered} / {event.capacity} attending</div>
+                  </div>
+                  <div className="mt-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2"><div class="flex items-center gap-2"><span className="text-xl font-bold text-orange-600">₹{event.price}</span><WishlistButton eventId={event.id} /></div><WishlistButton eventId={event.id} /></div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/events/${event.id}`);
+                      }}
+                      className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}

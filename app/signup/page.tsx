@@ -45,7 +45,7 @@ function SignupForm() {
       });
     }
     alert("Signup successful! Please check your email to confirm.");
-    router.push("/login");
+    router.push("/");
     setLoading(false);
   };
 

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "./context/AuthContext";
+import { RoleProvider } from "@/context/RoleContext";
 import Header from "./components/Header";
 import "./globals.css";
 
@@ -29,7 +30,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
-        <AuthProvider>
+        <AuthProvider><RoleProvider>
           <Header />
           {children}
           <footer style={{ background: "white", borderTop: "1px solid #eef2ff", padding: "32px 24px", marginTop: "48px" }}>
@@ -43,7 +44,7 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
-        </AuthProvider>
+        </RoleProvider></AuthProvider>
       </body>
     </html>
   );

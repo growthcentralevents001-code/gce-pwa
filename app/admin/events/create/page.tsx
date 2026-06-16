@@ -54,6 +54,15 @@ export default function CreateEventPage() {
       <h1 style={{ fontSize: "28px", fontWeight: "700", marginBottom: "8px" }}>Create New Event</h1>
       <p style={{ color: "#64748b", marginBottom: "24px" }}>Fill in the details to create a new event</p>
 
+  <div className="mb-4">
+    <label>Event Vertical</label>
+    <select name="vertical" className="w-full p-2 border rounded">
+      <option value="connect">GCE Connect</option>
+      <option value="marketplace">GCE Marketplace</option>
+      <option value="enterprise">GCE Enterprise</option>
+    </select>
+  </div>
+
       <form onSubmit={handleSubmit} style={{ background: "white", borderRadius: "24px", padding: "32px", border: "1px solid #eef2ff" }}>
         <div style={{ marginBottom: "16px" }}>
           <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>City *</label>

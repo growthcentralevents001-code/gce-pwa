@@ -1,82 +1,98 @@
 "use client";
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
-export default function VenueCreateEvent() {
+export default function CreateEventPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     title: "",
-    venue: "",
-    city: "",
+    vertical: "marketplace",
     date: "",
     time: "",
+    venue: "",
+    city: "",
     price: 0,
     capacity: 0,
     description: "",
-    vertical: "Marketplace"
   });
+  const [genre, setGenre] = useState("music");
 
-  async function handleSubmit(e: React.FormEvent) {
+  const genreOptions = [
+    "Adventure", "Arcades", "Bike Riding", "Bowling", "Clubbing", "Comedy",
+    "Concerts", "Cricket Matches", "DJ Nights", "EDM & Electronic", "Food & Drinks",
+    "Game Zones", "Heritage Walks", "Historical Tours", "Laser Tag", "Music",
+    "Music Festivals", "Nightlife", "Open Mics", "Open Mics & Jams", "Pop",
+    "Sports", "Theme Parks", "Tours", "Trampoline Parks", "Travel", "Walks"
+  ];
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       alert("Please login");
-      router.push("/login");
       setLoading(false);
       return;
     }
-
-    // Find venue ID by name and city (case-insensitive)
-    const { data: venues, error } = await supabase
-      .from("venues")
-      .select("id")
-      .eq("user_id", user.id)
-      .ilike("name", form.venue)
-      .ilike("city", form.city)
-      .limit(1);
-
-    if (error || !venues || venues.length === 0) {
-      alert("Venue not found. Please ensure you have created a venue profile with this name and city.");
-      setLoading(false);
-      return;
-    }
-
-    const venueId = venues[0].id;
-
-    const { error: insertError } = await supabase.from("events").insert({
-      ...form,
+    const { error } = await supabase.from("events").insert({
+      ...formData,
       user_id: user.id,
-      venue_id: venueId,
       status: "Live",
       registered: 0,
+      genre: genre,
     });
-    if (insertError) alert("Error: " + insertError.message);
-    else {
-      alert("Event created and live!");
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      alert("Event created and LIVE now!");
       router.push("/dashboard/venue");
     }
     setLoading(false);
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white py-8 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-6">
-        <h1 className="text-2xl font-bold mb-6">Create New Event</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" placeholder="Event Title" required value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="w-full p-2 border rounded" />
-          <input type="text" placeholder="Venue Name" required value={form.venue} onChange={e => setForm({...form, venue: e.target.value})} className="w-full p-2 border rounded" />
-          <input type="text" placeholder="City" required value={form.city} onChange={e => setForm({...form, city: e.target.value})} className="w-full p-2 border rounded" />
-          <input type="date" required value={form.date} onChange={e => setForm({...form, date: e.target.value})} className="w-full p-2 border rounded" />
-          <input type="time" required value={form.time} onChange={e => setForm({...form, time: e.target.value})} className="w-full p-2 border rounded" />
-          <input type="number" placeholder="Price (₹)" required value={form.price} onChange={e => setForm({...form, price: parseInt(e.target.value)})} className="w-full p-2 border rounded" />
-          <input type="number" placeholder="Capacity" required value={form.capacity} onChange={e => setForm({...form, capacity: parseInt(e.target.value)})} className="w-full p-2 border rounded" />
-          <textarea placeholder="Description" rows={4} value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full p-2 border rounded" />
-          <button type="submit" disabled={loading} className="w-full bg-orange-600 text-white py-2 rounded">{loading ? "Creating..." : "Create Event"}</button>
-        </form>
-      </div>
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Create New Event</h1>
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow">
+        <div>
+          <label className="block text-sm font-medium mb-1">Event Title</label>
+          <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full p-2 border rounded" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Vertical</label>
+          <select name="vertical" value={formData.vertical} onChange={handleChange} className="w-full p-2 border rounded">
+            <option value="connect">GCE Connect</option>
+            <option value="marketplace">GCE Marketplace</option>
+            <option value="enterprise">GCE Enterprise</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Genre</label>
+          <select value={genre} onChange={(e) => setGenre(e.target.value)} className="w-full p-2 border rounded">
+            {genreOptions.map(g => (
+              <option key={g} value={g.toLowerCase()}>{g}</option>
+            ))}
+          </select>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div><label>Date</label><input type="date" name="date" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+          <div><label>Time</label><input type="time" name="time" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+        </div>
+        <div><label>Venue Name</label><input type="text" name="venue" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+        <div><label>City</label><input type="text" name="city" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+        <div className="grid grid-cols-2 gap-4">
+          <div><label>Price (₹)</label><input type="number" name="price" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+          <div><label>Capacity</label><input type="number" name="capacity" required onChange={handleChange} className="w-full p-2 border rounded" /></div>
+        </div>
+        <div><label>Description</label><textarea name="description" rows="4" onChange={handleChange} className="w-full p-2 border rounded"></textarea></div>
+        <button type="submit" disabled={loading} className="bg-orange-600 text-white px-4 py-2 rounded">{loading ? "Creating..." : "Create Live Event"}</button>
+      </form>
     </div>
   );
 }

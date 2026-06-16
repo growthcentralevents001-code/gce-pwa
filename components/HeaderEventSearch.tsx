@@ -12,7 +12,6 @@ export default function HeaderEventSearch() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node) &&
@@ -24,7 +23,6 @@ export default function HeaderEventSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Search logic
   useEffect(() => {
     if (searchTerm.length < 2) {
       setResults([]);
@@ -33,29 +31,45 @@ export default function HeaderEventSearch() {
     }
 
     const timer = setTimeout(async () => {
-      const { data, error } = await supabase
+      // Search events
+      const { data: events } = await supabase
         .from("events")
         .select("id, title, city, vertical")
         .ilike("title", `%${searchTerm}%`)
-        .limit(8);
+        .limit(5);
 
-      if (error) console.error("Search error:", error);
-      if (data && data.length > 0) {
-        setResults(data);
+      // Search venues
+      const { data: venues } = await supabase
+        .from("venues")
+        .select("id, name, city")
+        .ilike("name", `%${searchTerm}%`)
+        .limit(5);
+
+      const combined = [
+        ...(events || []).map(e => ({ id: e.id, displayName: e.title, city: e.city, category: e.vertical, type: "event" })),
+        ...(venues || []).map(v => ({ id: v.id, displayName: v.name, city: v.city, category: "", type: "venue" }))
+      ].slice(0, 10);
+
+      if (combined.length > 0) {
+        setResults(combined);
         setShowDropdown(true);
       } else {
         setResults([]);
-        setShowDropdown(true); // still show dropdown to display "no results"
+        setShowDropdown(false);
       }
     }, 300);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const handleSelect = (eventId: string) => {
+  const handleSelect = (item: any) => {
     setShowDropdown(false);
     setSearchTerm("");
-    router.push(`/events/${eventId}`);
+    if (item.type === "event") {
+      router.push(`/events/${item.id}`);
+    } else {
+      router.push(`/venues/${item.id}`);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -63,10 +77,9 @@ export default function HeaderEventSearch() {
       e.preventDefault();
       const term = searchTerm.trim();
       if (term.length >= 2) {
-        // Use the current searchTerm, not any stale value
         router.push(`/events?search=${encodeURIComponent(term)}`);
         setShowDropdown(false);
-        setSearchTerm(""); // optional: clear after redirect
+        setSearchTerm("");
       }
     }
   };
@@ -78,7 +91,7 @@ export default function HeaderEventSearch() {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search events..."
+          placeholder="Search events or venues..."
           className="w-full pl-10 pr-8 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -91,29 +104,25 @@ export default function HeaderEventSearch() {
         )}
       </div>
 
-      {showDropdown && (
-        <div
-          ref={dropdownRef}
-          className="absolute z-50 w-full mt-2 bg-white rounded-lg shadow-lg border max-h-80 overflow-y-auto"
-        >
-          {results.length === 0 ? (
-            <div className="p-4 text-center text-gray-500">
-              No events found for "{searchTerm}"
-            </div>
-          ) : (
-            results.map((event) => (
-              <div
-                key={event.id}
-                onClick={() => handleSelect(event.id)}
-                className="p-3 hover:bg-gray-50 border-b cursor-pointer transition"
-              >
-                <p className="font-medium text-sm">{event.title}</p>
-                <p className="text-xs text-gray-500">
-                  {event.city || "Online"} • {event.vertical || "Event"}
-                </p>
+      {showDropdown && results.length > 0 && (
+        <div ref={dropdownRef} className="absolute z-50 w-full mt-2 bg-white rounded-lg shadow-lg border max-h-80 overflow-y-auto">
+          {results.map((item) => (
+            <div
+              key={`${item.type}-${item.id}`}
+              onClick={() => handleSelect(item)}
+              className="p-3 hover:bg-gray-50 border-b cursor-pointer transition"
+            >
+              <div className="flex items-center justify-between">
+                <p className="font-medium text-sm">{item.displayName}</p>
+                <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">
+                  {item.type === "event" ? "Event" : "Venue"}
+                </span>
               </div>
-            ))
-          )}
+              <p className="text-xs text-gray-500">
+                {item.city || "Online"} {item.category ? `• ${item.category}` : ""}
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>

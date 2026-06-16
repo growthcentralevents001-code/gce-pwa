@@ -21,14 +21,13 @@ export async function proxy(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Public routes – now includes PWA files
+  // Public routes – includes PWA files and health check
   const publicRoutes = [
     '/', '/login', '/signup', '/events', '/offers', '/api', '/unauthorized',
     '/test-venues', '/auth/callback', '/admin/venues', '/dashboard/zbp',
-    '/sw.js', '/manifest.json', '/sw'  // PWA service worker & manifest
+    '/sw.js', '/manifest.json', '/sw', '/api/check-referral', '/venues', '/affiliate/signup', '/api/health'
   ]
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname === route)
-  // Also allow any path starting with /icons/ (for PWA icons)
   const isIconRoute = request.nextUrl.pathname.startsWith('/icons/')
 
   if (!user && !isPublicRoute && !isIconRoute) {

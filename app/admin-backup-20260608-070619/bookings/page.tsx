@@ -48,7 +48,7 @@ export default function BookingsManagement() {
       {/* Filters */}
       <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="relative"><Search size={18} className="absolute left-3 top-2.5 text-gray-400" /><input type="text" placeholder="Search by customer or event..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-9 pr-4 py-2 border rounded-lg" /></div>
+          
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="p-2 border rounded-lg"><option value="all">All Status</option><option value="advance_paid">Advance Paid</option><option value="completed">Completed</option></select>
           <button onClick={() => { setSearchTerm(''); setStatusFilter('all') }} className="bg-gray-100 px-4 py-2 rounded-lg flex items-center gap-2"><Filter size={18} /> Clear</button>
         </div>

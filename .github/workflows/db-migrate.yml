@@ -45,7 +45,7 @@ jobs:
             echo "Applying migrations..."
             for file in supabase/migrations/*.sql; do
               echo "Applying $file"
-              PGPASSWORD="$PASS" psql -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+              PGPASSWORD="$PASS" psql -4 -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
             done
           fi
 
@@ -90,7 +90,7 @@ jobs:
             echo "Applying migrations..."
             for file in supabase/migrations/*.sql; do
               echo "Applying $file"
-              PGPASSWORD="$PASS" psql -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+              PGPASSWORD="$PASS" psql -4 -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
             done
           fi
 

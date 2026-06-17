@@ -15,15 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and dig
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client dnsutils
 
-      - name: Resolve IPv4 address of Dev DB
+      - name: Resolve IPv4 address of Dev DB (with fallback)
         id: resolve
         run: |
-          IPV4=$(dig +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
+          IPV4=""
+          # Try dig with Cloudflare DNS
+          IPV4=$(dig +short db.hvevqoltcwumcvxetxsf.supabase.co A @1.1.1.1 | head -1)
+          if [ -z "$IPV4" ]; then
+            # Try nslookup
+            IPV4=$(nslookup -type=A db.hvevqoltcwumcvxetxsf.supabase.co | grep "Address:" | grep -v "#" | head -1 | awk '{print $2}')
+          fi
+          if [ -z "$IPV4" ]; then
+            # Try host command if available
+            IPV4=$(host -t A db.hvevqoltcwumcvxetxsf.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
+          fi
           if [ -z "$IPV4" ]; then
             echo "❌ Failed to resolve IPv4"
             exit 1
@@ -38,12 +48,9 @@ jobs:
           IPV4: ${{ steps.resolve.outputs.IPV4 }}
         run: |
           echo "Using IPv4: $IPV4"
-          # Parse URL
           URL="$DEV_DB_URL"
-          # Extract user, password, database, port (default 5432)
           USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
           PASS_RAW=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
-          # Decode %40 to @
           PASS=$(echo "$PASS_RAW" | sed 's/%40/@/g')
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
           PORT=5432
@@ -64,15 +71,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and dig
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client dnsutils
 
-      - name: Resolve IPv4 address of Prod DB
+      - name: Resolve IPv4 address of Prod DB (with fallback)
         id: resolve
         run: |
-          IPV4=$(dig +short db.tzeqeywezmqslovpflqu.supabase.co A | head -1)
+          IPV4=""
+          IPV4=$(dig +short db.tzeqeywezmqslovpflqu.supabase.co A @1.1.1.1 | head -1)
+          if [ -z "$IPV4" ]; then
+            IPV4=$(nslookup -type=A db.tzeqeywezmqslovpflqu.supabase.co | grep "Address:" | grep -v "#" | head -1 | awk '{print $2}')
+          fi
+          if [ -z "$IPV4" ]; then
+            IPV4=$(host -t A db.tzeqeywezmqslovpflqu.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
+          fi
           if [ -z "$IPV4" ]; then
             echo "❌ Failed to resolve IPv4"
             exit 1

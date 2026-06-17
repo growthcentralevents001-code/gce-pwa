@@ -17,12 +17,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
       - name: Install Supabase CLI
         run: npm install -g supabase
       - name: Apply migration to Dev
         env:
           DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           supabase db push --db-url "$DEV_DB_URL"
       - name: Verify migration
@@ -38,13 +39,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
       - name: Install Supabase CLI
         run: npm install -g supabase
       - name: Apply migration to Prod
         env:
           PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
-        run: |
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+     run: |
           supabase db push --db-url "$PROD_DB_URL"
       - name: Verify migration
         run: echo "✅ Migration applied to Prod"

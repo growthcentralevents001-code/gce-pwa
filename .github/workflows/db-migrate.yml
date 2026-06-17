@@ -15,18 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client dnsutils
 
       - name: Resolve IPv4 address of Dev DB
         id: resolve
         run: |
-          # Force dig to use IPv4 only
           IPV4=$(dig -4 +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
           if [ -z "$IPV4" ]; then
-            # Fallback: use host command
             IPV4=$(host -t A db.hvevqoltcwumcvxetxsf.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
           fi
           if [ -z "$IPV4" ]; then
@@ -66,10 +64,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client dnsutils
 
       - name: Resolve IPv4 address of Prod DB
         id: resolve
@@ -106,3 +104,4 @@ jobs:
 
       - name: Verify migration
         run: echo "✅ Migration applied to Prod"
+

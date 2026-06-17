@@ -15,42 +15,101 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client dnsutils
+
+      - name: Resolve IPv4 address of Dev DB (with retries)
+        id: resolve_dev
+        run: |
+          HOST="db.hvevqoltcwumcvxetxsf.supabase.co"
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          IPV4=""
+          
+          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            echo "Attempting DNS resolution (attempt $RETRY_COUNT/$MAX_RETRIES)..."
+            
+            # Try dig first (most reliable)
+            IPV4=$(dig +short "$HOST" A 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            
+            # Try host command if dig failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(host "$HOST" 2>/dev/null | grep "has address" | grep -E '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1 | awk '{print $NF}')
+            fi
+            
+            # Try nslookup as last resort
+            if [ -z "$IPV4" ]; then
+              IPV4=$(nslookup "$HOST" 2>/dev/null | grep -E '^Address: [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | awk '{print $2}')
+            fi
+            
+            if [ -n "$IPV4" ]; then
+              echo "✅ Resolved IPv4: $IPV4"
+              break
+            fi
+            
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
+              sleep 3
+            fi
+          done
+          
+          if [ -z "$IPV4" ]; then
+            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
+            echo "Debugging info:"
+            echo "--- dig output ---"
+            dig "$HOST" || true
+            echo "--- host output ---"
+            host "$HOST" || true
+            echo "--- nslookup output ---"
+            nslookup "$HOST" || true
+            exit 1
+          fi
+          
+          echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
 
       - name: Apply migrations to Dev
         env:
           DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
+          IPV4: ${{ steps.resolve_dev.outputs.IPV4 }}
         run: |
-          echo "Connecting to Dev database..."
+          echo "Connecting to Dev database at $IPV4..."
           URL="$DEV_DB_URL"
           
           # Extract connection parameters from URL
           USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
           PASS_RAW=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
           PASS=$(echo "$PASS_RAW" | sed 's/%40/@/g')
-          HOST=$(echo "$URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
-          PORT=$(echo "$URL" | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+          PORT=5432
           
-          echo "Database host: $HOST"
-          echo "Database: $DB"
-          echo "Port: $PORT"
+          echo "Database: $DB, Port: $PORT, User: $USER"
           
           if [ ! -d "supabase/migrations" ]; then
-            echo "⚠️ No migrations directory found, skipping..."
-          else
-            echo "Applying migrations..."
-            for file in supabase/migrations/*.sql; do
-              echo "Applying $file"
-              PGPASSWORD="$PASS" psql -4 -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
-            done
+            echo "❌ ERROR: supabase/migrations directory not found!"
+            exit 1
           fi
+          
+          MIGRATION_COUNT=$(find supabase/migrations -name "*.sql" | wc -l)
+          if [ $MIGRATION_COUNT -eq 0 ]; then
+            echo "⚠️ WARNING: No SQL migration files found in supabase/migrations"
+            exit 0
+          fi
+          
+          echo "Found $MIGRATION_COUNT migration file(s). Applying..."
+          for file in supabase/migrations/*.sql; do
+            echo "Applying $file"
+            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file" || {
+              echo "❌ FAILED to apply migration: $file"
+              exit 1
+            }
+            echo "✅ Successfully applied: $file"
+          done
 
-      - name: Verify migration
-        run: echo "✅ Migration applied to Dev"
+      - name: Verify Dev migration
+        run: echo "✅ All Dev migrations applied successfully"
 
   migrate-prod:
     runs-on: ubuntu-latest
@@ -60,39 +119,98 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client
+      - name: Install PostgreSQL client and DNS tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client
+          sudo apt-get install -y postgresql-client dnsutils
+
+      - name: Resolve IPv4 address of Prod DB (with retries)
+        id: resolve_prod
+        run: |
+          HOST="db.tzeqeywezmqslovpflqu.supabase.co"
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          IPV4=""
+          
+          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            echo "Attempting DNS resolution (attempt $RETRY_COUNT/$MAX_RETRIES)..."
+            
+            # Try dig first (most reliable)
+            IPV4=$(dig +short "$HOST" A 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+            
+            # Try host command if dig failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(host "$HOST" 2>/dev/null | grep "has address" | grep -E '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1 | awk '{print $NF}')
+            fi
+            
+            # Try nslookup as last resort
+            if [ -z "$IPV4" ]; then
+              IPV4=$(nslookup "$HOST" 2>/dev/null | grep -E '^Address: [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | awk '{print $2}')
+            fi
+            
+            if [ -n "$IPV4" ]; then
+              echo "✅ Resolved IPv4: $IPV4"
+              break
+            fi
+            
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
+              sleep 3
+            fi
+          done
+          
+          if [ -z "$IPV4" ]; then
+            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
+            echo "Debugging info:"
+            echo "--- dig output ---"
+            dig "$HOST" || true
+            echo "--- host output ---"
+            host "$HOST" || true
+            echo "--- nslookup output ---"
+            nslookup "$HOST" || true
+            exit 1
+          fi
+          
+          echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
 
       - name: Apply migrations to Prod
         env:
           PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
+          IPV4: ${{ steps.resolve_prod.outputs.IPV4 }}
         run: |
-          echo "Connecting to Prod database..."
+          echo "Connecting to Prod database at $IPV4..."
           URL="$PROD_DB_URL"
           
           # Extract connection parameters from URL
           USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
           PASS_RAW=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
           PASS=$(echo "$PASS_RAW" | sed 's/%40/@/g')
-          HOST=$(echo "$URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
-          PORT=$(echo "$URL" | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+          PORT=5432
           
-          echo "Database host: $HOST"
-          echo "Database: $DB"
-          echo "Port: $PORT"
+          echo "Database: $DB, Port: $PORT, User: $USER"
           
           if [ ! -d "supabase/migrations" ]; then
-            echo "⚠️ No migrations directory found, skipping..."
-          else
-            echo "Applying migrations..."
-            for file in supabase/migrations/*.sql; do
-              echo "Applying $file"
-              PGPASSWORD="$PASS" psql -4 -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
-            done
+            echo "❌ ERROR: supabase/migrations directory not found!"
+            exit 1
           fi
+          
+          MIGRATION_COUNT=$(find supabase/migrations -name "*.sql" | wc -l)
+          if [ $MIGRATION_COUNT -eq 0 ]; then
+            echo "⚠️ WARNING: No SQL migration files found in supabase/migrations"
+            exit 0
+          fi
+          
+          echo "Found $MIGRATION_COUNT migration file(s). Applying..."
+          for file in supabase/migrations/*.sql; do
+            echo "Applying $file"
+            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file" || {
+              echo "❌ FAILED to apply migration: $file"
+              exit 1
+            }
+            echo "✅ Successfully applied: $file"
+          done
 
-      - name: Verify migration
-        run: echo "✅ Migration applied to Prod"
+      - name: Verify Prod migration
+        run: echo "✅ All Prod migrations applied successfully"

@@ -1,0 +1,3 @@
+-- Sample migration: Add a test column to events
+-- This is just a placeholder. Replace with actual schema changes.
+-- ALTER TABLE events ADD COLUMN test_column TEXT;

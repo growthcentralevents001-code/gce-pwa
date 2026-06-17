@@ -15,23 +15,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and DNS tools
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client dnsutils
+          sudo apt-get install -y postgresql-client
 
-      - name: Resolve IPv4 address of Dev DB (with fallback)
+      - name: Resolve IPv4 address of Dev DB
         id: resolve
         run: |
-          IPV4=""
-          # Try dig with Cloudflare DNS
-          IPV4=$(dig +short db.hvevqoltcwumcvxetxsf.supabase.co A @1.1.1.1 | head -1)
+          # Force dig to use IPv4 only
+          IPV4=$(dig -4 +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
           if [ -z "$IPV4" ]; then
-            # Try nslookup
-            IPV4=$(nslookup -type=A db.hvevqoltcwumcvxetxsf.supabase.co | grep "Address:" | grep -v "#" | head -1 | awk '{print $2}')
-          fi
-          if [ -z "$IPV4" ]; then
-            # Try host command if available
+            # Fallback: use host command
             IPV4=$(host -t A db.hvevqoltcwumcvxetxsf.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
           fi
           if [ -z "$IPV4" ]; then
@@ -71,19 +66,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and DNS tools
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client dnsutils
+          sudo apt-get install -y postgresql-client
 
-      - name: Resolve IPv4 address of Prod DB (with fallback)
+      - name: Resolve IPv4 address of Prod DB
         id: resolve
         run: |
-          IPV4=""
-          IPV4=$(dig +short db.tzeqeywezmqslovpflqu.supabase.co A @1.1.1.1 | head -1)
-          if [ -z "$IPV4" ]; then
-            IPV4=$(nslookup -type=A db.tzeqeywezmqslovpflqu.supabase.co | grep "Address:" | grep -v "#" | head -1 | awk '{print $2}')
-          fi
+          IPV4=$(dig -4 +short db.tzeqeywezmqslovpflqu.supabase.co A | head -1)
           if [ -z "$IPV4" ]; then
             IPV4=$(host -t A db.tzeqeywezmqslovpflqu.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
           fi

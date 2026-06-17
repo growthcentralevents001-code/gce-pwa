@@ -20,18 +20,54 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client dnsutils
 
-      - name: Resolve IPv4 address of Dev DB
+      - name: Resolve IPv4 address of Dev DB (with retries)
         id: resolve
         run: |
-          IPV4=$(dig -4 +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
+          HOST="db.hvevqoltcwumcvxetxsf.supabase.co"
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          IPV4=""
+          
+          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Attempting DNS resolution (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)..."
+            
+            # Try dig first
+            IPV4=$(dig -4 +short "$HOST" A 2>/dev/null | grep -v '^$' | head -1)
+            
+            # Try host command if dig failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(host -t A "$HOST" 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
+            fi
+            
+            # Try nslookup if both failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(nslookup "$HOST" 8.8.8.8 2>/dev/null | grep "Address:" | tail -1 | awk '{print $2}')
+            fi
+            
+            if [ -n "$IPV4" ]; then
+              echo "✅ Resolved IP: $IPV4"
+              break
+            fi
+            
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
+              sleep 3
+            fi
+          done
+          
           if [ -z "$IPV4" ]; then
-            IPV4=$(host -t A db.hvevqoltcwumcvxetxsf.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
-          fi
-          if [ -z "$IPV4" ]; then
-            echo "❌ Failed to resolve IPv4"
+            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
+            echo "Debugging info:"
+            echo "--- dig output ---"
+            dig "$HOST" || true
+            echo "--- host output ---"
+            host "$HOST" || true
+            echo "--- nslookup output ---"
+            nslookup "$HOST" 8.8.8.8 || true
             exit 1
           fi
-          echo "Resolved IP: $IPV4"
+          
           echo "IPV4=$IPV4" >> $GITHUB_ENV
           echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
 
@@ -48,10 +84,15 @@ jobs:
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
           PORT=5432
           echo "User: $USER, DB: $DB, Port: $PORT"
-          for file in supabase/migrations/*.sql; do
-            echo "Applying $file"
-            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
-          done
+          
+          if [ ! -d "supabase/migrations" ]; then
+            echo "⚠️ No migrations directory found, skipping..."
+          else
+            for file in supabase/migrations/*.sql; do
+              echo "Applying $file"
+              PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+            done
+          fi
 
       - name: Verify migration
         run: echo "✅ Migration applied to Dev"
@@ -69,18 +110,54 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client dnsutils
 
-      - name: Resolve IPv4 address of Prod DB
+      - name: Resolve IPv4 address of Prod DB (with retries)
         id: resolve
         run: |
-          IPV4=$(dig -4 +short db.tzeqeywezmqslovpflqu.supabase.co A | head -1)
+          HOST="db.tzeqeywezmqslovpflqu.supabase.co"
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          IPV4=""
+          
+          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Attempting DNS resolution (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)..."
+            
+            # Try dig first
+            IPV4=$(dig -4 +short "$HOST" A 2>/dev/null | grep -v '^$' | head -1)
+            
+            # Try host command if dig failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(host -t A "$HOST" 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
+            fi
+            
+            # Try nslookup if both failed
+            if [ -z "$IPV4" ]; then
+              IPV4=$(nslookup "$HOST" 8.8.8.8 2>/dev/null | grep "Address:" | tail -1 | awk '{print $2}')
+            fi
+            
+            if [ -n "$IPV4" ]; then
+              echo "✅ Resolved IP: $IPV4"
+              break
+            fi
+            
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
+              sleep 3
+            fi
+          done
+          
           if [ -z "$IPV4" ]; then
-            IPV4=$(host -t A db.tzeqeywezmqslovpflqu.supabase.co 2>/dev/null | grep "has address" | head -1 | awk '{print $4}')
-          fi
-          if [ -z "$IPV4" ]; then
-            echo "❌ Failed to resolve IPv4"
+            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
+            echo "Debugging info:"
+            echo "--- dig output ---"
+            dig "$HOST" || true
+            echo "--- host output ---"
+            host "$HOST" || true
+            echo "--- nslookup output ---"
+            nslookup "$HOST" 8.8.8.8 || true
             exit 1
           fi
-          echo "Resolved IP: $IPV4"
+          
           echo "IPV4=$IPV4" >> $GITHUB_ENV
           echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
 
@@ -97,11 +174,15 @@ jobs:
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
           PORT=5432
           echo "User: $USER, DB: $DB, Port: $PORT"
-          for file in supabase/migrations/*.sql; do
-            echo "Applying $file"
-            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
-          done
+          
+          if [ ! -d "supabase/migrations" ]; then
+            echo "⚠️ No migrations directory found, skipping..."
+          else
+            for file in supabase/migrations/*.sql; do
+              echo "Applying $file"
+              PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+            done
+          fi
 
       - name: Verify migration
         run: echo "✅ Migration applied to Prod"
-

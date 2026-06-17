@@ -5,7 +5,7 @@ on:
     branches: [ development ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
 
 jobs:
   migrate-dev:
@@ -14,18 +14,34 @@ jobs:
     environment: development
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Install Supabase CLI
-        run: npm install -g supabase
-      - name: Apply migration to Dev
+
+      - name: Install PostgreSQL client and dig
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client dnsutils
+
+      - name: Resolve IPv4 address of Dev DB
+        id: resolve
+        run: |
+          IPV4=$(dig +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
+          echo "IPV4=$IPV4" >> $GITHUB_ENV
+
+      - name: Apply migrations to Dev (using psql with IPv4)
         env:
           DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          IPV4: ${{ env.IPV4 }}
         run: |
-          supabase db push --db-url "$DEV_DB_URL"
+          # Extract username, password, database from URL
+          URL="$DEV_DB_URL"
+          USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
+          PASS=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
+          DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+          # Use hostaddr to force IPv4
+          for file in supabase/migrations/*.sql; do
+            echo "Applying $file"
+            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -f "$file"
+          done
+
       - name: Verify migration
         run: echo "✅ Migration applied to Dev"
 
@@ -33,20 +49,34 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment: production
-    needs: migrate-dev  # optional, remove if not needed
+    needs: migrate-dev
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Install Supabase CLI
-        run: npm install -g supabase
-      - name: Apply migration to Prod
+
+      - name: Install PostgreSQL client and dig
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client dnsutils
+
+      - name: Resolve IPv4 address of Prod DB
+        id: resolve
+        run: |
+          IPV4=$(dig +short db.tzeqeywezmqslovpflqu.supabase.co A | head -1)
+          echo "IPV4=$IPV4" >> $GITHUB_ENV
+
+      - name: Apply migrations to Prod (using psql with IPv4)
         env:
           PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-     run: |
-          supabase db push --db-url "$PROD_DB_URL"
+          IPV4: ${{ env.IPV4 }}
+        run: |
+          URL="$PROD_DB_URL"
+          USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
+          PASS=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
+          DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+          for file in supabase/migrations/*.sql; do
+            echo "Applying $file"
+            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -f "$file"
+          done
+
       - name: Verify migration
         run: echo "✅ Migration applied to Prod"

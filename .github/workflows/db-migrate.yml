@@ -15,82 +15,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and DNS tools
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client dnsutils
+          sudo apt-get install -y postgresql-client
 
-      - name: Resolve IPv4 address of Dev DB (with retries)
-        id: resolve
-        run: |
-          HOST="db.hvevqoltcwumcvxetxsf.supabase.co"
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          IPV4=""
-          
-          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Attempting DNS resolution (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)..."
-            
-            # Try dig with IPv4 only (-4 flag)
-            IPV4=$(dig -4 +short "$HOST" A 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-            
-            # Try host command if dig failed
-            if [ -z "$IPV4" ]; then
-              IPV4=$(host -t A "$HOST" 2>/dev/null | grep "has address" | head -1 | awk '{print $4}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || true)
-            fi
-            
-            # Try nslookup with IPv4 only
-            if [ -z "$IPV4" ]; then
-              IPV4=$(nslookup -type=A "$HOST" 8.8.8.8 2>/dev/null | grep "Address:" | grep -v "8.8.8.8" | tail -1 | awk '{print $2}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || true)
-            fi
-            
-            if [ -n "$IPV4" ]; then
-              echo "✅ Resolved IPv4: $IPV4"
-              break
-            fi
-            
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
-              sleep 3
-            fi
-          done
-          
-          if [ -z "$IPV4" ]; then
-            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
-            echo "Debugging info:"
-            echo "--- dig -4 output ---"
-            dig -4 "$HOST" || true
-            echo "--- host -t A output ---"
-            host -t A "$HOST" || true
-            echo "--- nslookup -type=A output ---"
-            nslookup -type=A "$HOST" 8.8.8.8 || true
-            exit 1
-          fi
-          
-          echo "IPV4=$IPV4" >> $GITHUB_ENV
-          echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
-
-      - name: Apply migrations to Dev (using explicit psql with IPv4)
+      - name: Apply migrations to Dev
         env:
           DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
-          IPV4: ${{ steps.resolve.outputs.IPV4 }}
         run: |
-          echo "Using IPv4: $IPV4"
+          echo "Connecting to Dev database..."
           URL="$DEV_DB_URL"
+          
+          # Extract connection parameters from URL
           USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
           PASS_RAW=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
           PASS=$(echo "$PASS_RAW" | sed 's/%40/@/g')
+          HOST=$(echo "$URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
+          PORT=$(echo "$URL" | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
-          PORT=5432
-          echo "User: $USER, DB: $DB, Port: $PORT"
+          
+          echo "Database host: $HOST"
+          echo "Database: $DB"
+          echo "Port: $PORT"
           
           if [ ! -d "supabase/migrations" ]; then
             echo "⚠️ No migrations directory found, skipping..."
           else
+            echo "Applying migrations..."
             for file in supabase/migrations/*.sql; do
               echo "Applying $file"
-              PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+              PGPASSWORD="$PASS" psql -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
             done
           fi
 
@@ -105,82 +60,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install PostgreSQL client and DNS tools
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get update
-          sudo apt-get install -y postgresql-client dnsutils
+          sudo apt-get install -y postgresql-client
 
-      - name: Resolve IPv4 address of Prod DB (with retries)
-        id: resolve
-        run: |
-          HOST="db.tzeqeywezmqslovpflqu.supabase.co"
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          IPV4=""
-          
-          while [ -z "$IPV4" ] && [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "Attempting DNS resolution (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)..."
-            
-            # Try dig with IPv4 only (-4 flag)
-            IPV4=$(dig -4 +short "$HOST" A 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-            
-            # Try host command if dig failed
-            if [ -z "$IPV4" ]; then
-              IPV4=$(host -t A "$HOST" 2>/dev/null | grep "has address" | head -1 | awk '{print $4}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || true)
-            fi
-            
-            # Try nslookup with IPv4 only
-            if [ -z "$IPV4" ]; then
-              IPV4=$(nslookup -type=A "$HOST" 8.8.8.8 2>/dev/null | grep "Address:" | grep -v "8.8.8.8" | tail -1 | awk '{print $2}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || true)
-            fi
-            
-            if [ -n "$IPV4" ]; then
-              echo "✅ Resolved IPv4: $IPV4"
-              break
-            fi
-            
-            RETRY_COUNT=$((RETRY_COUNT + 1))
-            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-              echo "⏳ DNS resolution failed, retrying in 3 seconds..."
-              sleep 3
-            fi
-          done
-          
-          if [ -z "$IPV4" ]; then
-            echo "❌ Failed to resolve IPv4 after $MAX_RETRIES attempts"
-            echo "Debugging info:"
-            echo "--- dig -4 output ---"
-            dig -4 "$HOST" || true
-            echo "--- host -t A output ---"
-            host -t A "$HOST" || true
-            echo "--- nslookup -type=A output ---"
-            nslookup -type=A "$HOST" 8.8.8.8 || true
-            exit 1
-          fi
-          
-          echo "IPV4=$IPV4" >> $GITHUB_ENV
-          echo "IPV4=$IPV4" >> $GITHUB_OUTPUT
-
-      - name: Apply migrations to Prod (using explicit psql with IPv4)
+      - name: Apply migrations to Prod
         env:
           PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
-          IPV4: ${{ steps.resolve.outputs.IPV4 }}
         run: |
-          echo "Using IPv4: $IPV4"
+          echo "Connecting to Prod database..."
           URL="$PROD_DB_URL"
+          
+          # Extract connection parameters from URL
           USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
           PASS_RAW=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
           PASS=$(echo "$PASS_RAW" | sed 's/%40/@/g')
+          HOST=$(echo "$URL" | sed -n 's/.*@\([^:]*\):.*/\1/p')
+          PORT=$(echo "$URL" | sed -n 's/.*:\([0-9]*\)\/.*/\1/p')
           DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
-          PORT=5432
-          echo "User: $USER, DB: $DB, Port: $PORT"
+          
+          echo "Database host: $HOST"
+          echo "Database: $DB"
+          echo "Port: $PORT"
           
           if [ ! -d "supabase/migrations" ]; then
             echo "⚠️ No migrations directory found, skipping..."
           else
+            echo "Applying migrations..."
             for file in supabase/migrations/*.sql; do
               echo "Applying $file"
-              PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
+              PGPASSWORD="$PASS" psql -h "$HOST" -U "$USER" -d "$DB" -p "$PORT" -f "$file"
             done
           fi
 

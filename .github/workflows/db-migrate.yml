@@ -25,21 +25,17 @@ jobs:
         run: |
           IPV4=$(dig +short db.hvevqoltcwumcvxetxsf.supabase.co A | head -1)
           echo "IPV4=$IPV4" >> $GITHUB_ENV
+          echo "Resolved IP: $IPV4"
 
-      - name: Apply migrations to Dev (using psql with IPv4)
+      - name: Apply migrations to Dev (using PGHOSTADDR)
         env:
           DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
-          IPV4: ${{ env.IPV4 }}
+          PGHOSTADDR: ${{ env.IPV4 }}
         run: |
-          # Extract username, password, database from URL
-          URL="$DEV_DB_URL"
-          USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
-          PASS=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
-          DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
-          # Use hostaddr to force IPv4
+          echo "Using PGHOSTADDR: $PGHOSTADDR"
           for file in supabase/migrations/*.sql; do
             echo "Applying $file"
-            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -f "$file"
+            psql "$DEV_DB_URL" -f "$file"
           done
 
       - name: Verify migration
@@ -63,19 +59,17 @@ jobs:
         run: |
           IPV4=$(dig +short db.tzeqeywezmqslovpflqu.supabase.co A | head -1)
           echo "IPV4=$IPV4" >> $GITHUB_ENV
+          echo "Resolved IP: $IPV4"
 
-      - name: Apply migrations to Prod (using psql with IPv4)
+      - name: Apply migrations to Prod (using PGHOSTADDR)
         env:
           PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
-          IPV4: ${{ env.IPV4 }}
+          PGHOSTADDR: ${{ env.IPV4 }}
         run: |
-          URL="$PROD_DB_URL"
-          USER=$(echo "$URL" | sed -n 's/.*:\/\/\([^:]*\):.*/\1/p')
-          PASS=$(echo "$URL" | sed -n 's/.*:\([^@]*\)@.*/\1/p')
-          DB=$(echo "$URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+          echo "Using PGHOSTADDR: $PGHOSTADDR"
           for file in supabase/migrations/*.sql; do
             echo "Applying $file"
-            PGPASSWORD="$PASS" psql -h "$IPV4" -U "$USER" -d "$DB" -f "$file"
+            psql "$PROD_DB_URL" -f "$file"
           done
 
       - name: Verify migration

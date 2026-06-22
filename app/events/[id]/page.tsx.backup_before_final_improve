@@ -1,0 +1,470 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { Heart, Share2, Calendar, MapPin, Users, ArrowLeft, Bookmark, BookmarkCheck, User, Tag, ExternalLink } from "lucide-react";
+
+interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  date: string;
+  time: string;
+  venue?: string;
+  venue_address?: string;
+  city?: string;
+  price: number;
+  capacity: number;
+  registered: number;
+  vertical: "connect" | "marketplace" | "enterprise";
+  category?: string;
+  genre?: string;
+  image_url?: string;
+  agenda?: string;
+  speakers?: string;
+  organizer?: string;
+  organizer_contact?: string;
+}
+
+interface NetworkUser {
+  id: string;
+  name: string;
+  avatar_url?: string;
+  interests?: string[];
+}
+
+export default function EventDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const eventId = params.id as string;
+
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isReminded, setIsReminded] = useState(false);
+  const [attendingCount, setAttendingCount] = useState(0);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [networkUsers, setNetworkUsers] = useState<NetworkUser[]>([]);
+  const [isBooked, setIsBooked] = useState(false);
+
+  useEffect(() => {
+    if (!eventId) return;
+
+    const fetchEvent = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("id", eventId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching event:", error);
+        setLoading(false);
+        return;
+      }
+
+      setEvent(data);
+      setAttendingCount(data?.registered || 0);
+      setLoading(false);
+    };
+
+    const getUserAndSavedStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+        // Check if event is saved
+        const { data } = await supabase
+          .from("saved_events")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("event_id", eventId)
+          .single();
+        if (data) setIsSaved(true);
+
+        // Check if user has booked this event
+        const { data: bookingData } = await supabase
+          .from("bookings")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("event_id", eventId)
+          .single();
+        if (bookingData) setIsBooked(true);
+      }
+    };
+
+    const fetchNetworkUsers = async () => {
+      // Fetch users who are attending or have similar interests
+      // For now, fetch users from same city who have attended similar events
+      const { data: attendees } = await supabase
+        .from("bookings")
+        .select("user_id, users!inner(name, avatar_url, interests, city)")
+        .eq("event_id", eventId)
+        .limit(6);
+
+      if (attendees && attendees.length > 0) {
+        const users = attendees.map((b: any) => ({
+          id: b.user_id,
+          name: b.users.name,
+          avatar_url: b.users.avatar_url,
+          interests: b.users.interests || [],
+        }));
+        setNetworkUsers(users);
+      } else {
+        // Fallback: show users from same city with similar interests
+        const { data: cityUsers } = await supabase
+          .from("users")
+          .select("id, name, avatar_url, interests, city")
+          .eq("city", event?.city || "")
+          .limit(4);
+        if (cityUsers) {
+          setNetworkUsers(cityUsers.map((u: any) => ({
+            id: u.id,
+            name: u.name,
+            avatar_url: u.avatar_url,
+            interests: u.interests || [],
+          })));
+        }
+      }
+    };
+
+    fetchEvent();
+    getUserAndSavedStatus();
+    fetchNetworkUsers();
+  }, [eventId]);
+
+  // Handle Save/Wishlist
+  const handleSave = async () => {
+    if (!userId) {
+      alert("Please login to save events");
+      return;
+    }
+
+    try {
+      if (isSaved) {
+        const { error } = await supabase
+          .from("saved_events")
+          .delete()
+          .eq("user_id", userId)
+          .eq("event_id", eventId);
+        if (error) throw error;
+        setIsSaved(false);
+      } else {
+        const { error } = await supabase
+          .from("saved_events")
+          .insert({ user_id: userId, event_id: eventId });
+        if (error) throw error;
+        setIsSaved(true);
+      }
+    } catch (error) {
+      console.error("Error toggling save:", error);
+      alert("Failed to update wishlist. Please try again.");
+    }
+  };
+
+  // Handle Book Now
+  const handleBook = () => {
+    if (!userId) {
+      alert("Please login to book events");
+      return;
+    }
+    router.push(`/checkout?event_id=${eventId}`);
+  };
+
+  // Handle Share
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: event?.title,
+        text: `Check out this event: ${event?.title}`,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  };
+
+  // Handle Remind
+  const toggleRemind = async () => {
+    if (!userId) {
+      alert("Please login to set reminders");
+      return;
+    }
+    try {
+      if (isReminded) {
+        const { error } = await supabase
+          .from("reminders")
+          .delete()
+          .eq("user_id", userId)
+          .eq("event_id", eventId);
+        if (error) throw error;
+        setIsReminded(false);
+      } else {
+        const { error } = await supabase
+          .from("reminders")
+          .insert({ user_id: userId, event_id: eventId });
+        if (error) throw error;
+        setIsReminded(true);
+      }
+    } catch (error) {
+      console.error("Error toggling reminder:", error);
+      alert("Failed to set reminder. Please try again.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-10 max-w-6xl">
+        <div className="text-center py-20">Loading event details...</div>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="container mx-auto px-4 py-10 max-w-6xl">
+        <div className="text-center py-20 text-red-500">Event not found</div>
+      </div>
+    );
+  }
+
+  const getVerticalStyle = (vertical: string) => {
+    switch (vertical) {
+      case "connect":
+        return { bg: "bg-blue-100", color: "text-blue-700", label: "GCE Connect" };
+      case "marketplace":
+        return { bg: "bg-green-100", color: "text-green-700", label: "GCE Marketplace" };
+      case "enterprise":
+        return { bg: "bg-purple-100", color: "text-purple-700", label: "GCE Enterprise" };
+      default:
+        return { bg: "bg-gray-100", color: "text-gray-700", label: vertical };
+    }
+  };
+
+  const verticalStyle = getVerticalStyle(event.vertical);
+
+  return (
+    <div className="container mx-auto px-4 py-4 max-w-6xl">
+      {/* Back button */}
+      <button
+        onClick={() => router.back()}
+        className="flex items-center text-orange-600 hover:text-orange-800 mb-4 transition text-sm"
+      >
+        <ArrowLeft size={18} className="mr-1" /> Back
+      </button>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main content - 2/3 width on desktop */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Event Image - Compact */}
+          <div className="relative h-40 md:h-56 bg-gradient-to-r from-orange-400 to-orange-600 rounded-xl overflow-hidden">
+            {event.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={event.image_url}
+                alt={event.title}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <span className="text-6xl md:text-7xl">🎉</span>
+              </div>
+            )}
+            <div className="absolute top-3 right-3">
+              <span
+                className={`${verticalStyle.bg} ${verticalStyle.color} text-xs font-semibold px-2.5 py-1 rounded-full shadow`}
+              >
+                {verticalStyle.label}
+              </span>
+            </div>
+          </div>
+
+          {/* Title & Actions - Compact */}
+          <div className="flex justify-between items-start gap-3">
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-800">{event.title}</h1>
+              <div className="flex flex-wrap items-center gap-2 mt-1">
+                {event.genre && (
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                    🎭 {event.genre}
+                  </span>
+                )}
+                {event.category && (
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                    📂 {event.category}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex gap-1.5 flex-shrink-0">
+              <button
+                onClick={handleSave}
+                className={`p-1.5 rounded-full transition ${
+                  isSaved ? "bg-red-100 text-red-500" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                }`}
+              >
+                {isSaved ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
+              </button>
+              <button
+                onClick={handleShare}
+                className="p-1.5 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition"
+              >
+                <Share2 size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* Event Details - Compact Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-orange-500 flex-shrink-0" />
+              <span>{event.date} at {event.time}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-orange-500 flex-shrink-0" />
+              <span>{event.venue || "Venue TBD"}{event.city ? `, ${event.city}` : ""}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users size={16} className="text-orange-500 flex-shrink-0" />
+              <span><span className="font-semibold">{attendingCount}</span> / {event.capacity} attending</span>
+            </div>
+            {event.organizer && (
+              <div className="flex items-center gap-2">
+                <User size={16} className="text-orange-500 flex-shrink-0" />
+                <span>Hosted by {event.organizer}</span>
+              </div>
+            )}
+            {event.venue_address && (
+              <div className="col-span-full flex items-center gap-2 text-gray-400 text-xs">
+                <MapPin size={14} className="flex-shrink-0" />
+                <span>{event.venue_address}</span>
+                <a
+                  href={`https://maps.google.com/maps?q=${encodeURIComponent(event.venue_address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-500 hover:underline ml-1"
+                >
+                  <ExternalLink size={14} />
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Description */}
+          {event.description && (
+            <div>
+              <h2 className="text-md font-semibold text-gray-700 mb-1">About this event</h2>
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{event.description}</p>
+            </div>
+          )}
+
+          {/* Agenda */}
+          {event.agenda && (
+            <div>
+              <h2 className="text-md font-semibold text-gray-700 mb-1">Agenda</h2>
+              <div className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{event.agenda}</div>
+            </div>
+          )}
+
+          {/* Speakers */}
+          {event.speakers && (
+            <div>
+              <h2 className="text-md font-semibold text-gray-700 mb-1">Speakers</h2>
+              <div className="text-sm text-gray-600">{event.speakers}</div>
+            </div>
+          )}
+
+          {/* Your Network Attending - Real Data */}
+          <div className="border-t pt-3">
+            <h3 className="text-md font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <Users size={18} className="text-orange-500" />
+              Your Network Attending
+            </h3>
+            {networkUsers.length > 0 ? (
+              <div className="flex flex-wrap gap-3">
+                {networkUsers.map((user) => (
+                  <div key={user.id} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full">
+                    <div className="w-6 h-6 rounded-full bg-orange-200 flex items-center justify-center text-xs font-bold text-orange-700">
+                      {user.name?.charAt(0) || "U"}
+                    </div>
+                    <span className="text-xs font-medium">{user.name}</span>
+                    {user.interests && user.interests.length > 0 && (
+                      <span className="text-[10px] text-gray-400">
+                        {user.interests.slice(0, 2).join(", ")}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">No one from your network attending yet</p>
+            )}
+          </div>
+
+          {/* Reminder */}
+          <div className="flex justify-end">
+            <button
+              onClick={toggleRemind}
+              className={`px-3 py-1.5 rounded-full text-xs transition ${
+                isReminded
+                  ? "bg-orange-100 text-orange-700"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {isReminded ? "🔔 Reminder Set" : "🔔 Remind Me"}
+            </button>
+          </div>
+        </div>
+
+        {/* Sidebar - Price & Book Now (Corner card) */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-4 bg-white rounded-xl shadow-lg p-4 border border-gray-100">
+            <div className="text-center mb-3">
+              <span className="text-2xl font-bold text-orange-600">₹{event.price}</span>
+              {event.price > 0 && (
+                <span className="text-xs text-gray-400 block">per person</span>
+              )}
+            </div>
+
+            <button
+              onClick={handleBook}
+              disabled={isBooked}
+              className={`w-full py-2.5 rounded-full font-semibold text-sm transition ${
+                isBooked
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-orange-600 text-white hover:bg-orange-700 shadow-md"
+              }`}
+            >
+              {isBooked ? "Already Booked" : "Book Now"}
+            </button>
+
+            {event.capacity - attendingCount < 10 && (
+              <p className="text-xs text-red-500 text-center mt-1.5">
+                ⚡ Only {event.capacity - attendingCount} spots left!
+              </p>
+            )}
+
+            <div className="mt-3 pt-3 border-t text-xs text-gray-400 space-y-1">
+              <div className="flex justify-between">
+                <span>Capacity</span>
+                <span>{event.capacity}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Registered</span>
+                <span>{attendingCount}</span>
+              </div>
+              {event.organizer && (
+                <div className="flex justify-between">
+                  <span>Organizer</span>
+                  <span className="text-gray-600">{event.organizer}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

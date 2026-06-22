@@ -1,0 +1,192 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+
+export default function EnterpriseProposals() {
+  const [proposals, setProposals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({
+    admin_notes: "",
+    final_budget: "",
+    status: "pending",
+  });
+
+  useEffect(() => {
+    fetchProposals();
+  }, []);
+
+  const fetchProposals = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("enterprise_proposals")
+      .select(`
+        *,
+        enterprises:user_id (company_name, contact_person, email)
+      `)
+      .order("created_at", { ascending: false });
+
+    if (!error) setProposals(data || []);
+    setLoading(false);
+  };
+
+  const handleEdit = (proposal) => {
+    setEditingId(proposal.id);
+    setEditData({
+      admin_notes: proposal.admin_notes || "",
+      final_budget: proposal.final_budget || "",
+      status: proposal.status || "pending",
+    });
+  };
+
+  const handleSave = async (id) => {
+    const { error } = await supabase
+      .from("enterprise_proposals")
+      .update({
+        admin_notes: editData.admin_notes,
+        final_budget: parseFloat(editData.final_budget) || null,
+        status: "counter_proposed", // Admin ne counter-proposal bheja
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
+
+    if (error) {
+      alert("Failed to update proposal: " + error.message);
+    } else {
+      alert("Counter-proposal sent to enterprise!");
+      setEditingId(null);
+      fetchProposals();
+    }
+  };
+
+  if (loading) return <div className="p-6">Loading proposals...</div>;
+
+  return (
+    <div className="p-6 max-w-6xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Enterprise Proposals</h1>
+      
+      {proposals.length === 0 ? (
+        <p className="text-gray-500">No proposals yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {proposals.map((proposal) => (
+            <div key={proposal.id} className="bg-white rounded-lg shadow p-4 border">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-lg font-semibold">
+                    {proposal.enterprises?.company_name || "Unknown Company"}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {proposal.enterprises?.contact_person} • {proposal.enterprises?.email}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Event Type: {proposal.event_type} • 
+                    Budget: ₹{proposal.budget || "N/A"} • 
+                    Guests: {proposal.guest_count || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">{proposal.proposal_text}</p>
+                  
+                  {/* Admin Notes */}
+                  {proposal.admin_notes && (
+                    <div className="mt-2 p-2 bg-yellow-50 rounded border border-yellow-200">
+                      <p className="text-xs font-semibold text-yellow-700">Admin's Counter-Proposal:</p>
+                      <p className="text-sm text-gray-700">{proposal.admin_notes}</p>
+                      {proposal.final_budget && (
+                        <p className="text-sm font-medium text-orange-600">
+                          Revised Budget: ₹{proposal.final_budget}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    proposal.status === "accepted" ? "bg-green-100 text-green-800" :
+                    proposal.status === "rejected" ? "bg-red-100 text-red-800" :
+                    proposal.status === "counter_proposed" ? "bg-blue-100 text-blue-800" :
+                    "bg-gray-100 text-gray-800"
+                  }`}>
+                    {proposal.status || "pending"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Edit Form - Admin can send counter-proposal */}
+              {editingId === proposal.id ? (
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+                  <h3 className="font-medium mb-2">Send Counter-Proposal</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Admin Notes</label>
+                      <textarea
+                        value={editData.admin_notes}
+                        onChange={(e) => setEditData({...editData, admin_notes: e.target.value})}
+                        className="w-full p-2 border rounded-lg"
+                        rows="3"
+                        placeholder="Describe your counter-proposal..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Revised Budget (optional)</label>
+                      <input
+                        type="number"
+                        value={editData.final_budget}
+                        onChange={(e) => setEditData({...editData, final_budget: e.target.value})}
+                        className="w-full p-2 border rounded-lg"
+                        placeholder="Enter revised budget"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleSave(proposal.id)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                      >
+                        Send Counter-Proposal
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 flex gap-2">
+                  <button
+                    onClick={() => handleEdit(proposal)}
+                    className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+                  >
+                    Send Counter-Proposal
+                  </button>
+                  <button
+                    onClick={() => handleSave(proposal.id)}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (confirm("Reject this proposal?")) {
+                        supabase
+                          .from("enterprise_proposals")
+                          .update({ status: "rejected", updated_at: new Date().toISOString() })
+                          .eq("id", proposal.id)
+                          .then(() => fetchProposals());
+                      }
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Reject
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

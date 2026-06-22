@@ -1,0 +1,251 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import Link from "next/link";
+
+export default function EnterpriseSignup() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    company_name: "",
+    contact_person: "",
+    email: "",
+    phone: "",
+    event_type: "sales_training",
+    budget_range: "",
+    message: "",
+  });
+
+  // Check if user already has enterprise role
+  useEffect(() => {
+    const checkApplication = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+        // Check if already has enterprise role (approved = true)
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role, approved")
+          .eq("user_id", user.id)
+          .eq("role", "enterprise")
+          .maybeSingle();
+        if (roleData && roleData.approved === true) {
+          setHasApplied(true);
+          return;
+        }
+        // Also check if application exists (for users who applied before)
+        const { data } = await supabase
+          .from("enterprise_applications")
+          .select("status")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (data) {
+          setHasApplied(true);
+        }
+      }
+    };
+    checkApplication();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert("Please login first");
+        router.push("/login");
+        return;
+      }
+
+      // 1. Insert into enterprise_applications (if you need to track applications)
+      const { error: insertError } = await supabase
+        .from("enterprise_applications")
+        .insert({
+          user_id: user.id,
+          company_name: formData.company_name,
+          contact_person: formData.contact_person,
+          email: formData.email,
+          phone: formData.phone,
+          event_type: formData.event_type,
+          budget_range: formData.budget_range,
+          message: formData.message,
+          status: "approved", // Auto-approve for dev
+          created_at: new Date().toISOString(),
+        });
+
+      if (insertError) {
+        console.error("Insert error:", insertError);
+        // Continue even if application insert fails (maybe already exists)
+      }
+
+      // 2. Upsert enterprise role with approved = true (PERMANENT FIX)
+      const { error: roleError } = await supabase
+        .from("user_roles")
+        .upsert({
+          user_id: user.id,
+          role: "enterprise",
+          approved: true,
+          approved_at: new Date().toISOString(),
+          // created_at will be set by default or you can set it manually
+        }, {
+          onConflict: 'user_id, role' // This ensures if role exists, it updates approved
+        });
+
+      if (roleError) {
+        console.error("Role upsert error:", roleError);
+        alert("Failed to assign enterprise role. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      alert("Application submitted successfully! You now have Enterprise access.");
+      router.push("/dashboard/enterprise");
+    } catch (error: any) {
+      console.error("Error submitting application:", error);
+      alert("Failed to submit application. Check console (F12) for details.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-10 max-w-2xl">
+      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Apply for Enterprise</h1>
+        <p className="text-gray-500 text-sm mb-6">Plan corporate events across multiple cities</p>
+
+        {hasApplied ? (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+            <p className="text-green-700 font-medium">✅ You already have Enterprise access!</p>
+            <Link href="/dashboard/enterprise" className="text-orange-600 hover:underline font-medium">
+              Go to Enterprise Dashboard →
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+              <input
+                type="text"
+                name="company_name"
+                value={formData.company_name}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter company name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Contact Person *</label>
+              <input
+                type="text"
+                name="contact_person"
+                value={formData.contact_person}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter contact person name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter email address"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Event Type *</label>
+              <select
+                name="event_type"
+                value={formData.event_type}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              >
+                <option value="sales_training">Sales Training</option>
+                <option value="leadership_offsite">Leadership Offsite</option>
+                <option value="team_building">Team Building</option>
+                <option value="product_launch">Product Launch</option>
+                <option value="company_retreat">Company Retreat</option>
+                <option value="conference">Conference / Summit</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Budget Range</label>
+              <select
+                name="budget_range"
+                value={formData.budget_range}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              >
+                <option value="">Select budget range</option>
+                <option value="< 5L">Less than ₹5 Lakh</option>
+                <option value="5L - 10L">₹5 Lakh - ₹10 Lakh</option>
+                <option value="10L - 25L">₹10 Lakh - ₹25 Lakh</option>
+                <option value="25L - 50L">₹25 Lakh - ₹50 Lakh</option>
+                <option value="> 50L">More than ₹50 Lakh</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={4}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Tell us about your event requirements..."
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition disabled:bg-gray-400"
+            >
+              {loading ? "Submitting..." : "Submit Application"}
+            </button>
+
+            <p className="text-center text-sm text-gray-400 mt-4">
+              Fill the details below to apply. You will be redirected upon success.
+            </p>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}

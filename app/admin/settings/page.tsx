@@ -1,218 +1,395 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
 import { 
-  User, Percent, DollarSign, CreditCard, Bell, Shield, Database, 
-  Save, RefreshCw, Eye, EyeOff 
+  Settings, Save, RefreshCw, 
+  Percent, DollarSign, Bell, Database, 
+  Shield, User, Mail, Key, Globe,
+  Sliders, Clock, Users, Building
 } from "lucide-react";
+import Link from "next/link";
 
 export default function AdminSettings() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("profile");
-  const [showPassword, setShowPassword] = useState(false);
-  
-  // Profile state
-  const [profile, setProfile] = useState({
-    full_name: "",
-    email: "",
-    phone: "",
-  });
-  
-  // Commission state
-  const [commission, setCommission] = useState({
-    connect: 20,
-    marketplace: 18,
-    enterprise: 15,
-    franchisee: 50
-  });
-  
-  // Discount state
-  const [discount, setDiscount] = useState({
-    member_discount: 15,
-    early_bird: 10,
-    group_booking: 5
-  });
-  
-  // Payment state
-  const [payment, setPayment] = useState({
-    razorpay_key: "",
-    razorpay_secret: "",
-    mode: "test"
-  });
-  
-  // Notification state
-  const [notifications, setNotifications] = useState({
-    email: true,
-    whatsapp: true,
-    push: false
-  });
-  
-  // Password state
-  const [password, setPassword] = useState({
-    current: "",
-    new: "",
-    confirm: ""
+  const [settings, setSettings] = useState({
+    // General
+    site_name: "GCE Events",
+    site_tagline: "Discover. Connect. Experience.",
+    support_email: "support@growthcentralevents.com",
+    
+    // Commission
+    connect_commission: 20,
+    marketplace_commission: 20,
+    enterprise_commission: 15,
+    
+    // Discounts
+    default_discount: 10,
+    member_discount: 5,
+    referral_discount: 5,
+    
+    // Payment Keys
+    razorpay_key_id: "",
+    razorpay_key_secret: "",
+    
+    // Notifications
+    enable_email: true,
+    enable_push: false,
+    enable_sms: false,
+    
+    // Backup
+    backup_enabled: true,
+    backup_time: "03:00",
+    backup_retention: 14,
   });
 
   useEffect(() => {
-    async function loadData() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.push("/login"); return; }
-      
-      // Load profile
-      const { data: userData } = await supabase.from("users").select("full_name, email, phone").eq("id", user.id).single();
-      if (userData) setProfile({ full_name: userData.full_name || "Admin", email: userData.email, phone: userData.phone || "" });
-      
-      // Load settings from platform_settings table
-      const { data: settings } = await supabase.from("platform_settings").select("*").single();
-      if (settings) {
-        if (settings.commission) setCommission(settings.commission);
-        if (settings.discount) setDiscount(settings.discount);
-        if (settings.payment) setPayment(settings.payment);
-        if (settings.notifications) setNotifications(settings.notifications);
-      }
-      setLoading(false);
-    }
-    loadData();
+    fetchSettings();
   }, []);
 
-  const saveSettings = async (type: string, data: any) => {
-    setSaving(true);
-    // Get existing settings or create new
-    const { data: existing } = await supabase.from("platform_settings").select("*").single();
-    const updateData = { ...existing, [type]: data, updated_at: new Date() };
-    if (existing) {
-      await supabase.from("platform_settings").update(updateData).eq("id", existing.id);
-    } else {
-      await supabase.from("platform_settings").insert([{ id: 1, [type]: data }]);
+  const fetchSettings = async () => {
+    setLoading(true);
+    try {
+      // Fetch from system_settings table if exists
+      const { data, error } = await supabase
+        .from("system_settings")
+        .select("*")
+        .single();
+
+      if (error && error.code !== "PGRST116") throw error; // PGRST116 = no rows
+      
+      if (data) {
+        setSettings(prev => ({ ...prev, ...data }));
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+    } finally {
+      setLoading(false);
     }
-    alert(`${type} settings saved!`);
-    setSaving(false);
   };
 
-  const updatePassword = async () => {
-    if (password.new !== password.confirm) { alert("Passwords don't match"); return; }
-    if (password.new.length < 6) { alert("Password must be at least 6 characters"); return; }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    if (type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked;
+      setSettings(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setSettings(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSave = async () => {
     setSaving(true);
-    const { error } = await supabase.auth.updateUser({ password: password.new });
-    if (!error) {
-      alert("Password updated!");
-      setPassword({ current: "", new: "", confirm: "" });
-    } else alert("Error: " + error.message);
-    setSaving(false);
+    try {
+      // Upsert settings
+      const { error } = await supabase
+        .from("system_settings")
+        .upsert({
+          ...settings,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "id" });
+
+      if (error) throw error;
+      alert("Settings saved successfully!");
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      alert("Failed to save settings.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  if (loading) return <div className="p-8 text-center">Loading settings...</div>;
+  const handleBackup = async () => {
+    if (!confirm("Run database backup now?")) return;
+    try {
+      // Trigger backup script
+      const response = await fetch("/api/backup", { method: "POST" });
+      if (response.ok) {
+        alert("Backup completed successfully!");
+      } else {
+        throw new Error("Backup failed");
+      }
+    } catch (error) {
+      console.error("Backup error:", error);
+      alert("Backup failed. Check server logs.");
+    }
+  };
 
-  const tabs = [
-    { id: "profile", name: "Profile", icon: User },
-    { id: "commission", name: "Commission", icon: Percent },
-    { id: "discount", name: "Discount", icon: DollarSign },
-    { id: "payment", name: "Payment", icon: CreditCard },
-    { id: "notifications", name: "Notifications", icon: Bell },
-    { id: "security", name: "Security", icon: Shield },
-    { id: "backup", name: "Backup", icon: Database },
-  ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      <div><h1 className="text-2xl font-bold">Settings</h1><p className="text-gray-500">Manage platform configuration</p></div>
-      <div className="flex gap-6">
-        <div className="w-64 bg-white rounded-xl shadow-sm p-4 space-y-1">
-          {tabs.map(tab => (
-            <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm ${activeTab === tab.id ? "bg-orange-50 text-orange-600" : "hover:bg-gray-50"}`}>
-              <tab.icon size={18} /> {tab.name}
+    <div className="p-6 bg-white min-h-screen">
+      {/* Header */}
+      <div className="mb-6 pb-4 border-b-4 border-orange-400">
+        <div className="flex items-center gap-3">
+          <div className="bg-orange-500 p-2 rounded-xl">
+            <Settings size={24} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Settings</h1>
+            <p className="text-gray-500 text-sm">Manage system settings, commissions, payments, and more</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* General Settings */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Globe size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">General Settings</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Site Name</label>
+              <input
+                type="text"
+                name="site_name"
+                value={settings.site_name}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tagline</label>
+              <input
+                type="text"
+                name="site_tagline"
+                value={settings.site_tagline}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Support Email</label>
+              <input
+                type="email"
+                name="support_email"
+                value={settings.support_email}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Commission Settings */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Percent size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">Commission Rates</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Connect Commission (%)</label>
+              <input
+                type="number"
+                name="connect_commission"
+                value={settings.connect_commission}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Marketplace Commission (%)</label>
+              <input
+                type="number"
+                name="marketplace_commission"
+                value={settings.marketplace_commission}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Enterprise Commission (%)</label>
+              <input
+                type="number"
+                name="enterprise_commission"
+                value={settings.enterprise_commission}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Discount Settings */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Sliders size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">Discount Settings</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Default Discount (%)</label>
+              <input
+                type="number"
+                name="default_discount"
+                value={settings.default_discount}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Member Discount (%)</label>
+              <input
+                type="number"
+                name="member_discount"
+                value={settings.member_discount}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Referral Discount (%)</label>
+              <input
+                type="number"
+                name="referral_discount"
+                value={settings.referral_discount}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Keys */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Key size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">Payment Keys</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Razorpay Key ID</label>
+              <input
+                type="password"
+                name="razorpay_key_id"
+                value={settings.razorpay_key_id}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+                placeholder="Enter Razorpay Key ID"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Razorpay Key Secret</label>
+              <input
+                type="password"
+                name="razorpay_key_secret"
+                value={settings.razorpay_key_secret}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+                placeholder="Enter Razorpay Key Secret"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Notifications */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Bell size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">Notifications</h2>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">Enable Email Notifications</label>
+              <input
+                type="checkbox"
+                name="enable_email"
+                checked={settings.enable_email}
+                onChange={handleChange}
+                className="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">Enable Push Notifications</label>
+              <input
+                type="checkbox"
+                name="enable_push"
+                checked={settings.enable_push}
+                onChange={handleChange}
+                className="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">Enable SMS Notifications</label>
+              <input
+                type="checkbox"
+                name="enable_sms"
+                checked={settings.enable_sms}
+                onChange={handleChange}
+                className="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Backup */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-6">
+          <div className="flex items-center gap-2 mb-4 text-orange-600">
+            <Database size={20} />
+            <h2 className="text-lg font-semibold text-gray-800">Backup Settings</h2>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">Enable Auto Backup</label>
+              <input
+                type="checkbox"
+                name="backup_enabled"
+                checked={settings.backup_enabled}
+                onChange={handleChange}
+                className="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Backup Time (UTC)</label>
+              <input
+                type="time"
+                name="backup_time"
+                value={settings.backup_time}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Retention (days)</label>
+              <input
+                type="number"
+                name="backup_retention"
+                value={settings.backup_retention}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
+              />
+            </div>
+            <button
+              onClick={handleBackup}
+              className="w-full py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
+            >
+              Run Backup Now
             </button>
-          ))}
+          </div>
         </div>
+      </div>
 
-        <div className="flex-1 bg-white rounded-xl shadow-sm p-6">
-          {/* Profile Tab */}
-          {activeTab === "profile" && (
-            <div><h2 className="text-lg font-bold mb-4">Profile Information</h2>
-              <div className="space-y-4">
-                <div><label className="block text-sm">Full Name</label><input type="text" value={profile.full_name} onChange={e => setProfile({...profile, full_name: e.target.value})} className="w-full border rounded-lg p-2" /></div>
-                <div><label className="block text-sm">Email</label><input type="email" value={profile.email} disabled className="w-full border rounded-lg p-2 bg-gray-50" /></div>
-                <div><label className="block text-sm">Phone</label><input type="tel" value={profile.phone} onChange={e => setProfile({...profile, phone: e.target.value})} className="w-full border rounded-lg p-2" /></div>
-                <button onClick={() => saveSettings("profile", profile)} disabled={saving} className="bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">{saving ? "Saving..." : "Save Profile"}</button>
-              </div>
-            </div>
-          )}
-
-          {/* Commission Tab */}
-          {activeTab === "commission" && (
-            <div><h2 className="text-lg font-bold mb-4">Commission Settings</h2>
-              <div className="space-y-4">
-                <div><label>GCE Connect (%)</label><input type="number" value={commission.connect} onChange={e => setCommission({...commission, connect: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Marketplace (%)</label><input type="number" value={commission.marketplace} onChange={e => setCommission({...commission, marketplace: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Enterprise (%)</label><input type="number" value={commission.enterprise} onChange={e => setCommission({...commission, enterprise: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Franchisee Share (%)</label><input type="number" value={commission.franchisee} onChange={e => setCommission({...commission, franchisee: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <button onClick={() => saveSettings("commission", commission)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Commission</button>
-              </div>
-            </div>
-          )}
-
-          {/* Discount Tab */}
-          {activeTab === "discount" && (
-            <div><h2 className="text-lg font-bold mb-4">Discount Settings</h2>
-              <div className="space-y-4">
-                <div><label>Member Discount on Food Bill (%)</label><input type="number" value={discount.member_discount} onChange={e => setDiscount({...discount, member_discount: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Early Bird Discount (%)</label><input type="number" value={discount.early_bird} onChange={e => setDiscount({...discount, early_bird: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Group Booking Discount (%)</label><input type="number" value={discount.group_booking} onChange={e => setDiscount({...discount, group_booking: parseInt(e.target.value)})} className="w-full border rounded-lg p-2" /></div>
-                <button onClick={() => saveSettings("discount", discount)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Discounts</button>
-              </div>
-            </div>
-          )}
-
-          {/* Payment Tab */}
-          {activeTab === "payment" && (
-            <div><h2 className="text-lg font-bold mb-4">Payment Gateway</h2>
-              <div className="space-y-4">
-                <div><label>Razorpay Key ID</label><input type="text" value={payment.razorpay_key} onChange={e => setPayment({...payment, razorpay_key: e.target.value})} placeholder="rzp_test_xxx" className="w-full border rounded-lg p-2" /></div>
-                <div><label>Razorpay Secret</label><input type="password" value={payment.razorpay_secret} onChange={e => setPayment({...payment, razorpay_secret: e.target.value})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Mode</label><select value={payment.mode} onChange={e => setPayment({...payment, mode: e.target.value})} className="w-full border rounded-lg p-2"><option value="test">Test Mode</option><option value="live">Live Mode</option></select></div>
-                <button onClick={() => saveSettings("payment", payment)} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Save Payment Settings</button>
-              </div>
-            </div>
-          )}
-
-          {/* Notifications Tab */}
-          {activeTab === "notifications" && (
-            <div><h2 className="text-lg font-bold mb-4">Notification Preferences</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center"><span>Email Notifications</span><button onClick={() => setNotifications({...notifications, email: !notifications.email})} className={`px-3 py-1 rounded-full text-sm ${notifications.email ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.email ? "ON" : "OFF"}</button></div>
-                <div className="flex justify-between items-center"><span>WhatsApp Notifications</span><button onClick={() => setNotifications({...notifications, whatsapp: !notifications.whatsapp})} className={`px-3 py-1 rounded-full text-sm ${notifications.whatsapp ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.whatsapp ? "ON" : "OFF"}</button></div>
-                <div className="flex justify-between items-center"><span>Push Notifications</span><button onClick={() => setNotifications({...notifications, push: !notifications.push})} className={`px-3 py-1 rounded-full text-sm ${notifications.push ? "bg-green-100 text-green-700" : "bg-gray-200"}`}>{notifications.push ? "ON" : "OFF"}</button></div>
-                <button onClick={() => saveSettings("notifications", notifications)} className="mt-4 bg-orange-600 text-white px-4 py-2 rounded-lg">Save Notifications</button>
-              </div>
-            </div>
-          )}
-
-          {/* Security Tab */}
-          {activeTab === "security" && (
-            <div><h2 className="text-lg font-bold mb-4">Change Password</h2>
-              <div className="space-y-4">
-                <div><label>New Password</label><input type={showPassword ? "text" : "password"} value={password.new} onChange={e => setPassword({...password, new: e.target.value})} className="w-full border rounded-lg p-2" /></div>
-                <div><label>Confirm Password</label><input type={showPassword ? "text" : "password"} value={password.confirm} onChange={e => setPassword({...password, confirm: e.target.value})} className="w-full border rounded-lg p-2" /></div>
-                <div className="flex gap-2"><button onClick={() => setShowPassword(!showPassword)} className="border px-3 py-1 rounded">{showPassword ? "Hide" : "Show"}</button><button onClick={updatePassword} disabled={saving} className="bg-orange-600 text-white px-4 py-2 rounded-lg">Update Password</button></div>
-              </div>
-            </div>
-          )}
-
-          {/* Backup Tab */}
-          {activeTab === "backup" && (
-            <div><h2 className="text-lg font-bold mb-4">Database Backup</h2>
-              <p className="text-gray-500 mb-4">Manual and automated backup options</p>
-              <div className="space-y-3">
-                <button className="bg-orange-600 text-white px-4 py-2 rounded-lg w-full">Run Manual Backup</button>
-                <button className="border px-4 py-2 rounded-lg w-full">Download Latest Backup</button>
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Save Button */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition disabled:bg-gray-400"
+        >
+          <Save size={18} />
+          {saving ? "Saving..." : "Save All Settings"}
+        </button>
       </div>
     </div>
   );

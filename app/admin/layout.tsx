@@ -25,8 +25,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Event Management", href: "/admin/events", icon: Calendar },
     { name: "Affiliate Applications", href: "/admin/affiliates", icon: Users },
     { name: "Enterprise Proposals", href: "/admin/enterprise-proposals", icon: Briefcase },
-    { name: "BDM Dashboard", href: "/dashboard/bdm", icon: UserRound },
-    { name: "Payout Management", href: "/admin/payouts", icon: HandCoins },
     { name: "Members Management", href: "/admin/members", icon: Users },
     { name: "Partners Management", href: "/admin/partners", icon: Star },
     { name: "Venue Referrers", href: "/admin/venue-referrers", icon: Star },

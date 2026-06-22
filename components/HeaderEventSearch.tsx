@@ -1,4 +1,5 @@
 "use client";
+import GeoLocationBar from "@/components/GeoLocationBar";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Search, X } from "lucide-react";
@@ -7,6 +8,7 @@ import { useRouter } from "next/navigation";
 export default function HeaderEventSearch() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [userCity, setUserCity] = useState<string | null>(null);
   const [results, setResults] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -88,6 +90,7 @@ export default function HeaderEventSearch() {
     <div className="relative w-full">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+        <GeoLocationBar onCityChange={setUserCity} eventsCount={0} />
         <input
           ref={inputRef}
           type="text"

@@ -123,7 +123,7 @@ export default function Header() {
                     {!loading && roles.length > 0 && (
                       <div className="py-1">
                         <div className="px-3 py-1 text-xs font-semibold text-gray-500">Your dashboards</div>
-                        {roles.map(role => (
+                        {roles.filter(role => role.role !== "member").map(role => (
                           <button key={role.role} onClick={() => { handleSetActiveRole(role.role); setDropdownOpen(false); }} className={`w-full text-left px-3 py-2 text-sm rounded-md flex items-center gap-2 ${activeRole === role.role ? "bg-orange-100 text-orange-700" : "hover:bg-gray-100"}`}>
                             {roleIcons[role.role] || <User size={16} />}
                             <span>{roleLabels[role.role] || role.role}</span>
@@ -161,7 +161,7 @@ export default function Header() {
             <div className="mt-4 space-y-2">
               <Link href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><User size={20} /> Profile</Link>
               <Link href="/settings" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><Settings size={20} /> Settings</Link>
-              <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><LayoutDashboard size={20} /> Dashboard</Link>
+              <Link href="/dashboard/member" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><LayoutDashboard size={20} /> Member</Link>
               <hr className="my-2" />
               <Link href="/wishlist" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><Heart size={20} /> Wishlist</Link>
               <Link href="/about" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><Info size={20} /> About</Link>

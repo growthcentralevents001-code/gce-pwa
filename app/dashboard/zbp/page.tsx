@@ -1,127 +1,204 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { Users, TrendingUp, DollarSign, MapPin, Calendar, RefreshCw, Award, Copy, CheckCircle } from "lucide-react";
 
 export default function ZBPDashboard() {
-  const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [user, setUser] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    city: "",
-    address: "",
-    capacity: "",
-    type: "",
-    email: "",
-    password: "",
-  });
+  const [profile, setProfile] = useState(null);
+  const [stats, setStats] = useState({ venues: 0, commission: 0, pending: 0, paid: 0 });
+  const [referredVenues, setReferredVenues] = useState([]);
+  const [referralCode, setReferralCode] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetchUser();
+    fetchData();
   }, []);
 
-  async function fetchUser() {
-    const { data: { user } } = await supabase.auth.getUser();
-    setUser(user);
-    if (user) fetchVenues();
-  }
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
-  async function fetchVenues() {
-    if (!user) return;
-    const { data, error } = await supabase
-      .from("venues")
-      .select("*")
-      .eq("zbp_id", user.id);
-    if (!error) setVenues(data);
-    setLoading(false);
-  }
+      // Check if profile exists, if not create it
+      let { data: profileData, error: profileError } = await supabase
+        .from("zbp_profiles")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+      if (profileError && profileError.code === "PGRST116") {
+        const { data: newProfile, error: createError } = await supabase
+          .from("zbp_profiles")
+          .insert({
+            user_id: user.id,
+            zone: "North",
+            tier: "Silver",
+            commission_rate: 30,
+          })
+          .select("*")
+          .single();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    if (!user) { alert("Please login as ZBP"); setSubmitting(false); return; }
+        if (!createError && newProfile) {
+          profileData = newProfile;
+        }
+      }
 
-    const payload = {
-      name: form.name,
-      city: form.city,
-      address: form.address,
-      capacity: form.capacity,
-      type: form.type,
-      email: form.email,
-      password: form.password,
-      zbp_user_id: user.id,
-    };
+      setProfile(profileData);
 
-    const res = await fetch("/api/venue/onboard", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("Venue onboarded successfully! Partner can login now.");
-      fetchVenues();
-      setForm({ name: "", city: "", address: "", capacity: "", type: "", email: "", password: "" });
-    } else {
-      alert("Error: " + data.error);
+      // Generate referral code (user_id short)
+      const code = `ZBP${user.id.slice(0, 8)}`;
+      setReferralCode(code);
+
+      // Fetch referred venues
+      const { data: venues } = await supabase
+        .from("venues")
+        .select("*")
+        .eq("referrer_id", user.id)
+        .eq("referrer_type", "zbp")
+        .order("created_at", { ascending: false });
+
+      setReferredVenues(venues || []);
+
+      // Fetch commission stats
+      const { data: commissionData } = await supabase
+        .from("commission_logs")
+        .select("status, referrer_share")
+        .eq("referrer_id", user.id)
+        .eq("referrer_type", "zbp");
+
+      const totalCommission = commissionData?.reduce((sum, c) => sum + c.referrer_share, 0) || 0;
+      const pending = commissionData?.filter(c => c.status === "pending").reduce((sum, c) => sum + c.referrer_share, 0) || 0;
+      const paid = commissionData?.filter(c => c.status === "paid").reduce((sum, c) => sum + c.referrer_share, 0) || 0;
+
+      setStats({
+        venues: venues?.length || 0,
+        commission: totalCommission,
+        pending,
+        paid,
+      });
+    } catch (error) {
+      console.error("Error fetching ZBP data:", error);
+    } finally {
+      setLoading(false);
     }
-    setSubmitting(false);
   };
 
-  if (loading) return <div className="p-6">Loading...</div>;
+  const copyReferralCode = () => {
+    navigator.clipboard.writeText(referralCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">ZBP Dashboard</h1>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">ZBP Dashboard</h1>
+        <p className="text-gray-500 mb-6">Manage your zone, venues, and commissions</p>
 
-      {/* Onboard Form */}
-      <div className="bg-white p-6 rounded-lg shadow mb-8">
-        <h2 className="text-xl font-semibold mb-4">Onboard New Venue</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          <input type="text" name="name" placeholder="Venue Name" required value={form.name} onChange={handleChange} className="p-2 border rounded" />
-          <input type="text" name="city" placeholder="City" required value={form.city} onChange={handleChange} className="p-2 border rounded" />
-          <input type="text" name="address" placeholder="Address" required value={form.address} onChange={handleChange} className="p-2 border rounded" />
-          <input type="number" name="capacity" placeholder="Capacity" required value={form.capacity} onChange={handleChange} className="p-2 border rounded" />
-          <input type="text" name="type" placeholder="Venue Type" required value={form.type} onChange={handleChange} className="p-2 border rounded" />
-          <input type="email" name="email" placeholder="Venue Partner Email" required value={form.email} onChange={handleChange} className="p-2 border rounded" />
-          <input type="password" name="password" placeholder="Password" required value={form.password} onChange={handleChange} className="p-2 border rounded" />
-          <button type="submit" disabled={submitting} className="col-span-2 bg-orange-600 text-white p-2 rounded hover:bg-orange-700">
-            {submitting ? "Creating..." : "Submit for Approval (Auto-Approve)"}
-          </button>
-        </form>
-      </div>
-
-      {/* Venues List */}
-      <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
-      {venues.length === 0 ? (
-        <p>No venues onboarded yet.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full bg-white rounded-lg shadow">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="p-2 text-left">Venue Name</th>
-                <th className="p-2 text-left">City</th>
-                <th className="p-2 text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {venues.map((v) => (
-                <tr key={v.id} className="border-t">
-                  <td className="p-2">{v.name}</td>
-                  <td className="p-2">{v.city}</td>
-                  <td className="p-2"><span className="text-green-600">Approved</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Profile Card */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-4 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Award size={24} className="text-orange-500" />
+              <div>
+                <p className="text-sm font-medium text-gray-700">Zone: <span className="text-orange-600">{profile?.zone || "Not Assigned"}</span></p>
+                <p className="text-sm font-medium text-gray-700">Tier: <span className="text-orange-600">{profile?.tier || "Silver"}</span></p>
+              </div>
+            </div>
+            <div className="text-xs text-gray-400">
+              Commission Rate: {profile?.commission_rate || 30}%
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Referral Code Card */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-4 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-gray-500">Your Referral Code:</span>
+              <span className="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-lg border border-orange-200">
+                {referralCode}
+              </span>
+              <button
+                onClick={copyReferralCode}
+                className="flex items-center gap-1 text-sm text-orange-600 hover:text-orange-700 transition"
+              >
+                {copied ? <CheckCircle size={16} /> : <Copy size={16} />}
+                {copied ? "Copied!" : "Copy"}
+              </button>
+            </div>
+            <div className="text-xs text-gray-400">
+              Share this code with venues to earn commission
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl shadow-sm p-4">
+            <p className="text-gray-500 text-sm">Total Venues</p>
+            <p className="text-2xl font-bold text-orange-700">{stats.venues}</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl shadow-sm p-4">
+            <p className="text-gray-500 text-sm">Total Commission</p>
+            <p className="text-2xl font-bold text-green-700">₹{stats.commission}</p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-xl shadow-sm p-4">
+            <p className="text-gray-500 text-sm">Pending</p>
+            <p className="text-2xl font-bold text-yellow-700">₹{stats.pending}</p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl shadow-sm p-4">
+            <p className="text-gray-500 text-sm">Paid</p>
+            <p className="text-2xl font-bold text-blue-700">₹{stats.paid}</p>
+          </div>
+        </div>
+
+        {/* Referred Venues */}
+        <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-5">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+              <Users size={20} className="text-orange-500" />
+              Referred Venues
+            </h2>
+            <button onClick={fetchData} className="text-orange-500 hover:text-orange-700 transition">
+              <RefreshCw size={18} />
+            </button>
+          </div>
+          {referredVenues.length === 0 ? (
+            <p className="text-gray-400 text-sm">No venues referred yet. Start onboarding venues in your zone.</p>
+          ) : (
+            <div className="space-y-3">
+              {referredVenues.map((venue) => (
+                <div key={venue.id} className="flex items-center justify-between border-b border-orange-50 pb-2 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">{venue.name}</p>
+                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                      <MapPin size={12} /> {venue.city || "Unknown"} • Joined {new Date(venue.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <span className={`text-xs px-2 py-1 rounded-full ${venue.status === "active" || venue.status === "approved" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                    {venue.status || "pending"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

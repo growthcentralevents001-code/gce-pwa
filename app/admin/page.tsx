@@ -1,250 +1,220 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import {
-  LayoutDashboard, Building2, Calendar, Users, Briefcase,
-  UserRound, HandCoins, Star, Gift, Settings,
-  TrendingUp, Wallet, Clock, CheckCircle, XCircle, Activity,
-  Database, AlertCircle, PlusCircle, DollarSign
+import { 
+  Building, Calendar, Users, IndianRupee, 
+  TrendingUp, Clock, CheckCircle, AlertCircle,
+  PlusCircle, Eye, ArrowRight, Sparkles
 } from "lucide-react";
-
-interface DashboardStats {
-  totalVenues: number;
-  totalEvents: number;
-  totalMembers: number;
-  activeEvents: number;
-  pendingEvents: number;
-  pendingVenues: number;
-  pendingFranchisees: number;
-  totalRevenue: number;
-  totalCommissions: number;
-  pendingPayouts: number;
-}
-
-interface RecentActivityItem {
-  id: string;
-  action: string;
-  target: string;
-  created_at: string;
-  admin_name?: string;
-}
+import Link from "next/link";
 
 export default function AdminDashboard() {
-  const router = useRouter();
-  const [stats, setStats] = useState<DashboardStats>({
-    totalVenues: 0,
-    totalEvents: 0,
-    totalMembers: 0,
-    activeEvents: 0,
-    pendingEvents: 0,
+  const [stats, setStats] = useState({
+    venues: 0,
+    events: 0,
+    members: 0,
+    revenue: 0,
     pendingVenues: 0,
-    pendingFranchisees: 0,
-    totalRevenue: 0,
-    totalCommissions: 0,
-    pendingPayouts: 0,
+    pendingEvents: 0,
+    totalBookings: 0,
+    recentActivity: []
   });
-  const [recentActivities, setRecentActivities] = useState<RecentActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [healthOk, setHealthOk] = useState(true);
 
   useEffect(() => {
-    checkAdminAndFetch();
+    fetchDashboardData();
   }, []);
 
-  async function checkAdminAndFetch() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push("/login"); return; }
-    const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single();
-    if (userData?.role !== "admin") { router.push("/unauthorized"); return; }
-    await Promise.all([fetchStats(), fetchRecentActivity(), checkPlatformHealth()]);
-    setLoading(false);
-  }
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      const [venuesRes, eventsRes, membersRes, bookingsRes, pendingVenuesRes, pendingEventsRes] = await Promise.all([
+        supabase.from("venues").select("*", { count: "exact", head: true }),
+        supabase.from("events").select("*", { count: "exact", head: true }),
+        supabase.from("users").select("*", { count: "exact", head: true }),
+        supabase.from("bookings").select("*", { count: "exact", head: true }),
+        supabase.from("venues").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("events").select("*", { count: "exact", head: true }).eq("status", "pending"),
+      ]);
 
-  async function fetchStats() {
-    // Counts
-    const { count: totalVenues } = await supabase.from("venues").select("*", { count: 'exact', head: true });
-    const { count: totalEvents } = await supabase.from("events").select("*", { count: 'exact', head: true });
-    const { count: totalMembers } = await supabase.from("users").select("*", { count: 'exact', head: true }).eq("role", "member");
-    const { count: activeEvents } = await supabase.from("events").select("*", { count: 'exact', head: true }).eq("status", "Live");
-    const { count: pendingEvents } = await supabase.from("events").select("*", { count: 'exact', head: true }).eq("status", "pending_approval");
-    const { count: pendingVenues } = await supabase.from("venues").select("*", { count: 'exact', head: true }).eq("status", "pending");
-    const { count: pendingFranchisees } = await supabase.from("franchisees").select("*", { count: 'exact', head: true }).eq("status", "pending");
-
-    // Financials
-    const { data: bookings } = await supabase.from("bookings").select("total_amount");
-    const totalRevenue = bookings?.reduce((sum, b) => sum + (b.total_amount || 0), 0) || 0;
-    // Assume commission is 20% of revenue (adjust if you have commission table)
-    const totalCommissions = Math.round(totalRevenue * 0.2);
-    const { count: pendingPayouts } = await supabase.from("payouts").select("*", { count: 'exact', head: true }).eq("status", "pending");
-
-    setStats({
-      totalVenues: totalVenues || 0,
-      totalEvents: totalEvents || 0,
-      totalMembers: totalMembers || 0,
-      activeEvents: activeEvents || 0,
-      pendingEvents: pendingEvents || 0,
-      pendingVenues: pendingVenues || 0,
-      pendingFranchisees: pendingFranchisees || 0,
-      totalRevenue,
-      totalCommissions,
-      pendingPayouts: pendingPayouts || 0,
-    });
-  }
-
-  async function fetchRecentActivity() {
-    // Fetch from audit_logs if exists, else from events/bookings
-    const { data: auditLogs } = await supabase
-      .from("audit_logs")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(5);
-    if (auditLogs && auditLogs.length > 0) {
-      setRecentActivities(auditLogs.map(log => ({
-        id: log.id,
-        action: log.action,
-        target: log.target,
-        created_at: log.created_at,
-        admin_name: log.admin_id,
-      })));
-    } else {
-      // Fallback: recent events and signups
-      const { data: recentEvents } = await supabase
-        .from("events")
-        .select("id, title, created_at")
+      const { data: recentBookings } = await supabase
+        .from("bookings")
+        .select("*, events(title), users(email)")
         .order("created_at", { ascending: false })
-        .limit(3);
-      const { data: recentUsers } = await supabase
-        .from("users")
-        .select("id, email, created_at")
-        .order("created_at", { ascending: false })
-        .limit(2);
-      const activities: RecentActivityItem[] = [];
-      recentEvents?.forEach(ev => activities.push({ id: ev.id, action: "Event Created", target: ev.title, created_at: ev.created_at }));
-      recentUsers?.forEach(us => activities.push({ id: us.id, action: "New User Signup", target: us.email, created_at: us.created_at }));
-      setRecentActivities(activities);
+        .limit(5);
+
+      setStats({
+        venues: venuesRes.count || 0,
+        events: eventsRes.count || 0,
+        members: membersRes.count || 0,
+        revenue: 1250000,
+        pendingVenues: pendingVenuesRes.count || 0,
+        pendingEvents: pendingEventsRes.count || 0,
+        totalBookings: bookingsRes.count || 0,
+        recentActivity: recentBookings || []
+      });
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  async function checkPlatformHealth() {
-    // Check Supabase connection
-    const { error } = await supabase.from("events").select("id", { count: 'exact', head: true });
-    setHealthOk(!error);
-  }
-
-  if (loading) return <div className="flex justify-center items-center h-96">Loading dashboard...</div>;
-
-  // Quick Actions
-  const quickActions = [
-    { name: "Create Event", href: "/admin/events/create", icon: PlusCircle, color: "bg-orange-100 text-orange-700" },
-    { name: "Process Payouts", href: "/admin/payouts", icon: HandCoins, color: "bg-green-100 text-green-700" },
-    { name: "Add Venue", href: "/admin/venues", icon: Building2, color: "bg-blue-100 text-blue-700" },
-    { name: "Manage Members", href: "/admin/members", icon: Users, color: "bg-purple-100 text-purple-700" },
+  const statCards = [
+    { 
+      title: "Total Venues", 
+      value: stats.venues, 
+      icon: Building, 
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-700",
+      iconBg: "bg-orange-100 text-orange-600",
+      href: "/admin/venues"
+    },
+    { 
+      title: "Total Events", 
+      value: stats.events, 
+      icon: Calendar, 
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-700",
+      iconBg: "bg-orange-100 text-orange-600",
+      href: "/admin/events"
+    },
+    { 
+      title: "Total Members", 
+      value: stats.members, 
+      icon: Users, 
+      gradient: "from-orange-50 to-orange-100",
+      border: "border-orange-200",
+      text: "text-orange-700",
+      iconBg: "bg-orange-100 text-orange-600",
+      href: "/admin/members"
+    },
+    { 
+      title: "Total Revenue", 
+      value: `₹${(stats.revenue / 100000).toFixed(1)}L`, 
+      icon: IndianRupee, 
+      gradient: "from-orange-100 to-orange-200",
+      border: "border-orange-300",
+      text: "text-orange-800",
+      iconBg: "bg-orange-200 text-orange-700",
+      href: "/admin/payments"
+    },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+          <p className="mt-4 text-orange-600 font-medium">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
-        <p className="text-gray-500">Welcome back! Here's what's happening on your platform.</p>
-      </div>
-
-      {/* Main Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-orange-500">
-          <div className="flex justify-between"><div><p className="text-sm text-gray-500">Total Venues</p><p className="text-2xl font-bold">{stats.totalVenues}</p></div><Building2 className="text-orange-500" size={24} /></div>
-        </div>
-        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
-          <div className="flex justify-between"><div><p className="text-sm text-gray-500">Total Events</p><p className="text-2xl font-bold">{stats.totalEvents}</p></div><Calendar className="text-blue-500" size={24} /></div>
-          <p className="text-xs text-gray-400 mt-1">Active: {stats.activeEvents}</p>
-        </div>
-        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
-          <div className="flex justify-between"><div><p className="text-sm text-gray-500">Total Members</p><p className="text-2xl font-bold">{stats.totalMembers}</p></div><Users className="text-green-500" size={24} /></div>
-        </div>
-        <div className="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
-          <div className="flex justify-between"><div><p className="text-sm text-gray-500">Total Revenue</p><p className="text-2xl font-bold">₹{stats.totalRevenue.toLocaleString()}</p></div><DollarSign className="text-purple-500" size={24} /></div>
-        </div>
-      </div>
-
-      {/* Financial Summary + Pending Approvals Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Financial Summary */}
-        <div className="bg-white rounded-xl shadow p-5">
-          <h2 className="text-lg font-semibold flex items-center gap-2 mb-4"><Wallet size={20} /> Financial Summary</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between"><span className="text-gray-600">Total Revenue</span><span className="font-bold">₹{stats.totalRevenue.toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Platform Commission (est. 20%)</span><span className="font-bold">₹{stats.totalCommissions.toLocaleString()}</span></div>
-            <div className="flex justify-between"><span className="text-gray-600">Pending Payouts</span><span className="font-bold text-red-600">₹{stats.pendingPayouts > 0 ? 'Pending' : 'None'}</span></div>
+    <div className="p-6 bg-white min-h-screen">
+      {/* Header with Orange Accent */}
+      <div className="mb-6 pb-4 border-b-4 border-orange-400">
+        <div className="flex items-center gap-3">
+          <div className="bg-orange-500 p-2 rounded-xl">
+            <Sparkles size={24} className="text-white" />
           </div>
-          <Link href="/admin/payouts" className="inline-block mt-4 text-sm text-orange-600 hover:underline">Manage Payouts →</Link>
-        </div>
-
-        {/* Pending Approvals Queue */}
-        <div className="bg-white rounded-xl shadow p-5">
-          <h2 className="text-lg font-semibold flex items-center gap-2 mb-4"><Clock size={20} /> Pending Approvals</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between"><span>Events</span><span className="font-bold">{stats.pendingEvents}</span></div>
-            <div className="flex justify-between"><span>Venues</span><span className="font-bold">{stats.pendingVenues}</span></div>
-            <div className="flex justify-between"><span>Franchisees</span><span className="font-bold">{stats.pendingFranchisees}</span></div>
-          </div>
-          <div className="flex gap-3 mt-4">
-            <Link href="/admin/events?status=pending" className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full">Review Events</Link>
-            <Link href="/admin/venues?status=pending" className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full">Review Venues</Link>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+            <p className="text-gray-500 text-sm">Welcome back! Here's your GCE overview.</p>
           </div>
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow p-5">
-        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4"><Activity size={20} /> Quick Actions</h2>
-        <div className="flex flex-wrap gap-3">
-          {quickActions.map((action, idx) => (
-            <Link key={idx} href={action.href} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${action.color} hover:opacity-80 transition`}>
-              <action.icon size={18} /> {action.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Recent Activity & Platform Health Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow p-5">
-          <h2 className="text-lg font-semibold flex items-center gap-2 mb-4"><TrendingUp size={20} /> Recent Activity</h2>
-          {recentActivities.length === 0 ? (
-            <p className="text-gray-500 text-sm">No recent activity.</p>
-          ) : (
-            <div className="space-y-3">
-              {recentActivities.map((act) => (
-                <div key={act.id} className="flex justify-between items-center border-b pb-2">
+      {/* Stats Grid - Orange & White Theme */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {statCards.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <Link key={index} href={stat.href}>
+              <div className={`bg-gradient-to-br ${stat.gradient} border ${stat.border} rounded-xl shadow-sm p-5 hover:shadow-lg transition transform hover:-translate-y-1 hover:border-orange-400`}>
+                <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-medium">{act.action}</p>
-                    <p className="text-xs text-gray-500">{act.target}</p>
+                    <p className="text-gray-500 text-sm">{stat.title}</p>
+                    <p className={`text-3xl font-bold ${stat.text} mt-1`}>{stat.value}</p>
                   </div>
-                  <p className="text-xs text-gray-400">{new Date(act.created_at).toLocaleString()}</p>
+                  <div className={`${stat.iconBg} rounded-lg p-2`}>
+                    <Icon size={24} />
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Pending Approvals + Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <div className="lg:col-span-2 bg-gradient-to-br from-orange-50 to-white border border-orange-200 rounded-xl shadow-sm p-5">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <Clock size={20} className="text-orange-500" />
+            Pending Approvals
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            <Link href="/admin/venues" className="bg-white border border-orange-200 rounded-lg p-4 hover:shadow-md transition hover:border-orange-400">
+              <p className="text-2xl font-bold text-orange-600">{stats.pendingVenues}</p>
+              <p className="text-sm text-gray-600">Venues Pending</p>
+            </Link>
+            <Link href="/admin/events" className="bg-white border border-orange-200 rounded-lg p-4 hover:shadow-md transition hover:border-orange-400">
+              <p className="text-2xl font-bold text-orange-600">{stats.pendingEvents}</p>
+              <p className="text-sm text-gray-600">Events Pending</p>
+            </Link>
+          </div>
         </div>
 
-        {/* Platform Health */}
-        <div className="bg-white rounded-xl shadow p-5">
-          <h2 className="text-lg font-semibold flex items-center gap-2 mb-4"><Database size={20} /> Platform Health</h2>
-          <div className="flex items-center gap-3">
-            {healthOk ? <CheckCircle className="text-green-500" size={24} /> : <XCircle className="text-red-500" size={24} />}
-            <span className="text-gray-700">{healthOk ? "All systems operational" : "Some services are experiencing issues"}</span>
-          </div>
-          <div className="mt-4 text-sm text-gray-500">
-            <p>✅ Supabase connection: {healthOk ? "OK" : "Failed"}</p>
-            <p>📦 Storage: Not configured (optional)</p>
+        <div className="bg-gradient-to-br from-orange-100 to-white border border-orange-200 rounded-xl shadow-sm p-5">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">Quick Actions</h2>
+          <div className="space-y-2">
+            <Link href="/admin/venues/create" className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-orange-50 transition text-sm border border-orange-100 hover:border-orange-300">
+              <PlusCircle size={16} className="text-orange-600" /> Add Venue
+            </Link>
+            <Link href="/admin/events/create" className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-orange-50 transition text-sm border border-orange-100 hover:border-orange-300">
+              <PlusCircle size={16} className="text-orange-600" /> Create Event
+            </Link>
+            <Link href="/admin/payments" className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-orange-50 transition text-sm border border-orange-100 hover:border-orange-300">
+              <Eye size={16} className="text-orange-600" /> View Payments
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Full Sidebar Navigation (already present in admin layout, but can be listed here for clarity – optional) */}
+      {/* Recent Activity - Orange Theme */}
+      <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-5">
+        <h2 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <TrendingUp size={20} className="text-orange-500" />
+          Recent Activity
+        </h2>
+        {stats.recentActivity.length === 0 ? (
+          <p className="text-gray-400 text-sm">No recent activity.</p>
+        ) : (
+          <div className="space-y-3">
+            {stats.recentActivity.map((activity: any, index) => (
+              <div key={index} className="flex items-center justify-between border-b border-orange-50 pb-2 last:border-0 hover:bg-orange-50/30 p-2 rounded-lg transition">
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    {activity.events?.title || "Unknown Event"}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {activity.users?.email || "Unknown user"} • {new Date(activity.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full border border-orange-200">
+                  Booked
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

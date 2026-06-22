@@ -1,0 +1,116 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { MapPin, Loader2, ChevronDown } from "lucide-react";
+
+interface GeoLocationBarProps {
+  onCityChange: (city: string | null) => void;
+  eventsCount: number;
+}
+
+export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocationBarProps) {
+  const [userCity, setUserCity] = useState<string | null>(null);
+  const [locationLoading, setLocationLoading] = useState(true);
+  const [cities, setCities] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchCities();
+    detectLocation();
+  }, []);
+
+  const fetchCities = async () => {
+    const { data } = await supabase.from("events").select("city");
+    if (data) {
+      const uniqueCities = [...new Set(data.map(e => e.city).filter(Boolean))];
+      setCities(uniqueCities);
+    }
+  };
+
+  const detectLocation = async () => {
+    setLocationLoading(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const res = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
+            );
+            const data = await res.json();
+            const city = data.city || data.locality || null;
+            if (city && cities.some(c => c.toLowerCase() === (city || "").toLowerCase())) {
+              setUserCity(city);
+              onCityChange(city);
+            } else {
+              setUserCity(cities.length > 0 ? cities[0] : null);
+              onCityChange(cities.length > 0 ? cities[0] : null);
+            }
+          } catch { 
+            setUserCity(cities.length > 0 ? cities[0] : null);
+            onCityChange(cities.length > 0 ? cities[0] : null);
+          }
+          setLocationLoading(false);
+        },
+        () => { fetchIPLocation(); }
+      );
+    } else {
+      fetchIPLocation();
+    }
+  };
+
+  const fetchIPLocation = async () => {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      if (data.city && cities.some(c => c.toLowerCase() === data.city.toLowerCase())) {
+        setUserCity(data.city);
+        onCityChange(data.city);
+      } else {
+        setUserCity(cities.length > 0 ? cities[0] : null);
+        onCityChange(cities.length > 0 ? cities[0] : null);
+      }
+    } catch { 
+      setUserCity(cities.length > 0 ? cities[0] : null);
+      onCityChange(cities.length > 0 ? cities[0] : null);
+    }
+    setLocationLoading(false);
+  };
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const city = e.target.value || null;
+    setUserCity(city);
+    onCityChange(city);
+  };
+
+  return (
+    <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm border border-gray-200 px-3 py-1.5">
+      <MapPin size={14} className="text-orange-500" />
+      {locationLoading ? (
+        <div className="flex items-center gap-1 text-xs text-gray-500">
+          <Loader2 size={12} className="animate-spin" />
+          <span>Detecting...</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1">
+          <span className="text-xs font-medium text-gray-700">
+            {userCity || "All Cities"}
+          </span>
+          <span className="text-[10px] text-gray-400">
+            ({eventsCount} events)
+          </span>
+        </div>
+      )}
+      <select
+        value={userCity || ""}
+        onChange={handleCityChange}
+        className="text-xs border-0 bg-transparent focus:ring-0 text-gray-700 font-medium w-auto"
+      >
+        <option value="">All Cities</option>
+        {cities.map(city => (
+          <option key={city} value={city}>{city}</option>
+        ))}
+      </select>
+      <ChevronDown size={12} className="text-gray-400" />
+    </div>
+  );
+}

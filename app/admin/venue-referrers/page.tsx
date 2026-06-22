@@ -1,151 +1,211 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
+import { 
+  Users, Search, RefreshCw, Save, 
+  UserCheck, UserPlus, XCircle, CheckCircle,
+  MapPin, Building, User, Link2
+} from "lucide-react";
+import Link from "next/link";
 
-interface Venue {
-  id: string;
-  name: string;
-  city: string;
-  referrer_id: string | null;
-  referrer_type: string | null;
-}
-
-interface Referrer {
-  id: string;
-  name: string;
-  code: string;
-  type: string;
-}
-
-export default function AdminVenueReferrers() {
-  const router = useRouter();
-  const [venues, setVenues] = useState<Venue[]>([]);
-  const [referrers, setReferrers] = useState<Referrer[]>([]);
+export default function VenueReferrers() {
+  const [venues, setVenues] = useState([]);
+  const [referrers, setReferrers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [assignments, setAssignments] = useState({});
 
   useEffect(() => {
-    checkAdminAndFetch();
+    fetchData();
   }, []);
 
-  async function checkAdminAndFetch() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push("/login"); return; }
-    const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single();
-    if (userData?.role !== "admin") { router.push("/unauthorized"); return; }
-    await Promise.all([fetchVenues(), fetchReferrers()]);
-    setLoading(false);
-  }
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Fetch venues
+      const { data: venueData, error: venueError } = await supabase
+        .from("venues")
+        .select("id, name, city, referrer_id, referrer_type, referrer_code")
+        .order("name", { ascending: true });
 
-  async function fetchVenues() {
-    const { data } = await supabase.from("venues").select("id, name, city, referrer_id, referrer_type").order("name");
-    setVenues(data || []);
-  }
+      if (venueError) throw venueError;
+      setVenues(venueData || []);
 
-  async function fetchReferrers() {
-    // Fetch affiliates with referral codes
-    const { data: affiliates } = await supabase
-      .from("marketplace_affiliates")
-      .select("user_id, name, referral_code")
-      .not("referral_code", "is", null);
-    // Fetch ZBPs with referral codes
-    const { data: zbps } = await supabase
-      .from("zbp_profiles")
-      .select("user_id, zone, referral_code")
-      .not("referral_code", "is", null);
-    const affiliateList = (affiliates || []).map(a => ({
-      id: a.user_id,
-      name: a.name || "Affiliate",
-      code: a.referral_code,
-      type: "affiliate"
-    }));
-    const zbpList = (zbps || []).map(z => ({
-      id: z.user_id,
-      name: z.zone ? `ZBP (${z.zone})` : "ZBP",
-      code: z.referral_code,
-      type: "zbp"
-    }));
-    setReferrers([...affiliateList, ...zbpList]);
-  }
+      // Fetch referrers (ZBP + Affiliate)
+      const { data: zbpData } = await supabase
+        .from("user_roles")
+        .select("user_id, users!inner(email, name)")
+        .eq("role", "zbp")
+        .eq("approved", true);
 
-  async function updateReferrer(venueId: string, referrerId: string | null, referrerType: string | null) {
-    setSaving(venueId);
-    const { error } = await supabase
-      .from("venues")
-      .update({ referrer_id: referrerId || null, referrer_type: referrerType || null })
-      .eq("id", venueId);
-    if (error) alert("Update failed: " + error.message);
-    else {
-      // Refresh venues list
-      await fetchVenues();
+      const { data: affData } = await supabase
+        .from("user_roles")
+        .select("user_id, users!inner(email, name)")
+        .eq("role", "affiliate")
+        .eq("approved", true);
+
+      const referrerList = [
+        ...(zbpData || []).map(r => ({
+          id: r.user_id,
+          name: r.users?.name || r.users?.email || "Unknown",
+          type: "zbp",
+          label: `ZBP: ${r.users?.name || r.users?.email}`,
+        })),
+        ...(affData || []).map(r => ({
+          id: r.user_id,
+          name: r.users?.name || r.users?.email || "Unknown",
+          type: "affiliate",
+          label: `Affiliate: ${r.users?.name || r.users?.email}`,
+        })),
+      ];
+      setReferrers(referrerList);
+
+      // Initialize assignments with current referrers
+      const initialAssignments = {};
+      (venueData || []).forEach(v => {
+        initialAssignments[v.id] = v.referrer_id || "";
+      });
+      setAssignments(initialAssignments);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
-    setSaving(null);
-  }
+  };
 
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  const handleAssign = (venueId: string, referrerId: string) => {
+    setAssignments(prev => ({ ...prev, [venueId]: referrerId }));
+  };
+
+  const handleSave = async (venueId: string) => {
+    const referrerId = assignments[venueId] || null;
+    try {
+      const { error } = await supabase
+        .from("venues")
+        .update({ referrer_id: referrerId })
+        .eq("id", venueId);
+
+      if (error) throw error;
+      alert("Referrer assigned successfully!");
+      fetchData();
+    } catch (error) {
+      console.error("Error saving assignment:", error);
+      alert("Failed to assign referrer.");
+    }
+  };
+
+  const getReferrerName = (venue: any) => {
+    if (!venue.referrer_id) return "None";
+    const referrer = referrers.find(r => r.id === venue.referrer_id);
+    return referrer ? referrer.label : "Unknown";
+  };
+
+  const filteredVenues = venues.filter(v => {
+    const search = searchTerm.toLowerCase();
+    return v.name?.toLowerCase().includes(search) ||
+           v.city?.toLowerCase().includes(search);
+  });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Venue Relationship Managers</h1>
-      <div className="overflow-x-auto bg-white rounded shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Venue Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">City</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Current Relationship Manager</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assign New</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {venues.map(venue => {
-              const currentReferrer = referrers.find(r => r.id === venue.referrer_id && r.type === venue.referrer_type);
-              return (
-                <tr key={venue.id}>
-                  <td className="px-6 py-4">{venue.name}</td>
-                  <td className="px-6 py-4">{venue.city}</td>
-                  <td className="px-6 py-4">
-                    {currentReferrer ? `${currentReferrer.name} (${currentReferrer.type}) - Code: ${currentReferrer.code}` : "None"}
-                  </td>
-                  <td className="px-6 py-4">
-                    <select
-                      id={`referrer-${venue.id}`}
-                      className="border rounded p-1 text-sm"
-                      defaultValue={venue.referrer_id ? `${venue.referrer_type}|${venue.referrer_id}` : ""}
-                    >
-                      <option value="">None</option>
-                      {referrers.map(ref => (
-                        <option key={ref.id} value={`${ref.type}|${ref.id}`}>
-                          {ref.name} ({ref.type}) - {ref.code}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => {
-                        const select = document.getElementById(`referrer-${venue.id}`) as HTMLSelectElement;
-                        const val = select.value;
-                        if (val === "") {
-                          updateReferrer(venue.id, null, null);
-                        } else {
-                          const [type, id] = val.split("|");
-                          updateReferrer(venue.id, id, type);
-                        }
-                      }}
-                      disabled={saving === venue.id}
-                      className="bg-orange-600 text-white px-3 py-1 rounded text-sm"
-                    >
-                      {saving === venue.id ? "Saving..." : "Save"}
-                    </button>
-                  </td>
+    <div className="p-6 bg-white min-h-screen">
+      {/* Header */}
+      <div className="mb-6 pb-4 border-b-4 border-orange-400">
+        <div className="flex items-center gap-3">
+          <div className="bg-orange-500 p-2 rounded-xl">
+            <Link2 size={24} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Venue Relationship Managers</h1>
+            <p className="text-gray-500 text-sm">Assign ZBP or Affiliate as relationship manager to venues</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Search & Actions */}
+      <div className="bg-white border border-orange-200 rounded-xl shadow-sm p-4 mb-6">
+        <div className="flex flex-wrap gap-3">
+          <div className="flex-1 min-w-[200px]">
+            <div className="relative">
+              <Search size={18} className="absolute left-3 top-2.5 text-orange-400" />
+              <input
+                type="text"
+                placeholder="Search by venue name or city..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <button onClick={fetchData} className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+            <RefreshCw size={18} /> Refresh
+          </button>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white border border-orange-200 rounded-xl shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-orange-50 border-b border-orange-200">
+              <tr>
+                <th className="text-left p-3 text-sm font-semibold text-gray-600">Venue Name</th>
+                <th className="text-left p-3 text-sm font-semibold text-gray-600">City</th>
+                <th className="text-left p-3 text-sm font-semibold text-gray-600">Current Manager</th>
+                <th className="text-left p-3 text-sm font-semibold text-gray-600">Assign New</th>
+                <th className="text-left p-3 text-sm font-semibold text-gray-600">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredVenues.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center p-6 text-gray-400">No venues found</td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ) : (
+                filteredVenues.map((venue) => (
+                  <tr key={venue.id} className="border-b border-orange-50 hover:bg-orange-50/30 transition">
+                    <td className="p-3 text-sm font-medium text-gray-700">{venue.name || "N/A"}</td>
+                    <td className="p-3 text-sm text-gray-500">{venue.city || "—"}</td>
+                    <td className="p-3 text-sm text-gray-500">
+                      {getReferrerName(venue)}
+                    </td>
+                    <td className="p-3">
+                      <select
+                        value={assignments[venue.id] || ""}
+                        onChange={(e) => handleAssign(venue.id, e.target.value)}
+                        className="w-full px-3 py-1.5 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400 bg-white text-sm"
+                      >
+                        <option value="">None</option>
+                        {referrers.map((ref) => (
+                          <option key={ref.id} value={ref.id}>
+                            {ref.label}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => handleSave(venue.id)}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm"
+                      >
+                        <Save size={16} /> Save
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

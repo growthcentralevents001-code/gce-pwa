@@ -1,4 +1,4 @@
-name: Deploy production
+name: Deploy dev
 
 on:
   push:
@@ -18,4 +18,9 @@ jobs:
 
       - name: Deploy production branch
         run: |
-          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "cd /root/gce-pwa-prod && ./safe-deploy.sh"'
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "cd /root/gce-pwa-prod cd /root/gce-pwa-dev && ./scripts/deploy-dev.shcd /root/gce-pwa-dev && ./scripts/deploy-dev.sh ./safe-deploy.sh"'
+
+      - name: Debug SSH
+        run: |
+          echo "Testing SSH connection..."
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "echo 'SSH works'"

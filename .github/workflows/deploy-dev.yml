@@ -12,13 +12,14 @@ jobs:
       - name: Add SSH key
         run: |
           mkdir -p ~/.ssh
-          printf '%s
-' "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/id_ed25519
+          printf '%s\n' "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.PROD_HOST }}" >> ~/.ssh/known_hosts
+
       - name: Deploy development branch
         run: |
-          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "/root/gce-pwa-dev/scripts/deploy-dev.sh"'
+          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "cd /root/gce-pwa-dev && ./scripts/deploy-dev.sh"'
+
       - name: Debug SSH
         run: |
           echo "Testing SSH connection..."

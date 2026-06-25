@@ -15,9 +15,15 @@ jobs:
           printf '%s\n' "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Deploy production branch
+      - name: Deploy production
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "bash /root/gce-pwa-prod/safe-deploy.sh"
-
-      - name: Debug (optional)
-        run: echo "Deploy triggered for ${{ secrets.PROD_HOST }}"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} '
+            cd /root/gce-pwa-prod || exit 1
+            git stash --include-untracked || true
+            git clean -fd
+            git pull origin main --force
+            npm install
+            npm run build
+            pm2 restart gce-prod
+            echo "✅ Deployment successful!"
+          '

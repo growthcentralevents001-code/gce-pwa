@@ -37,3 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # Trigger deploy
 # Trigger deploy after host fix
 # Trigger prod deploy after script fix
+# Trigger after script update

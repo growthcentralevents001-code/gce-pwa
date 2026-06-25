@@ -42,6 +42,7 @@ export default function ProfilePage() {
 
       setUser(userData.user);
 
+      // Fetch profile from 'profiles' table
       const { data: profileData } = await supabase
         .from("profiles")
         .select("name, phone, city")
@@ -55,6 +56,7 @@ export default function ProfilePage() {
           city: profileData.city || "",
         });
       } else {
+        // Fallback to user metadata
         setProfile({
           name: userData.user.user_metadata?.name || "",
           phone: userData.user.user_metadata?.phone || "",
@@ -74,6 +76,7 @@ export default function ProfilePage() {
     setMessage(null);
 
     try {
+      // Update user metadata
       const { error: metaError } = await supabase.auth.updateUser({
         data: {
           name: profile.name,
@@ -83,6 +86,7 @@ export default function ProfilePage() {
       });
       if (metaError) throw metaError;
 
+      // Update or insert into profiles table
       const { error: profileError } = await supabase
         .from("profiles")
         .upsert({
@@ -117,8 +121,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 flex items-center gap-3">
@@ -131,25 +135,25 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-          {/* Avatar Section - Full Width Orange Bar */}
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-6 flex items-center gap-4">
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+          {/* Avatar Section */}
+          <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-8 flex items-center gap-4">
             <div className="relative">
-              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white text-2xl font-bold border-2 border-white/50">
+              <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold border-2 border-white/50">
                 {profile.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
               </div>
-              <button className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md hover:bg-orange-50 transition">
-                <Camera size={14} className="text-orange-500" />
+              <button className="absolute bottom-0 right-0 bg-white rounded-full p-1.5 shadow-md hover:bg-orange-50 transition">
+                <Camera size={16} className="text-orange-500" />
               </button>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">{profile.name || "User"}</h2>
+              <h2 className="text-xl font-semibold text-white">{profile.name || "User"}</h2>
               <p className="text-orange-100 text-sm">{user?.email}</p>
             </div>
           </div>
 
-          {/* Form - Full Width */}
-          <form onSubmit={handleSave} className="p-6 space-y-5">
+          {/* Form */}
+          <form onSubmit={handleSave} className="p-6 space-y-6">
             {message && (
               <div className={`p-4 rounded-xl flex items-start gap-3 ${
                 message.type === "success"
@@ -165,9 +169,9 @@ export default function ProfilePage() {
               </div>
             )}
 
-            {/* Email */}
+            {/* Email (read-only) */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
               <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl border border-slate-200">
                 <Mail size={18} className="text-slate-400" />
                 <span className="text-slate-600">{user?.email}</span>
@@ -177,7 +181,7 @@ export default function ProfilePage() {
 
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
               <div className="relative">
                 <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -192,7 +196,7 @@ export default function ProfilePage() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
               <div className="relative">
                 <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -207,7 +211,7 @@ export default function ProfilePage() {
 
             {/* City */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">City</label>
               <div className="relative">
                 <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -220,35 +224,34 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Buttons - Full Width */}
-            <div className="space-y-3 pt-2">
-              <button
-                type="submit"
-                disabled={saving}
-                className="w-full px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {saving ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save size={18} />
-                    Save Changes
-                  </>
-                )}
-              </button>
+            {/* Save Button */}
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {saving ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save size={18} />
+                  Save Changes
+                </>
+              )}
+            </button>
 
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="w-full px-6 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-xl transition flex items-center justify-center gap-2"
-              >
-                <LogOut size={18} />
-                Logout
-              </button>
-            </div>
+            {/* Logout */}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full px-6 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-xl transition flex items-center justify-center gap-2"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
           </form>
         </div>
       </div>

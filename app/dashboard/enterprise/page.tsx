@@ -1,343 +1,288 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
-import { RefreshCw, Plus, Users, IndianRupee, MapPin, CheckCircle, XCircle } from "lucide-react";
+import { 
+  Building2, 
+  FileText, 
+  Megaphone, 
+  Plus, 
+  Calendar, 
+  Users, 
+  IndianRupee,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Briefcase
+} from "lucide-react";
 
 export default function EnterpriseDashboard() {
-  const [user, setUser] = useState(null);
   const [requests, setRequests] = useState([]);
   const [proposals, setProposals] = useState([]);
+  const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("requests");
-  const [showRequestForm, setShowRequestForm] = useState(false);
-  const [requestForm, setRequestForm] = useState({
-    event_type: "",
-    guest_count: "",
-    budget_range: "",
-    city: "",
-    preferred_dates: "",
-  });
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  async function fetchData() {
-    setLoading(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    setUser(user);
+  const fetchData = async () => {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user?.user) return;
 
-    // Fetch enterprise requests
-    const { data: reqData } = await supabase
-      .from("enterprise_requests")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-    setRequests(reqData || []);
-
-    // Fetch proposals with request details
-    const { data: propData } = await supabase
-      .from("enterprise_proposals")
-      .select("*, enterprise_requests(event_type, city)")
-      .in("request_id", (reqData || []).map(r => r.id));
-    setProposals(propData || []);
-
-    setLoading(false);
-  }
-
-  async function createRequest(e: React.FormEvent) {
-    e.preventDefault();
-    const { error } = await supabase.from("enterprise_requests").insert({
-      user_id: user.id,
-      event_type: requestForm.event_type,
-      guest_count: parseInt(requestForm.guest_count),
-      budget_range: requestForm.budget_range,
-      city: requestForm.city,
-      preferred_dates: requestForm.preferred_dates,
-      status: "pending",
-    });
-    if (error) {
-      alert("Error: " + error.message);
-    } else {
-      alert("Request submitted!");
-      setShowRequestForm(false);
-      setRequestForm({
-        event_type: "",
-        guest_count: "",
-        budget_range: "",
-        city: "",
-        preferred_dates: "",
-      });
-      fetchData();
-    }
-  }
-
-  async function updateProposalStatus(proposalId: string, newStatus: string, requestId: string) {
-    // Update proposal status
-    const { error: propError } = await supabase
-      .from("enterprise_proposals")
-      .update({ status: newStatus })
-      .eq("id", proposalId);
-    if (propError) {
-      alert("Error updating proposal: " + propError.message);
-      return;
-    }
-
-    // If accepted, also update the request status to 'approved'
-    if (newStatus === "accepted") {
-      const { error: reqError } = await supabase
+      const { data: requestsData } = await supabase
         .from("enterprise_requests")
-        .update({ status: "approved" })
-        .eq("id", requestId);
-      if (reqError) alert("Error updating request status: " + reqError.message);
-    }
+        .select("*")
+        .eq("user_id", user.user.id)
+        .order("created_at", { ascending: false });
 
-    fetchData(); // refresh all data
-  }
+      const { data: proposalsData } = await supabase
+        .from("enterprise_proposals")
+        .select("*")
+        .eq("user_id", user.user.id)
+        .order("created_at", { ascending: false });
+
+      const { data: campaignsData } = await supabase
+        .from("enterprise_campaigns")
+        .select("*")
+        .eq("user_id", user.user.id)
+        .order("created_at", { ascending: false });
+
+      setRequests(requestsData || []);
+      setProposals(proposalsData || []);
+      setCampaigns(campaignsData || []);
+    } catch (error) {
+      console.error("Error fetching enterprise data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "pending": return "bg-amber-100 text-amber-700 border-amber-200";
+      case "proposed": return "bg-blue-100 text-blue-700 border-blue-200";
+      case "approved": return "bg-green-100 text-green-700 border-green-200";
+      case "rejected": return "bg-red-100 text-red-700 border-red-200";
+      default: return "bg-gray-100 text-gray-700 border-gray-200";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "pending": return <Clock className="w-4 h-4" />;
+      case "proposed": return <FileText className="w-4 h-4" />;
+      case "approved": return <CheckCircle className="w-4 h-4" />;
+      case "rejected": return <XCircle className="w-4 h-4" />;
+      default: return <AlertCircle className="w-4 h-4" />;
+    }
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <RefreshCw className="w-8 h-8 text-orange-600 animate-spin" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Enterprise Dashboard</h1>
-        <p className="text-gray-500 mb-6">
-          Manage corporate event requests, proposals, and offer campaigns
-        </p>
-
-        <div className="flex gap-2 border-b mb-6">
-          <button
-            onClick={() => setActiveTab("requests")}
-            className={`px-4 py-2 ${
-              activeTab === "requests"
-                ? "border-b-2 border-orange-600 text-orange-600"
-                : "text-gray-500"
-            }`}
-          >
-            Event Requests
-          </button>
-          <button
-            onClick={() => setActiveTab("proposals")}
-            className={`px-4 py-2 ${
-              activeTab === "proposals"
-                ? "border-b-2 border-orange-600 text-orange-600"
-                : "text-gray-500"
-            }`}
-          >
-            Proposals
-          </button>
-          <button
-            onClick={() => setActiveTab("campaigns")}
-            className={`px-4 py-2 ${
-              activeTab === "campaigns"
-                ? "border-b-2 border-orange-600 text-orange-600"
-                : "text-gray-500"
-            }`}
-          >
-            Offer Campaigns
-          </button>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-800 flex items-center gap-3">
+            <Briefcase className="text-orange-500" size={32} />
+            Enterprise Dashboard
+          </h1>
+          <p className="text-slate-500 mt-1 text-sm md:text-base">
+            Manage corporate event requests, proposals, and offer campaigns
+          </p>
         </div>
 
-        {activeTab === "requests" && (
-          <div>
-            <button
-              onClick={() => setShowRequestForm(!showRequestForm)}
-              className="bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 mb-4"
-            >
-              <Plus size={18} /> New Event Request
-            </button>
-            {showRequestForm && (
-              <form onSubmit={createRequest} className="bg-white p-4 rounded-xl shadow mb-6 space-y-3">
-                <input
-                  type="text"
-                  placeholder="Event Type"
-                  className="w-full p-2 border rounded"
-                  value={requestForm.event_type}
-                  onChange={(e) =>
-                    setRequestForm({ ...requestForm, event_type: e.target.value })
-                  }
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="Expected Guest Count"
-                  className="w-full p-2 border rounded"
-                  value={requestForm.guest_count}
-                  onChange={(e) =>
-                    setRequestForm({ ...requestForm, guest_count: e.target.value })
-                  }
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Budget Range (e.g., ₹5L – ₹10L)"
-                  className="w-full p-2 border rounded"
-                  value={requestForm.budget_range}
-                  onChange={(e) =>
-                    setRequestForm({ ...requestForm, budget_range: e.target.value })
-                  }
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="City"
-                  className="w-full p-2 border rounded"
-                  value={requestForm.city}
-                  onChange={(e) =>
-                    setRequestForm({ ...requestForm, city: e.target.value })
-                  }
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Preferred Dates"
-                  className="w-full p-2 border rounded"
-                  value={requestForm.preferred_dates}
-                  onChange={(e) =>
-                    setRequestForm({ ...requestForm, preferred_dates: e.target.value })
-                  }
-                  required
-                />
-                <button type="submit" className="w-full bg-green-600 text-white py-2 rounded">
-                  Submit Request
-                </button>
-              </form>
-            )}
-            <div className="grid gap-4">
-              {requests.length === 0 && <p className="text-gray-500">No event requests yet.</p>}
-              {requests.map((req) => (
-                <div key={req.id} className="bg-white rounded-xl shadow p-4 border">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-bold text-lg">{req.event_type}</h3>
-                      <p className="text-sm text-gray-600">
-                        <Users size={14} className="inline mr-1" /> {req.guest_count} guests ·{" "}
-                        <IndianRupee size={14} className="inline mr-1" /> {req.budget_range} ·{" "}
-                        <MapPin size={14} className="inline mr-1" /> {req.city}
-                      </p>
-                      <p className="text-xs text-gray-400">Dates: {req.preferred_dates}</p>
-                    </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        req.status === "approved"
-                          ? "bg-green-100 text-green-700"
-                          : req.status === "rejected"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {req.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-slate-500 font-medium">Total Requests</p>
+                <p className="text-3xl font-bold text-orange-600 mt-1">{requests.length}</p>
+              </div>
+              <div className="p-3 bg-orange-50 rounded-xl">
+                <FileText className="text-orange-500" size={20} />
+              </div>
             </div>
           </div>
-        )}
+          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-slate-500 font-medium">Total Proposals</p>
+                <p className="text-3xl font-bold text-blue-600 mt-1">{proposals.length}</p>
+              </div>
+              <div className="p-3 bg-blue-50 rounded-xl">
+                <FileText className="text-blue-500" size={20} />
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6 hover:shadow-lg transition">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-slate-500 font-medium">Active Campaigns</p>
+                <p className="text-3xl font-bold text-green-600 mt-1">{campaigns.length}</p>
+              </div>
+              <div className="p-3 bg-green-50 rounded-xl">
+                <Megaphone className="text-green-500" size={20} />
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {activeTab === "proposals" && (
-          <div>
-            {proposals.length === 0 && (
-              <p className="text-gray-500">No proposals yet. GCE team will create proposals for your requests.</p>
+        {/* Tabs & Create Button */}
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+          <div className="border-b border-slate-100 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex gap-2 flex-wrap">
+              {["requests", "proposals", "campaigns"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-5 py-2 text-sm font-medium rounded-full transition ${
+                    activeTab === tab
+                      ? "bg-orange-600 text-white shadow-md"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {tab === "requests" ? "Event Requests" : 
+                   tab === "proposals" ? "Proposals" : "Offer Campaigns"}
+                </button>
+              ))}
+            </div>
+            <Link
+              href="/dashboard/enterprise/request"
+              className="inline-flex items-center gap-2 px-5 py-2 bg-orange-600 text-white text-sm font-medium rounded-full hover:bg-orange-700 transition shadow-md"
+            >
+              <Plus size={18} /> New Event Request
+            </Link>
+          </div>
+
+          <div className="p-6">
+            {activeTab === "requests" && (
+              <>
+                {requests.length === 0 ? (
+                  <div className="text-center py-12">
+                    <FileText className="mx-auto text-slate-300" size={48} />
+                    <p className="text-slate-400 mt-2">No event requests yet</p>
+                    <p className="text-sm text-slate-300">Create your first corporate event request</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {requests.map((req) => (
+                      <div key={req.id} className="bg-slate-50 rounded-xl p-4 hover:bg-white hover:shadow-md transition border border-transparent hover:border-orange-100">
+                        <div className="flex items-start justify-between">
+                          <h4 className="font-semibold text-slate-800">{req.event_type || "Event"}</h4>
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(req.status)}`}>
+                            {getStatusIcon(req.status)}
+                            {req.status || "Pending"}
+                          </span>
+                        </div>
+                        <div className="mt-2 space-y-1 text-sm text-slate-500">
+                          <div className="flex items-center gap-2">
+                            <Users size={14} className="text-slate-400" />
+                            <span>{req.guest_count || 0} guests</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <IndianRupee size={14} className="text-slate-400" />
+                            <span>{req.budget_range || "N/A"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar size={14} className="text-slate-400" />
+                            <span>{req.dates || "Dates not specified"}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Building2 size={14} className="text-slate-400" />
+                            <span>{req.city || "City not specified"}</span>
+                          </div>
+                        </div>
+                        {req.proposal_text && (
+                          <div className="mt-3 pt-3 border-t border-slate-200 text-xs text-slate-500 line-clamp-2">
+                            {req.proposal_text}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
-            {proposals.map((prop) => {
-              const isCounter = prop.admin_notes && prop.status === "counter_proposed";
-              return (
-                <div key={prop.id} className="bg-white rounded-xl shadow p-4 mb-3 border">
-                  <div className="flex justify-between items-start flex-wrap gap-3">
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{prop.enterprise_requests?.event_type}</h3>
-                      <p className="text-sm text-gray-600">City: {prop.enterprise_requests?.city}</p>
-                      <p className="text-sm">Proposal: {prop.proposal_text}</p>
-                      <p className="text-orange-600 font-bold">₹{prop.amount}</p>
 
-                      {isCounter && (
-                        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                          <p className="text-xs font-semibold text-blue-700">📩 Admin Counter-Proposal:</p>
-                          <p className="text-sm text-gray-700">{prop.admin_notes}</p>
-                          {prop.final_budget && (
-                            <p className="text-sm font-medium text-orange-600">
-                              Revised Budget: ₹{prop.final_budget}
-                            </p>
+            {activeTab === "proposals" && (
+              <>
+                {proposals.length === 0 ? (
+                  <div className="text-center py-12">
+                    <FileText className="mx-auto text-slate-300" size={48} />
+                    <p className="text-slate-400 mt-2">No proposals yet</p>
+                    <p className="text-sm text-slate-300">Proposals will appear here once created</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {proposals.map((prop) => (
+                      <div key={prop.id} className="bg-slate-50 rounded-xl p-4 hover:bg-white hover:shadow-md transition border border-transparent hover:border-orange-100">
+                        <div className="flex items-start justify-between">
+                          <h4 className="font-semibold text-slate-800">{prop.title || "Proposal"}</h4>
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(prop.status)}`}>
+                            {getStatusIcon(prop.status)}
+                            {prop.status || "Pending"}
+                          </span>
+                        </div>
+                        <div className="mt-2 text-sm text-slate-500 line-clamp-2">
+                          {prop.proposal_text || "No description"}
+                        </div>
+                        {prop.amount && (
+                          <div className="mt-2 text-sm font-semibold text-slate-700">
+                            ₹{prop.amount}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            {activeTab === "campaigns" && (
+              <>
+                {campaigns.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Megaphone className="mx-auto text-slate-300" size={48} />
+                    <p className="text-slate-400 mt-2">No campaigns yet</p>
+                    <p className="text-sm text-slate-300">Create your first offer campaign</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {campaigns.map((camp) => (
+                      <div key={camp.id} className="bg-slate-50 rounded-xl p-4 hover:bg-white hover:shadow-md transition border border-transparent hover:border-orange-100">
+                        <h4 className="font-semibold text-slate-800">{camp.offer_type || "Campaign"}</h4>
+                        <div className="mt-2 space-y-1 text-sm text-slate-500">
+                          {camp.discount_percent && <p>{camp.discount_percent}% discount</p>}
+                          {camp.free_units && <p>{camp.free_units} free units</p>}
+                          {camp.interests && camp.interests.length > 0 && (
+                            <p className="text-xs text-slate-400">Interests: {camp.interests.join(", ")}</p>
+                          )}
+                          {camp.valid_until && (
+                            <p className="text-xs text-slate-400">Valid until: {new Date(camp.valid_until).toLocaleDateString()}</p>
                           )}
                         </div>
-                      )}
-
-                      <p className="text-xs text-gray-400 mt-1">
-                        Status:{" "}
-                        <span
-                          className={`font-medium ${
-                            prop.status === "accepted"
-                              ? "text-green-600"
-                              : prop.status === "rejected"
-                              ? "text-red-600"
-                              : prop.status === "counter_proposed"
-                              ? "text-blue-600"
-                              : "text-yellow-600"
-                          }`}
-                        >
-                          {prop.status}
-                        </span>
-                      </p>
-                    </div>
-
-                    {prop.status === "pending" && (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => updateProposalStatus(prop.id, "accepted", prop.request_id)}
-                          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
-                        >
-                          <CheckCircle size={14} /> Accept
-                        </button>
-                        <button
-                          onClick={() => updateProposalStatus(prop.id, "rejected", prop.request_id)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
-                        >
-                          <XCircle size={14} /> Reject
-                        </button>
                       </div>
-                    )}
-
-                    {prop.status === "counter_proposed" && (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => updateProposalStatus(prop.id, "accepted", prop.request_id)}
-                          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
-                        >
-                          <CheckCircle size={14} /> Accept
-                        </button>
-                        <button
-                          onClick={() => updateProposalStatus(prop.id, "rejected", prop.request_id)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm flex items-center gap-1"
-                        >
-                          <XCircle size={14} /> Reject
-                        </button>
-                        <span className="text-xs text-blue-600 self-center">📩 Counter-proposal received</span>
-                      </div>
-                    )}
+                    ))}
                   </div>
-                </div>
-              );
-            })}
+                )}
+              </>
+            )}
           </div>
-        )}
-
-        {activeTab === "campaigns" && (
-          <div className="bg-white rounded-xl shadow p-6">
-            <p className="text-gray-500">Offer campaigns feature coming soon.</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

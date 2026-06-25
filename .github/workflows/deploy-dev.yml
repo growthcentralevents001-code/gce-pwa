@@ -19,3 +19,7 @@ jobs:
       - name: Deploy development branch
         run: |
           ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "/root/gce-pwa-dev/scripts/deploy-dev.sh"'
+      - name: Debug SSH
+        run: |
+          echo "Testing SSH connection..."
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "echo 'SSH works'"

@@ -1,4 +1,4 @@
-name: Deploy dev
+name: Deploy production
 
 on:
   push:
@@ -14,13 +14,10 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.PROD_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.PROD_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Deploy production branch
         run: |
-          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "cd /root/gce-pwa-prod cd /root/gce-pwa-dev && ./scripts/deploy-dev.shcd /root/gce-pwa-dev && ./scripts/deploy-dev.sh ./safe-deploy.sh"'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "bash /root/gce-pwa-prod/safe-deploy.sh"
 
-      - name: Debug SSH
-        run: |
-          echo "Testing SSH connection..."
-          ssh -v -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "echo 'SSH works'"
+      - name: Debug (optional)
+        run: echo "Deploy triggered for ${{ secrets.PROD_HOST }}"

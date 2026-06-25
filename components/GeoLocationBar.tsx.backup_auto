@@ -1,0 +1,131 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { MapPin, Loader2, ChevronDown } from "lucide-react";
+
+interface GeoLocationBarProps {
+  onCityChange: (city: string | null) => void;
+  eventsCount: number;
+}
+
+export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocationBarProps) {
+  const [userCity, setUserCity] = useState<string | null>(null);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [cities, setCities] = useState<string[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    fetchCities();
+    // Auto-detect in background (don't show loading)
+    detectLocation();
+  }, []);
+
+  const fetchCities = async () => {
+    const { data } = await supabase.from("events").select("city");
+    if (data) {
+      const uniqueCities = [...new Set(data.map(e => e.city).filter(Boolean))];
+      setCities(uniqueCities);
+    }
+  };
+
+  const detectLocation = async () => {
+    // ✅ Try browser geolocation (silent)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const res = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
+            );
+            const data = await res.json();
+            let city = data.city || data.locality || null;
+            
+            const cityMap: { [key: string]: string } = {
+              "amritsar": "asr",
+              "ludhiana": "ludhiana",
+              "chandigarh": "chandigarh",
+              "mumbai": "mumbai",
+              "delhi": "delhi",
+              "bangalore": "bangalore",
+              "pune": "pune",
+              "batala": "batala",
+              "bathinda": "bathinda",
+            };
+
+            if (city && cityMap[city.toLowerCase()]) {
+              city = cityMap[city.toLowerCase()];
+            }
+
+            if (city && cities.includes(city)) {
+              setUserCity(city);
+              onCityChange(city);
+            }
+          } catch {
+            // Silent fail
+          }
+        },
+        () => {
+          // Silent fail
+        },
+        { enableHighAccuracy: true, timeout: 5000 }
+      );
+    }
+  };
+
+  const handleCitySelect = (city: string) => {
+    setUserCity(city);
+    onCityChange(city);
+    setShowDropdown(false);
+  };
+
+  const clearCity = () => {
+    setUserCity(null);
+    onCityChange(null);
+    setShowDropdown(false);
+  };
+
+  return (
+    <div className="relative">
+      <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm border border-gray-200 px-3 py-1.5 cursor-pointer hover:border-orange-300 transition">
+        <MapPin size={14} className="text-orange-500" />
+        <div className="flex items-center gap-1">
+          <span className="text-xs font-medium text-gray-700">
+            {userCity || "All Cities"}
+          </span>
+          <span className="text-[10px] text-gray-400">
+            ({eventsCount} events)
+          </span>
+        </div>
+        <button
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="ml-1 text-gray-400 hover:text-gray-600"
+        >
+          <ChevronDown size={14} />
+        </button>
+      </div>
+
+      {showDropdown && (
+        <div className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+          <div className="p-1">
+            <button
+              onClick={clearCity}
+              className="w-full text-left px-3 py-1.5 text-xs text-gray-600 hover:bg-orange-50 rounded"
+            >
+              All Cities
+            </button>
+            {cities.map((city) => (
+              <button
+                key={city}
+                onClick={() => handleCitySelect(city)}
+                className="w-full text-left px-3 py-1.5 text-xs text-gray-700 hover:bg-orange-50 rounded"
+              >
+                {city}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

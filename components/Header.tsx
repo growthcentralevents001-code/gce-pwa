@@ -1,0 +1,249 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { 
+  Menu, X, Home, Calendar, Building2, Heart, User, Settings, LogOut,
+  UserCircle, Briefcase, Users, Shield, PlusCircle
+} from "lucide-react";
+
+export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [, forceUpdate] = useState(0); // 🔥 Force re-render
+  const pathname = usePathname();
+  const router = useRouter();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 🔥 Listen to auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("Auth event:", event);
+        if (session?.user) {
+          setUser(session.user);
+          await fetchProfile(session.user.id);
+          forceUpdate(prev => prev + 1); // 🔥 Force re-render
+        } else {
+          setUser(null);
+          setProfile(null);
+          forceUpdate(prev => prev + 1);
+        }
+        setLoading(false);
+      }
+    );
+
+    checkUser();
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const checkUser = async () => {
+    try {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser(data.user);
+        await fetchProfile(data.user.id);
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      setProfile(data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+    setIsOpen(false);
+  };
+
+  const navItems = [
+    { href: '/', label: 'Home', icon: Home },
+    { href: '/events', label: 'Events', icon: Calendar },
+    { href: '/venues', label: 'Venues', icon: Building2 },
+    { href: '/wishlist', label: 'Wishlist', icon: Heart },
+  ];
+
+  const dashboardItems = [
+    { href: '/dashboard/member', label: 'Member', icon: UserCircle },
+    { href: '/dashboard/venue', label: 'Venue Partner', icon: Building2 },
+    { href: '/dashboard/zbp', label: 'ZBP', icon: Users },
+    { href: '/dashboard/enterprise', label: 'Enterprise', icon: Briefcase },
+    { href: '/admin/dashboard', label: 'Admin', icon: Shield },
+  ];
+
+  const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/');
+
+  if (loading) {
+    return (
+      <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">GCE</div>
+            <span className="text-xl font-bold text-slate-800">GCE</span>
+          </Link>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">GCE</div>
+          <span className="text-xl font-bold text-slate-800">GCE</span>
+        </Link>
+
+        <nav className="hidden md:flex items-center gap-6">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`text-sm font-medium transition flex items-center gap-1.5 ${
+                isActive(item.href) ? 'text-orange-600' : 'text-slate-600 hover:text-orange-500'
+              }`}
+            >
+              <item.icon size={16} />
+              {item.label}
+            </Link>
+          ))}
+          {user ? (
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                {profile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+              </div>
+              <span className="text-sm text-slate-600">{profile?.name || user.email?.split('@')[0]}</span>
+              <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-600 transition flex items-center gap-1">
+                <LogOut size={16} /> Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link href="/login" className="text-sm text-slate-600 hover:text-orange-500 transition">Login</Link>
+              <Link href="/signup" className="px-4 py-1.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition">Sign Up</Link>
+            </div>
+          )}
+        </nav>
+
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden p-2 rounded-full hover:bg-orange-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        >
+          {isOpen ? <X className="w-6 h-6 text-orange-500" strokeWidth={2.5} /> : <Menu className="w-6 h-6 text-orange-500" strokeWidth={2.5} />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div ref={menuRef} className="md:hidden fixed inset-0 top-[73px] bg-white z-50 overflow-y-auto">
+          <div className="p-4 space-y-6">
+            {user ? (
+              <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-xl">
+                <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                  {profile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-800">{profile?.name || user.email?.split('@')[0]}</p>
+                  <p className="text-sm text-slate-500">{user.email}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <Link href="/login" className="flex-1 px-4 py-2 text-center text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition" onClick={() => setIsOpen(false)}>Login</Link>
+                <Link href="/signup" className="flex-1 px-4 py-2 text-center text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition" onClick={() => setIsOpen(false)}>Sign Up</Link>
+              </div>
+            )}
+
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Explore</p>
+              <div className="space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                      isActive(item.href) ? 'bg-orange-50 text-orange-600' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <item.icon size={18} className={isActive(item.href) ? 'text-orange-500' : 'text-slate-400'} />
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {user && (
+              <div>
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Your Dashboards</p>
+                <div className="space-y-1">
+                  {dashboardItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                        isActive(item.href) ? 'bg-orange-50 text-orange-600' : 'text-slate-600 hover:bg-slate-50'
+                      }`}
+                    >
+                      <item.icon size={18} className={isActive(item.href) ? 'text-orange-500' : 'text-slate-400'} />
+                      {item.label}
+                    </Link>
+                  ))}
+                  <Link href="/apply/role" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+                    <PlusCircle size={18} className="text-slate-400" /> Apply for new role
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {user && (
+              <div className="pt-3 border-t border-slate-200 space-y-1">
+                <Link href="/settings" onClick={() => setIsOpen(false)} className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition ${isActive('/settings') ? 'bg-orange-50 text-orange-600' : 'text-slate-600 hover:bg-slate-50'}`}>
+                  <Settings size={18} className={isActive('/settings') ? 'text-orange-500' : 'text-slate-400'} /> Settings
+                </Link>
+                <button onClick={handleLogout} className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition">
+                  <LogOut size={18} className="text-red-400" /> Logout
+                </button>
+              </div>
+            )}
+
+            <div className="pt-3 border-t border-slate-200 flex flex-wrap gap-4 text-xs text-slate-400 px-3">
+              <Link href="/about" onClick={() => setIsOpen(false)}>About</Link>
+              <Link href="/terms" onClick={() => setIsOpen(false)}>Terms</Link>
+              <Link href="/privacy" onClick={() => setIsOpen(false)}>Privacy</Link>
+              <Link href="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

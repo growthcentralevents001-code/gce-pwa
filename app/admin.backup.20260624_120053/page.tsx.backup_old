@@ -1,0 +1,203 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { 
+  Building, Calendar, Users, IndianRupee, 
+  TrendingUp, Clock, CheckCircle, AlertCircle,
+  PlusCircle, Eye, ArrowRight
+} from "lucide-react";
+import Link from "next/link";
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState({
+    venues: 0,
+    events: 0,
+    members: 0,
+    revenue: 0,
+    pendingVenues: 0,
+    pendingEvents: 0,
+    totalBookings: 0,
+    recentActivity: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      // Fetch counts
+      const [venuesRes, eventsRes, membersRes, bookingsRes, pendingVenuesRes, pendingEventsRes] = await Promise.all([
+        supabase.from("venues").select("*", { count: "exact", head: true }),
+        supabase.from("events").select("*", { count: "exact", head: true }),
+        supabase.from("users").select("*", { count: "exact", head: true }),
+        supabase.from("bookings").select("*", { count: "exact", head: true }),
+        supabase.from("venues").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("events").select("*", { count: "exact", head: true }).eq("status", "pending"),
+      ]);
+
+      // Fetch recent bookings
+      const { data: recentBookings } = await supabase
+        .from("bookings")
+        .select("*, events(title), users(email)")
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      setStats({
+        venues: venuesRes.count || 0,
+        events: eventsRes.count || 0,
+        members: membersRes.count || 0,
+        revenue: 1250000, // Placeholder - calculate from bookings
+        pendingVenues: pendingVenuesRes.count || 0,
+        pendingEvents: pendingEventsRes.count || 0,
+        totalBookings: bookingsRes.count || 0,
+        recentActivity: recentBookings || []
+      });
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const statCards = [
+    { 
+      title: "Total Venues", 
+      value: stats.venues, 
+      icon: Building, 
+      color: "from-blue-500 to-blue-600",
+      href: "/admin/venues"
+    },
+    { 
+      title: "Total Events", 
+      value: stats.events, 
+      icon: Calendar, 
+      color: "from-orange-500 to-orange-600",
+      href: "/admin/events"
+    },
+    { 
+      title: "Total Members", 
+      value: stats.members, 
+      icon: Users, 
+      color: "from-green-500 to-green-600",
+      href: "/admin/members"
+    },
+    { 
+      title: "Total Revenue", 
+      value: `₹${(stats.revenue / 100000).toFixed(1)}L`, 
+      icon: IndianRupee, 
+      color: "from-purple-500 to-purple-600",
+      href: "/admin/payments"
+    },
+  ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
+          <p className="mt-4 text-gray-500">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+        <p className="text-gray-500 text-sm">Welcome back! Here's what's happening on GCE.</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {statCards.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <Link key={index} href={stat.href}>
+              <div className={`bg-gradient-to-br ${stat.color} rounded-xl shadow-lg p-5 text-white hover:shadow-xl transition transform hover:-translate-y-1`}>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-white/80 text-sm">{stat.title}</p>
+                    <p className="text-3xl font-bold mt-1">{stat.value}</p>
+                  </div>
+                  <div className="bg-white/20 rounded-lg p-2">
+                    <Icon size={24} className="text-white" />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Pending Approvals + Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow p-5">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <Clock size={20} className="text-orange-500" />
+            Pending Approvals
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            <Link href="/admin/venues" className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:shadow transition">
+              <p className="text-2xl font-bold text-yellow-600">{stats.pendingVenues}</p>
+              <p className="text-sm text-gray-600">Venues Pending</p>
+            </Link>
+            <Link href="/admin/events" className="bg-blue-50 border border-blue-200 rounded-lg p-4 hover:shadow transition">
+              <p className="text-2xl font-bold text-blue-600">{stats.pendingEvents}</p>
+              <p className="text-sm text-gray-600">Events Pending</p>
+            </Link>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-5">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">Quick Actions</h2>
+          <div className="space-y-2">
+            <Link href="/admin/venues/create" className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-orange-50 transition text-sm">
+              <PlusCircle size={16} className="text-orange-600" /> Add Venue
+            </Link>
+            <Link href="/admin/events/create" className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-orange-50 transition text-sm">
+              <PlusCircle size={16} className="text-orange-600" /> Create Event
+            </Link>
+            <Link href="/admin/payments" className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-orange-50 transition text-sm">
+              <Eye size={16} className="text-orange-600" /> View Payments
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-white rounded-xl shadow p-5">
+        <h2 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <TrendingUp size={20} className="text-orange-500" />
+          Recent Activity
+        </h2>
+        {stats.recentActivity.length === 0 ? (
+          <p className="text-gray-400 text-sm">No recent activity.</p>
+        ) : (
+          <div className="space-y-3">
+            {stats.recentActivity.map((activity: any, index) => (
+              <div key={index} className="flex items-center justify-between border-b pb-2 last:border-0">
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    {activity.events?.title || "Unknown Event"}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {activity.users?.email || "Unknown user"} • {new Date(activity.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                  Booked
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

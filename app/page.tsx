@@ -1,171 +1,178 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
-import { Calendar, MapPin, Users, ArrowRight, Search, Music, Utensils, Dumbbell, Mic, Film } from "lucide-react";
+import Link from "next/link";
+import { Search, Heart } from "lucide-react";
+
+interface Event {
+  id: string;
+  title: string;
+  vertical: string;
+  date: string;
+  time: string;
+  venue: string;
+  city: string;
+  price: number;
+  registered: number;
+  capacity: number;
+}
 
 export default function HomePage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
+  const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
+
+  const categories = [
+    { name: "Music", value: "music" },
+    { name: "Sports", value: "sports" },
+    { name: "Food & Drinks", value: "food" },
+    { name: "Open Mics", value: "openmic" },
+  ];
 
   useEffect(() => {
     fetchEvents();
+    fetchWishlist();
   }, []);
 
-  const fetchEvents = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .order("date", { ascending: true })
-        .limit(6);
+  async function fetchEvents() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq("status", "Live")
+      .order("date", { ascending: true });
+    if (!error && data) {
+      const formatted = data.map((ev: any) => ({
+        id: ev.id,
+        title: ev.title,
+        vertical: (ev.vertical || ev.category || "Marketplace").toLowerCase(),
+        date: new Date(ev.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }),
+        time: ev.time || "6:30 PM",
+        venue: ev.venue,
+        city: ev.city,
+        price: ev.price,
+        registered: ev.registered || 0,
+        capacity: ev.capacity,
+      }));
+      setEvents(formatted);
+    } else {
+      setEvents([]);
+    }
+    setLoading(false);
+  }
 
-      if (error) throw error;
-      setEvents(data || []);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    } finally {
-      setLoading(false);
+  async function fetchWishlist() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data } = await supabase.from("saved_events").select("event_id").eq("user_id", user.id);
+    if (data) setWishlistIds(new Set(data.map((item: any) => item.event_id)));
+  }
+
+  async function toggleWishlist(eventId: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { alert("Please login"); return; }
+    const isIn = wishlistIds.has(eventId);
+    if (isIn) {
+      const { error } = await supabase.from("saved_events").delete().eq("user_id", user.id).eq("event_id", eventId);
+      if (!error) {
+        setWishlistIds(prev => { const s = new Set(prev); s.delete(eventId); return s; });
+        alert("Removed");
+      } else alert("Delete error: " + error.message);
+    } else {
+      const { error } = await supabase.from("saved_events").insert({ user_id: user.id, event_id: eventId });
+      if (!error) {
+        setWishlistIds(prev => new Set(prev).add(eventId));
+        alert("Added");
+      } else alert("Insert error: " + error.message);
+    }
+  }
+
+  const filteredEvents = events.filter(event => activeTab === "all" || event.vertical === activeTab);
+  const getVerticalStyle = (vertical: string) => {
+    switch (vertical) {
+      case "connect": return { bg: "#fef3c7", color: "#92400e" };
+      case "marketplace": return { bg: "#e0e7ff", color: "#3730a3" };
+      case "enterprise": return { bg: "#dcfce7", color: "#166534" };
+      default: return { bg: "#f1f5f9", color: "#475569" };
     }
   };
 
-  const categories = [
-    { name: "Music", icon: Music },
-    { name: "Sports", icon: Dumbbell },
-    { name: "Food & Drinks", icon: Utensils },
-    { name: "Open Mics", icon: Mic },
-    { name: "Comedy", icon: Film },
-  ];
-
-  const tabs = [
-    { id: "all", label: "All Events" },
-    { id: "connect", label: "GCE Connect" },
-    { id: "marketplace", label: "GCE Marketplace" },
-    { id: "enterprise", label: "GCE Enterprise" },
-  ];
-
-  const filteredEvents = activeTab === "all" 
-    ? events 
-    : events.filter(e => e.vertical === activeTab);
+  if (loading) return <div className="max-w-7xl mx-auto px-4 py-12 text-center">Loading events...</div>;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Discover Amazing Events Near You
-          </h1>
-          <p className="text-lg text-orange-100 mb-6">
-            Connect, learn, and grow with events that matter
-          </p>
-          <div className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              placeholder="Search events, venues, or cities..."
-              className="flex-1 px-5 py-3 rounded-full text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white"
-            />
-            <button className="px-6 py-3 bg-white text-orange-600 font-semibold rounded-full hover:bg-orange-50 transition shadow-md flex items-center justify-center gap-2">
-              <Search size={20} /> Search
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-8 px-4 border-b border-slate-100">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl font-semibold text-slate-800 mb-4 text-center">Explore Events</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((cat) => (
-              <button
-                key={cat.name}
-                className="flex flex-col items-center gap-2 px-6 py-4 bg-slate-50 rounded-2xl hover:bg-orange-50 transition border border-transparent hover:border-orange-200 min-w-[80px]"
-              >
-                <cat.icon size={24} className="text-orange-500" />
-                <span className="text-sm font-medium text-slate-700">{cat.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Events */}
-      <section className="py-8 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-800">Upcoming Events</h2>
-            <Link href="/events" className="text-orange-600 hover:underline text-sm font-medium">
-              View All →
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Hero Section with Category Buttons - REPLACED Discover text */}
+      <div className="text-center mb-12">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          {categories.map((cat) => (
+            <Link
+              key={cat.value}
+              href={`/events?category=${cat.value}`}
+              className="px-6 py-3 bg-orange-600 text-white rounded-full text-sm font-medium hover:bg-orange-700 transition shadow-md"
+            >
+              {cat.name}
             </Link>
-          </div>
+          ))}
+        </div>
+        <p className="text-gray-500">Discover amazing events near you</p>
+      </div>
 
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
-                  activeTab === tab.id
-                    ? "bg-orange-600 text-white shadow-md"
-                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+      {/* Tabs */}
+      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
+        {["all", "connect", "marketplace", "enterprise"].map(tab => (
+          <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === tab ? "bg-orange-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+            {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+          </button>
+        ))}
+      </div>
 
-          {/* Event Cards Grid */}
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent"></div>
-            </div>
-          ) : filteredEvents.length === 0 ? (
-            <p className="text-center text-slate-400 py-12">No events found</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEvents.map((event) => (
-                <Link key={event.id} href={`/events/${event.id}`}>
-                  <div className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition hover:border-orange-200">
-                    <div className="h-32 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center text-4xl">
-                      🎉
+      {/* Events grid */}
+      {filteredEvents.length === 0 ? (
+        <div className="text-center py-12">
+          <p>No events found.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredEvents.map(event => {
+            const style = getVerticalStyle(event.vertical);
+            const isWishlisted = wishlistIds.has(event.id);
+            return (
+              <Link key={event.id} href={`/events/${event.id}`}>
+                <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition">
+                  <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                    <span className="text-5xl">🎉</span>
+                  </div>
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-lg">{event.title}</h3>
+                      <span className="text-xs px-2 py-1 rounded-full" style={{ background: style.bg, color: style.color }}>
+                        {event.vertical === "connect" ? "GCE Connect" : event.vertical === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+                      </span>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-slate-800 group-hover:text-orange-600 transition line-clamp-1">
-                        {event.title}
-                      </h3>
-                      <div className="mt-2 space-y-1.5 text-sm text-slate-500">
-                        <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-orange-400" />
-                          <span>{event.date} at {event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <MapPin size={14} className="text-orange-400" />
-                          <span>{event.venue}, {event.city}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users size={14} className="text-orange-400" />
-                          <span>{event.registered} / {event.capacity} attending</span>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between">
+                    <div className="space-y-1 text-sm text-gray-600">
+                      <div>📅 {event.date} at {event.time}</div>
+                      <div>📍 {event.venue}, {event.city}</div>
+                      <div>👥 {event.registered} / {event.capacity} attending</div>
+                    </div>
+                    <div className="mt-3 flex justify-between items-center">
+                      <div className="flex items-center gap-3">
                         <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-orange-600 group-hover:underline">
-                          View Details <ArrowRight size={14} />
-                        </span>
+                        <button onClick={(e) => toggleWishlist(event.id, e)} className="focus:outline-none">
+                          <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
+                        </button>
                       </div>
+                      <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</span>
                     </div>
                   </div>
-                </Link>
-              ))}
-            </div>
-          )}
+                </div>
+              </Link>
+            );
+          })}
         </div>
-      </section>
+      )}
     </div>
   );
 }

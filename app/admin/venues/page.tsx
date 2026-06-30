@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Building, Search, Plus, Eye, Edit, 
@@ -10,7 +11,7 @@ import {
 import Link from "next/link";
 
 export default function VenueManagement() {
-  const [venues, setVenues] = useState([]);
+  const [venues, setVenues] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterTier, setFilterTier] = useState("all");

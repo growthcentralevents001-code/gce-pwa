@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Calendar, Search, Plus, Eye, Edit, 
@@ -10,7 +11,7 @@ import {
 import Link from "next/link";
 
 export default function EventManagement() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");

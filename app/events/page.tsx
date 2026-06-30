@@ -82,7 +82,7 @@ export default function EventsContent() {
     }
 
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter((e) => selectedCategories.includes(e.category));
+      filtered = filtered.filter((e) => e.category && selectedCategories.includes(e.category));
     }
 
     filtered = filtered.filter(

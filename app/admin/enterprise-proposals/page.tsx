@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Building, Search, Plus, Eye, Edit, 
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 
 export default function EnterpriseProposals() {
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -291,7 +292,7 @@ export default function EnterpriseProposals() {
                   value={proposalForm.proposal_text}
                   onChange={(e) => setProposalForm({...proposalForm, proposal_text: e.target.value})}
                   className="w-full p-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
-                  rows="4"
+                  rows={4}
                   placeholder="Describe the proposal..."
                 />
               </div>
@@ -311,7 +312,7 @@ export default function EnterpriseProposals() {
                   value={proposalForm.admin_notes}
                   onChange={(e) => setProposalForm({...proposalForm, admin_notes: e.target.value})}
                   className="w-full p-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-400"
-                  rows="2"
+                  rows={2}
                   placeholder="Internal notes..."
                 />
               </div>

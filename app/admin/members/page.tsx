@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Users, Search, Eye, Edit, 
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 
 export default function MembersManagement() {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("all");

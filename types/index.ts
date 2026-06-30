@@ -11,7 +11,13 @@ export interface EventListItem {
   vertical?: string | null;
   category?: string | null;
   is_sales_event?: boolean | null;
+  offer_type?: string | null;
+  offer_value?: number | null;
+  min_purchase?: number | null;
 }
+
+/** Loose row type for admin/dashboard Supabase list views */
+export type DataRow = Record<string, any>;
 
 export interface User {
   id: string;

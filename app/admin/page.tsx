@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Building, Calendar, Users, IndianRupee, 
@@ -18,7 +19,7 @@ export default function AdminDashboard() {
     pendingVenues: 0,
     pendingEvents: 0,
     totalBookings: 0,
-    recentActivity: []
+    recentActivity: [] as DataRow[],
   });
   const [loading, setLoading] = useState(true);
 

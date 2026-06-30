@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Tag, Search, Plus, Eye, Edit, 
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 
 export default function OffersManagement() {
-  const [offers, setOffers] = useState([]);
+  const [offers, setOffers] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");

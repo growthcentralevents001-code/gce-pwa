@@ -5,15 +5,14 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import { Calendar, MapPin, Users, ArrowRight, Filter, SlidersHorizontal, X } from "lucide-react";
 import GeoLocationBar from "@/components/GeoLocationBar";
-import type { EventListItem } from "@/types";
 
 export default function EventsContent() {
-  const [events, setEvents] = useState<EventListItem[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<EventListItem[]>([]);
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
-  const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -58,9 +57,7 @@ export default function EventsContent() {
       if (error) throw error;
       setEvents(data || []);
       setFilteredEvents(data || []);
-      const cats = Array.from(
-        new Set((data || []).map((e) => e.category).filter(Boolean) as string[])
-      );
+      const cats = [...new Set(data.map(e => e.category).filter(Boolean))];
       setCategories(cats);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -81,7 +78,7 @@ export default function EventsContent() {
     }
 
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter((e) => e.category && selectedCategories.includes(e.category));
+      filtered = filtered.filter((e) => selectedCategories.includes(e.category));
     }
 
     filtered = filtered.filter(
@@ -100,14 +97,14 @@ export default function EventsContent() {
     filtered = [...filtered].sort((a, b) => {
       if (sortBy === "date") {
         return sortOrder === "asc"
-          ? new Date(a.date).getTime() - new Date(b.date).getTime()
-          : new Date(b.date).getTime() - new Date(a.date).getTime();
+          ? new Date(a.date) - new Date(b.date)
+          : new Date(b.date) - new Date(a.date);
       } else if (sortBy === "price") {
         return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
       } else if (sortBy === "attendance") {
         return sortOrder === "asc"
-          ? (a.registered ?? 0) - (b.registered ?? 0)
-          : (b.registered ?? 0) - (a.registered ?? 0);
+          ? a.registered - b.registered
+          : b.registered - a.registered;
       }
       return 0;
     });
@@ -115,7 +112,7 @@ export default function EventsContent() {
     setFilteredEvents(filtered);
   }, [events, activeTab, selectedCategories, priceRange, sortBy, sortOrder, userCity]);
 
-  const toggleCategory = (category: string) => {
+  const toggleCategory = (category) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)

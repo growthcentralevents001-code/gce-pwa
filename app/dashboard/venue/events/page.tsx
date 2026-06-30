@@ -50,6 +50,11 @@ export default function VenueEvents() {
 
     setVenue(venueData);
 
+    if (!venueData) {
+      setLoading(false);
+      return;
+    }
+
     // Fetch events
     const { data: eventsData } = await supabase
       .from("events")

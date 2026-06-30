@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { Users, TrendingUp, DollarSign, MapPin, Calendar, RefreshCw, Copy, CheckCircle } from "lucide-react";
 import Link from "next/link";
@@ -8,7 +9,7 @@ import Link from "next/link";
 export default function AffiliateDashboard() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ venues: 0, commission: 0, pending: 0, paid: 0 });
-  const [referredVenues, setReferredVenues] = useState([]);
+  const [referredVenues, setReferredVenues] = useState<DataRow[]>([]);
   const [referralCode, setReferralCode] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);

@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { Users, TrendingUp, DollarSign, MapPin, Calendar, RefreshCw, Award, Copy, CheckCircle } from "lucide-react";
 
 export default function ZBPDashboard() {
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<DataRow | null>(null);
   const [stats, setStats] = useState({ venues: 0, commission: 0, pending: 0, paid: 0 });
-  const [referredVenues, setReferredVenues] = useState([]);
+  const [referredVenues, setReferredVenues] = useState<DataRow[]>([]);
   const [referralCode, setReferralCode] = useState("");
   const [copied, setCopied] = useState(false);
 

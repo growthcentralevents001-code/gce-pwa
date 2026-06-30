@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Users, Search, Plus, Eye, Edit, 
@@ -11,7 +12,7 @@ import {
 import Link from "next/link";
 
 export default function AffiliateApplications() {
-  const [affiliates, setAffiliates] = useState([]);
+  const [affiliates, setAffiliates] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -47,7 +48,7 @@ export default function AffiliateApplications() {
         .order("created_at", { ascending: false });
 
       // Combine both sources (if needed)
-      let combined = data || [];
+      let combined: DataRow[] = (data as DataRow[]) || [];
       if (appData && appData.length > 0) {
         combined = appData.map(app => ({
           id: app.id,

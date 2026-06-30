@@ -65,7 +65,7 @@ export default function WishlistPage() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setSavedEvents(data || []);
+      setSavedEvents((data ?? []) as unknown as SavedEvent[]);
     } catch (error) {
       console.error("Error fetching saved events:", error);
     } finally {

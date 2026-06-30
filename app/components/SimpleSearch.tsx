@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
 export default function SimpleSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<DataRow[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const searchEvents = async (searchQuery: string) => {
@@ -21,7 +22,7 @@ export default function SimpleSearch() {
       .ilike("title", `%${searchQuery}%`)
       .limit(8);
     setResults(data || []);
-    setShowDropdown(data && data.length > 0);
+    setShowDropdown(Boolean(data && data.length > 0));
   };
 
   const handleSelect = (eventId: string, title: string) => {

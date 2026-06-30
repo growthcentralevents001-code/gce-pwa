@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
@@ -17,11 +17,11 @@ export default function ZBPApply() {
 
   const zones = ["North", "South", "East", "West", "Central"];
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleVenueChange = (idx, field, value) => {
+  const handleVenueChange = (idx: number, field: keyof (typeof form.venues)[number], value: string) => {
     const updated = [...form.venues];
     updated[idx][field] = value;
     setForm({ ...form, venues: updated });
@@ -31,7 +31,7 @@ export default function ZBPApply() {
     setForm({ ...form, venues: [...form.venues, { name: "", address: "", city: "" }] });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();

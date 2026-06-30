@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import { supabase } from "@/lib/supabaseClient";
 import { 
   Users, Search, RefreshCw, Save, 
@@ -10,11 +11,11 @@ import {
 import Link from "next/link";
 
 export default function VenueReferrers() {
-  const [venues, setVenues] = useState([]);
-  const [referrers, setReferrers] = useState([]);
+  const [venues, setVenues] = useState<DataRow[]>([]);
+  const [referrers, setReferrers] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [assignments, setAssignments] = useState({});
+  const [assignments, setAssignments] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchData();
@@ -45,25 +46,36 @@ export default function VenueReferrers() {
         .eq("role", "affiliate")
         .eq("approved", true);
 
+      const getUserInfo = (users: unknown) => {
+        const user = Array.isArray(users) ? users[0] : users;
+        return user as { email?: string; name?: string } | undefined;
+      };
+
       const referrerList = [
-        ...(zbpData || []).map(r => ({
-          id: r.user_id,
-          name: r.users?.name || r.users?.email || "Unknown",
-          type: "zbp",
-          label: `ZBP: ${r.users?.name || r.users?.email}`,
-        })),
-        ...(affData || []).map(r => ({
-          id: r.user_id,
-          name: r.users?.name || r.users?.email || "Unknown",
-          type: "affiliate",
-          label: `Affiliate: ${r.users?.name || r.users?.email}`,
-        })),
+        ...(zbpData || []).map((r) => {
+          const user = getUserInfo(r.users);
+          return {
+            id: r.user_id,
+            name: user?.name || user?.email || "Unknown",
+            type: "zbp",
+            label: `ZBP: ${user?.name || user?.email}`,
+          };
+        }),
+        ...(affData || []).map((r) => {
+          const user = getUserInfo(r.users);
+          return {
+            id: r.user_id,
+            name: user?.name || user?.email || "Unknown",
+            type: "affiliate",
+            label: `Affiliate: ${user?.name || user?.email}`,
+          };
+        }),
       ];
       setReferrers(referrerList);
 
       // Initialize assignments with current referrers
-      const initialAssignments = {};
-      (venueData || []).forEach(v => {
+      const initialAssignments: Record<string, string> = {};
+      (venueData || []).forEach((v) => {
         initialAssignments[v.id] = v.referrer_id || "";
       });
       setAssignments(initialAssignments);

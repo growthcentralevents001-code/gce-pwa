@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import { 
@@ -17,7 +18,7 @@ import {
 } from "lucide-react";
 
 export default function VenueDashboard() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<DataRow[]>([]);
   const [stats, setStats] = useState({ total: 0, live: 0, bookings: 0, revenue: 0 });
   const [loading, setLoading] = useState(true);
 

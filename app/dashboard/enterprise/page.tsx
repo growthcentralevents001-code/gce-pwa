@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { DataRow } from "@/types";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import { 
@@ -19,9 +20,9 @@ import {
 } from "lucide-react";
 
 export default function EnterpriseDashboard() {
-  const [requests, setRequests] = useState([]);
-  const [proposals, setProposals] = useState([]);
-  const [campaigns, setCampaigns] = useState([]);
+  const [requests, setRequests] = useState<DataRow[]>([]);
+  const [proposals, setProposals] = useState<DataRow[]>([]);
+  const [campaigns, setCampaigns] = useState<DataRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("requests");
 

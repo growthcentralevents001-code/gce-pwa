@@ -1,7 +1,7 @@
 "use client";
 import { useRoles } from "@/context/RoleContext";
 import Link from "next/link";
-import { Users, Building, Briefcase, Award, ArrowRight, Sparkles } from "lucide-react";
+import { Users, Building, Briefcase, Award, ArrowRight, Sparkles, CheckCircle } from "lucide-react";
 
 export default function ApplyRolePage() {
   const { roles } = useRoles();

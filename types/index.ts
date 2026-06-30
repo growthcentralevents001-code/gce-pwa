@@ -1,3 +1,18 @@
+export interface EventListItem {
+  id: string;
+  title: string;
+  date: string;
+  time?: string | null;
+  venue?: string | null;
+  city?: string | null;
+  price: number;
+  capacity?: number;
+  registered?: number;
+  vertical?: string | null;
+  category?: string | null;
+  is_sales_event?: boolean | null;
+}
+
 export interface User {
   id: string;
   email: string;

@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import HeaderEventSearch from "@/components/HeaderEventSearch";
 import { 
@@ -9,12 +10,34 @@ import {
   Settings, UsersRound, BriefcaseMedical 
 } from "lucide-react";
 
+type UserRole = { role: string };
+
+const rolePaths: Record<string, string> = {
+  member: '/dashboard/member',
+  venue: '/dashboard/venue',
+  affiliate: '/dashboard/affiliate',
+  zbp: '/dashboard/zbp',
+  bdm: '/dashboard/bdm',
+  enterprise: '/dashboard/enterprise',
+  admin: '/admin',
+};
+
+const roleLabels: Record<string, string> = {
+  member: "Member",
+  venue: "Venue Partner",
+  affiliate: "Affiliate",
+  zbp: "ZBP",
+  bdm: "BDM",
+  enterprise: "Enterprise",
+  admin: "Admin",
+};
+
 export default function Header() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [roles, setRoles] = useState([]);
-  const [activeRole, setActiveRole] = useState(null);
+  const [roles, setRoles] = useState<UserRole[]>([]);
+  const [activeRole, setActiveRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,19 +66,10 @@ export default function Header() {
     fetchUserAndRoles();
   }, []);
 
-  const handleSetActiveRole = (role) => {
+  const handleSetActiveRole = (role: string) => {
     setActiveRole(role);
     localStorage.setItem('activeRole', role);
-    const roleMap = {
-      member: '/dashboard/member',
-      venue: '/dashboard/venue',
-      affiliate: '/dashboard/affiliate',
-      zbp: '/dashboard/zbp',
-      bdm: '/dashboard/bdm',
-      enterprise: '/dashboard/enterprise',
-      admin: '/admin',
-    };
-    const path = roleMap[role];
+    const path = rolePaths[role];
     if (path) window.location.href = path;
   };
 
@@ -64,17 +78,7 @@ export default function Header() {
     window.location.href = "/";
   };
 
-  const roleLabels = {
-    member: "Member",
-    venue: "Venue Partner",
-    affiliate: "Affiliate",
-    zbp: "ZBP",
-    bdm: "BDM",
-    enterprise: "Enterprise",
-    admin: "Admin",
-  };
-
-  const roleIcons = {
+  const roleIcons: Record<string, ReactNode> = {
     member: <User size={16} />,
     venue: <Building size={16} />,
     affiliate: <LinkIcon size={16} />,
@@ -98,7 +102,7 @@ export default function Header() {
           </button>
           <Link href="/" className="text-2xl font-bold text-orange-600">GCE</Link>
         </div>
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-xl min-w-0">
           <HeaderEventSearch />
         </div>
         <div className="flex items-center gap-4 shrink-0">

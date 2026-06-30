@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { MapPin, Loader2 } from 'lucide-react';
 

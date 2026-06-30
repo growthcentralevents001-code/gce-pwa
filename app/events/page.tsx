@@ -1,263 +1,457 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
-import Link from "next/link";
-import { Search, Heart, SlidersHorizontal } from "lucide-react";
-import FilterModal from "@/components/FilterModal";
 
-interface Event {
-  id: string;
-  title: string;
-  vertical: string;
-  genre?: string;
-  date: string;
-  time: string;
-  venue: string;
-  city: string;
-  price: number;
-  registered: number;
-  capacity: number;
-}
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+import { Calendar, MapPin, Users, ArrowRight, Filter, SlidersHorizontal, X } from "lucide-react";
+import GeoLocationBar from "@/components/GeoLocationBar";
+import type { EventListItem } from "@/types";
 
 export default function EventsContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const urlQuery = searchParams.get("search") || "";
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventListItem[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<EventListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
-  const [searchInput, setSearchInput] = useState(urlQuery);
-  const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
-  
-  // Filter state
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    genres: searchParams.get("genres")?.split(",").filter(g => g) || [],
-    sortBy: searchParams.get("sortBy") || "popularity",
-  });
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
+  const [sortBy, setSortBy] = useState("date");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [showDesktopFilter, setShowDesktopFilter] = useState(false);
+  const [userCity, setUserCity] = useState<string | null>(null);
 
-  // Fetch wishlist
-  useEffect(() => { fetchWishlist(); }, []);
-
-  async function fetchWishlist() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    const { data } = await supabase.from("saved_events").select("event_id").eq("user_id", user.id);
-    if (data) setWishlistIds(new Set(data.map((item: any) => item.event_id)));
-  }
-
-  async function toggleWishlist(eventId: string, e: React.MouseEvent) {
-    e.stopPropagation();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { alert("Please login"); return; }
-    const isIn = wishlistIds.has(eventId);
-    if (isIn) {
-      const { error } = await supabase.from("saved_events").delete().eq("user_id", user.id).eq("event_id", eventId);
-      if (!error) {
-        setWishlistIds(prev => { const s = new Set(prev); s.delete(eventId); return s; });
-        alert("Removed");
-      } else alert("Delete error: " + error.message);
-    } else {
-      const { error } = await supabase.from("saved_events").insert({ user_id: user.id, event_id: eventId });
-      if (!error) {
-        setWishlistIds(prev => new Set(prev).add(eventId));
-        alert("Added");
-      } else alert("Insert error: " + error.message);
-    }
-  }
-
-  // Apply filters and fetch events
-  const applyFilters = (newFilters) => {
-    setFilters(newFilters);
-    const params = new URLSearchParams(searchParams.toString());
-    if (newFilters.genres.length) params.set("genres", newFilters.genres.join(","));
-    else params.delete("genres");
-    if (newFilters.sortBy) params.set("sortBy", newFilters.sortBy);
-    else params.delete("sortBy");
-    router.replace(`/events?${params.toString()}`, { scroll: false });
-    fetchEvents(newFilters);
+  const cityAliases: { [key: string]: string } = {
+    "asr": "Amritsar",
+    "ASR": "Amritsar",
+    "amritsar": "Amritsar",
+    "AMRITSAR": "Amritsar",
+    "Amritsar": "Amritsar",
+    "1001": "Amritsar",
+    "chandigarh": "Chandigarh",
+    "Chandigarh": "Chandigarh",
+    "mumbai": "Mumbai",
+    "Mumbai": "Mumbai",
+    "bom": "Mumbai",
+    "delhi": "Delhi",
+    "Delhi": "Delhi",
+    "bangalore": "Bangalore",
+    "Bangalore": "Bangalore",
+    "blr": "Bangalore",
+    "ludhiana": "Ludhiana",
+    "Ludhiana": "Ludhiana",
+    "pune": "Pune",
+    "Pune": "Pune",
   };
-
-  async function fetchEvents(currentFilters = filters) {
-    setLoading(true);
-    let query = supabase.from("events").select("*").eq("status", "Live");
-
-    // Search filter
-    if (urlQuery.trim() !== "") {
-      query = query.or(`title.ilike.%${urlQuery}%,venue.ilike.%${urlQuery}%,city.ilike.%${urlQuery}%`);
-    }
-
-    // Genre filter
-    if (currentFilters.genres.length) {
-      query = query.ilike("genre", currentFilters.genres.map(g => g.toLowerCase()).join(","));
-    }
-
-    // Sorting
-    switch (currentFilters.sortBy) {
-      case "price_asc":
-        query = query.order("price", { ascending: true });
-        break;
-      case "price_desc":
-        query = query.order("price", { ascending: false });
-        break;
-      case "date":
-        query = query.order("date", { ascending: true });
-        break;
-      default:
-        query = query.order("registered", { ascending: false });
-    }
-
-    const { data, error } = await query.order("date", { ascending: true });
-
-    if (!error && data) {
-      const formatted: Event[] = data.map((ev: any) => ({
-        id: ev.id,
-        title: ev.title,
-        vertical: (ev.vertical || ev.category || "Marketplace").toLowerCase(),
-        genre: ev.genre || "",
-        date: new Date(ev.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }),
-        time: ev.time || "6:30 PM",
-        venue: ev.venue,
-        city: ev.city,
-        price: ev.price,
-        registered: ev.registered || 0,
-        capacity: ev.capacity,
-      }));
-      setEvents(formatted);
-    } else {
-      setEvents([]);
-    }
-    setLoading(false);
-  }
 
   useEffect(() => {
-    fetchEvents(filters);
-  }, [urlQuery]);
+    fetchEvents();
+  }, []);
 
-  const filteredEvents = events.filter(event => activeTab === "all" || event.vertical === activeTab);
-  const getVerticalStyle = (vertical: string) => {
-    switch (vertical) {
-      case "connect": return { bg: "#fef3c7", color: "#92400e" };
-      case "marketplace": return { bg: "#e0e7ff", color: "#3730a3" };
-      case "enterprise": return { bg: "#dcfce7", color: "#166534" };
-      default: return { bg: "#f1f5f9", color: "#475569" };
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .order("date", { ascending: true });
+
+      if (error) throw error;
+      setEvents(data || []);
+      setFilteredEvents(data || []);
+      const cats = Array.from(
+        new Set((data || []).map((e) => e.category).filter(Boolean) as string[])
+      );
+      setCategories(cats);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchInput.trim()) {
-      router.push(`/events?search=${encodeURIComponent(searchInput.trim())}`);
-    } else {
-      router.push("/events");
+  useEffect(() => {
+    let filtered = events;
+
+    if (activeTab !== "all") {
+      if (activeTab === "sales") {
+        filtered = filtered.filter((e) => e.is_sales_event === true);
+      } else {
+        filtered = filtered.filter((e) => e.vertical === activeTab);
+      }
     }
+
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((e) => selectedCategories.includes(e.category));
+    }
+
+    filtered = filtered.filter(
+      (e) => e.price >= priceRange.min && e.price <= priceRange.max
+    );
+
+    if (userCity) {
+      const normalizedCity = userCity.trim().toLowerCase();
+      filtered = filtered.filter((e) => {
+        const eventCity = e.city?.trim().toLowerCase() || "";
+        return eventCity === normalizedCity ||
+               cityAliases[eventCity]?.toLowerCase() === normalizedCity;
+      });
+    }
+
+    filtered = [...filtered].sort((a, b) => {
+      if (sortBy === "date") {
+        return sortOrder === "asc"
+          ? new Date(a.date).getTime() - new Date(b.date).getTime()
+          : new Date(b.date).getTime() - new Date(a.date).getTime();
+      } else if (sortBy === "price") {
+        return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+      } else if (sortBy === "attendance") {
+        return sortOrder === "asc"
+          ? (a.registered ?? 0) - (b.registered ?? 0)
+          : (b.registered ?? 0) - (a.registered ?? 0);
+      }
+      return 0;
+    });
+
+    setFilteredEvents(filtered);
+  }, [events, activeTab, selectedCategories, priceRange, sortBy, sortOrder, userCity]);
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
   };
 
-  if (loading) return <div className="max-w-7xl mx-auto px-4 py-12 text-center">Loading events...</div>;
+  const clearFilters = () => {
+    setSelectedCategories([]);
+    setPriceRange({ min: 0, max: 10000 });
+    setSortBy("date");
+    setSortOrder("asc");
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header with Filter Button */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">{urlQuery ? `Search results for "${urlQuery}"` : "All Events"}</h1>
-          <p className="text-gray-500">{filteredEvents.length} event{filteredEvents.length !== 1 ? "s" : ""} found</p>
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+        <GeoLocationBar onCityChange={setUserCity} eventsCount={filteredEvents.length} />
+        <div className="flex-1 min-w-[180px]">
+          <input
+            type="text"
+            placeholder="Search events, venues, or cities..."
+            className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+          />
         </div>
         <button
-          onClick={() => setIsFilterOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50 transition"
+          onClick={() => setShowDesktopFilter(!showDesktopFilter)}
+          className="flex items-center gap-1 px-3 py-1.5 bg-white rounded-lg shadow-sm border border-gray-200 text-sm hover:bg-gray-50"
         >
-          <SlidersHorizontal size={18} />
-          Filters
-          {(filters.genres.length > 0 || filters.sortBy !== "popularity") && (
-            <span className="ml-1 w-2 h-2 bg-orange-600 rounded-full"></span>
-          )}
+          <Filter size={14} className="text-orange-500" /> Filters
+        </button>
+        <button
+          onClick={() => setShowMobileFilter(!showMobileFilter)}
+          className="lg:hidden flex items-center gap-1 px-3 py-1.5 bg-white rounded-lg shadow-sm border border-gray-200 text-sm"
+        >
+          <SlidersHorizontal size={14} /> Filters
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
-        {["all", "connect", "marketplace", "enterprise"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-              activeTab === tab
-                ? "bg-orange-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
-          </button>
-        ))}
+      <div className="flex flex-col lg:flex-row-reverse gap-8">
+        {showDesktopFilter && (
+          <aside className="lg:block w-64 flex-shrink-0 sticky top-24 self-start">
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                  <Filter size={18} className="text-orange-500" /> Filters
+                </h3>
+                <button onClick={clearFilters} className="text-xs text-orange-600 hover:text-orange-700">
+                  Clear all
+                </button>
+              </div>
+
+              <div className="mb-5">
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Category</h4>
+                <div className="space-y-1.5">
+                  {categories.map((cat) => (
+                    <label key={cat} className="flex items-center gap-2 text-xs text-gray-700 hover:text-gray-900 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(cat)}
+                        onChange={() => toggleCategory(cat)}
+                        className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                      />
+                      {cat}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Price Range</h4>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    value={priceRange.min}
+                    onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
+                    placeholder="Min"
+                  />
+                  <span className="text-gray-400">—</span>
+                  <input
+                    type="number"
+                    value={priceRange.max}
+                    onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
+                    placeholder="Max"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Sort By</h4>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-2 py-1 text-xs border border-gray-300 rounded bg-white"
+                >
+                  <option value="date">Date</option>
+                  <option value="price">Price</option>
+                  <option value="attendance">Attendance</option>
+                </select>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => setSortOrder("asc")}
+                    className={`px-2 py-0.5 text-[10px] rounded-full border ${
+                      sortOrder === "asc"
+                        ? "bg-orange-100 border-orange-300 text-orange-700"
+                        : "bg-gray-50 border-gray-200 text-gray-600"
+                    }`}
+                  >
+                    Ascending
+                  </button>
+                  <button
+                    onClick={() => setSortOrder("desc")}
+                    className={`px-2 py-0.5 text-[10px] rounded-full border ${
+                      sortOrder === "desc"
+                        ? "bg-orange-100 border-orange-300 text-orange-700"
+                        : "bg-gray-50 border-gray-200 text-gray-600"
+                    }`}
+                  >
+                    Descending
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        )}
+
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap gap-2 mb-6">
+            {[
+              { id: "all", label: "All Events" },
+              { id: "connect", label: "GCE Connect" },
+              { id: "marketplace", label: "GCE Marketplace" },
+              { id: "enterprise", label: "GCE Enterprise" },
+              { id: "sales", label: "🔥 Sales Events" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+                  activeTab === tab.id
+                    ? "bg-orange-600 text-white shadow-lg"
+                    : "bg-white text-gray-600 hover:bg-gray-100 shadow-sm"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-sm text-gray-500 mb-6">{filteredEvents.length} events found</div>
+
+          {filteredEvents.length === 0 ? (
+            <div className="text-center py-10">
+              {userCity ? (
+                <>
+                  <p className="text-gray-500">No events found in {userCity}</p>
+                  <button onClick={() => setUserCity(null)} className="text-orange-600 hover:underline mt-2">
+                    View all events
+                  </button>
+                </>
+              ) : (
+                <p className="text-gray-500">No events found</p>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredEvents.map((event) => {
+                const verticalColors =
+                  event.vertical === "connect"
+                    ? { bg: "bg-blue-100", text: "text-blue-700" }
+                    : event.vertical === "marketplace"
+                    ? { bg: "bg-green-100", text: "text-green-700" }
+                    : event.vertical === "enterprise"
+                    ? { bg: "bg-purple-100", text: "text-purple-700" }
+                    : { bg: "bg-orange-100", text: "text-orange-700" };
+
+                const isSales = event.is_sales_event === true;
+
+                return (
+                  <Link key={event.id} href={`/events/${event.id}`}>
+                    <div className="group bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden border border-gray-100 hover:border-orange-200">
+                      <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center relative">
+                        <span className="text-5xl">🎉</span>
+                        {isSales && (
+                          <span className="absolute top-3 left-3 bg-white/90 text-xs font-semibold px-2.5 py-1 rounded-full shadow flex items-center gap-1">
+                            🛍️ Sales Event
+                          </span>
+                        )}
+                        <span className={`absolute top-3 right-3 ${verticalColors.bg} ${verticalColors.text} text-xs font-semibold px-2.5 py-1 rounded-full shadow`}>
+                          {event.vertical || "Event"}
+                        </span>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-bold text-lg text-gray-800 group-hover:text-orange-600 transition line-clamp-1">
+                          {event.title}
+                        </h3>
+                        <div className="mt-2 space-y-1.5 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <Calendar size={14} className="text-orange-400" />
+                            <span>{event.date} at {event.time}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin size={14} className="text-orange-400" />
+                            <span>{event.venue}, {event.city}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Users size={14} className="text-orange-400" />
+                            <span>{event.registered} / {event.capacity} attending</span>
+                          </div>
+                          {isSales && event.offer_type && (
+                            <div className="flex items-center gap-2 text-orange-600 font-semibold">
+                              🎁 {event.offer_type}: ₹{event.offer_value}
+                              {event.min_purchase && ` (min ₹${event.min_purchase})`}
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-4 flex items-center justify-between">
+                          <span className="text-xl font-bold text-orange-600">
+                            {isSales ? `₹${event.offer_value} offer` : `₹${event.price}`}
+                          </span>
+                          <span className="inline-flex items-center gap-1 text-sm font-medium text-orange-600 group-hover:text-orange-700 transition">
+                            View <ArrowRight size={14} />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Events grid */}
-      {filteredEvents.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500">No events found for your search or filter.</p>
-          <button
-            onClick={() => {
-              setSearchInput("");
-              router.push("/events");
-            }}
-            className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg"
-          >
-            Clear search
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map((event) => {
-            const style = getVerticalStyle(event.vertical);
-            const isWishlisted = wishlistIds.has(event.id);
-            return (
-              <Link key={event.id} href={`/events/${event.id}`}>
-                <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition">
-                  <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
-                    <span className="text-5xl">🎉</span>
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-lg">{event.title}</h3>
-                      <span
-                        className="text-xs px-2 py-1 rounded-full"
-                        style={{ background: style.bg, color: style.color }}
-                      >
-                        {event.vertical === "connect" ? "GCE Connect" : event.vertical === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
-                      </span>
-                    </div>
-                    <div className="space-y-1 text-sm text-gray-600">
-                      <div>📅 {event.date} at {event.time}</div>
-                      <div>📍 {event.venue}, {event.city}</div>
-                      <div>👥 {event.registered} / {event.capacity} attending</div>
-                      {event.genre && <div>🎭 {event.genre}</div>}
-                    </div>
-                    <div className="mt-3 flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
-                        <button onClick={(e) => toggleWishlist(event.id, e)} className="focus:outline-none">
-                          <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
-                        </button>
-                      </div>
-                      <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</span>
-                    </div>
-                  </div>
+      {showMobileFilter && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
+          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-semibold text-gray-800">Filters</h3>
+              <button onClick={() => setShowMobileFilter(false)}>
+                <X size={24} className="text-gray-500" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Category</h4>
+                {categories.map((cat) => (
+                  <label key={cat} className="flex items-center gap-2 text-xs text-gray-700 py-1">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat)}
+                      onChange={() => toggleCategory(cat)}
+                      className="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                    />
+                    {cat}
+                  </label>
+                ))}
+              </div>
+              <div>
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Price Range</h4>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    value={priceRange.min}
+                    onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
+                    placeholder="Min"
+                  />
+                  <span>—</span>
+                  <input
+                    type="number"
+                    value={priceRange.max}
+                    onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded"
+                    placeholder="Max"
+                  />
                 </div>
-              </Link>
-            );
-          })}
+              </div>
+              <div>
+                <h4 className="text-xs font-semibold text-gray-700 mb-2">Sort</h4>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-2 py-1 text-xs border border-gray-300 rounded bg-white"
+                >
+                  <option value="date">Date</option>
+                  <option value="price">Price</option>
+                  <option value="attendance">Attendance</option>
+                </select>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => setSortOrder("asc")}
+                    className={`px-2 py-0.5 text-[10px] rounded-full border ${
+                      sortOrder === "asc"
+                        ? "bg-orange-100 border-orange-300 text-orange-700"
+                        : "bg-gray-50 border-gray-200 text-gray-600"
+                    }`}
+                  >
+                    Ascending
+                  </button>
+                  <button
+                    onClick={() => setSortOrder("desc")}
+                    className={`px-2 py-0.5 text-[10px] rounded-full border ${
+                      sortOrder === "desc"
+                        ? "bg-orange-100 border-orange-300 text-orange-700"
+                        : "bg-gray-50 border-gray-200 text-gray-600"
+                    }`}
+                  >
+                    Descending
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6 pt-4 border-t border-gray-200">
+              <button onClick={clearFilters} className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                Clear All
+              </button>
+              <button onClick={() => setShowMobileFilter(false)} className="flex-1 px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition">
+                Apply Filters
+              </button>
+            </div>
+          </div>
         </div>
       )}
-
-      {/* Filter Modal */}
-      <FilterModal
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        onApply={applyFilters}
-        currentFilters={filters}
-      />
     </div>
   );
 }

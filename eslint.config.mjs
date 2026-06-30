@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Backup and duplicate snapshots — not active source
+    "**/*.backup*",
+    "**/*.bak",
+    "**/*.restored",
+    "**/admin-backup-*/**",
+    "**/admin.backup.*/**",
   ]),
 ]);
 

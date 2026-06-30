@@ -18,8 +18,20 @@ const sortOptions = [
   { value: "distance", label: "Distance: Near to Far" },
 ];
 
-export default function FilterModal({ isOpen, onClose, onApply, currentFilters }) {
-  const [selectedGenres, setSelectedGenres] = useState(currentFilters?.genres || []);
+interface FilterState {
+  genres: string[];
+  sortBy: string;
+}
+
+interface FilterModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onApply: (filters: FilterState) => void;
+  currentFilters?: FilterState;
+}
+
+export default function FilterModal({ isOpen, onClose, onApply, currentFilters }: FilterModalProps) {
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(currentFilters?.genres || []);
   const [sortBy, setSortBy] = useState(currentFilters?.sortBy || "popularity");
 
   useEffect(() => {
@@ -29,9 +41,9 @@ export default function FilterModal({ isOpen, onClose, onApply, currentFilters }
     }
   }, [isOpen, currentFilters]);
 
-  const handleGenreToggle = (genre) => {
-    setSelectedGenres(prev =>
-      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+  const handleGenreToggle = (genre: string) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
     );
   };
 

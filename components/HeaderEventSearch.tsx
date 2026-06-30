@@ -88,23 +88,25 @@ export default function HeaderEventSearch() {
 
   return (
     <div className="relative w-full">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+      <div className="flex items-center gap-2 w-full min-w-0">
         <GeoLocationBar onCityChange={setUserCity} eventsCount={0} />
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Search events or venues..."
-          className="w-full pl-10 pr-8 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        {searchTerm && (
-          <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <X size={14} className="text-gray-400 hover:text-gray-600" />
-          </button>
-        )}
+        <div className="relative flex-1 min-w-0">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search events or venues..."
+            className="w-full pl-10 pr-8 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          {searchTerm && (
+            <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <X size={14} className="text-gray-400 hover:text-gray-600" />
+            </button>
+          )}
+        </div>
       </div>
 
       {showDropdown && results.length > 0 && (

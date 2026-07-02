@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Search, Heart } from "lucide-react";
+import GeoLocationBar from "@/components/GeoLocationBar";
 
 interface Event {
   id: string;
@@ -22,6 +23,14 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
+  const [userCity, setUserCity] = useState<string | null>(null);
+
+  const cityAliases: Record<string, string> = {
+    asr: "amritsar",
+    "1001": "amritsar",
+    bom: "mumbai",
+    blr: "bangalore",
+  };
 
   const categories = [
     { name: "Music", value: "music" },
@@ -89,7 +98,24 @@ export default function HomePage() {
     }
   }
 
-  const filteredEvents = events.filter(event => activeTab === "all" || event.vertical === activeTab);
+  const filteredEvents = events.filter((event) => {
+    if (activeTab !== "all" && event.vertical !== activeTab) {
+      return false;
+    }
+
+    if (userCity) {
+      const normalizedCity = userCity.trim().toLowerCase();
+      const eventCity = event.city?.trim().toLowerCase() || "";
+      const mappedEventCity = cityAliases[eventCity] || eventCity;
+      const mappedUserCity = cityAliases[normalizedCity] || normalizedCity;
+
+      if (mappedEventCity !== mappedUserCity) {
+        return false;
+      }
+    }
+
+    return true;
+  });
   const getVerticalStyle = (vertical: string) => {
     switch (vertical) {
       case "connect": return { bg: "#fef3c7", color: "#92400e" };
@@ -106,6 +132,9 @@ export default function HomePage() {
       {/* Hero Section with Category Buttons - REPLACED Discover text */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>
+        <div className="flex justify-center mb-6">
+          <GeoLocationBar onCityChange={setUserCity} eventsCount={filteredEvents.length} />
+        </div>
         <div className="flex flex-wrap justify-center gap-4 mb-8">
           {categories.map((cat) => (
             <Link
@@ -132,7 +161,7 @@ export default function HomePage() {
       {/* Events grid */}
       {filteredEvents.length === 0 ? (
         <div className="text-center py-12">
-          <p>No events found.</p>
+          <p>{userCity ? `No events found in ${userCity}.` : "No events found."}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -26,4 +26,4 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 \
             "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" \
-            'bash -lc "cd /root/gce-pwa-prod && ./scripts/deploy-prod.sh"'
+            'bash -lc "/root/gce-pwa-dev/scripts/deploy-prod.sh"'

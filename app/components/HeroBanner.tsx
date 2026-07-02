@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Calendar, Users, Building2, Award, ArrowRight } from "lucide-react";
 
 export default function HeroBanner() {
@@ -121,7 +122,7 @@ export default function HeroBanner() {
 
         {/* CTA Buttons */}
         <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <a href="/events" style={{
+          <Link href="/events" style={{
             background: "white",
             color: "#f97316",
             padding: "12px 28px",
@@ -134,8 +135,8 @@ export default function HeroBanner() {
             transition: "transform 0.2s"
           }}>
             Explore Events <ArrowRight size={16} />
-          </a>
-          <a href="/signup" style={{
+          </Link>
+          <Link href="/signup" style={{
             background: "rgba(255,255,255,0.2)",
             backdropFilter: "blur(10px)",
             color: "white",
@@ -146,7 +147,7 @@ export default function HeroBanner() {
             border: "1px solid rgba(255,255,255,0.3)"
           }}>
             Become a Member
-          </a>
+          </Link>
         </div>
       </div>
 

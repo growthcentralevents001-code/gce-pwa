@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 DEV_DIR="/root/gce-pwa-dev"
 DEV_BRANCH="development"
-DEV_PM2_PORT="3000"
+DEV_PM2_PORT="3001"
 
 cd "$DEV_DIR"
 
@@ -17,9 +17,10 @@ else
   npm install
 fi
 
+rm -rf .next
 npm run build
 
-PM2_ID="$(pm2 jlist | node -e 'const fs=require("fs"); const apps=JSON.parse(fs.readFileSync(0,"utf8")); const match=apps.find(p=>{ const e=p.pm2_env||{}; const cwd=e.pm_cwd||""; const env=e.env||{}; const port=String(env.PORT||e.PORT||""); return cwd==="/root/gce-pwa-dev" || port==="3000"; }); if(match) process.stdout.write(String(match.pm_id));')"
+PM2_ID="$(pm2 jlist | node -e 'const fs=require("fs"); const apps=JSON.parse(fs.readFileSync(0,"utf8")); const match=apps.find(p=>{ const e=p.pm2_env||{}; const cwd=e.pm_cwd||""; return cwd==="/root/gce-pwa-dev"; }); if(match) process.stdout.write(String(match.pm_id));')"
 
 if [ -z "$PM2_ID" ]; then
   echo "Could not identify the development PM2 process" >&2

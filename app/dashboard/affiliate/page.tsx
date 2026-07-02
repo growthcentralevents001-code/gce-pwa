@@ -14,10 +14,6 @@ export default function AffiliateDashboard() {
   const [userId, setUserId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -26,11 +22,16 @@ export default function AffiliateDashboard() {
       setUserId(user.id);
 
       // Get affiliate profile or create one
-      let { data: profile, error } = await supabase
+      const { data: initialProfile, error: profileFetchError } = await supabase
         .from("affiliate_profiles")
         .select("referral_code")
         .eq("user_id", user.id)
         .single();
+
+      let profile = initialProfile;
+      if (profileFetchError && profileFetchError.code !== "PGRST116") {
+        console.error(profileFetchError);
+      }
 
       // If no profile, create one
       if (!profile) {
@@ -83,6 +84,10 @@ export default function AffiliateDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const copyReferralCode = () => {
     navigator.clipboard.writeText(referralCode);

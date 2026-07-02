@@ -25,10 +25,6 @@ export default function EnterpriseProposals() {
     final_budget: "",
   });
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
   const fetchRequests = async () => {
     setLoading(true);
     try {
@@ -53,6 +49,10 @@ export default function EnterpriseProposals() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
   const handleCreateProposal = async (requestId: string) => {
     if (!proposalForm.proposal_text || !proposalForm.amount) {

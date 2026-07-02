@@ -27,18 +27,6 @@ export default function AdminPayouts() {
   const [filter, setFilter] = useState("pending"); // pending, approved, rejected, all
   const [stats, setStats] = useState({ pending: 0, total: 0 });
 
-  useEffect(() => {
-    checkAdminAndFetch();
-  }, []);
-
-  async function checkAdminAndFetch() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { router.push("/login"); return; }
-    const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single();
-    if (userData?.role !== "admin") { router.push("/unauthorized"); return; }
-    fetchPayouts();
-  }
-
   async function fetchPayouts() {
     setLoading(true);
     // Fetch affiliate payout requests
@@ -53,7 +41,7 @@ export default function AdminPayouts() {
       .select("*, venues(name, user_id, users(email))")
       .order("created_at", { ascending: false });
 
-    let combined: PayoutRequest[] = [];
+    const combined: PayoutRequest[] = [];
 
     if (affiliateRequests && !affError) {
       combined.push(...affiliateRequests.map((req: any) => ({
@@ -86,6 +74,18 @@ export default function AdminPayouts() {
     setStats({ pending: pendingCount, total: combined.length });
     setLoading(false);
   }
+
+  async function checkAdminAndFetch() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { router.push("/login"); return; }
+    const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single();
+    if (userData?.role !== "admin") { router.push("/unauthorized"); return; }
+    fetchPayouts();
+  }
+
+  useEffect(() => {
+    checkAdminAndFetch();
+  }, []);
 
   async function updatePayoutStatus(id: string, newStatus: string, type: "affiliate" | "venue") {
     const table = type === "affiliate" ? "affiliate_payout_requests" : "payouts";

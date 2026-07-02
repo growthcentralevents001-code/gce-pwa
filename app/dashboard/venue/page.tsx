@@ -22,10 +22,6 @@ export default function VenueDashboard() {
   const [stats, setStats] = useState({ total: 0, live: 0, bookings: 0, revenue: 0 });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchVenueData();
-  }, []);
-
   const fetchVenueData = async () => {
     try {
       const { data: user } = await supabase.auth.getUser();
@@ -64,6 +60,10 @@ export default function VenueDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchVenueData();
+  }, []);
 
   const getStatusBadge = (eventDate: string) => {
     const isLive = new Date(eventDate) >= new Date();

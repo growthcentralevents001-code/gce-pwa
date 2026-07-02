@@ -25,7 +25,7 @@ export default function CheckoutPage() {
 
     // If not logged in, redirect to login
     if (!user) {
-      router.push("/login?redirect=/checkout");
+      router.push("/login?redirectTo=/checkout");
       return;
     }
 

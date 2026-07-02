@@ -9,7 +9,7 @@ import { useAuth } from "@/app/context/AuthContext";
 export default function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
+  const redirectTo = searchParams.get("redirectTo") || searchParams.get("redirect") || "/";
   const { login, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

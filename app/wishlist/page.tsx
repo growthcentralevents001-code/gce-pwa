@@ -27,20 +27,6 @@ export default function WishlistPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (data?.user) {
-      setUser(data.user);
-      fetchSavedEvents(data.user.id);
-    } else {
-      setLoading(false);
-    }
-  };
-
   const fetchSavedEvents = async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -72,6 +58,20 @@ export default function WishlistPage() {
       setLoading(false);
     }
   };
+
+  const fetchUser = async () => {
+    const { data } = await supabase.auth.getUser();
+    if (data?.user) {
+      setUser(data.user);
+      fetchSavedEvents(data.user.id);
+    } else {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const removeSavedEvent = async (eventId: string) => {
     if (!user) return;

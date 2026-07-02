@@ -26,10 +26,6 @@ export default function EnterpriseDashboard() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("requests");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const { data: user } = await supabase.auth.getUser();
@@ -62,6 +58,10 @@ export default function EnterpriseDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {

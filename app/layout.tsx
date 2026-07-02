@@ -35,7 +35,7 @@ export default function RootLayout({
           {children}
           <footer style={{ background: "white", borderTop: "1px solid #eef2ff", padding: "32px 24px", marginTop: "48px" }}>
             <div style={{ maxWidth: "1280px", margin: "0 auto", textAlign: "center", color: "#64748b", fontSize: "14px" }}>
-              <p>© 2025 GCE Events. All rights reserved.</p>
+              <p>© 2026 GCE Events. All rights reserved.</p>
               <div style={{ display: "flex", justifyContent: "center", gap: "24px", marginTop: "16px" }}>
                 <a href="/about" style={{ color: "#64748b", textDecoration: "none" }}>About</a>
                 <a href="/terms" style={{ color: "#64748b", textDecoration: "none" }}>Terms</a>

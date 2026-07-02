@@ -19,10 +19,6 @@ export default function PartnersManagement() {
   const [filterTier, setFilterTier] = useState("all");
   const [stats, setStats] = useState({ total: 0, active: 0, elite: 0, events: 0 });
 
-  useEffect(() => {
-    fetchPartners();
-  }, []);
-
   const fetchPartners = async () => {
     setLoading(true);
     try {
@@ -49,6 +45,10 @@ export default function PartnersManagement() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
 
   const handleApprove = async (id: string) => {
     try {

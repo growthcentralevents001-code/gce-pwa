@@ -11,20 +11,18 @@ export default function VenueEvents() {
   const [venue, setVenue] = useState<any>(null);
   const [stats, setStats] = useState({ total: 0, live: 0, totalBookings: 0, totalRevenue: 0 });
 
-  useEffect(() => {
-    fetchVenueAndEvents();
-  }, []);
-
   async function fetchVenueAndEvents() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.push("/login"); return; }
 
     // Check if venue profile exists
-    let { data: venueData, error: venueError } = await supabase
+    const { data: initialVenue, error: venueError } = await supabase
       .from("venues")
       .select("id, name")
       .eq("user_id", user.id)
       .maybeSingle();
+
+    let venueData = initialVenue;
 
     // If no venue profile, create one automatically
     if (!venueData) {
@@ -70,6 +68,10 @@ export default function VenueEvents() {
     setStats({ total: eventsData?.length || 0, live: liveEvents, totalBookings, totalRevenue });
     setLoading(false);
   }
+
+  useEffect(() => {
+    fetchVenueAndEvents();
+  }, []);
 
   async function deleteEvent(eventId: string) {
     if (!confirm("Are you sure you want to delete this event?")) return;

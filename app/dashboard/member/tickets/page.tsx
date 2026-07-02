@@ -31,7 +31,7 @@ export default function TicketsPage() {
 
   const generateQR = async (bookingId: string, eventId: string) => {
     const { data: { user } } = await supabase.auth.getUser();
-    const ticketData = `${bookingId}|${eventId}|${user?.id}|${Date.now()}`;
+    const ticketData = `${bookingId}|${eventId}|${user?.id}|${crypto.randomUUID()}`;
     const qr = await QRCode.toDataURL(ticketData);
     setQrCodes(prev => ({ ...prev, [bookingId]: qr }));
   };

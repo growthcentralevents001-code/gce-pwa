@@ -30,11 +30,6 @@ export default function HomePage() {
     { name: "Open Mics", value: "openmic" },
   ];
 
-  useEffect(() => {
-    fetchEvents();
-    fetchWishlist();
-  }, []);
-
   async function fetchEvents() {
     setLoading(true);
     const { data, error } = await supabase
@@ -68,6 +63,11 @@ export default function HomePage() {
     const { data } = await supabase.from("saved_events").select("event_id").eq("user_id", user.id);
     if (data) setWishlistIds(new Set(data.map((item: any) => item.event_id)));
   }
+
+  useEffect(() => {
+    fetchEvents();
+    fetchWishlist();
+  }, []);
 
   async function toggleWishlist(eventId: string, e: React.MouseEvent) {
     e.stopPropagation();

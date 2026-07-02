@@ -7,7 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/";
+  const redirectTo = searchParams.get("redirectTo") || searchParams.get("redirect") || "/";
   const emailParam = searchParams.get("email") || "";
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");

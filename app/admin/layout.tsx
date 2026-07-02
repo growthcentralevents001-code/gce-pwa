@@ -3,21 +3,45 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, Building2, Calendar, Users, Briefcase, UserRound, HandCoins, Star, Gift, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Building2, Calendar, Users, Briefcase, Star, Gift, Settings } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) router.push("/login");
-      setLoading(false);
-    });
-  }, []);
+    async function checkAccess() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login?redirectTo=/admin");
+        return;
+      }
 
-  if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .eq("approved", true)
+        .limit(1);
+
+      if (!roles?.length) {
+        router.push("/unauthorized");
+        return;
+      }
+
+      setAuthorized(true);
+      setLoading(false);
+    }
+
+    checkAccess();
+  }, [router]);
+
+  if (loading || !authorized) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
 
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },

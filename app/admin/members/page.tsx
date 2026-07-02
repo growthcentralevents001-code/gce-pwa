@@ -19,10 +19,6 @@ export default function MembersManagement() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [stats, setStats] = useState({ total: 0, active: 0, suspended: 0, admins: 0 });
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
-
   const fetchMembers = async () => {
     setLoading(true);
     try {
@@ -54,6 +50,10 @@ export default function MembersManagement() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
   const filteredMembers = members.filter(m => {
     const search = searchTerm.toLowerCase();

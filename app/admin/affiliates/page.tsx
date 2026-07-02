@@ -18,10 +18,6 @@ export default function AffiliateApplications() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [stats, setStats] = useState({ total: 0, pending: 0, approved: 0, commission: 0 });
 
-  useEffect(() => {
-    fetchAffiliates();
-  }, []);
-
   const fetchAffiliates = async () => {
     setLoading(true);
     try {
@@ -78,6 +74,10 @@ export default function AffiliateApplications() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchAffiliates();
+  }, []);
 
   const handleApprove = async (id: string) => {
     try {

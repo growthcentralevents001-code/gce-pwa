@@ -18,10 +18,6 @@ export default function VenueManagement() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [stats, setStats] = useState({ total: 0, active: 0, pending: 0, suspended: 0 });
 
-  useEffect(() => {
-    fetchVenues();
-  }, []);
-
   const fetchVenues = async () => {
     setLoading(true);
     try {
@@ -44,6 +40,10 @@ export default function VenueManagement() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchVenues();
+  }, []);
 
   const filteredVenues = venues.filter(v => {
     const matchesSearch = v.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||

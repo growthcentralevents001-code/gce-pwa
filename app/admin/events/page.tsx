@@ -18,10 +18,6 @@ export default function EventManagement() {
   const [filterVertical, setFilterVertical] = useState("all");
   const [stats, setStats] = useState({ total: 0, live: 0, pending: 0, attendees: 0 });
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
   const fetchEvents = async () => {
     setLoading(true);
     try {
@@ -44,6 +40,10 @@ export default function EventManagement() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const filteredEvents = events.filter(e => {
     const matchesSearch = e.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||

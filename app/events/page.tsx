@@ -44,10 +44,6 @@ export default function EventsContent() {
     "Pune": "Pune",
   };
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
   const fetchEvents = async () => {
     setLoading(true);
     try {
@@ -69,6 +65,10 @@ export default function EventsContent() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     let filtered = events;

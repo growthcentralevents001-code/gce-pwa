@@ -13,10 +13,6 @@ export default function ZBPDashboard() {
   const [referralCode, setReferralCode] = useState("");
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -27,11 +23,13 @@ export default function ZBPDashboard() {
       }
 
       // Check if profile exists, if not create it
-      let { data: profileData, error: profileError } = await supabase
+      const { data: initialProfile, error: profileError } = await supabase
         .from("zbp_profiles")
         .select("*")
         .eq("user_id", user.id)
         .single();
+
+      let profileData = initialProfile;
 
       if (profileError && profileError.code === "PGRST116") {
         const { data: newProfile, error: createError } = await supabase
@@ -89,6 +87,10 @@ export default function ZBPDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const copyReferralCode = () => {
     navigator.clipboard.writeText(referralCode);

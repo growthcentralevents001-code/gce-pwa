@@ -1,6 +1,69 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const PUBLIC_EXACT = ['/', '/sw.js', '/manifest.json']
+
+const PUBLIC_PREFIXES = [
+  '/login',
+  '/signup',
+  '/forgot-password',
+  '/auth/callback',
+  '/events',
+  '/venues',
+  '/offers',
+  '/about',
+  '/terms',
+  '/privacy',
+  '/contact',
+  '/for-partners',
+  '/unauthorized',
+  '/offline',
+  '/the-circle',
+  '/memberships',
+  '/affiliate/signup',
+  '/enterprise/signup',
+  '/venue/apply',
+  '/venue/plans',
+  '/zbp/apply',
+  '/icons',
+]
+
+const PUBLIC_API_PREFIXES = [
+  '/api/health',
+  '/api/public-search',
+  '/api/cities',
+  '/api/venue-plans',
+  '/api/venues/by-city',
+  '/api/check-referral',
+  '/api/affiliate/track',
+]
+
+function isPublicPath(pathname: string): boolean {
+  if (PUBLIC_EXACT.includes(pathname)) return true
+  if (PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'))) return true
+  if (PUBLIC_API_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'))) return true
+  return false
+}
+
+function isAdminPath(pathname: string): boolean {
+  return pathname === '/admin' || pathname.startsWith('/admin/')
+}
+
+async function userHasRole(
+  supabase: ReturnType<typeof createServerClient>,
+  userId: string,
+  role: string
+): Promise<boolean> {
+  const { data } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', role)
+    .eq('approved', true)
+    .limit(1)
+  return (data?.length ?? 0) > 0
+}
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
   const supabase = createServerClient(
@@ -8,32 +71,41 @@ export async function proxy(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() { return request.cookies.getAll() },
+        getAll() {
+          return request.cookies.getAll()
+        },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
         },
       },
     }
   )
 
-  const { data: { session } } = await supabase.auth.getSession()
   const { data: { user } } = await supabase.auth.getUser()
+  const pathname = request.nextUrl.pathname
 
-  // Public routes – includes PWA files and health check
-  const publicRoutes = [
-    '/', '/login', '/signup', '/events', '/offers', '/api', '/unauthorized',
-    '/test-venues', '/auth/callback', '/admin/venues', '/dashboard/zbp',
-    '/sw.js', '/manifest.json', '/sw', '/api/check-referral', '/venues', '/affiliate/signup', '/api/health'
-  ]
-  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname === route)
-  const isIconRoute = request.nextUrl.pathname.startsWith('/icons/')
+  if (isPublicPath(pathname)) {
+    return supabaseResponse
+  }
 
-  if (!user && !isPublicRoute && !isIconRoute) {
+  if (!user) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
     const redirectUrl = new URL('/login', request.url)
-    redirectUrl.searchParams.set('redirectTo', request.nextUrl.pathname)
+    redirectUrl.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(redirectUrl)
+  }
+
+  if (isAdminPath(pathname)) {
+    const isAdmin = await userHasRole(supabase, user.id, 'admin')
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL('/unauthorized', request.url))
+    }
   }
 
   return supabaseResponse

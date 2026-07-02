@@ -19,10 +19,6 @@ export default function OffersManagement() {
   const [filterType, setFilterType] = useState("all");
   const [stats, setStats] = useState({ total: 0, active: 0, pending: 0, redeemed: 0 });
 
-  useEffect(() => {
-    fetchOffers();
-  }, []);
-
   const fetchOffers = async () => {
     setLoading(true);
     try {
@@ -46,6 +42,10 @@ export default function OffersManagement() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchOffers();
+  }, []);
 
   const handleApprove = async (id: string) => {
     try {

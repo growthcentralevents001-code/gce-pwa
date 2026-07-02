@@ -21,7 +21,7 @@ export default function AffiliateSignup() {
     async function checkExisting() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push("/login?redirect=/affiliate/signup");
+        router.push("/login?redirectTo=/affiliate/signup");
         return;
       }
       const { data: existing } = await supabase
@@ -51,7 +51,7 @@ export default function AffiliateSignup() {
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      router.push("/login?redirect=/affiliate/signup");
+      router.push("/login?redirectTo=/affiliate/signup");
       return;
     }
 

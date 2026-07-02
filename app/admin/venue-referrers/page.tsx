@@ -17,10 +17,6 @@ export default function VenueReferrers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [assignments, setAssignments] = useState<Record<string, string>>({});
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -86,6 +82,10 @@ export default function VenueReferrers() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleAssign = (venueId: string, referrerId: string) => {
     setAssignments(prev => ({ ...prev, [venueId]: referrerId }));

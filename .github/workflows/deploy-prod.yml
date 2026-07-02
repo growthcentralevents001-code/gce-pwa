@@ -3,11 +3,18 @@ name: Deploy production
 on:
   push:
     branches: [main]
+  workflow_run:
+    workflows: ['DB Migrate (Prod)']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: >
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Add SSH key
         run: |
@@ -17,13 +24,6 @@ jobs:
 
       - name: Deploy production
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} '
-            cd /root/gce-pwa-prod || exit 1
-            git stash --include-untracked || true
-            git clean -fd
-            git pull origin main --force
-            npm install
-            npm run build
-            pm2 restart gce-prod
-            echo "✅ Deployment successful!"
-          '
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 \
+            "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" \
+            'bash -lc "cd /root/gce-pwa-prod && ./scripts/deploy-prod.sh"'

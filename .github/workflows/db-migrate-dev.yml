@@ -1,0 +1,39 @@
+name: DB Migrate (Dev)
+
+on:
+  push:
+    branches: [development]
+    paths:
+      - 'supabase/migrations/**'
+  workflow_dispatch:
+
+concurrency:
+  group: db-migrate-dev
+  cancel-in-progress: false
+
+jobs:
+  migrate-dev:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Migration safety check
+        run: bash scripts/check-migrations-safety.sh
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link dev Supabase project
+        run: supabase link --project-ref "${{ vars.SUPABASE_DEV_PROJECT_REF }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Push migrations to Dev
+        run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify
+        run: echo "Dev migrations applied to project ${{ vars.SUPABASE_DEV_PROJECT_REF }}"

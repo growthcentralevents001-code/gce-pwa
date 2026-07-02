@@ -1,0 +1,51 @@
+name: DB Migrate (Prod)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+  workflow_dispatch:
+    inputs:
+      allow_destructive:
+        description: 'Allow destructive SQL (DROP/TRUNCATE) — requires production environment approval'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+concurrency:
+  group: db-migrate-prod
+  cancel-in-progress: false
+
+jobs:
+  migrate-prod:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Migration safety check
+        run: |
+          if [ "${{ github.event.inputs.allow_destructive }}" = "true" ]; then
+            bash scripts/check-migrations-safety.sh --allow-destructive
+          else
+            bash scripts/check-migrations-safety.sh
+          fi
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link prod Supabase project
+        run: supabase link --project-ref "${{ vars.SUPABASE_PROD_PROJECT_REF }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Push migrations to Prod
+        run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify
+        run: echo "Prod migrations applied to project ${{ vars.SUPABASE_PROD_PROJECT_REF }}"

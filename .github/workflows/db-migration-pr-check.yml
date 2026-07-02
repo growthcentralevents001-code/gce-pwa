@@ -1,0 +1,29 @@
+name: DB Migration PR Check
+
+on:
+  pull_request:
+    branches: [development, main]
+    paths:
+      - 'supabase/migrations/**'
+
+jobs:
+  review-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed migration files
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- supabase/migrations/
+
+      - name: Destructive SQL check
+        run: bash scripts/check-migrations-safety.sh
+
+      - name: Remind reviewer
+        run: |
+          echo "All migration files must be reviewed before merging to main."
+          echo "Dev migrations auto-apply on push to development."
+          echo "Prod migrations auto-apply on push to main (production environment approval required)."

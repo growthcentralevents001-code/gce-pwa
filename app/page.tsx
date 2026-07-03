@@ -4,8 +4,9 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { Search, Heart } from "lucide-react";
 import GeoLocationBar from "@/components/GeoLocationBar";
+import { citiesMatch } from "@/lib/cityUtils";
 
-interface Event {
+interface HomeEvent {
   id: string;
   title: string;
   vertical: string;
@@ -19,18 +20,12 @@ interface Event {
 }
 
 export default function HomePage() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<HomeEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const [wishlistIds, setWishlistIds] = useState<Set<string>>(new Set());
   const [userCity, setUserCity] = useState<string | null>(null);
-
-  const cityAliases: Record<string, string> = {
-    asr: "amritsar",
-    "1001": "amritsar",
-    bom: "mumbai",
-    blr: "bangalore",
-  };
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const categories = [
     { name: "Music", value: "music" },
@@ -41,13 +36,15 @@ export default function HomePage() {
 
   async function fetchEvents() {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("events")
-      .select("*")
-      .eq("status", "Live")
-      .order("date", { ascending: true });
-    if (!error && data) {
-      const formatted = data.map((ev: any) => ({
+    setFetchError(null);
+    try {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("status", "Live")
+        .order("date", { ascending: true });
+      if (error) throw error;
+      const formatted = (data || []).map((ev: any) => ({
         id: ev.id,
         title: ev.title,
         vertical: (ev.vertical || ev.category || "Marketplace").toLowerCase(),
@@ -60,10 +57,13 @@ export default function HomePage() {
         capacity: ev.capacity,
       }));
       setEvents(formatted);
-    } else {
+    } catch (error) {
+      console.error("Error fetching events:", error);
       setEvents([]);
+      setFetchError("Unable to load events right now. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function fetchWishlist() {
@@ -76,6 +76,16 @@ export default function HomePage() {
   useEffect(() => {
     fetchEvents();
     fetchWishlist();
+
+    const savedCity = localStorage.getItem("userCity");
+    if (savedCity) setUserCity(savedCity);
+
+    const handleCityChange = (event: globalThis.Event) => {
+      const customEvent = event as CustomEvent<string | null>;
+      setUserCity(customEvent.detail ?? null);
+    };
+    window.addEventListener("gce:city-change", handleCityChange);
+    return () => window.removeEventListener("gce:city-change", handleCityChange);
   }, []);
 
   async function toggleWishlist(eventId: string, e: React.MouseEvent) {
@@ -102,18 +112,9 @@ export default function HomePage() {
     if (activeTab !== "all" && event.vertical !== activeTab) {
       return false;
     }
-
-    if (userCity) {
-      const normalizedCity = userCity.trim().toLowerCase();
-      const eventCity = event.city?.trim().toLowerCase() || "";
-      const mappedEventCity = cityAliases[eventCity] || eventCity;
-      const mappedUserCity = cityAliases[normalizedCity] || normalizedCity;
-
-      if (mappedEventCity !== mappedUserCity) {
-        return false;
-      }
+    if (userCity && !citiesMatch(event.city, userCity)) {
+      return false;
     }
-
     return true;
   });
   const getVerticalStyle = (vertical: string) => {
@@ -125,10 +126,29 @@ export default function HomePage() {
     }
   };
 
-  if (loading) return <div className="max-w-7xl mx-auto px-4 py-12 text-center">Loading events...</div>;
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>
+          <p className="text-gray-500">Loading events...</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-xl shadow-md h-64 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      {fetchError && (
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {fetchError}
+        </div>
+      )}
       {/* Hero Section with Category Buttons - REPLACED Discover text */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>

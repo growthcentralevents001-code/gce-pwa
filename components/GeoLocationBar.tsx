@@ -1,68 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { MapPin, Loader2, ChevronDown, Navigation } from "lucide-react";
+import { formatCityLabel, matchToDatabaseCity, citiesMatch } from "@/lib/cityUtils";
 
 interface GeoLocationBarProps {
   onCityChange: (city: string | null) => void;
   eventsCount: number;
-}
-
-const CITY_ALIASES: Record<string, string> = {
-  amritsar: "asr",
-  ludhiana: "ludhiana",
-  chandigarh: "chandigarh",
-  mumbai: "mumbai",
-  bombay: "mumbai",
-  delhi: "delhi",
-  "new delhi": "delhi",
-  bangalore: "bangalore",
-  bengaluru: "bangalore",
-  pune: "pune",
-  batala: "batala",
-  bathinda: "bathinda",
-  goa: "goa",
-  chennai: "chennai",
-  kolkata: "kolkata",
-  hyderabad: "hyderabad",
-};
-
-const CITY_DISPLAY_NAMES: Record<string, string> = {
-  asr: "Amritsar",
-  ludhiana: "Ludhiana",
-  chandigarh: "Chandigarh",
-  mumbai: "Mumbai",
-  delhi: "Delhi",
-  bangalore: "Bangalore",
-  pune: "Pune",
-  batala: "Batala",
-  bathinda: "Bathinda",
-  goa: "Goa",
-  chennai: "Chennai",
-  kolkata: "Kolkata",
-  hyderabad: "Hyderabad",
-};
-
-function formatCityLabel(city: string): string {
-  const key = city.trim().toLowerCase();
-  return CITY_DISPLAY_NAMES[key] || city.charAt(0).toUpperCase() + city.slice(1);
-}
-
-function matchToDatabaseCity(detected: string, dbCities: string[]): string {
-  const lower = detected.trim().toLowerCase();
-  const alias = CITY_ALIASES[lower] || lower;
-
-  const exact = dbCities.find((c) => c.trim().toLowerCase() === alias);
-  if (exact) return exact;
-
-  const partial = dbCities.find((c) => {
-    const db = c.trim().toLowerCase();
-    return db === alias || db.includes(alias) || alias.includes(db);
-  });
-  if (partial) return partial;
-
-  return alias;
 }
 
 export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocationBarProps) {
@@ -72,28 +16,43 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
   const [cities, setCities] = useState<string[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [citiesLoaded, setCitiesLoaded] = useState(false);
+  const detectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const applyCity = useCallback(
-    (detectedName: string, dbCities: string[]) => {
-      const matched = matchToDatabaseCity(detectedName, dbCities);
+    (detectedName: string, dbCities: string[], matchedCity: string) => {
       const label = formatCityLabel(detectedName);
       setDisplayLabel(label);
-      setFilterCity(matched);
-      onCityChange(matched);
-      localStorage.setItem("userCity", matched);
+      setFilterCity(matchedCity);
+      onCityChange(matchedCity);
+      localStorage.setItem("userCity", matchedCity);
       localStorage.setItem("userCityLabel", label);
+      window.dispatchEvent(new CustomEvent("gce:city-change", { detail: matchedCity }));
     },
     [onCityChange]
   );
 
+  const clearDetectTimeout = () => {
+    if (detectTimeoutRef.current) {
+      clearTimeout(detectTimeoutRef.current);
+      detectTimeoutRef.current = null;
+    }
+  };
+
   const fetchCities = useCallback(async () => {
-    const { data } = await supabase.from("events").select("city");
-    const uniqueCities = data
-      ? Array.from(new Set(data.map((e) => e.city).filter(Boolean) as string[]))
-      : [];
-    setCities(uniqueCities);
+    try {
+      const res = await fetch("/api/cities");
+      if (res.ok) {
+        const data = await res.json();
+        const uniqueCities = Array.isArray(data.cities) ? data.cities : [];
+        setCities(uniqueCities);
+        setCitiesLoaded(true);
+        return uniqueCities as string[];
+      }
+    } catch {
+      // fall through
+    }
     setCitiesLoaded(true);
-    return uniqueCities;
+    return [] as string[];
   }, []);
 
   const reverseGeocode = async (lat: number, lon: number): Promise<string | null> => {
@@ -122,23 +81,51 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
     }
   };
 
-  const detectLocation = useCallback(
-    async (dbCities: string[]) => {
-      setLocationLoading(true);
-
-      const finish = (name: string | null) => {
-        if (name) {
-          applyCity(name, dbCities);
+  const finishDetection = useCallback(
+    (detectedName: string | null, dbCities: string[]) => {
+      clearDetectTimeout();
+      if (detectedName) {
+        const matched = matchToDatabaseCity(detectedName, dbCities);
+        if (matched) {
+          applyCity(detectedName, dbCities, matched);
         } else {
           setDisplayLabel(null);
           setFilterCity(null);
           onCityChange(null);
+          window.dispatchEvent(new CustomEvent("gce:city-change", { detail: null }));
         }
-        setLocationLoading(false);
-      };
+      } else {
+        setDisplayLabel(null);
+        setFilterCity(null);
+        onCityChange(null);
+        window.dispatchEvent(new CustomEvent("gce:city-change", { detail: null }));
+      }
+      setLocationLoading(false);
+    },
+    [applyCity, onCityChange]
+  );
+
+  const fallbackToIP = async (dbCities: string[]) => {
+    try {
+      const res = await fetch("https://ipapi.co/json/");
+      if (!res.ok) throw new Error("ip lookup failed");
+      const data = await res.json();
+      finishDetection(data.city || null, dbCities);
+    } catch {
+      finishDetection(null, dbCities);
+    }
+  };
+
+  const detectLocation = useCallback(
+    async (dbCities: string[]) => {
+      setLocationLoading(true);
+      clearDetectTimeout();
+      detectTimeoutRef.current = setTimeout(() => {
+        finishDetection(null, dbCities);
+      }, 12000);
 
       if (!navigator.geolocation) {
-        await fallbackToIP(dbCities, finish);
+        await fallbackToIP(dbCities);
         return;
       }
 
@@ -149,32 +136,19 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
             position.coords.longitude
           );
           if (city) {
-            finish(city);
+            finishDetection(city, dbCities);
           } else {
-            await fallbackToIP(dbCities, finish);
+            await fallbackToIP(dbCities);
           }
         },
         async () => {
-          await fallbackToIP(dbCities, finish);
+          await fallbackToIP(dbCities);
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
       );
     },
-    [applyCity, onCityChange]
+    [finishDetection]
   );
-
-  const fallbackToIP = async (
-    dbCities: string[],
-    finish: (name: string | null) => void
-  ) => {
-    try {
-      const res = await fetch("https://ipapi.co/json/");
-      const data = await res.json();
-      finish(data.city || null);
-    } catch {
-      finish(null);
-    }
-  };
 
   useEffect(() => {
     let cancelled = false;
@@ -187,11 +161,18 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
       const savedLabel = localStorage.getItem("userCityLabel");
 
       if (savedCity) {
-        setDisplayLabel(savedLabel || formatCityLabel(savedCity));
-        setFilterCity(savedCity);
-        onCityChange(savedCity);
-        setLocationLoading(false);
-        return;
+        const matched =
+          dbCities.find((city) => citiesMatch(city, savedCity)) ||
+          matchToDatabaseCity(savedCity, dbCities);
+        if (matched) {
+          setDisplayLabel(savedLabel || formatCityLabel(matched));
+          setFilterCity(matched);
+          onCityChange(matched);
+          setLocationLoading(false);
+          return;
+        }
+        localStorage.removeItem("userCity");
+        localStorage.removeItem("userCityLabel");
       }
 
       await detectLocation(dbCities);
@@ -201,6 +182,7 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
 
     return () => {
       cancelled = true;
+      clearDetectTimeout();
     };
   }, [fetchCities, detectLocation, onCityChange]);
 
@@ -210,6 +192,7 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
     onCityChange(city);
     localStorage.setItem("userCity", city);
     localStorage.setItem("userCityLabel", formatCityLabel(city));
+    window.dispatchEvent(new CustomEvent("gce:city-change", { detail: city }));
     setShowDropdown(false);
   };
 
@@ -219,6 +202,7 @@ export default function GeoLocationBar({ onCityChange, eventsCount }: GeoLocatio
     onCityChange(null);
     localStorage.removeItem("userCity");
     localStorage.removeItem("userCityLabel");
+    window.dispatchEvent(new CustomEvent("gce:city-change", { detail: null }));
     setShowDropdown(false);
   };
 

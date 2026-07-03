@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || searchParams.get("redirect") || "/";
@@ -24,26 +24,29 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError(error.message);
+        return;
+      }
+
+      const session = data.session;
+      const refreshToken = session.refresh_token;
+      const tokens = JSON.parse(localStorage.getItem("gce_tokens") || "{}");
+      tokens[email] = refreshToken;
+      localStorage.setItem("gce_tokens", JSON.stringify(tokens));
+
+      let recent = JSON.parse(localStorage.getItem("gce_recent_emails") || "[]");
+      recent = [email, ...recent.filter((e: string) => e !== email)].slice(0, 5);
+      localStorage.setItem("gce_recent_emails", JSON.stringify(recent));
+
+      router.push(redirectTo);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    // Save refresh token for this email
-    const session = data.session;
-    const refreshToken = session.refresh_token;
-    const tokens = JSON.parse(localStorage.getItem("gce_tokens") || "{}");
-    tokens[email] = refreshToken;
-    localStorage.setItem("gce_tokens", JSON.stringify(tokens));
-
-    // Update recent emails
-    let recent = JSON.parse(localStorage.getItem("gce_recent_emails") || "[]");
-    recent = [email, ...recent.filter((e: string) => e !== email)].slice(0, 5);
-    localStorage.setItem("gce_recent_emails", JSON.stringify(recent));
-
-    router.push(redirectTo);
   };
 
   return (
@@ -85,5 +88,13 @@ export default function LoginPage() {
         {error && <p className="text-red-500 text-sm">{error}</p>}
       </form>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="max-w-md mx-auto mt-20 p-6 text-center text-gray-500">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

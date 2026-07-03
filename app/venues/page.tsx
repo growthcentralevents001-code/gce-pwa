@@ -28,15 +28,15 @@ export default function VenuesPage() {
 
   async function fetchVenues() {
     setLoading(true);
-    let query = supabase.from("venues").select("*");
-    if (urlQuery.trim() !== "") {
-      query = query.or(`name.ilike.%${urlQuery}%,city.ilike.%${urlQuery}%`);
-    }
-    const { data, error } = await query.order("name");
-    if (!error && data) {
-      // Get event counts for each venue
+    try {
+      let query = supabase.from("venues").select("*");
+      if (urlQuery.trim() !== "") {
+        query = query.or(`name.ilike.%${urlQuery}%,city.ilike.%${urlQuery}%`);
+      }
+      const { data, error } = await query.order("name");
+      if (error) throw error;
       const venuesWithCounts = await Promise.all(
-        data.map(async (venue) => {
+        (data || []).map(async (venue) => {
           const { count } = await supabase
             .from("events")
             .select("*", { count: "exact", head: true })
@@ -45,10 +45,12 @@ export default function VenuesPage() {
         })
       );
       setVenues(venuesWithCounts);
-    } else {
+    } catch (error) {
+      console.error("Error fetching venues:", error);
       setVenues([]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   const handleSearch = (e: React.FormEvent) => {

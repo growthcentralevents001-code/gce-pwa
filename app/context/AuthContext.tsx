@@ -48,12 +48,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getUser().then(async ({ data: { user: sbUser } }) => {
-      if (sbUser) {
-        setUser(await mapSupabaseUser(sbUser));
-      }
-      setIsLoading(false);
-    });
+    supabase.auth
+      .getUser()
+      .then(async ({ data: { user: sbUser } }) => {
+        if (sbUser) {
+          setUser(await mapSupabaseUser(sbUser));
+        }
+      })
+      .catch((error) => {
+        console.error("Auth initialization failed:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {

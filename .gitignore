@@ -43,3 +43,10 @@ next-env.d.ts
 
 .env
 .env.*
+
+# Supabase CLI local temp (machine-specific; do not commit)
+supabase/.temp/
+
+# Python bytecode
+__pycache__/
+*.py[cod]

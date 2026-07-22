@@ -1,8 +1,15 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "motion/react";
 
 const COLORS = {
   primary: "#EA580C",
@@ -15,21 +22,60 @@ const COLORS = {
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2400&q=80";
 
+const SPRING = { stiffness: 90, damping: 22, mass: 0.35 };
+
 export default function HeroBanner() {
   const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, SPRING);
+  const springY = useSpring(mouseY, SPRING);
+
+  const bgX = useTransform(springX, [-0.5, 0.5], ["5%", "-5%"]);
+  const bgY = useTransform(springY, [-0.5, 0.5], ["4%", "-4%"]);
+  const shapeX = useTransform(springX, [-0.5, 0.5], [-56, 56]);
+  const shapeY = useTransform(springY, [-0.5, 0.5], [-40, 40]);
+  const shapeRotate = useTransform(springX, [-0.5, 0.5], [-8, 8]);
+  const accentX = useTransform(springX, [-0.5, 0.5], [24, -24]);
+  const accentY = useTransform(springY, [-0.5, 0.5], [18, -18]);
+  const contentX = useTransform(springX, [-0.5, 0.5], [-14, 14]);
+  const contentY = useTransform(springY, [-0.5, 0.5], [-10, 10]);
+  const contentRotateX = useTransform(springY, [-0.5, 0.5], [5, -5]);
+  const contentRotateY = useTransform(springX, [-0.5, 0.5], [-6, 6]);
+  const glowX = useTransform(springX, [-0.5, 0.5], ["18%", "82%"]);
+  const glowY = useTransform(springY, [-0.5, 0.5], ["22%", "78%"]);
+  const stripeX = useTransform(springX, [-0.5, 0.5], [-18, 18]);
 
   const enter = (delay = 0) =>
     reduceMotion
       ? { initial: false as const, animate: { opacity: 1, y: 0 } }
       : {
-          initial: { opacity: 0, y: 18 },
+          initial: { opacity: 0, y: 22 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.35, ease: "easeOut" as const, delay },
+          transition: { duration: 0.4, ease: "easeOut" as const, delay },
         };
+
+  function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+    if (reduceMotion || event.pointerType !== "mouse") return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((event.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((event.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function handlePointerLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
 
   return (
     <section
+      ref={sectionRef}
       aria-label="GCE Events hero"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       style={{
         position: "relative",
         width: "100%",
@@ -38,17 +84,19 @@ export default function HeroBanner() {
         alignItems: "flex-end",
         overflow: "hidden",
         backgroundColor: COLORS.foreground,
+        perspective: reduceMotion ? undefined : 1200,
         ["--color-primary" as string]: COLORS.primary,
         ["--color-secondary" as string]: COLORS.secondary,
         ["--color-accent" as string]: COLORS.accent,
       }}
     >
-      {/* Full-bleed atmosphere */}
-      <div
+      <motion.div
         aria-hidden
         style={{
           position: "absolute",
-          inset: 0,
+          inset: "-8%",
+          x: reduceMotion ? 0 : bgX,
+          y: reduceMotion ? 0 : bgY,
           backgroundImage: `
             linear-gradient(115deg, rgba(15,23,42,0.82) 0%, rgba(234,88,12,0.55) 48%, rgba(15,23,42,0.45) 100%),
             linear-gradient(to top, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.25) 42%, transparent 70%),
@@ -56,16 +104,37 @@ export default function HeroBanner() {
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          willChange: "transform",
         }}
       />
 
-      {/* Vibrant block accents (design-system style) */}
-      <div
+      {!reduceMotion && (
+        <motion.div
+          aria-hidden
+          style={{
+            position: "absolute",
+            width: "min(55vw, 480px)",
+            height: "min(55vw, 480px)",
+            left: glowX,
+            top: glowY,
+            x: "-50%",
+            y: "-50%",
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${COLORS.secondary}55 0%, ${COLORS.accent}22 35%, transparent 70%)`,
+            pointerEvents: "none",
+            mixBlendMode: "screen",
+            willChange: "left, top",
+          }}
+        />
+      )}
+
+      <motion.div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
+          x: reduceMotion ? 0 : stripeX,
           backgroundImage: `
             linear-gradient(90deg, ${COLORS.primary} 0 12px, transparent 12px),
             linear-gradient(0deg, ${COLORS.accent}22 0%, transparent 35%)
@@ -73,25 +142,68 @@ export default function HeroBanner() {
           opacity: 0.9,
         }}
       />
+
       <motion.div
         aria-hidden
-        initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        initial={reduceMotion ? false : { opacity: 0, scale: 0.9 }}
+        animate={
+          reduceMotion
+            ? { opacity: 0.55, scale: 1 }
+            : { opacity: [0.45, 0.65, 0.45], scale: 1 }
+        }
+        transition={
+          reduceMotion
+            ? { duration: 0.4 }
+            : {
+                opacity: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
+                duration: 0.5,
+                delay: 0.12,
+              }
+        }
         style={{
           position: "absolute",
           right: "8%",
           top: "18%",
           width: "min(28vw, 220px)",
           height: "min(28vw, 220px)",
+          x: reduceMotion ? 0 : shapeX,
+          y: reduceMotion ? 0 : shapeY,
+          rotate: reduceMotion ? 0 : shapeRotate,
           background: `linear-gradient(145deg, ${COLORS.secondary}, ${COLORS.primary})`,
           clipPath: "polygon(18% 0, 100% 0, 100% 82%, 0 100%)",
-          opacity: 0.55,
           mixBlendMode: "screen",
+          willChange: "transform",
         }}
       />
 
-      <div
+      {!reduceMotion && (
+        <motion.div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: "62%",
+            bottom: "28%",
+            x: accentX,
+            y: accentY,
+            pointerEvents: "none",
+          }}
+        >
+          <motion.div
+            animate={{ y: [0, -14, 0], rotate: [12, 18, 12] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              width: "min(12vw, 96px)",
+              height: "min(12vw, 96px)",
+              background: COLORS.accent,
+              opacity: 0.35,
+              clipPath: "polygon(0 18%, 100% 0, 82% 100%, 0 100%)",
+              mixBlendMode: "screen",
+            }}
+          />
+        </motion.div>
+      )}
+
+      <motion.div
         style={{
           position: "relative",
           zIndex: 1,
@@ -99,6 +211,12 @@ export default function HeroBanner() {
           maxWidth: "1280px",
           margin: "0 auto",
           padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 40px)",
+          x: reduceMotion ? 0 : contentX,
+          y: reduceMotion ? 0 : contentY,
+          rotateX: reduceMotion ? 0 : contentRotateX,
+          rotateY: reduceMotion ? 0 : contentRotateY,
+          transformStyle: "preserve-3d",
+          willChange: reduceMotion ? undefined : "transform",
         }}
       >
         <motion.p
@@ -110,6 +228,7 @@ export default function HeroBanner() {
             letterSpacing: "0.02em",
             color: COLORS.onPrimary,
             margin: "0 0 20px",
+            textShadow: reduceMotion ? undefined : "0 12px 40px rgba(0,0,0,0.35)",
           }}
         >
           GCE
@@ -153,7 +272,11 @@ export default function HeroBanner() {
             gap: "12px",
           }}
         >
-          <motion.div whileHover={reduceMotion ? undefined : { scale: 1.02 }} whileTap={reduceMotion ? undefined : { scale: 0.98 }}>
+          <motion.div
+            whileHover={reduceMotion ? undefined : { scale: 1.04, y: -2 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+          >
             <Link
               href="/events"
               className="cursor-pointer"
@@ -184,7 +307,11 @@ export default function HeroBanner() {
             </Link>
           </motion.div>
 
-          <motion.div whileHover={reduceMotion ? undefined : { scale: 1.02 }} whileTap={reduceMotion ? undefined : { scale: 0.98 }}>
+          <motion.div
+            whileHover={reduceMotion ? undefined : { scale: 1.04, y: -2 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+          >
             <Link
               href="/signup"
               className="cursor-pointer"
@@ -216,7 +343,7 @@ export default function HeroBanner() {
             </Link>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

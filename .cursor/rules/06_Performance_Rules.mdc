@@ -1,0 +1,412 @@
+\---  
+description: Performance optimization rules for the GCE platform. Automatically follow performance best practices whenever implementing or modifying frontend, backend, database, APIs, or infrastructure.  
+globs:  
+  \- "app/\*\*/\*.ts"  
+  \- "app/\*\*/\*.tsx"  
+  \- "components/\*\*/\*.tsx"  
+  \- "lib/\*\*/\*.ts"  
+  \- "services/\*\*/\*.ts"  
+  \- "supabase/\*\*"  
+alwaysApply: false  
+\---
+
+\# GCE Performance Rules
+
+\#\# Purpose
+
+This rule governs every performance-related implementation across the GCE platform.
+
+Whenever creating or modifying:
+
+\- Pages  
+\- Components  
+\- APIs  
+\- Database Queries  
+\- Dashboards  
+\- Authentication  
+\- Marketplace  
+\- AI Features  
+\- Payments  
+\- Infrastructure
+
+always follow the official performance documentation before writing code.
+
+\---
+
+\# Documentation Priority
+
+Always consult:
+
+\`\`\`  
+32\_Performance\_Optimization\_Expert.md  
+\`\`\`
+
+This document is the single source of truth for performance optimization.
+
+\---
+
+\# Performance Philosophy
+
+Every feature should be:
+
+\- Fast  
+\- Efficient  
+\- Scalable  
+\- Responsive  
+\- Lightweight  
+\- Production Ready
+
+Performance is a core feature of the platform.
+
+Never optimize only after development.
+
+Performance should be considered while writing code.
+
+\---
+
+\# Frontend Performance
+
+Always:
+
+\- Minimize re-renders  
+\- Lazy load heavy components  
+\- Use dynamic imports  
+\- Optimize images  
+\- Reduce bundle size  
+\- Use memoization where appropriate  
+\- Keep components small
+
+Avoid unnecessary rendering.
+
+\---
+
+\# React Best Practices
+
+Prefer:
+
+\- React.memo()  
+\- useMemo()  
+\- useCallback()
+
+only when they provide measurable benefits.
+
+Do not overuse memoization.
+
+\---
+
+\# Component Design
+
+Components should:
+
+\- Have one responsibility  
+\- Be reusable  
+\- Be lightweight  
+\- Receive only required props
+
+Avoid giant components.
+
+\---
+
+\# Motion Performance
+
+Whenever using Motion:
+
+Follow:
+
+\`\`\`  
+27\_Frontend\_Animations.md  
+\`\`\`
+
+Animations should:
+
+\- Use transforms  
+\- Use opacity  
+\- Avoid layout thrashing  
+\- Respect reduced motion settings
+
+Never create expensive animations.
+
+\---
+
+\# Next.js Optimization
+
+Always prefer:
+
+\- Server Components  
+\- Dynamic Imports  
+\- Image Optimization  
+\- Streaming  
+\- Static Rendering where appropriate
+
+Avoid unnecessary Client Components.
+
+\---
+
+\# API Performance
+
+APIs should:
+
+\- Return only required fields  
+\- Avoid duplicate queries  
+\- Minimize processing time  
+\- Be properly indexed
+
+Avoid excessive payloads.
+
+\---
+
+\# Database Performance
+
+Always:
+
+\- Use indexes  
+\- Optimize joins  
+\- Paginate large datasets  
+\- Select only required columns
+
+Avoid:
+
+\- SELECT \*  
+\- N+1 Queries  
+\- Duplicate database requests
+
+\---
+
+\# Query Optimization
+
+Every query should:
+
+\- Be efficient  
+\- Be reusable  
+\- Be indexed where necessary
+
+Avoid unnecessary nested queries.
+
+\---
+
+\# Caching
+
+Whenever appropriate:
+
+Use:
+
+\- Browser Cache  
+\- Server Cache  
+\- CDN Cache  
+\- API Cache
+
+Cache frequently accessed data.
+
+Never cache sensitive information.
+
+\---
+
+\# Images
+
+Always:
+
+\- Compress images  
+\- Use Next.js Image  
+\- Use modern formats  
+\- Lazy load images
+
+Avoid oversized assets.
+
+\---
+
+\# Assets
+
+Minimize:
+
+\- Fonts  
+\- Images  
+\- Icons  
+\- JavaScript  
+\- CSS
+
+Load only what is required.
+
+\---
+
+\# Network Requests
+
+Reduce:
+
+\- Duplicate API Calls  
+\- Waterfall Requests  
+\- Unnecessary Fetches
+
+Combine requests where appropriate.
+
+\---
+
+\# State Management
+
+Store only necessary data.
+
+Avoid:
+
+\- Duplicate state  
+\- Deep prop drilling  
+\- Unnecessary global state
+
+Keep state minimal.
+
+\---
+
+\# Loading Performance
+
+Every page should:
+
+\- Load quickly  
+\- Show skeleton loaders  
+\- Display meaningful loading states
+
+Never block the UI unnecessarily.
+
+\---
+
+\# Dashboard Performance
+
+Dashboards should:
+
+\- Lazy load widgets  
+\- Load data independently  
+\- Avoid unnecessary refreshes  
+\- Optimize charts
+
+Never render heavy widgets simultaneously if not required.
+
+\---
+
+\# AI Performance
+
+AI features should:
+
+\- Execute efficiently  
+\- Avoid unnecessary processing  
+\- Reuse existing results when possible
+
+Optimize AI workflows.
+
+\---
+
+\# Backend Performance
+
+Backend should:
+
+\- Minimize processing  
+\- Use reusable services  
+\- Optimize business logic  
+\- Avoid duplicated calculations
+
+Keep response times low.
+
+\---
+
+\# Infrastructure
+
+Use:
+
+\- CDN  
+\- Compression  
+\- HTTP Caching  
+\- Optimized Assets
+
+Reduce server workload whenever possible.
+
+\---
+
+\# Monitoring
+
+Always monitor:
+
+\- Page Load Time  
+\- API Response Time  
+\- Database Performance  
+\- Memory Usage  
+\- CPU Usage  
+\- Bundle Size
+
+Performance should be measurable.
+
+\---
+
+\# Code Quality
+
+Performance should never reduce:
+
+\- Readability  
+\- Maintainability  
+\- Scalability
+
+Avoid premature optimization.
+
+Optimize only where necessary.
+
+\---
+
+\# Before Completing Any Feature
+
+Verify:
+
+✓ Fast rendering
+
+✓ Optimized queries
+
+✓ Optimized API
+
+✓ Optimized components
+
+✓ Minimal bundle size
+
+✓ Efficient images
+
+✓ Proper caching
+
+✓ Responsive UI
+
+✓ Good Lighthouse performance
+
+\---
+
+\# Performance Goals
+
+Target:
+
+\- Fast First Load  
+\- Smooth Navigation  
+\- Responsive UI  
+\- Efficient APIs  
+\- Optimized Database  
+\- Low Memory Usage  
+\- Low CPU Usage
+
+The application should feel instant.
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Create N+1 Queries  
+\- Use SELECT \*  
+\- Load unnecessary data  
+\- Render unnecessary components  
+\- Fetch duplicate data  
+\- Create oversized bundles  
+\- Ignore lazy loading  
+\- Ignore caching  
+\- Ignore image optimization  
+\- Ignore documentation
+
+\---
+
+\# Final Rule
+
+Every implementation should improve or maintain the overall performance of the GCE platform.
+
+Always follow the documented performance standards before modifying frontend, backend, APIs, databases, or infrastructure.
+
+Performance is a first-class requirement, not an afterthought.  

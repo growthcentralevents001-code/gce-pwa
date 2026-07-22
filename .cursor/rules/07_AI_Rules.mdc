@@ -1,0 +1,375 @@
+\---  
+description: AI development rules for the GCE platform. Automatically follow the documented AI architecture, Lead Assist workflows, business rules, and AI decision logic whenever implementing or modifying AI-powered functionality.  
+globs:  
+  \- "app/api/\*\*/\*.ts"  
+  \- "app/api/\*\*/\*.tsx"  
+  \- "app/\*\*/actions.ts"  
+  \- "services/ai/\*\*/\*.ts"  
+  \- "lib/ai/\*\*/\*.ts"  
+  \- "supabase/\*\*/\*.ts"  
+alwaysApply: false  
+\---
+
+\# GCE AI Rules
+
+\#\# Purpose
+
+This rule governs every AI-powered feature across the GCE platform.
+
+Whenever creating or modifying:
+
+\- AI Lead Assist  
+\- Recommendation Engine  
+\- Matching Engine  
+\- Lead Distribution  
+\- AI Search  
+\- AI Automation  
+\- AI Notifications  
+\- AI Scoring  
+\- AI Analytics
+
+always follow the official AI documentation before writing code.
+
+\---
+
+\# Documentation Priority
+
+Always consult the following documentation before implementing AI functionality.
+
+\#\# AI Lead Assist
+
+\`\`\`  
+10\_AI\_Lead\_Assist.md  
+\`\`\`
+
+Defines:
+
+\- Lead Assist Workflow  
+\- Lead Routing  
+\- Lead Processing  
+\- AI Business Flow
+
+\---
+
+\#\# AI Rules
+
+\`\`\`  
+22\_AI\_Rules.md  
+\`\`\`
+
+Defines:
+
+\- AI Decision Rules  
+\- Lead Matching Logic  
+\- Recommendation Logic  
+\- AI Behaviour
+
+\---
+
+\#\# Business Rules
+
+\`\`\`  
+14\_Business\_Rules.md  
+\`\`\`
+
+AI must always respect platform business rules.
+
+\---
+
+\#\# User Flows
+
+\`\`\`  
+18\_User\_Flows.md  
+\`\`\`
+
+AI must never break documented workflows.
+
+\---
+
+\#\# Security
+
+\`\`\`  
+17\_Security.md
+
+31\_Security\_Best\_Practices\_Expert.md  
+\`\`\`
+
+AI must always follow platform security standards.
+
+\---
+
+\# AI Philosophy
+
+AI exists to assist users.
+
+AI must never replace documented business logic.
+
+Business documentation always overrides AI assumptions.
+
+\---
+
+\# AI Behaviour
+
+AI should be:
+
+\- Predictable  
+\- Explainable  
+\- Secure  
+\- Accurate  
+\- Consistent  
+\- Efficient  
+\- Helpful
+
+Never generate random business behaviour.
+
+\---
+
+\# Business Rules First
+
+Before implementing any AI feature:
+
+1\. Read Business Documentation.  
+2\. Read AI Documentation.  
+3\. Understand User Flow.  
+4\. Implement AI around documented workflows.
+
+Never create undocumented AI behaviour.
+
+\---
+
+\# Lead Assist
+
+Whenever implementing Lead Assist:
+
+Always read:
+
+\`\`\`  
+10\_AI\_Lead\_Assist.md
+
+22\_AI\_Rules.md  
+\`\`\`
+
+Never change:
+
+\- Lead Routing  
+\- Matching Logic  
+\- Distribution Workflow
+
+unless explicitly instructed.
+
+\---
+
+\# AI Recommendations
+
+Recommendations should always be based on documented business rules.
+
+Never recommend:
+
+\- Unauthorized actions  
+\- Invalid business operations  
+\- Restricted data
+
+\---
+
+\# AI Decision Making
+
+AI decisions should be:
+
+\- Deterministic whenever possible  
+\- Traceable  
+\- Consistent  
+\- Based on documented rules
+
+Avoid unpredictable behaviour.
+
+\---
+
+\# AI Matching
+
+Whenever matching:
+
+\- Members  
+\- Businesses  
+\- Leads  
+\- Events  
+\- Venues
+
+follow documented matching rules.
+
+Never invent new scoring systems.
+
+\---
+
+\# User Privacy
+
+AI must never expose:
+
+\- Personal Information  
+\- Financial Information  
+\- Internal Platform Data  
+\- Hidden Business Logic  
+\- Secure Credentials
+
+Privacy is mandatory.
+
+\---
+
+\# AI Security
+
+Always validate:
+
+\- User Input  
+\- AI Prompts  
+\- AI Responses
+
+Protect against:
+
+\- Prompt Injection  
+\- Malicious Input  
+\- Unauthorized Access
+
+\---
+
+\# AI Responses
+
+AI should provide:
+
+\- Clear Responses  
+\- Helpful Suggestions  
+\- Business-Compliant Recommendations
+
+Avoid hallucinations.
+
+If documentation is missing:
+
+Ask for clarification instead of inventing behaviour.
+
+\---
+
+\# AI Automation
+
+Automation should:
+
+\- Save user time  
+\- Reduce repetitive work  
+\- Follow business rules  
+\- Never bypass validation
+
+Automation should never bypass security.
+
+\---
+
+\# AI Logging
+
+Log:
+
+\- AI Errors  
+\- Failed Operations  
+\- Processing Events
+
+Never log:
+
+\- Sensitive User Data  
+\- Passwords  
+\- Tokens  
+\- Confidential Business Information
+
+\---
+
+\# AI Performance
+
+AI features should:
+
+\- Execute efficiently  
+\- Minimize unnecessary computation  
+\- Reuse existing data where possible  
+\- Avoid duplicate processing
+
+\---
+
+\# AI Explainability
+
+Whenever AI makes an important decision:
+
+The decision should be understandable.
+
+Avoid "black box" behaviour where possible.
+
+\---
+
+\# AI Integration
+
+AI should integrate cleanly with:
+
+\- Authentication  
+\- Business Rules  
+\- Notifications  
+\- Analytics  
+\- Database  
+\- Dashboard
+
+AI should never become isolated business logic.
+
+\---
+
+\# AI and Business Logic
+
+AI assists business logic.
+
+AI does not replace business logic.
+
+Business documentation remains the source of truth.
+
+\---
+
+\# Before Implementing AI
+
+Always verify:
+
+✓ Business documentation reviewed
+
+✓ AI documentation reviewed
+
+✓ User flow understood
+
+✓ Security requirements satisfied
+
+✓ Performance considered
+
+✓ Privacy protected
+
+✓ Existing AI implementation searched
+
+✓ No duplicate AI logic created
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Invent AI workflows  
+\- Invent business rules  
+\- Expose confidential data  
+\- Ignore business documentation  
+\- Ignore security rules  
+\- Ignore user privacy  
+\- Duplicate AI logic  
+\- Hardcode AI decisions  
+\- Bypass documented workflows  
+\- Create unpredictable behaviour
+
+\---
+
+\# Final Rule
+
+Every AI-powered feature in the GCE platform must faithfully follow the documented AI architecture, business rules, security policies, and user workflows.
+
+AI exists to enhance the GCE platform—not to redefine its business logic.
+
+Whenever implementing AI functionality:
+
+1\. Read the official AI documentation.  
+2\. Read the relevant business documentation.  
+3\. Follow documented workflows.  
+4\. Build secure, explainable, scalable, and production-ready AI features.  

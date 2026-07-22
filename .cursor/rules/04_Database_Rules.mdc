@@ -1,0 +1,427 @@
+\---  
+description: Database development rules for the GCE platform. Automatically follow the documented database architecture, schema, relationships, security, and Supabase best practices whenever implementing or modifying database logic.  
+globs:  
+  \- "supabase/\*\*"  
+  \- "\*\*/\*.sql"  
+  \- "lib/db/\*\*"  
+  \- "services/\*\*"  
+  \- "app/api/\*\*"  
+alwaysApply: false  
+\---
+
+\# GCE Database Rules
+
+\#\# Purpose
+
+This rule governs every database implementation across the GCE platform.
+
+Whenever creating or modifying:
+
+\- Tables  
+\- Relationships  
+\- SQL  
+\- Supabase  
+\- RLS Policies  
+\- Triggers  
+\- Views  
+\- Functions  
+\- Migrations  
+\- Database Queries
+
+always follow the official database documentation before writing code.
+
+\---
+
+\# Documentation Priority
+
+Always consult the following documentation before modifying the database.
+
+\#\# Database Documentation
+
+\`\`\`  
+11\_Database.md  
+\`\`\`
+
+Defines:
+
+\- Database Schema  
+\- Tables  
+\- Relationships  
+\- Constraints
+
+\---
+
+\#\# Database Architecture
+
+\`\`\`  
+30\_Database\_Architecture\_Expert.md  
+\`\`\`
+
+Defines:
+
+\- Database Standards  
+\- Naming Conventions  
+\- Query Strategy  
+\- Performance Standards  
+\- Migration Rules
+
+\---
+
+\#\# Authentication
+
+\`\`\`  
+16\_Authentication.md  
+\`\`\`
+
+Database authentication must follow the documented authentication flow.
+
+\---
+
+\#\# Security
+
+\`\`\`  
+17\_Security.md
+
+31\_Security\_Best\_Practices\_Expert.md  
+\`\`\`
+
+Security rules apply to every table and every query.
+
+\---
+
+\#\# Business Logic
+
+Whenever business data is involved:
+
+Read:
+
+\`\`\`  
+14\_Business\_Rules.md
+
+18\_User\_Flows.md  
+\`\`\`
+
+Never implement undocumented data relationships.
+
+\---
+
+\# Database Philosophy
+
+The database should always be:
+
+\- Normalized  
+\- Scalable  
+\- Secure  
+\- Performant  
+\- Maintainable  
+\- Well Documented
+
+Never compromise database integrity.
+
+\---
+
+\# Source of Truth
+
+The database documentation is the source of truth.
+
+Never invent:
+
+\- Tables  
+\- Columns  
+\- Relationships  
+\- Constraints
+
+If unsure,
+
+consult the documentation first.
+
+\---
+
+\# Table Creation Rules
+
+Every table should include:
+
+\- Primary Key  
+\- Created At  
+\- Updated At  
+\- Proper Foreign Keys  
+\- Appropriate Constraints
+
+Follow documented naming conventions.
+
+\---
+
+\# Naming Standards
+
+Use:
+
+snake\_case
+
+Examples
+
+\`\`\`  
+user\_profiles
+
+venue\_partners
+
+event\_bookings
+
+membership\_plans  
+\`\`\`
+
+Avoid inconsistent naming.
+
+\---
+
+\# Relationships
+
+Always use proper:
+
+\- Foreign Keys  
+\- Constraints  
+\- Indexes
+
+Never create orphaned records.
+
+\---
+
+\# Data Integrity
+
+Always enforce:
+
+\- Unique Constraints  
+\- Foreign Keys  
+\- Check Constraints  
+\- Required Fields
+
+Maintain referential integrity.
+
+\---
+
+\# Row Level Security
+
+Every table should follow Supabase RLS best practices.
+
+Never leave sensitive tables publicly accessible.
+
+Verify:
+
+\- SELECT  
+\- INSERT  
+\- UPDATE  
+\- DELETE
+
+permissions.
+
+\---
+
+\# Authentication
+
+Always associate user-owned data with authenticated users.
+
+Never trust client-provided user IDs.
+
+Always derive ownership from authentication.
+
+\---
+
+\# Queries
+
+Database queries should be:
+
+\- Efficient  
+\- Reusable  
+\- Typed  
+\- Parameterized
+
+Avoid duplicate queries.
+
+\---
+
+\# Performance
+
+Optimize:
+
+\- Indexes  
+\- Joins  
+\- Filters  
+\- Pagination
+
+Avoid:
+
+\- SELECT \*  
+\- Unnecessary Nested Queries  
+\- N+1 Query Problems
+
+\---
+
+\# Migrations
+
+Every schema change should use proper database migrations.
+
+Never modify production schema manually.
+
+Migrations should be:
+
+\- Version Controlled  
+\- Reversible  
+\- Documented
+
+\---
+
+\# Functions
+
+Database functions should:
+
+\- Have one responsibility  
+\- Be reusable  
+\- Be documented
+
+Avoid unnecessary database functions.
+
+\---
+
+\# Views
+
+Use Views when:
+
+\- Multiple queries share the same structure.  
+\- Reporting requires simplified access.
+
+Avoid duplicate business logic in views.
+
+\---
+
+\# Transactions
+
+Whenever multiple operations depend on one another:
+
+Use database transactions.
+
+Never allow partial writes.
+
+\---
+
+\# Soft Delete
+
+Whenever appropriate,
+
+prefer soft delete instead of permanent deletion.
+
+Keep historical business data whenever required.
+
+\---
+
+\# Audit Data
+
+Preserve important business records.
+
+Do not permanently delete critical financial or operational information unless explicitly required.
+
+\---
+
+\# Security
+
+Never expose:
+
+\- Passwords  
+\- Tokens  
+\- Secrets  
+\- Internal IDs
+
+Protect sensitive data.
+
+\---
+
+\# Supabase Standards
+
+Use:
+
+\- Supabase Auth  
+\- Row Level Security  
+\- Typed Queries  
+\- RPC Functions when appropriate
+
+Avoid bypassing Supabase security features.
+
+\---
+
+\# Business Data
+
+Revenue
+
+Membership
+
+Payments
+
+Commissions
+
+Lead Assist
+
+Venue Operations
+
+must always follow the documented business model.
+
+Never modify database behaviour that changes business calculations.
+
+\---
+
+\# Before Creating Tables
+
+Always verify:
+
+✓ Table does not already exist.
+
+✓ Existing table cannot be extended.
+
+✓ Documentation has been consulted.
+
+✓ Relationships are correct.
+
+✓ Naming follows standards.
+
+✓ Indexes are appropriate.
+
+✓ RLS policies are defined.
+
+\---
+
+\# Before Writing Queries
+
+Always verify:
+
+✓ Query is reusable.
+
+✓ Query is efficient.
+
+✓ Query is typed.
+
+✓ Query respects RLS.
+
+✓ Query only retrieves required data.
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Duplicate Tables  
+\- Duplicate Relationships  
+\- Duplicate Queries  
+\- Duplicate Business Data  
+\- Use SELECT \*  
+\- Skip Foreign Keys  
+\- Skip RLS  
+\- Hardcode IDs  
+\- Hardcode User Ownership  
+\- Ignore Documentation  
+\- Ignore Database Constraints
+
+\---
+
+\# Final Rule
+
+Every database change must preserve the integrity, security, scalability, and performance of the GCE platform.
+
+Always follow the documented database architecture before implementing or modifying any database object.  

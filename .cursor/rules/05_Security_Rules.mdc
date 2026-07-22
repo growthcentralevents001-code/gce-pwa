@@ -1,0 +1,455 @@
+\---  
+description: Security rules for the GCE platform. Automatically enforce authentication, authorization, data protection, validation, and security best practices whenever implementing or modifying backend, frontend, APIs, authentication, payments, or database logic.  
+globs:  
+  \- "app/\*\*/\*.ts"  
+  \- "app/\*\*/\*.tsx"  
+  \- "app/api/\*\*"  
+  \- "components/\*\*/\*.tsx"  
+  \- "lib/\*\*/\*.ts"  
+  \- "services/\*\*/\*.ts"  
+  \- "supabase/\*\*"  
+alwaysApply: false  
+\---
+
+\# GCE Security Rules
+
+\#\# Purpose
+
+This rule governs every security-related implementation across the GCE platform.
+
+Whenever creating or modifying:
+
+\- Authentication  
+\- Authorization  
+\- APIs  
+\- Database  
+\- Payments  
+\- User Accounts  
+\- Dashboards  
+\- File Uploads  
+\- Notifications  
+\- AI Features
+
+always follow the official security documentation before writing code.
+
+\---
+
+\# Documentation Priority
+
+Always consult the following documentation before implementing security-related functionality.
+
+\#\# Authentication
+
+\`\`\`  
+16\_Authentication.md  
+\`\`\`
+
+Defines:
+
+\- Login  
+\- Signup  
+\- JWT  
+\- Session Management  
+\- Authentication Flow
+
+\---
+
+\#\# Platform Security
+
+\`\`\`  
+17\_Security.md  
+\`\`\`
+
+Defines:
+
+\- Security Policies  
+\- Data Protection  
+\- Secure Development Standards
+
+\---
+
+\#\# Security Best Practices
+
+\`\`\`  
+31\_Security\_Best\_Practices\_Expert.md  
+\`\`\`
+
+Defines:
+
+\- OWASP Principles  
+\- API Security  
+\- Database Security  
+\- Infrastructure Security  
+\- Coding Best Practices
+
+\---
+
+\#\# Payments
+
+\`\`\`  
+21\_Payments.md  
+\`\`\`
+
+Payment security must always follow the documented payment workflow.
+
+\---
+
+\#\# Database
+
+\`\`\`  
+11\_Database.md
+
+30\_Database\_Architecture\_Expert.md  
+\`\`\`
+
+Database security must follow documented architecture and RLS policies.
+
+\---
+
+\# Security Philosophy
+
+Security is mandatory.
+
+Never sacrifice security for convenience.
+
+Every feature must be secure by default.
+
+\---
+
+\# Authentication
+
+Never allow protected functionality without authentication.
+
+Always verify:
+
+\- Logged-in User  
+\- Session  
+\- JWT  
+\- Authentication State
+
+Never trust client-side authentication.
+
+\---
+
+\# Authorization
+
+Authentication answers:
+
+Who are you?
+
+Authorization answers:
+
+What are you allowed to do?
+
+Always verify permissions before:
+
+\- Reading Data  
+\- Creating Data  
+\- Updating Data  
+\- Deleting Data
+
+Never rely on frontend restrictions.
+
+Backend authorization is mandatory.
+
+\---
+
+\# Principle of Least Privilege
+
+Every user should have access only to the resources required for their role.
+
+Never provide unnecessary permissions.
+
+\---
+
+\# API Security
+
+Every API must:
+
+✓ Authenticate User
+
+✓ Authorize User
+
+✓ Validate Request
+
+✓ Sanitize Input
+
+✓ Return Safe Responses
+
+✓ Handle Errors Securely
+
+Never expose internal implementation details.
+
+\---
+
+\# Input Validation
+
+Always validate:
+
+\- Body  
+\- Query Parameters  
+\- Route Parameters  
+\- Uploaded Files  
+\- Form Data
+
+Never trust user input.
+
+\---
+
+\# Data Sanitization
+
+Always sanitize:
+
+\- User Input  
+\- Rich Text  
+\- HTML  
+\- URLs  
+\- Search Parameters
+
+Prevent:
+
+\- SQL Injection  
+\- XSS  
+\- Command Injection  
+\- HTML Injection
+
+\---
+
+\# Database Security
+
+Always:
+
+\- Use RLS  
+\- Use Parameterized Queries  
+\- Restrict Database Access  
+\- Protect Sensitive Data
+
+Never:
+
+\- Bypass RLS  
+\- Execute Unsafe SQL  
+\- Store Plain Text Secrets
+
+\---
+
+\# Password Security
+
+Never:
+
+\- Store Passwords  
+\- Log Passwords  
+\- Return Passwords
+
+Passwords must always be securely hashed.
+
+\---
+
+\# Token Security
+
+Never expose:
+
+\- JWT Tokens  
+\- Access Tokens  
+\- Refresh Tokens  
+\- API Keys
+
+Store tokens securely.
+
+\---
+
+\# Environment Variables
+
+Never hardcode:
+
+\- Secrets  
+\- API Keys  
+\- Database Credentials  
+\- Private URLs  
+\- Tokens
+
+Always use environment variables.
+
+\---
+
+\# Payments
+
+Payments must always include:
+
+\- Authentication  
+\- Authorization  
+\- Verification  
+\- Secure Processing
+
+Never trust client-side payment status.
+
+Always verify payment server-side.
+
+\---
+
+\# File Upload Security
+
+Validate:
+
+\- File Type  
+\- File Size  
+\- MIME Type
+
+Reject:
+
+\- Executables  
+\- Dangerous Files  
+\- Unknown Formats
+
+Never trust uploaded files.
+
+\---
+
+\# Logging
+
+Never log:
+
+\- Passwords  
+\- Tokens  
+\- Payment Data  
+\- Personal Information  
+\- Secrets
+
+Only log information necessary for debugging.
+
+\---
+
+\# Error Messages
+
+Error responses should:
+
+\- Be informative  
+\- Be safe  
+\- Never expose stack traces  
+\- Never expose SQL  
+\- Never expose secrets
+
+\---
+
+\# Rate Limiting
+
+Sensitive endpoints should support:
+
+\- Rate Limiting  
+\- Abuse Protection  
+\- Brute Force Prevention
+
+Especially:
+
+\- Login  
+\- Signup  
+\- Password Reset  
+\- OTP  
+\- Payments
+
+\---
+
+\# Session Management
+
+Sessions should:
+
+\- Expire correctly  
+\- Be securely stored  
+\- Be invalidated on logout
+
+Never keep stale sessions.
+
+\---
+
+\# HTTPS
+
+All production communication must use HTTPS.
+
+Never transmit sensitive information over insecure connections.
+
+\---
+
+\# Privacy
+
+Protect:
+
+\- Personal Data  
+\- Financial Data  
+\- Business Data  
+\- Membership Data  
+\- Analytics Data
+
+Only authorized users may access sensitive information.
+
+\---
+
+\# AI Security
+
+Whenever implementing AI:
+
+\- Validate Inputs  
+\- Protect User Data  
+\- Prevent Prompt Injection  
+\- Never expose confidential business information
+
+Follow:
+
+\`\`\`  
+22\_AI\_Rules.md  
+\`\`\`
+
+\---
+
+\# Security Reviews
+
+Before completing any feature verify:
+
+✓ Authentication
+
+✓ Authorization
+
+✓ Validation
+
+✓ Sanitization
+
+✓ RLS
+
+✓ Secure API
+
+✓ Secure Database
+
+✓ Secure File Upload
+
+✓ Secure Error Handling
+
+✓ No Sensitive Logging
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Hardcode Secrets  
+\- Store Plain Text Passwords  
+\- Expose Tokens  
+\- Skip Authentication  
+\- Skip Authorization  
+\- Skip Validation  
+\- Skip Sanitization  
+\- Ignore RLS  
+\- Return Internal Errors  
+\- Log Sensitive Data  
+\- Trust Client Input  
+\- Disable Security Features
+
+\---
+
+\# Final Rule
+
+Every feature in the GCE platform must be secure by design.
+
+Security is not optional.
+
+Always consult the official security documentation before implementing or modifying authentication, authorization, APIs, payments, databases, or any feature involving user or business data.
+
+When security and convenience conflict, always choose security.  

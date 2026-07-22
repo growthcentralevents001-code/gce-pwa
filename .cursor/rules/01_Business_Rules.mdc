@@ -1,0 +1,378 @@
+\---  
+description: Business rules for the GCE platform. Always consult the appropriate business documentation before implementing or modifying any business-related feature.  
+alwaysApply: false  
+\---
+
+\# GCE Business Rules
+
+\#\# Purpose
+
+This rule ensures that all business logic implemented in the GCE platform follows the official business documentation.
+
+Business documentation is the single source of truth.
+
+Never invent, simplify, or modify business workflows unless explicitly instructed.
+
+\---
+
+\# Business Documentation
+
+The following documentation defines the business behaviour of the platform.
+
+Always consult the relevant document before writing business logic.
+
+\`\`\`  
+01\_GCE\_Overview.md  
+02\_Business\_Model.md  
+03\_Stakeholders.md  
+04\_Revenue\_Model.md  
+05\_Memberships.md  
+06\_CBDP.md  
+07\_MBDP.md  
+08\_Enterprise\_BDP.md  
+09\_Venue\_Partner.md  
+10\_AI\_Lead\_Assist.md  
+14\_Business\_Rules.md  
+18\_User\_Flows.md  
+20\_Notifications.md  
+21\_Payments.md  
+22\_AI\_Rules.md  
+23\_Analytics\_Reports.md  
+\`\`\`
+
+\---
+
+\# Business Logic First
+
+Whenever implementing a feature:
+
+1\. Identify the business area.  
+2\. Read the relevant documentation.  
+3\. Understand the workflow.  
+4\. Implement the documented behaviour.  
+5\. Do not assume missing requirements.
+
+\---
+
+\# Business Areas
+
+\#\# Memberships
+
+Whenever working on:
+
+\- Membership Plans  
+\- Membership Benefits  
+\- Membership Pricing  
+\- Subscription Logic  
+\- Member Upgrades
+
+Read:
+
+\`\`\`  
+05\_Memberships.md  
+04\_Revenue\_Model.md  
+14\_Business\_Rules.md  
+\`\`\`
+
+\---
+
+\#\# CBDP
+
+Whenever working on:
+
+\- CBDP  
+\- Business Development  
+\- Circle Creation  
+\- Circle Expansion  
+\- CBDP Dashboard
+
+Read:
+
+\`\`\`  
+06\_CBDP.md  
+14\_Business\_Rules.md  
+18\_User\_Flows.md  
+\`\`\`
+
+\---
+
+\#\# Marketplace
+
+Whenever working on:
+
+\- Marketplace  
+\- Venue Onboarding  
+\- Offers  
+\- Cashback  
+\- Coupons
+
+Read:
+
+\`\`\`  
+07\_MBDP.md  
+09\_Venue\_Partner.md  
+04\_Revenue\_Model.md  
+14\_Business\_Rules.md  
+\`\`\`
+
+\---
+
+\#\# Enterprise
+
+Whenever working on:
+
+\- Enterprise Clients  
+\- Corporate Events  
+\- Enterprise Dashboard
+
+Read:
+
+\`\`\`  
+08\_Enterprise\_BDP.md  
+14\_Business\_Rules.md  
+\`\`\`
+
+\---
+
+\#\# Venue Partner
+
+Whenever working on:
+
+\- Venue Registration  
+\- Venue Management  
+\- Venue Dashboard  
+\- Venue Earnings
+
+Read:
+
+\`\`\`  
+09\_Venue\_Partner.md  
+04\_Revenue\_Model.md  
+14\_Business\_Rules.md  
+\`\`\`
+
+\---
+
+\#\# AI Lead Assist
+
+Whenever working on:
+
+\- Lead Routing  
+\- Lead Matching  
+\- Lead Distribution  
+\- AI Recommendations
+
+Read:
+
+\`\`\`  
+10\_AI\_Lead\_Assist.md  
+22\_AI\_Rules.md  
+18\_User\_Flows.md  
+\`\`\`
+
+\---
+
+\#\# Payments
+
+Whenever working on:
+
+\- Payments  
+\- Wallet  
+\- Refunds  
+\- Revenue Distribution  
+\- Commissions
+
+Read:
+
+\`\`\`  
+21\_Payments.md  
+04\_Revenue\_Model.md  
+14\_Business\_Rules.md  
+\`\`\`
+
+\---
+
+\#\# Notifications
+
+Whenever working on:
+
+\- Email  
+\- SMS  
+\- Push Notifications  
+\- In-App Notifications
+
+Read:
+
+\`\`\`  
+20\_Notifications.md  
+18\_User\_Flows.md  
+\`\`\`
+
+\---
+
+\#\# Dashboards
+
+Whenever working on any dashboard:
+
+Identify the dashboard role first.
+
+Then consult:
+
+\`\`\`  
+12\_Dashboards.md  
+18\_User\_Flows.md  
+\`\`\`
+
+\---
+
+\#\# Analytics
+
+Whenever working on:
+
+\- Reports  
+\- KPIs  
+\- Revenue Reports  
+\- Dashboards  
+\- Statistics
+
+Read:
+
+\`\`\`  
+23\_Analytics\_Reports.md  
+04\_Revenue\_Model.md  
+\`\`\`
+
+\---
+
+\# Revenue
+
+Never calculate commissions manually.
+
+Always follow:
+
+\`\`\`  
+04\_Revenue\_Model.md  
+\`\`\`
+
+Revenue calculations must match the documented business model.
+
+\---
+
+\# User Journeys
+
+Whenever implementing workflows involving multiple user actions:
+
+Read:
+
+\`\`\`  
+18\_User\_Flows.md  
+\`\`\`
+
+Do not change the documented sequence of actions.
+
+\---
+
+\# Business Rules
+
+Whenever implementing:
+
+\- Validation Rules  
+\- Platform Restrictions  
+\- Membership Conditions  
+\- Platform Behaviour
+
+Always read:
+
+\`\`\`  
+14\_Business\_Rules.md  
+\`\`\`
+
+This document takes precedence over assumptions.
+
+\---
+
+\# AI Behaviour
+
+Whenever implementing AI-powered functionality:
+
+Always follow:
+
+\`\`\`  
+10\_AI\_Lead\_Assist.md
+
+22\_AI\_Rules.md  
+\`\`\`
+
+Never invent AI decision-making logic.
+
+\---
+
+\# Stakeholders
+
+Whenever implementing permissions, dashboards, workflows or ownership:
+
+Read:
+
+\`\`\`  
+03\_Stakeholders.md  
+\`\`\`
+
+Ensure each stakeholder only has access to documented responsibilities.
+
+\---
+
+\# Source of Truth
+
+Business documentation always overrides:
+
+\- Existing implementation  
+\- AI assumptions  
+\- Previous conversations  
+\- Generated code
+
+If documentation and code differ:
+
+Follow the documentation.
+
+\---
+
+\# Before Writing Business Logic
+
+Always verify:
+
+✓ Business documentation has been consulted.
+
+✓ Revenue rules are correct.
+
+✓ User flow matches documentation.
+
+✓ Stakeholder permissions are correct.
+
+✓ Workflow follows documented process.
+
+✓ Business calculations match the revenue model.
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Invent business rules.  
+\- Modify commission calculations.  
+\- Skip documented workflows.  
+\- Change user journeys.  
+\- Bypass business validation.  
+\- Hardcode business values.  
+\- Ignore stakeholder responsibilities.  
+\- Implement undocumented business behaviour.
+
+\---
+
+\# Final Rule
+
+Every business feature implemented in the GCE platform must faithfully follow the documented business model, workflows, and operational rules.
+
+Documentation is the single source of truth.
+
+When in doubt, read the relevant business documentation before writing code.  

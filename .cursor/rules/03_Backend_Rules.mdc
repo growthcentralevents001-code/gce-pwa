@@ -1,0 +1,454 @@
+\---  
+description: Backend development rules for the GCE platform. Automatically follow the backend architecture, API workflows, authentication, database, and business documentation whenever implementing backend logic.  
+globs:  
+  \- "app/api/\*\*/\*.ts"  
+  \- "app/api/\*\*/\*.tsx"  
+  \- "app/\*\*/route.ts"  
+  \- "app/\*\*/actions.ts"  
+  \- "lib/\*\*/\*.ts"  
+  \- "services/\*\*/\*.ts"  
+  \- "supabase/\*\*/\*.ts"  
+alwaysApply: false  
+\---
+
+\# GCE Backend Rules
+
+\#\# Purpose
+
+This rule governs every backend implementation across the GCE platform.
+
+Whenever creating or modifying:
+
+\- API Routes  
+\- Server Actions  
+\- Business Services  
+\- Supabase Queries  
+\- Authentication  
+\- Payments  
+\- Notifications  
+\- AI Logic  
+\- Database Operations  
+\- Background Jobs
+
+always follow the official backend documentation before writing code.
+
+\---
+
+\# Documentation Priority
+
+Read the following documentation before implementing backend functionality.
+
+\#\# Backend Architecture
+
+\`\`\`  
+29\_Full\_Stack\_Architecture\_Expert.md  
+\`\`\`
+
+Follow the official GCE backend architecture.
+
+Never introduce a different backend architecture.
+
+\---
+
+\#\# API Documentation
+
+\`\`\`  
+15\_API\_Workflows.md  
+\`\`\`
+
+Always understand the API workflow before writing or modifying endpoints.
+
+\---
+
+\#\# Database
+
+\`\`\`  
+11\_Database.md
+
+30\_Database\_Architecture\_Expert.md  
+\`\`\`
+
+Never modify database logic without following the documented schema.
+
+\---
+
+\#\# Authentication
+
+\`\`\`  
+16\_Authentication.md  
+\`\`\`
+
+Authentication must always follow the documented flow.
+
+\---
+
+\#\# Security
+
+\`\`\`  
+17\_Security.md
+
+31\_Security\_Best\_Practices\_Expert.md  
+\`\`\`
+
+Security rules apply to every backend implementation.
+
+\---
+
+\#\# Business Logic
+
+Whenever implementing backend business rules:
+
+Read:
+
+\`\`\`  
+14\_Business\_Rules.md
+
+18\_User\_Flows.md  
+\`\`\`
+
+Never invent business logic.
+
+\---
+
+\# Backend Philosophy
+
+Backend code should be:
+
+\- Modular  
+\- Secure  
+\- Reusable  
+\- Testable  
+\- Typed  
+\- Maintainable  
+\- Scalable
+
+Avoid writing business logic directly inside API routes.
+
+\---
+
+\# API Design Rules
+
+Every API should:
+
+\- Have one clear responsibility.  
+\- Validate inputs.  
+\- Authenticate users.  
+\- Authorize actions.  
+\- Handle errors.  
+\- Return consistent responses.
+
+Never expose unnecessary data.
+
+\---
+
+\# API Response Standards
+
+Every API response should follow a consistent format.
+
+Example:
+
+Success
+
+\`\`\`  
+{  
+  success: true,  
+  data: ...  
+}  
+\`\`\`
+
+Failure
+
+\`\`\`  
+{  
+  success: false,  
+  message: "...",  
+  error: ...  
+}  
+\`\`\`
+
+Avoid inconsistent response structures.
+
+\---
+
+\# Server Actions
+
+Whenever possible:
+
+Prefer Server Actions for Next.js features where appropriate.
+
+Avoid unnecessary API routes when Server Actions provide a cleaner solution.
+
+\---
+
+\# Business Logic
+
+Business logic belongs inside:
+
+\- Services  
+\- Business Modules
+
+Avoid placing complex logic directly inside:
+
+\- Pages  
+\- Components  
+\- API Route Handlers
+
+\---
+
+\# Validation
+
+Always validate:
+
+\- Request Body  
+\- Query Parameters  
+\- Route Parameters  
+\- User Input
+
+Never trust client-side validation alone.
+
+\---
+
+\# Authentication
+
+Always verify:
+
+\- Logged-in User  
+\- Session  
+\- JWT  
+\- Role
+
+before performing protected operations.
+
+Never bypass authentication.
+
+\---
+
+\# Authorization
+
+Always check:
+
+Does the user have permission?
+
+Never rely only on frontend restrictions.
+
+Backend authorization is mandatory.
+
+\---
+
+\# Database Access
+
+All database operations should:
+
+\- Use reusable service functions.  
+\- Follow the documented schema.  
+\- Avoid duplicated queries.
+
+Never write unnecessary SQL.
+
+\---
+
+\# Transactions
+
+Whenever multiple database operations depend on one another:
+
+Use database transactions where appropriate.
+
+Avoid partial updates.
+
+\---
+
+\# Error Handling
+
+Always:
+
+\- Catch errors.  
+\- Return meaningful responses.  
+\- Log unexpected failures.
+
+Never expose internal errors to clients.
+
+\---
+
+\# Logging
+
+Log:
+
+\- Unexpected Errors  
+\- Failed Operations  
+\- Security Events
+
+Avoid logging:
+
+\- Passwords  
+\- Tokens  
+\- Sensitive Information
+
+\---
+
+\# Payments
+
+Whenever working on payments:
+
+Read:
+
+\`\`\`  
+21\_Payments.md  
+\`\`\`
+
+Never:
+
+\- Modify revenue calculations.  
+\- Hardcode commissions.  
+\- Skip payment verification.
+
+\---
+
+\# Notifications
+
+Whenever backend triggers notifications:
+
+Read:
+
+\`\`\`  
+20\_Notifications.md  
+\`\`\`
+
+Keep notification logic centralized.
+
+\---
+
+\# AI Features
+
+Whenever implementing AI:
+
+Read:
+
+\`\`\`  
+10\_AI\_Lead\_Assist.md
+
+22\_AI\_Rules.md  
+\`\`\`
+
+Never invent AI workflows.
+
+\---
+
+\# Supabase
+
+Always:
+
+\- Use Supabase Auth  
+\- Follow RLS Policies  
+\- Use typed queries  
+\- Keep service logic centralized
+
+Avoid direct database access from frontend components.
+
+\---
+
+\# API Security
+
+Every protected endpoint should verify:
+
+✓ Authentication
+
+✓ Authorization
+
+✓ Validation
+
+✓ Business Rules
+
+before executing logic.
+
+\---
+
+\# Performance
+
+Backend should:
+
+\- Minimize database calls.  
+\- Avoid N+1 queries.  
+\- Use indexes.  
+\- Cache where appropriate.  
+\- Return only required data.
+
+\---
+
+\# File Organization
+
+Keep backend code organized.
+
+Separate:
+
+\- API Routes  
+\- Services  
+\- Utilities  
+\- Validation  
+\- Database  
+\- Types
+
+Avoid monolithic files.
+
+\---
+
+\# Reusability
+
+Before writing backend code:
+
+Search for:
+
+\- Existing Services  
+\- Existing Queries  
+\- Existing Utilities  
+\- Existing Validation
+
+Reuse them whenever possible.
+
+\---
+
+\# Before Writing Backend Code
+
+Always verify:
+
+✓ Relevant documentation has been read.
+
+✓ Existing implementation has been searched.
+
+✓ Business rules are understood.
+
+✓ Authentication is correct.
+
+✓ Authorization is correct.
+
+✓ Database schema is followed.
+
+✓ Security requirements are satisfied.
+
+✓ Performance has been considered.
+
+\---
+
+\# Forbidden Practices
+
+Never:
+
+\- Duplicate Business Logic  
+\- Duplicate Database Queries  
+\- Duplicate Services  
+\- Skip Validation  
+\- Skip Authentication  
+\- Skip Authorization  
+\- Expose Sensitive Data  
+\- Hardcode Business Values  
+\- Write Raw SQL unnecessarily  
+\- Ignore Documentation
+
+\---
+
+\# Final Rule
+
+Every backend feature must follow the documented GCE architecture, business workflows, authentication model, database design, and security standards.
+
+Backend code should be modular, secure, scalable, production-ready, and reusable.
+
+Always consult the relevant documentation before implementing or modifying backend functionality.  

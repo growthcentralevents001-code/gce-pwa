@@ -1,177 +1,222 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Calendar, Users, Building2, Award, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+
+const COLORS = {
+  primary: "#EA580C",
+  secondary: "#F97316",
+  accent: "#2563EB",
+  onPrimary: "#FFFFFF",
+  foreground: "#0F172A",
+} as const;
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2400&q=80";
 
 export default function HeroBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const enter = (delay = 0) =>
+    reduceMotion
+      ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+      : {
+          initial: { opacity: 0, y: 18 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.35, ease: "easeOut" as const, delay },
+        };
 
   return (
-    <div style={{
-      background: "linear-gradient(135deg, #f97316 0%, #ea580c 50%, #f97316 100%)",
-      borderRadius: "24px",
-      marginBottom: "40px",
-      overflow: "hidden",
-      position: "relative",
-      boxShadow: "0 20px 35px -10px rgba(249,115,22,0.3)",
-      transform: isVisible ? "translateY(0)" : "translateY(20px)",
-      opacity: isVisible ? 1 : 0,
-      transition: "all 0.5s ease"
-    }}>
-      {/* Background Pattern */}
-      <div style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1%, transparent 1%)`,
-        backgroundSize: "30px 30px",
-        pointerEvents: "none"
-      }} />
-      
-      <div style={{
-        padding: "48px 40px",
+    <section
+      aria-label="GCE Events hero"
+      style={{
         position: "relative",
-        zIndex: 2
-      }}>
-        {/* Badge */}
-        <div style={{
-          display: "inline-block",
-          background: "rgba(255,255,255,0.2)",
-          backdropFilter: "blur(10px)",
-          padding: "6px 16px",
-          borderRadius: "40px",
-          marginBottom: "24px",
-          fontSize: "13px",
-          fontWeight: "500",
-          color: "white",
-          letterSpacing: "0.5px"
-        }}>
-          ✨ India's Premier Event Platform
-        </div>
+        width: "100%",
+        minHeight: "min(78vh, 720px)",
+        display: "flex",
+        alignItems: "flex-end",
+        overflow: "hidden",
+        backgroundColor: COLORS.foreground,
+        ["--color-primary" as string]: COLORS.primary,
+        ["--color-secondary" as string]: COLORS.secondary,
+        ["--color-accent" as string]: COLORS.accent,
+      }}
+    >
+      {/* Full-bleed atmosphere */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(115deg, rgba(15,23,42,0.82) 0%, rgba(234,88,12,0.55) 48%, rgba(15,23,42,0.45) 100%),
+            linear-gradient(to top, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.25) 42%, transparent 70%),
+            url(${HERO_IMAGE})
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
 
-        {/* Main Heading */}
-        <h1 style={{
-          fontSize: "48px",
-          fontWeight: "800",
-          color: "white",
-          marginBottom: "16px",
-          lineHeight: "1.2",
-          maxWidth: "600px"
-        }}>
-          Discover, Connect & <br />
-          <span style={{ borderBottom: "4px solid #ffd700", display: "inline-block" }}>
-            Grow Together
-          </span>
-        </h1>
+      {/* Vibrant block accents (design-system style) */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          backgroundImage: `
+            linear-gradient(90deg, ${COLORS.primary} 0 12px, transparent 12px),
+            linear-gradient(0deg, ${COLORS.accent}22 0%, transparent 35%)
+          `,
+          opacity: 0.9,
+        }}
+      />
+      <motion.div
+        aria-hidden
+        initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
+        style={{
+          position: "absolute",
+          right: "8%",
+          top: "18%",
+          width: "min(28vw, 220px)",
+          height: "min(28vw, 220px)",
+          background: `linear-gradient(145deg, ${COLORS.secondary}, ${COLORS.primary})`,
+          clipPath: "polygon(18% 0, 100% 0, 100% 82%, 0 100%)",
+          opacity: 0.55,
+          mixBlendMode: "screen",
+        }}
+      />
 
-        {/* Subheading */}
-        <p style={{
-          fontSize: "18px",
-          color: "rgba(255,255,255,0.9)",
-          marginBottom: "32px",
-          maxWidth: "500px",
-          lineHeight: "1.5"
-        }}>
-          Join 10,000+ members and experience the best networking, 
-          learning, and entertainment events near you.
-        </p>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 40px)",
+        }}
+      >
+        <motion.p
+          {...enter(0)}
+          style={{
+            fontFamily: "var(--font-display, Righteous, cursive)",
+            fontSize: "clamp(2.75rem, 8vw, 5.5rem)",
+            lineHeight: 0.95,
+            letterSpacing: "0.02em",
+            color: COLORS.onPrimary,
+            margin: "0 0 20px",
+          }}
+        >
+          GCE
+        </motion.p>
 
-        {/* Stats */}
-        <div style={{
-          display: "flex",
-          gap: "32px",
-          flexWrap: "wrap",
-          marginBottom: "32px"
-        }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-              <Users size={20} style={{ color: "#ffd700" }} />
-              <span style={{ fontSize: "24px", fontWeight: "700", color: "white" }}>10,000+</span>
-            </div>
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)" }}>Active Members</div>
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-              <Calendar size={20} style={{ color: "#ffd700" }} />
-              <span style={{ fontSize: "24px", fontWeight: "700", color: "white" }}>50+</span>
-            </div>
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)" }}>Events Monthly</div>
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-              <Building2 size={20} style={{ color: "#ffd700" }} />
-              <span style={{ fontSize: "24px", fontWeight: "700", color: "white" }}>100+</span>
-            </div>
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)" }}>Partner Venues</div>
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-              <Award size={20} style={{ color: "#ffd700" }} />
-              <span style={{ fontSize: "24px", fontWeight: "700", color: "white" }}>4.8★</span>
-            </div>
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.8)" }}>Member Rating</div>
-          </div>
-        </div>
+        <motion.h1
+          {...enter(0.08)}
+          style={{
+            fontFamily: "var(--font-body, Poppins, sans-serif)",
+            fontSize: "clamp(1.5rem, 3.6vw, 2.35rem)",
+            fontWeight: 700,
+            lineHeight: 1.2,
+            color: COLORS.onPrimary,
+            maxWidth: "18ch",
+            margin: "0 0 14px",
+          }}
+        >
+          Discover events that bring people together
+        </motion.h1>
 
-        {/* CTA Buttons */}
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <Link href="/events" style={{
-            background: "white",
-            color: "#f97316",
-            padding: "12px 28px",
-            borderRadius: "40px",
-            textDecoration: "none",
-            fontWeight: "600",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            transition: "transform 0.2s"
-          }}>
-            Explore Events <ArrowRight size={16} />
-          </Link>
-          <Link href="/signup" style={{
-            background: "rgba(255,255,255,0.2)",
-            backdropFilter: "blur(10px)",
-            color: "white",
-            padding: "12px 28px",
-            borderRadius: "40px",
-            textDecoration: "none",
-            fontWeight: "500",
-            border: "1px solid rgba(255,255,255,0.3)"
-          }}>
-            Become a Member
-          </Link>
-        </div>
+        <motion.p
+          {...enter(0.14)}
+          style={{
+            fontFamily: "var(--font-body, Poppins, sans-serif)",
+            fontSize: "clamp(1rem, 2vw, 1.125rem)",
+            fontWeight: 400,
+            lineHeight: 1.55,
+            color: "rgba(255,255,255,0.9)",
+            maxWidth: "36ch",
+            margin: "0 0 28px",
+          }}
+        >
+          Find networking, learning, and entertainment near you—built for India&apos;s event community.
+        </motion.p>
+
+        <motion.div
+          {...enter(0.2)}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "12px",
+          }}
+        >
+          <motion.div whileHover={reduceMotion ? undefined : { scale: 1.02 }} whileTap={reduceMotion ? undefined : { scale: 0.98 }}>
+            <Link
+              href="/events"
+              className="cursor-pointer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: COLORS.onPrimary,
+                color: COLORS.primary,
+                padding: "14px 26px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body, Poppins, sans-serif)",
+                fontWeight: 600,
+                fontSize: "15px",
+                transition: "background-color 200ms ease, color 200ms ease",
+                outlineOffset: "3px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = COLORS.accent;
+                e.currentTarget.style.color = COLORS.onPrimary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = COLORS.onPrimary;
+                e.currentTarget.style.color = COLORS.primary;
+              }}
+            >
+              Explore Events <ArrowRight size={16} aria-hidden />
+            </Link>
+          </motion.div>
+
+          <motion.div whileHover={reduceMotion ? undefined : { scale: 1.02 }} whileTap={reduceMotion ? undefined : { scale: 0.98 }}>
+            <Link
+              href="/signup"
+              className="cursor-pointer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "transparent",
+                color: COLORS.onPrimary,
+                padding: "14px 26px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body, Poppins, sans-serif)",
+                fontWeight: 500,
+                fontSize: "15px",
+                border: "1.5px solid rgba(255,255,255,0.65)",
+                transition: "border-color 200ms ease, background-color 200ms ease",
+                outlineOffset: "3px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                e.currentTarget.style.borderColor = COLORS.onPrimary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.65)";
+              }}
+            >
+              Become a Member
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
-
-      {/* Decorative Circle */}
-      <div style={{
-        position: "absolute",
-        right: "-50px",
-        top: "-50px",
-        width: "250px",
-        height: "250px",
-        background: "rgba(255,255,255,0.1)",
-        borderRadius: "50%",
-        pointerEvents: "none"
-      }} />
-      <div style={{
-        position: "absolute",
-        right: "100px",
-        bottom: "-80px",
-        width: "200px",
-        height: "200px",
-        background: "rgba(255,255,255,0.08)",
-        borderRadius: "50%",
-        pointerEvents: "none"
-      }} />
-    </div>
+    </section>
   );
 }

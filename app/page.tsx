@@ -2,9 +2,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
-import { Search, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import GeoLocationBar from "@/components/GeoLocationBar";
 import { citiesMatch } from "@/lib/cityUtils";
+import HeroBanner from "@/app/components/HeroBanner";
 
 interface HomeEvent {
   id: string;
@@ -143,85 +144,86 @@ export default function HomePage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {fetchError && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {fetchError}
+    <>
+      <HeroBanner />
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {fetchError && (
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {fetchError}
+          </div>
+        )}
+
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-6">
+            <GeoLocationBar onCityChange={setUserCity} eventsCount={filteredEvents.length} />
+          </div>
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((cat) => (
+              <Link
+                key={cat.value}
+                href={`/events?category=${cat.value}`}
+                className="px-6 py-3 bg-orange-600 text-white rounded-full text-sm font-medium hover:bg-orange-700 transition shadow-md cursor-pointer"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
         </div>
-      )}
-      {/* Hero Section with Category Buttons - REPLACED Discover text */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Events</h1>
-        <div className="flex justify-center mb-6">
-          <GeoLocationBar onCityChange={setUserCity} eventsCount={filteredEvents.length} />
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          {categories.map((cat) => (
-            <Link
-              key={cat.value}
-              href={`/events?category=${cat.value}`}
-              className="px-6 py-3 bg-orange-600 text-white rounded-full text-sm font-medium hover:bg-orange-700 transition shadow-md"
-            >
-              {cat.name}
-            </Link>
+
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
+          {["all", "connect", "marketplace", "enterprise"].map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-sm font-medium cursor-pointer ${activeTab === tab ? "bg-orange-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+              {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+            </button>
           ))}
         </div>
-        <p className="text-gray-500">Discover amazing events near you</p>
-      </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b pb-2">
-        {["all", "connect", "marketplace", "enterprise"].map(tab => (
-          <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-sm font-medium ${activeTab === tab ? "bg-orange-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-            {tab === "all" ? "All Events" : tab === "connect" ? "GCE Connect" : tab === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
-          </button>
-        ))}
-      </div>
-
-      {/* Events grid */}
-      {filteredEvents.length === 0 ? (
-        <div className="text-center py-12">
-          <p>{userCity ? `No events found in ${userCity}.` : "No events found."}</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map(event => {
-            const style = getVerticalStyle(event.vertical);
-            const isWishlisted = wishlistIds.has(event.id);
-            return (
-              <Link key={event.id} href={`/events/${event.id}`}>
-                <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition">
-                  <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
-                    <span className="text-5xl">🎉</span>
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-lg">{event.title}</h3>
-                      <span className="text-xs px-2 py-1 rounded-full" style={{ background: style.bg, color: style.color }}>
-                        {event.vertical === "connect" ? "GCE Connect" : event.vertical === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
-                      </span>
+        {/* Events grid */}
+        {filteredEvents.length === 0 ? (
+          <div className="text-center py-12">
+            <p>{userCity ? `No events found in ${userCity}.` : "No events found."}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredEvents.map(event => {
+              const style = getVerticalStyle(event.vertical);
+              const isWishlisted = wishlistIds.has(event.id);
+              return (
+                <Link key={event.id} href={`/events/${event.id}`}>
+                  <div className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition">
+                    <div className="h-40 bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
+                      <span className="text-5xl">🎉</span>
                     </div>
-                    <div className="space-y-1 text-sm text-gray-600">
-                      <div>📅 {event.date} at {event.time}</div>
-                      <div>📍 {event.venue}, {event.city}</div>
-                      <div>👥 {event.registered} / {event.capacity} attending</div>
-                    </div>
-                    <div className="mt-3 flex justify-between items-center">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
-                        <button onClick={(e) => toggleWishlist(event.id, e)} className="focus:outline-none">
-                          <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
-                        </button>
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-lg">{event.title}</h3>
+                        <span className="text-xs px-2 py-1 rounded-full" style={{ background: style.bg, color: style.color }}>
+                          {event.vertical === "connect" ? "GCE Connect" : event.vertical === "marketplace" ? "GCE Marketplace" : "GCE Enterprise"}
+                        </span>
                       </div>
-                      <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</span>
+                      <div className="space-y-1 text-sm text-gray-600">
+                        <div>📅 {event.date} at {event.time}</div>
+                        <div>📍 {event.venue}, {event.city}</div>
+                        <div>👥 {event.registered} / {event.capacity} attending</div>
+                      </div>
+                      <div className="mt-3 flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl font-bold text-orange-600">₹{event.price}</span>
+                          <button onClick={(e) => toggleWishlist(event.id, e)} className="focus:outline-none cursor-pointer">
+                            <Heart className={`w-5 h-5 transition-colors ${isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
+                          </button>
+                        </div>
+                        <span className="px-3 py-1 bg-orange-600 text-white text-sm rounded-full">View Details</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

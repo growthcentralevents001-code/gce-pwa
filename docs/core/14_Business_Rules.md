@@ -1,6 +1,12 @@
- Business Rules
+# Business Rules
 
- Overview
+## Authority
+
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024.
+
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022).
+
+Overview
 
 The GCE platform operates on a centralized Business Rule Engine that ensures every stakeholder follows the same policies, workflows, permissions, and operational standards.
 
@@ -8,29 +14,29 @@ These rules maintain consistency, transparency, security, and fairness across th
 
  General Platform Rules
 
- Every user must have a verified account.  
- Every stakeholder has rolebased permissions.  
- Unauthorized access is strictly prohibited.  
- Every important activity is logged.  
- All financial transactions are recorded.  
+ Every user must have a verified account.
+ Every stakeholder has rolebased permissions.
+ Unauthorized access is strictly prohibited.
+ Every important activity is logged.
+ All financial transactions are recorded.
  Platform rules apply equally to all stakeholders.
 
  User Rules
 
 Users can:
 
- Register on the platform  
- Browse events  
- Book events  
- Submit business requirements  
- Purchase memberships  
+ Register on the platform
+ Browse events
+ Book events
+ Submit business requirements
+ Purchase memberships
  Claim marketplace offers
 
 Users cannot:
 
- Submit fake business enquiries  
- Create duplicate accounts  
- Upload false documents  
+ Submit fake business enquiries
+ Create duplicate accounts
+ Upload false documents
  Misuse platform services
 
  Identity Verification Rules
@@ -39,56 +45,56 @@ Certain platform activities require identity verification.
 
 Accepted documents may include:
 
- Aadhaar  
- Passport  
- Driving Licence  
+ Aadhaar
+ Passport
+ Driving Licence
  PAN (where applicable)
 
 Unverified users may have limited platform access.
 
  Membership Rules
 
- Memberships are subscriptionbased.  
- Memberships must be renewed before expiry.  
- Expired memberships lose premium benefits.  
- Memberships are nontransferable.  
+ Memberships are subscriptionbased.
+ Memberships must be renewed before expiry.
+ Expired memberships lose premium benefits.
+ Memberships are nontransferable.
  One individual can hold only one active membership account.
 
  Business Category Rules
 
-Each GCE Connect Circle follows the \*\*One Profession – One Seat\*\* rule.
+Each GCE Connect Circle follows Founder-approved specialization exclusivity: **One Business Specialization = One Exclusive Seat per Circle** (FD-024). Not automatically city-wide.
 
 This means:
 
- Only one member per primary business category in a circle.  
- Direct competitors cannot occupy the same category seat.  
+ Only one member per primary business category in a circle.
+ Direct competitors cannot occupy the same category seat.
  Business category changes require approval.
 
  Business Tag Rules
 
 Every business profile must include:
 
- Business Category  
- Business Tags  
+ Business Category
+ Business Tags
  Specialization Tags
 
 These tags are mandatory because they are used by:
 
- AI Lead Assist  
- Search  
- Business Matching  
- Marketplace  
- Enterprise  
+ AI Lead Assist
+ Search
+ Business Matching
+ Marketplace
+ Enterprise
  Analytics
 
  Circle Rules
 
 Every business circle must:
 
- Follow attendance guidelines  
- Maintain professional conduct  
- Encourage referral sharing  
- Follow governance policies  
+ Follow attendance guidelines
+ Maintain professional conduct
+ Encourage referral sharing
+ Follow governance policies
  Respect business exclusivity
 
 The Board of Governance oversees circle discipline.
@@ -97,9 +103,9 @@ The Board of Governance oversees circle discipline.
 
 Members should:
 
- Share genuine referrals  
- Avoid fake referrals  
- Maintain professional ethics  
+ Share genuine referrals
+ Avoid fake referrals
+ Maintain professional ethics
  Update referral status
 
 Repeated misuse may result in platform action.
@@ -144,9 +150,7 @@ Only verified leads are distributed.
 
 Business requirements requiring AI Lead Assist must complete the validation process.
 
-Validation Fee
-
- ₹500
+Validation Fee: **`36_Commercial_Constants.md`** / full rules in **`39_AI_Lead_Assist_Spec.md`**.
 
 The fee is required before the lead becomes active.
 
@@ -154,17 +158,17 @@ The fee is required before the lead becomes active.
 
 If a lead is marked as genuine:
 
- Business discussion continues.  
- Lead remains active.  
+ Business discussion continues.
+ Lead remains active.
  Eligible member receives subscription credit.
 
  NonGenuine Lead Rules
 
 If a lead is marked as fake:
 
- Lead is rejected.  
- Validation fee is forfeited.  
- Fraudulent activity is recorded.  
+ Lead is rejected.
+ Validation fee is forfeited.
+ Fraudulent activity is recorded.
  User account may be suspended after repeated violations.
 
  Marketplace Rules
@@ -173,76 +177,64 @@ Only verified businesses may become Venue Partners.
 
 Venue Partners may:
 
- Create offers  
- Host events  
- Accept bookings  
+ Create offers
+ Host events
+ Accept bookings
  Manage campaigns
 
 Every offer must follow platform policies.
 
-Minimum campaign value:
-
- ₹50,000
+Minimum campaign value: **`36_Commercial_Constants.md`** (Offer / campaign constants).
 
  Revenue Sharing Rules
 
-Marketplace Revenue Sharing
+**GCE Marketplace** revenue sharing percentages: **`36_Commercial_Constants.md`**.
 
-Venue Partner
-
- 80%
-
-GCE Platform
-
- 20%
+Flow: **`37_Revenue_Flow.md`**.
 
 Revenue distribution is calculated automatically.
 
- CBDP Rules
+ Connect BDP Rules
 
- Maximum 5 Business Circles.  
- Monthly Sales Target: ₹5,00,000.  
- Additional franchise available.  
- Finance option available.  
- Performance is continuously monitored.
+Circle limit, monthly sales target, and commission: **`36_Commercial_Constants.md`** (Connect BDP).
+Circle rules: **`38_Circle_Architecture.md`**.
+Additional franchise available.
+Finance option available.
+Performance is continuously monitored.
 
- MBDP Rules
+ Marketplace BDP Rules
 
- Maximum 20 Venue Partners per franchise.  
- Additional franchise required beyond 20 Venue Partners.  
- Franchise Fee: ₹50,000.  
- Training Fee: ₹5,000.  
- Finance option available.  
- Month 1 Revenue Target: ₹2,00,000.  
- Month 2 onwards Minimum Monthly Revenue Target: ₹5,00,000.
+Venue Partner limit, franchise/training fees, finance math, targets, and commission: **`36_Commercial_Constants.md`** (Marketplace BDP).
+Additional franchise required beyond the documented Venue Partner limit.
+Finance option available.
 
  Enterprise BDP Rules
 
- Franchise Fee required.  
- Finance option available.  
- Enterprise clients must be acquired through approved business channels.  
- Quotations are generated through the platform.  
+ Franchise Fee required — amount in **`36_Commercial_Constants.md`** (Enterprise BDP).
+ Finance option available.
+ Enterprise clients must be acquired through approved business channels.
+ Quotations are generated through the platform.
  Enterprise projects follow platform approval workflows.
 
  Venue Partner Rules
 
 Venue Partners must:
 
- Complete business verification.  
- Maintain accurate business information.  
- Deliver genuine offers.  
- Honor published campaigns.  
+ Complete business verification.
+ Maintain accurate business information.
+ Deliver genuine offers.
+ Honor published campaigns.
  Follow customer service standards.
 
  Event Rules
 
 Every event must include:
 
- Event Details  
- Venue  
- Date & Time  
- Capacity  
- Pricing  
+ Event Details
+ Venue
+ Date & Time
+ Capacity
+ Pricing
  Booking Information
 
 Bookings generate QR tickets.
@@ -253,9 +245,9 @@ Every booked ticket receives a unique QR code.
 
 QR codes:
 
- Are unique.  
- Can be scanned only once.  
- Cannot be duplicated.  
+ Are unique.
+ Can be scanned only once.
+ Cannot be duplicated.
  Expire after event completion.
 
  Payment Rules
@@ -264,10 +256,10 @@ All payments must be processed through approved payment gateways.
 
 Supported payment types include:
 
- Membership Payments  
- Event Bookings  
- Marketplace Payments  
- Franchise Payments  
+ Membership Payments
+ Event Bookings
+ Marketplace Payments
+ Franchise Payments
  Validation Fees
 
  Dashboard Rules
@@ -282,13 +274,13 @@ No stakeholder may access confidential information belonging to another role.
 
 The platform sends notifications for:
 
- Membership Expiry  
- Payments  
- Event Bookings  
- Lead Assignment  
- Offer Approval  
- Revenue Updates  
- Performance Alerts  
+ Membership Expiry
+ Payments
+ Event Bookings
+ Lead Assignment
+ Offer Approval
+ Revenue Updates
+ Performance Alerts
  System Announcements
 
  Data Security Rules
@@ -297,47 +289,47 @@ The platform follows strict security policies.
 
 Includes:
 
- JWT Authentication  
- RoleBased Access  
- Row Level Security (RLS)  
- Audit Logs  
- Encrypted Data  
+ JWT Authentication
+ RoleBased Access
+ Row Level Security (RLS)
+ Audit Logs
+ Encrypted Data
  Secure APIs
 
  Audit Rules
 
 Important activities are recorded, including:
 
- Login  
- Registration  
- Payments  
- Membership Purchases  
- Event Creation  
- Offer Creation  
- Lead Assignment  
- Revenue Distribution  
+ Login
+ Registration
+ Payments
+ Membership Purchases
+ Event Creation
+ Offer Creation
+ Lead Assignment
+ Revenue Distribution
  Dashboard Activity
 
  Compliance Rules
 
 All stakeholders are expected to:
 
- Follow platform policies.  
- Respect business ethics.  
- Maintain accurate information.  
- Avoid fraudulent activities.  
+ Follow platform policies.
+ Respect business ethics.
+ Maintain accurate information.
+ Avoid fraudulent activities.
  Cooperate with platform verification processes.
 
 Violation of business rules may result in:
 
- Warning  
- Temporary Restriction  
- Account Suspension  
- Permanent Removal  
+ Warning
+ Temporary Restriction
+ Account Suspension
+ Permanent Removal
  Legal Action (where applicable)
 
  LongTerm Vision
 
 The GCE Business Rule Engine is designed to ensure that every transaction, business interaction, membership, referral, marketplace activity, enterprise project, and AIpowered lead distribution follows a standardized, transparent, secure, and scalable framework.
 
-These rules form the operational foundation of the entire GCE Business Growth Ecosystem.  
+These rules form the operational foundation of the entire GCE Business Growth Ecosystem.

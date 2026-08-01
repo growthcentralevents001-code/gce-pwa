@@ -1,6 +1,32 @@
- Business Model
+# Business Model
 
- Overview
+## Authority
+
+**Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
+
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle).
+
+This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
+
+Official platform domain (FD-001): **growthcentralevents.com**.
+
+## Founder-approved platform principles (summary)
+
+- GCE is **one unified platform** (not separate disconnected apps per vertical).
+- Primary verticals: **GCE Connect**, **GCE Marketplace**, **GCE Enterprise**.
+- **One GCE account**; multiple compatible roles; **role-based workspaces** (a workspace is not a separate account).
+- BDP roles are **vertical-specific**; one BDP role does not automatically control another vertical.
+- Membership and Circle seat are **separate** concepts; membership does not automatically guarantee a Circle seat.
+- Circles are **GCE platform assets**; Connect BDP and Circle Board do **not** own Circles.
+- User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020).
+- Payment collection does **not** automatically mean settlement eligibility (FD-021).
+- Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.
+
+Do not invent missing commercial percentages, tax rates, or future revenue products. Future revenue categories in FD-001 are **not active** until separately approved.
+
+---
+
+Overview
 
 The GCE (Growth Central Events) Business Model is designed to create a sustainable business ecosystem by combining business networking, marketplace services, enterprise solutions, AIpowered lead distribution, memberships, and franchise operations into one integrated platform.
 
@@ -18,16 +44,16 @@ The networking and membership ecosystem.
 
 Purpose:
 
- Build professional business communities  
- Generate qualified referrals  
- Create structured networking  
- Increase member visibility  
+ Build professional business communities
+ Generate qualified referrals
+ Create structured networking
+ Increase member visibility
  Build longterm business relationships
 
 Revenue Sources:
 
- Membership Subscriptions  
- Circle Expansion  
+ Membership Subscriptions
+ Circle Expansion
  Business Networking Programs
 
  2\. GCE Marketplace
@@ -36,16 +62,16 @@ The marketplace ecosystem where verified businesses can promote products, servic
 
 Purpose:
 
- Help businesses acquire customers  
- Increase business visibility  
- Generate sales through promotional campaigns  
+ Help businesses acquire customers
+ Increase business visibility
+ Generate sales through promotional campaigns
  Support local businesses
 
 Revenue Sources:
 
- Marketplace Commissions  
- Offer Campaign Fees  
- Event Listing Fees  
+ Marketplace Commissions
+ Offer Campaign Fees
+ Event Listing Fees
  Venue Partnerships
 
  3\. GCE Enterprise
@@ -54,16 +80,16 @@ The corporate business division of GCE.
 
 Purpose:
 
- Manage corporate events  
- Organize conferences  
- Execute exhibitions  
+ Manage corporate events
+ Organize conferences
+ Execute exhibitions
  Provide enterprise event solutions
 
 Revenue Sources:
 
- Enterprise Projects  
- Corporate Event Management  
- Business Consulting  
+ Enterprise Projects
+ Corporate Event Management
+ Business Consulting
  Vendor Services
 
  Business Growth Strategy
@@ -72,12 +98,12 @@ The GCE business model focuses on creating recurring business opportunities thro
 
 The platform grows through:
 
- Membership Expansion  
- Business Referrals  
- Marketplace Growth  
- Enterprise Projects  
- Franchise Network Expansion  
- AIPowered Lead Distribution  
+ Membership Expansion
+ Business Referrals
+ Marketplace Growth
+ Enterprise Projects
+ Franchise Network Expansion
+ AIPowered Lead Distribution
  Community Building
 
  Business Lifecycle
@@ -122,27 +148,27 @@ Renewal & Retention
 
 The platform supports multiple industries including:
 
- Professional Services  
- Retail Businesses  
- Hospitality  
- Restaurants  
- Hotels  
- Banquet Halls  
- Healthcare  
- Education  
- Technology  
- Manufacturing  
- Real Estate  
- Financial Services  
- Legal Services  
- Home Services  
- Event Services  
+ Professional Services
+ Retail Businesses
+ Hospitality
+ Restaurants
+ Hotels
+ Banquet Halls
+ Healthcare
+ Education
+ Technology
+ Manufacturing
+ Real Estate
+ Financial Services
+ Legal Services
+ Home Services
+ Event Services
  Corporate Organizations
 
 Every business is classified using:
 
- Business Category  
- Business Tags  
+ Business Category
+ Business Tags
  Specialization Tags
 
 This allows the AI engine to accurately match business opportunities.
@@ -153,13 +179,13 @@ The GCE ecosystem generates revenue from multiple business channels.
 
 Primary revenue streams include:
 
- Membership Fees  
- Marketplace Revenue  
- Enterprise Revenue  
- Franchise Fees  
- Event Revenue Sharing  
- Venue Commissions  
- Marketplace Offer Campaigns  
+ Membership Fees
+ Marketplace Revenue
+ Enterprise Revenue
+ Franchise Fees
+ Event Revenue Sharing
+ Venue Commissions
+ Marketplace Offer Campaigns
  Business Services
 
 This diversified revenue model ensures longterm business sustainability.
@@ -168,13 +194,13 @@ This diversified revenue model ensures longterm business sustainability.
 
 The platform continuously tracks business performance using:
 
- Member Activity  
- Business Referrals  
- Revenue Generation  
- Attendance  
- Marketplace Performance  
- Enterprise Projects  
- AI Lead Distribution  
+ Member Activity
+ Business Referrals
+ Revenue Generation
+ Attendance
+ Marketplace Performance
+ Enterprise Projects
+ AI Lead Distribution
  Business Rankings
 
 This data is used to improve recommendations, rankings, and platform performance.
@@ -185,12 +211,12 @@ Artificial Intelligence is one of the core components of GCE.
 
 AI assists in:
 
- Business Matching  
- Circle Matching  
- Lead Routing  
- Referral Distribution  
- Opportunity Allocation  
- Business Recommendations  
+ Business Matching
+ Circle Matching
+ Lead Routing
+ Referral Distribution
+ Opportunity Allocation
+ Business Recommendations
  Performance Analysis
 
 The AI engine ensures fair and intelligent distribution of business opportunities across the ecosystem.
@@ -199,19 +225,19 @@ The AI engine ensures fair and intelligent distribution of business opportunitie
 
 The complete GCE ecosystem consists of interconnected business modules:
 
- Connect  
- Marketplace  
- Enterprise  
- Membership  
- AI Lead Assist  
- Referral Engine  
- Business Ranking  
- Offer Management  
- Event Management  
- Payment System  
- QR Ticketing  
- Dashboards  
- Notifications  
+ GCE Connect
+ GCE Marketplace
+ GCE Enterprise
+ Membership
+ AI Lead Assist
+ Referral Engine
+ Business Ranking
+ Offer Management
+ Event Management
+ Payment System
+ QR Ticketing
+ Dashboards
+ Notifications
  Analytics
 
 Each module operates independently while sharing a centralized database and business rules.
@@ -222,51 +248,51 @@ GCE creates value for every stakeholder by providing:
 
 For Users
 
- Business Opportunities  
- Professional Networking  
+ Business Opportunities
+ Professional Networking
  Verified Business Connections
 
 For Members
 
- Referrals  
- AI Lead Allocation  
+ Referrals
+ AI Lead Allocation
  Business Growth
 
 For Venue Partners
 
- Customer Acquisition  
- Event Hosting  
- Marketplace Visibility
+ Customer Acquisition
+ Event Hosting
+ GCE Marketplace Visibility
 
 For Businesses
 
- Marketing  
- Sales Growth  
+ Marketing
+ Sales Growth
  Customer Engagement
 
 For Corporate Clients
 
- Enterprise Event Solutions  
- Vendor Network  
+ Enterprise Event Solutions
+ Vendor Network
  Professional Execution
 
 For Franchise Partners
 
- Business Ownership Opportunity  
- Recurring Income  
+ Business Ownership Opportunity
+ Recurring Income
  Community Development
 
  LongTerm Business Vision
 
 The longterm objective of GCE is to build India's largest AIpowered Business Growth Ecosystem by integrating:
 
- Networking  
- Marketplace  
- Enterprise  
- AI  
- Business Communities  
- Referrals  
- Memberships  
+ Networking
+ GCE Marketplace
+ GCE Enterprise
+ AI
+ Business Communities
+ Referrals
+ Memberships
  Franchise Network
 
-into one scalable digital platform capable of supporting millions of businesses across India.  
+into one scalable digital platform capable of supporting millions of businesses across India.

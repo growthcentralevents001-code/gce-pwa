@@ -1,6 +1,12 @@
- User Flows
+# User Flows
 
- Overview
+## Authority
+
+**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023
+
+Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process.
+
+Overview
 
 This document defines the complete user journeys within the GCE (Growth Central Events) platform.
 
@@ -10,17 +16,17 @@ Every stakeholder follows a predefined workflow based on their role. These workf
 
 The GCE platform supports the following user journeys:
 
-1\. User Registration Flow  
-2\. Membership Purchase Flow  
-3\. Circle Member Flow  
-4\. Event Booking Flow  
-5\. Venue Partner Flow  
-6\. Marketplace Business Flow  
-7\. Enterprise Flow  
-8\. AI Lead Assist Flow  
-9\. CBDP Flow  
-10\. MBDP Flow  
-11\. Enterprise BDP Flow  
+1\. User Registration Flow
+2\. Membership Purchase Flow
+3\. Circle Member Flow
+4\. Event Booking Flow
+5\. Venue Partner Flow
+6\. Marketplace Business Flow
+7\. Enterprise Flow
+8\. AI Lead Assist Flow
+9\. Connect BDP Flow
+10\. Marketplace BDP Flow
+11\. Enterprise BDP Flow
 12\. Admin Flow
 
  1\. User Registration Flow
@@ -253,7 +259,7 @@ PRM Verification
 
 ↓
 
-₹500 Validation Fee
+Validation Fee: **`36_Commercial_Constants.md`** / **`39_AI_Lead_Assist_Spec.md`**
 
 ↓
 
@@ -279,9 +285,9 @@ Ground Verification
 
 Business Conversion
 
- 9\. CBDP Flow
+ 9\. Connect BDP Flow
 
-CBDP Login
+Connect BDP Login
 
 ↓
 
@@ -297,7 +303,7 @@ Membership Sales
 
 ↓
 
-Create Business Circle
+Create Business Circle (initiate request; platform validates/activates)
 
 ↓
 
@@ -311,9 +317,9 @@ Monthly Target
 
 Commission
 
- 10\. MBDP Flow
+ 10\. Marketplace BDP Flow
 
-MBDP Login
+Marketplace BDP Login
 
 ↓
 
@@ -535,4 +541,4 @@ Action Taken
 
 The GCE platform is designed around simple, rolebased user journeys that minimize complexity while maximizing productivity.
 
-Every stakeholder—from Users and Members to Venue Partners, Business Development Partners, Enterprise Teams, and Platform Administrators—follows a structured workflow that ensures consistency, automation, transparency, and business growth across the entire GCE ecosystem.  
+Every stakeholder—from Users and Members to Venue Partners, Business Development Partners, Enterprise Teams, and Platform Administrators—follows a structured workflow that ensures consistency, automation, transparency, and business growth across the entire GCE ecosystem.

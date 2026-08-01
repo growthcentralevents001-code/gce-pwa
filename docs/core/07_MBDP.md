@@ -1,183 +1,172 @@
-\# Marketplace Business Development Partner (MBDP)
+# GCE Marketplace Business Development Partner (Marketplace BDP)
 
-\#\# Overview
+## Authority
 
-The Marketplace Business Development Partner (MBDP) is responsible for expanding the GCE Marketplace ecosystem by onboarding Venue Partners, Shops, Hotels, Restaurants, Service Providers, and other verified businesses.
+**Platform model:** FD-001 · **RBAC:** FD-023 · **Settlement:** FD-021 · **Ledgers:** FD-020 · **Commercial numbers:** `36_Commercial_Constants.md`
 
-The primary objective of an MBDP is to increase Marketplace revenue by helping businesses promote events, offers, products, and services through the GCE platform.
+Approved role name: **GCE Marketplace Business Development Partner (Marketplace BDP)**. Legacy filename/label **MBDP** retained for compatibility.
 
-Unlike CBDPs, who focus on memberships and networking circles, MBDPs focus on business onboarding, marketplace growth, and revenue generation.
+Marketplace BDP authority is **vertical-specific**. Marketplace BDP must not automatically act as Venue Partner, release settlements, or issue refunds without explicit permission (FD-023). Settlement eligibility for Marketplace events follows completion + approved hold (FD-021), not payment alone. Commission is separately recorded; pending commission is not guaranteed payable.
 
-\---
+## Overview
 
-\# Primary Objectives
+The GCE Marketplace Business Development Partner (Marketplace BDP) is responsible for expanding the **GCE Marketplace** ecosystem by onboarding Venue Partners, Shops, Hotels, Restaurants, Service Providers, and other verified businesses.
 
-The main objectives of an MBDP are:
+The primary objective of a Marketplace BDP is to increase **GCE Marketplace** revenue by helping businesses promote events, offers, products, and services through the GCE platform.
 
-\- Expand GCE Marketplace  
-\- Onboard Venue Partners  
-\- Onboard Retail Shops  
-\- Increase Marketplace Revenue  
-\- Promote Marketplace Offers  
-\- Help Businesses Acquire Customers  
-\- Grow Business Listings
+Unlike Connect BDPs, who focus on memberships and networking circles in **GCE Connect**, Marketplace BDPs focus on business onboarding, marketplace growth, and revenue generation.
 
-\---
+---
 
-\# Businesses That Can Be Onboarded
+## Primary Objectives
 
-An MBDP can onboard any verified business, including:
+The main objectives of a Marketplace BDP are:
 
-\- Hotels  
-\- Restaurants  
-\- Banquet Halls  
-\- Resorts  
-\- Cafes  
-\- Coworking Spaces  
-\- Sweet Shops  
-\- Clothing Stores  
-\- Jewellery Stores  
-\- Electronics Stores  
-\- Furniture Stores  
-\- Grocery Stores  
-\- Medical Stores  
-\- Clinics  
-\- Gyms  
-\- Salons  
-\- Coaching Institutes  
-\- Service Providers  
-\- Retail Shops  
-\- Any Verified Business
+- Expand GCE Marketplace
+- Onboard Venue Partners
+- Onboard Retail Shops
+- Increase Marketplace Revenue
+- Promote Marketplace Offers
+- Help Businesses Acquire Customers
+- Grow Business Listings
 
-\---
+---
 
-\# Core Responsibilities
+## Businesses That Can Be Onboarded
 
-An MBDP is responsible for:
+A Marketplace BDP can onboard any verified business, including:
 
-\- Onboarding Venue Partners  
-\- Onboarding Shops & Retail Businesses  
-\- Creating Marketplace Listings  
-\- Helping Businesses Launch Offers  
-\- Supporting Marketplace Campaigns  
-\- Monitoring Venue Performance  
-\- Expanding Marketplace Coverage  
-\- Growing Monthly Revenue
+- Hotels
+- Restaurants
+- Banquet Halls
+- Resorts
+- Cafes
+- Coworking Spaces
+- Sweet Shops
+- Clothing Stores
+- Jewellery Stores
+- Electronics Stores
+- Furniture Stores
+- Grocery Stores
+- Medical Stores
+- Clinics
+- Gyms
+- Salons
+- Coaching Institutes
+- Service Providers
+- Retail Shops
+- Any Verified Business
 
-\---
+---
 
-\# Venue Partner Limit
+## Core Responsibilities
 
-Each MBDP can manage:
+A Marketplace BDP is responsible for:
 
-\- Maximum 20 Venue Partners
+- Onboarding Venue Partners
+- Onboarding Shops & Retail Businesses
+- Creating Marketplace Listings
+- Helping Businesses Launch Offers
+- Supporting Marketplace Campaigns
+- Monitoring Venue Performance
+- Expanding Marketplace Coverage
+- Growing Monthly Revenue
 
-If an MBDP wants to onboard more than 20 Venue Partners, an additional Marketplace Franchise must be purchased.
+---
 
-\---
+## Venue Partner Limit
 
-\# Franchise Model
+Each Marketplace BDP can manage a maximum number of Venue Partners per franchise defined in **`36_Commercial_Constants.md`** (Marketplace BDP → Max Venue Partners).
 
-Marketplace Franchise Fee
+If a Marketplace BDP wants to onboard more than the documented franchise limit, an additional Marketplace Franchise must be purchased.
 
-\- ₹50,000
+---
 
-Every franchise allows an MBDP to manage up to 20 Venue Partners.
+## Franchise Model
+
+Marketplace Franchise Fee and capacity: **`36_Commercial_Constants.md`** (Marketplace BDP franchise fee and venue limit).
 
 Additional Venue Partner capacity requires purchasing another franchise.
 
-\---
+---
 
-\# Finance Option
+## Finance Option
 
 If an eligible applicant cannot pay the full franchise fee, GCE may provide financing through an approved finance partner.
 
-\#\#\# Finance Rules
+### Finance Rules
 
-\- Initial Training Fee: ₹5,000 (Mandatory)  
-\- Remaining Franchise Amount can be financed.  
-\- Finance Company charges 20% on the financed amount.  
-\- Total repayment becomes ₹60,000.  
-\- Since the applicant has already paid ₹5,000 as the training fee, only ₹55,000 remains payable.  
-\- EMI deductions begin from the \*\*2nd month\*\*, because the 1st month's payment is already covered by the initial training fee.
+All training fee, finance charge, repayment totals, remaining payable, and EMI start month: **`36_Commercial_Constants.md`** (Marketplace BDP finance rows).
 
 Finance approval depends on eligibility and company policy.
 
-\---
+---
 
-\# Monthly Performance Target
+## Monthly Performance Target
 
-Every MBDP is expected to continuously grow Marketplace revenue.
+Every Marketplace BDP is expected to continuously grow Marketplace revenue.
 
-\#\#\# Revenue Targets
+### Revenue Targets
 
-Month 1
+Month 1 and Month 2+ targets: **`36_Commercial_Constants.md`** (Marketplace BDP revenue targets).
 
-\- ₹2,00,000 Revenue Target
+The platform continuously tracks monthly performance through the Marketplace BDP Dashboard.
 
-Month 2 Onwards
+---
 
-\- Minimum ₹5,00,000 Monthly Revenue Target
-
-The platform continuously tracks monthly performance through the MBDP Dashboard.
-
-\---
-
-\# Offer Campaign Rules
+## Offer Campaign Rules
 
 Every Venue Partner can create promotional campaigns through the GCE Marketplace.
 
-Minimum Campaign Revenue Value
-
-\- ₹50,000
+Minimum Campaign Revenue Value: **`36_Commercial_Constants.md`** (Offer / campaign constants).
 
 Examples include:
 
-\- Shopping Festivals  
-\- Seasonal Offers  
-\- Cashback Campaigns  
-\- Product Promotions  
-\- Customer Acquisition Campaigns
+- Shopping Festivals
+- Seasonal Offers
+- Cashback Campaigns
+- Product Promotions
+- Customer Acquisition Campaigns
 
-\---
+---
 
-\# Performance Monitoring
+## Performance Monitoring
 
-The platform evaluates MBDPs using business KPIs.
+The platform evaluates Marketplace BDPs using business KPIs.
 
 Performance indicators include:
 
-\- Venue Partner Growth  
-\- Marketplace Revenue  
-\- Active Businesses  
-\- Offer Campaign Performance  
-\- Customer Acquisition  
-\- Monthly Revenue  
-\- Business Expansion
+- Venue Partner Growth
+- Marketplace Revenue
+- Active Businesses
+- Offer Campaign Performance
+- Customer Acquisition
+- Monthly Revenue
+- Business Expansion
 
 If the expected business targets are not achieved consistently, the platform will initiate a performance review and send improvement notifications.
 
-\---
+---
 
-\# Dashboard Access
+## Dashboard Access
 
-Every MBDP receives a dedicated dashboard with access to:
+Every Marketplace BDP receives a dedicated dashboard with access to:
 
-\- Venue Partner Management  
-\- Marketplace Revenue  
-\- Business Listings  
-\- Offer Management  
-\- Campaign Analytics  
-\- Revenue Reports  
-\- Notifications  
-\- Franchise Management  
-\- Performance Dashboard
+- Venue Partner Management
+- Marketplace Revenue
+- Business Listings
+- Offer Management
+- Campaign Analytics
+- Revenue Reports
+- Notifications
+- Franchise Management
+- Performance Dashboard
 
-\---
+---
 
-\# Business Workflow
+## Business Workflow
 
-Typical MBDP workflow:
+Typical Marketplace BDP workflow:
 
 Lead Generation
 
@@ -217,39 +206,39 @@ Customer Acquisition
 
 Revenue Generation
 
-\---
+---
 
-\# Key Performance Indicators (KPIs)
+## Key Performance Indicators (KPIs)
 
-The platform measures MBDP performance using:
+The platform measures Marketplace BDP performance using:
 
-\- Monthly Revenue  
-\- Active Venue Partners  
-\- Marketplace Growth  
-\- Business Listings  
-\- Offer Campaign Success  
-\- Customer Acquisition  
-\- Revenue Retention
+- Monthly Revenue
+- Active Venue Partners
+- Marketplace Growth
+- Business Listings
+- Offer Campaign Success
+- Customer Acquisition
+- Revenue Retention
 
-\---
+---
 
-\# Benefits
+## Benefits
 
 Marketplace Business Development Partners receive:
 
-\- 10% Commission  
-\- Marketplace Business Income  
-\- Franchise Expansion Opportunities  
-\- Dedicated Dashboard  
-\- Business Growth  
-\- Performance Analytics  
-\- Training & Support  
-\- Long-Term Business Development Opportunities
+- Commission rate: **`36_Commercial_Constants.md`** (Marketplace BDP → Commission)
+- Marketplace Business Income
+- Franchise Expansion Opportunities
+- Dedicated Dashboard
+- Business Growth
+- Performance Analytics
+- Training & Support
+- Long-Term Business Development Opportunities
 
-\---
+---
 
-\# Long-Term Vision
+## Long-Term Vision
 
-The Marketplace Business Development Partner (MBDP) program is designed to build India's largest network of verified Marketplace businesses.
+The GCE Marketplace Business Development Partner (Marketplace BDP) program is designed to build India's largest network of verified Marketplace businesses.
 
-MBDPs help expand the GCE Marketplace by onboarding businesses, increasing customer acquisition, promoting verified offers, and generating sustainable monthly revenue while creating long-term value for both businesses and the GCE ecosystem.  
+Marketplace BDPs help expand the GCE Marketplace by onboarding businesses, increasing customer acquisition, promoting verified offers, and generating sustainable monthly revenue while creating long-term value for both businesses and the GCE ecosystem.

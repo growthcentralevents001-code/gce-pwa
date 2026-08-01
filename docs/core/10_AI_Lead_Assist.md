@@ -1,4 +1,13 @@
- AI Lead Assist
+# AI Lead Assist
+
+## Canonical references
+
+- **Complete AI Lead Assist specification (rules, lifecycle, fairness):** `39_AI_Lead_Assist_Spec.md`
+- **Fees and subscription credit amounts:** `36_Commercial_Constants.md`
+- **Circle context:** `38_Circle_Architecture.md`
+- **Roles:** `35_Role_Taxonomy.md`
+
+This file retains explanatory narrative. **Authoritative rules live in `39_AI_Lead_Assist_Spec.md`.**
 
  Overview
 
@@ -12,26 +21,26 @@ The objective is to ensure that every qualified business opportunity reaches the
 
 The AI Lead Assist system is designed to:
 
- Generate verified business leads  
- Eliminate fake enquiries  
- Improve lead quality  
- Match the right business with the right opportunity  
- Reward active business contributors  
- Increase business conversion  
- Maintain transparency  
+ Generate verified business leads
+ Eliminate fake enquiries
+ Improve lead quality
+ Match the right business with the right opportunity
+ Reward active business contributors
+ Increase business conversion
+ Maintain transparency
  Prevent duplicate lead distribution
 
  Lead Sources
 
 Business leads can originate from:
 
- GCE Public Website  
- Mobile Application  
- Marketplace  
- Enterprise Enquiries  
- Referral Network  
- QR Campaigns  
- Advertisement Campaigns  
+ GCE Public Website
+ Mobile Application
+ Marketplace
+ Enterprise Enquiries
+ Referral Network
+ QR Campaigns
+ Advertisement Campaigns
  Partner Integrations
 
  AI Lead Assist Workflow
@@ -44,19 +53,19 @@ A user visits the GCE platform and submits a business requirement.
 
 Examples:
 
- Need a Hotel  
- Need a Banquet Hall  
- Need an Interior Designer  
- Need a CA  
- Need a Wedding Planner  
+ Need a Hotel
+ Need a Banquet Hall
+ Need an Interior Designer
+ Need a CA
+ Need a Wedding Planner
  Need a Digital Marketing Agency
 
 The user submits:
 
- Requirement  
- Budget  
- Location  
- Timeline  
+ Requirement
+ Budget
+ Location
+ Timeline
  Contact Details
 
 The submission is completely free.
@@ -69,15 +78,15 @@ Before processing the lead, the user must upload:
 
 Examples:
 
- Aadhaar  
- Passport  
- Driving Licence  
+ Aadhaar
+ Passport
+ Driving Licence
  PAN (where applicable)
 
 Purpose:
 
- Prevent fake enquiries  
- Prevent spam  
+ Prevent fake enquiries
+ Prevent spam
  Verify genuine users
 
  Step 3 – PRM Validation
@@ -86,12 +95,12 @@ The Platform Relationship Manager (PRM) reviews every submitted requirement.
 
 The PRM verifies:
 
- Requirement authenticity  
- Budget  
- Timeline  
- Business category  
- Required specialization  
- Location  
+ Requirement authenticity
+ Budget
+ Timeline
+ Business category
+ Required specialization
+ Location
  Circle availability
 
 Only verified requirements proceed further.
@@ -100,14 +109,12 @@ Only verified requirements proceed further.
 
 Once the PRM approves the requirement, the platform sends the user a secure payment link.
 
-Validation Fee:
-
-₹500
+Validation Fee: **`36_Commercial_Constants.md`** / `39_AI_Lead_Assist_Spec.md`
 
 Purpose:
 
- Filter nonserious enquiries  
- Improve lead quality  
+ Filter nonserious enquiries
+ Improve lead quality
  Reduce fake requests
 
 After successful payment, the lead becomes active.
@@ -116,15 +123,15 @@ After successful payment, the lead becomes active.
 
 The AI engine analyzes:
 
- Business Category  
- Business Tags  
- Specialization Tags  
- City  
- Circle  
- Member Activity  
- Internal Giving Score  
- Referral History  
- Performance Score  
+ Business Category
+ Business Tags
+ Specialization Tags
+ City
+ Circle
+ Member Activity
+ Internal Giving Score
+ Referral History
+ Performance Score
  Availability
 
 The AI identifies the best eligible member.
@@ -135,8 +142,8 @@ The AI follows the Deficit Reward Model.
 
 Instead of giving every lead to the highestperforming member, the system identifies members who:
 
- Frequently give referrals  
- Actively participate  
+ Frequently give referrals
+ Actively participate
  Receive comparatively fewer business opportunities
 
 These members receive priority.
@@ -149,8 +156,8 @@ The selected member is known as the Rainmaker Giver.
 
 Responsibilities:
 
- Review the business requirement  
- Verify relevance  
+ Review the business requirement
+ Verify relevance
  Pass the lead to the most suitable noncompeting member within the circle
 
 This process promotes collaboration instead of competition.
@@ -187,74 +194,74 @@ Possible outcomes:
 
  Genuine Lead
 
- Lead accepted  
- Business discussion starts  
- Member receives ₹500 Subscription Credit
+ Lead accepted
+ Business discussion starts
+ Member receives subscription credit per **`36_Commercial_Constants.md`** / `39_AI_Lead_Assist_Spec.md`
 
  NonGenuine Lead
 
 If the enquiry is fake:
 
- Lead rejected  
- User account flagged  
- ₹500 Validation Fee forfeited  
+ Lead rejected
+ User account flagged
+ Validation Fee forfeited (amount in **`36_Commercial_Constants.md`)
  User ID blocked after repeated violations
 
  AI Decision Parameters
 
 The AI considers multiple factors:
 
- Business Category  
- Business Tags  
- Specialization Tags  
- Circle Membership  
- Business Ranking  
- Referral Score  
- Internal Giving Score  
- Attendance  
- Business Activity  
+ Business Category
+ Business Tags
+ Specialization Tags
+ Circle Membership
+ Business Ranking
+ Referral Score
+ Internal Giving Score
+ Attendance
+ Business Activity
  Geographic Location
 
  Dashboard Modules
 
 The AI Lead Assist Dashboard includes:
 
- New Leads  
- Assigned Leads  
- Passed Leads  
- Lead Status  
- Lead Verification  
- Lead History  
- AI Recommendations  
- Business Matching Score  
- Subscription Credit  
+ New Leads
+ Assigned Leads
+ Passed Leads
+ Lead Status
+ Lead Verification
+ Lead History
+ AI Recommendations
+ Business Matching Score
+ Subscription Credit
  Analytics
 
  Business Benefits
 
 For Users
 
- Verified Businesses  
- Faster Response  
+ Verified Businesses
+ Faster Response
  Better Service Quality
 
 For Members
 
- Qualified Leads  
- Fair Lead Distribution  
- AI Business Matching  
+ Qualified Leads
+ Fair Lead Distribution
+ AI Business Matching
  Increased Revenue
 
 For Platform
 
- Better Lead Quality  
- Reduced Spam  
- Higher Conversion Rate  
- Increased Trust  
+ Better Lead Quality
+ Reduced Spam
+ Higher Conversion Rate
+ Increased Trust
  Improved Member Satisfaction
 
  LongTerm Vision
 
 The AI Lead Assist engine is designed to become the intelligence layer of the GCE ecosystem.
 
-Its longterm goal is to create India's most trusted AIpowered business opportunity distribution system, where every verified business requirement is intelligently matched with the most suitable professional, ensuring fairness, transparency, and maximum business growth for the entire GCE community.  
+Its longterm goal is to create India's most trusted AIpowered business opportunity distribution system, where every verified business requirement is intelligently matched with the most suitable professional, ensuring fairness, transparency, and maximum business growth for the entire GCE community.

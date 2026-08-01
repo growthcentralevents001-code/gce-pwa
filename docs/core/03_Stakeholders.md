@@ -1,6 +1,12 @@
- Stakeholders
+# Stakeholders
 
- Overview
+## Authority
+
+**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Commercial numbers:** `36_Commercial_Constants.md`
+
+Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023).
+
+Overview
 
 The GCE (Growth Central Events) ecosystem consists of multiple stakeholders, each playing a specific role in building, managing, and growing the platform.
 
@@ -8,26 +14,26 @@ Every stakeholder has dedicated responsibilities, permissions, dashboards, workf
 
  Stakeholder Hierarchy
 
-\`\`\`  
-Platform Admin  
-        │  
-        ├──────── Board of Governance  
-        │  
-        ├──────── Relationship Managers (RM)  
-        │  
-        ├──────── Platform Relationship Managers (PRM)  
-        │  
-        ├──────── Connect Business Development Partners (CBDP)  
-        │  
-        ├──────── Marketplace Business Development Partners (MBDP)  
-        │  
-        ├──────── Enterprise Business Development Partners (Enterprise BDP)  
-        │  
-        ├──────── Venue Partners  
-        │  
-        ├──────── Circle Members  
-        │  
-        └──────── Users  
+\`\`\`
+Platform Admin
+        │
+        ├──────── Board of Governance
+        │
+        ├──────── Relationship Managers (RM)
+        │
+        ├──────── Platform Relationship Managers (PRM)
+        │
+        ├──────── GCE Connect Business Development Partners (Connect BDP)
+        │
+        ├──────── GCE Marketplace Business Development Partners (Marketplace BDP)
+        │
+        ├──────── Enterprise Business Development Partners (Enterprise BDP)
+        │
+        ├──────── Venue Partners
+        │
+        ├──────── Circle Members
+        │
+        └──────── Users
 \`\`\`
 
  1\. User
@@ -38,161 +44,155 @@ They interact with GCE to discover events, connect with businesses, claim offers
 
  Responsibilities
 
- Register on GCE  
- Explore Events  
- Book Events  
- Purchase Memberships  
- Claim Marketplace Offers  
- Submit Business Requirements  
+ Register on GCE
+ Explore Events
+ Book Events
+ Purchase Memberships
+ Claim Marketplace Offers
+ Submit Business Requirements
  Connect with Businesses
 
  Benefits
 
- Verified Business Network  
- Business Opportunities  
- Marketplace Offers  
- Event Access  
+ Verified Business Network
+ Business Opportunities
+ Marketplace Offers
+ Event Access
  Business Community
 
  2\. Circle Member
 
-Circle Members are professionals and business owners who participate in GCE Connect.
+Circle Members are professionals and business owners who participate in **GCE Connect**.
 
 Each member belongs to a business circle with category exclusivity.
 
  Responsibilities
 
- Attend Meetings  
- Give Referrals  
- Receive Referrals  
- Build Business Relationships  
- Participate in Networking  
+ Attend Meetings
+ Give Referrals
+ Receive Referrals
+ Build Business Relationships
+ Participate in Networking
  Maintain Business Profile
 
  Benefits
 
- Qualified Referrals  
- AI Lead Distribution  
- Business Growth  
- Business Visibility  
+ Qualified Referrals
+ AI Lead Distribution
+ Business Growth
+ Business Visibility
  Professional Networking
 
  3\. Venue Partner
 
-Venue Partners provide venues, products, services, and promotional offers through the GCE Marketplace.
+Venue Partners provide venues, products, services, and promotional offers through **GCE Marketplace**.
 
  Examples
 
- Hotels  
- Restaurants  
- Banquet Halls  
- Resorts  
- Clubs  
- Coworking Spaces  
- Sweet Shops  
- Clothing Stores  
- Jewellery Stores  
- Electronics Stores  
- Furniture Stores  
- Home Decor Stores  
- Salons  
- Gyms  
- Clinics  
- Coaching Institutes  
- Retail Shops  
+ Hotels
+ Restaurants
+ Banquet Halls
+ Resorts
+ Clubs
+ Coworking Spaces
+ Sweet Shops
+ Clothing Stores
+ Jewellery Stores
+ Electronics Stores
+ Furniture Stores
+ Home Decor Stores
+ Salons
+ Gyms
+ Clinics
+ Coaching Institutes
+ Retail Shops
  Any Verified Business
 
  Responsibilities
 
- Host Events  
- Launch Offers  
- Manage Venue Profile  
- Accept Bookings  
- Generate Sales  
+ Host Events
+ Launch Offers
+ Manage Venue Profile
+ Accept Bookings
+ Generate Sales
  Acquire Customers
 
  Benefits
 
- Business Visibility  
- Customer Acquisition  
- Marketplace Promotion  
+ Business Visibility
+ Customer Acquisition
+ Marketplace Promotion
  Revenue Growth
 
- 4\. Connect Business Development Partner (CBDP)
+ 4\. GCE Connect Business Development Partner (Connect BDP)
 
-CBDPs are responsible for expanding the GCE Connect ecosystem.
+Connect BDPs are responsible for expanding the **GCE Connect** ecosystem.
 
  Responsibilities
 
- Build Business Circles  
- Recruit Members  
- Increase Membership Sales  
- Manage Circle Performance  
- Conduct Business Development  
+ Build Business Circles
+ Recruit Members
+ Increase Membership Sales
+ Manage Circle Performance
+ Conduct Business Development
  Support Members
 
  Business Rules
 
- Maximum 5 Business Circles  
- ₹5,00,000 Monthly Sales Target  
- 20% Commission  
- Additional Franchise Reservation Available  
- Finance Option Available
+ Numeric limits, targets, and commission: **`36_Commercial_Constants.md`** (Connect BDP section).
+ Narrative and workflow: `06_CBDP.md`.
+ Circle capacity rules: `38_Circle_Architecture.md`.
 
  Benefits
 
- Commission Income  
- Business Expansion  
- Franchise Growth  
+ Commission Income
+ Business Expansion
+ Franchise Growth
  Leadership Opportunities
 
- 5\. Marketplace Business Development Partner (MBDP)
+ 5\. GCE Marketplace Business Development Partner (Marketplace BDP)
 
-MBDPs develop the Marketplace business network.
+Marketplace BDPs develop the **GCE Marketplace** business network.
 
  Responsibilities
 
- Onboard Venue Partners  
- Expand Marketplace Coverage  
- Increase Marketplace Revenue  
- Launch Business Offers  
+ Onboard Venue Partners
+ Expand Marketplace Coverage
+ Increase Marketplace Revenue
+ Launch Business Offers
  Support Venue Partners
 
  Business Rules
 
- Maximum 20 Venue Partners  
- Additional Franchise Available  
- Finance Option Available  
- RevenueBased Performance Monitoring
+ Numeric limits, fees, targets, and commission: **`36_Commercial_Constants.md`** (Marketplace BDP section).
+ Narrative and workflow: `07_MBDP.md`.
 
  Benefits
 
- Commission Income  
- Marketplace Growth  
+ Commission Income
+ GCE Marketplace Growth
  Business Development Opportunities
 
  6\. Enterprise Business Development Partner (Enterprise BDP)
 
-Enterprise BDPs are responsible for acquiring corporate clients and expanding the Enterprise business.
+Enterprise BDPs are responsible for acquiring corporate clients and expanding **GCE Enterprise**.
 
  Responsibilities
 
- Corporate Client Acquisition  
- Enterprise Business Development  
- Enterprise Sales  
+ Corporate Client Acquisition
+ Enterprise Business Development
+ Enterprise Sales
  Business Relationship Development
 
  Business Rules
 
- Franchise Fee Required  
- Finance Option Available  
- Corporate Revenue Targets  
- Performance Monitoring
+ Franchise fee and undocumented commercial gaps: **`36_Commercial_Constants.md`** (Enterprise BDP section).
+ Narrative and workflow: `08_Enterprise_BDP.md`.
 
  Benefits
 
- Enterprise Commission  
- Corporate Network  
+ Enterprise Commission
+ Corporate Network
  HighValue Business Opportunities
 
  7\. Platform Relationship Manager (PRM)
@@ -201,16 +201,16 @@ PRMs are salaried employees responsible for validating and qualifying business r
 
  Responsibilities
 
- Verify Business Requirements  
- Validate User Information  
- Match Business Categories  
- Verify Specialization Tags  
+ Verify Business Requirements
+ Validate User Information
+ Match Business Categories
+ Verify Specialization Tags
  Approve Qualified Leads
 
  Benefits
 
- Platform Operations  
- Quality Assurance  
+ Platform Operations
+ Quality Assurance
  Business Verification
 
  8\. Relationship Manager (RM)
@@ -219,17 +219,17 @@ Relationship Managers provide operational support to all stakeholders.
 
  Responsibilities
 
- Training  
- Followup  
- Communication  
- Issue Resolution  
- Member Support  
+ Training
+ Followup
+ Communication
+ Issue Resolution
+ Member Support
  Business Assistance
 
  Benefits
 
- Community Development  
- Member Success  
+ Community Development
+ Member Success
  Platform Support
 
  9\. Board of Governance
@@ -238,17 +238,17 @@ The Board of Governance manages and maintains the quality of individual GCE Conn
 
  Responsibilities
 
- Circle Governance  
- Membership Approval  
- Dispute Resolution  
- Community Standards  
- Performance Monitoring  
+ Circle Governance
+ Membership Approval
+ Dispute Resolution
+ Community Standards
+ Performance Monitoring
  Circle Quality Management
 
  Benefits
 
- Strong Business Community  
- High Network Quality  
+ Strong Business Community
+ High Network Quality
  Transparent Governance
 
  10\. Platform Administrator
@@ -257,20 +257,20 @@ The Platform Administrator has complete control over the GCE ecosystem.
 
  Responsibilities
 
- User Management  
- Stakeholder Management  
- Dashboard Management  
- Revenue Monitoring  
- Reports & Analytics  
- Franchise Management  
- Platform Configuration  
- Business Monitoring  
+ User Management
+ Stakeholder Management
+ Dashboard Management
+ Revenue Monitoring
+ Reports & Analytics
+ Franchise Management
+ Platform Configuration
+ Business Monitoring
  System Administration
 
  Benefits
 
- Complete Platform Control  
- Business Intelligence  
+ Complete Platform Control
+ Business Intelligence
  Operational Management
 
  RoleBased Access
@@ -281,9 +281,9 @@ No stakeholder can access another stakeholder's confidential information unless 
 
 This ensures:
 
- Data Privacy  
- Security  
- Accountability  
+ Data Privacy
+ Security
+ Accountability
  Operational Transparency
 
  Stakeholder Ecosystem
@@ -296,9 +296,9 @@ Circle Members build business relationships.
 
 Venue Partners generate marketplace activity.
 
-CBDPs expand networking communities.
+Connect BDPs expand networking communities.
 
-MBDPs grow the marketplace.
+Marketplace BDPs grow the marketplace.
 
 Enterprise BDPs acquire corporate business.
 
@@ -310,4 +310,4 @@ Board of Governance maintains circle quality.
 
 Platform Administrators manage the complete platform.
 
-Together, these stakeholders create a sustainable, AIpowered Business Growth Ecosystem.  
+Together, these stakeholders create a sustainable, AIpowered Business Growth Ecosystem.

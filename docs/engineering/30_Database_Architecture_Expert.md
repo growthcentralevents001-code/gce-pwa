@@ -12,12 +12,31 @@ This document defines the database engineering standards Cursor must follow thro
 
 \---
 
+
+
+\---
+
+\# Founder Decision Authority
+
+Business meaning of roles, membership, Circles, and financial ledgers is governed by Founder Decisions:
+
+\- FD-001 — unified platform / one account
+\- FD-020 — Wallet and internal ledgers
+\- FD-021 — settlement eligibility
+\- FD-022 — membership lifecycle
+\- FD-023 — RBAC / least privilege
+\- FD-024 — Circle lifecycle and seats
+
+Exact database enums, RLS policy SQL, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it.
+
+Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\*.
+
 \# Project Context
 
 The complete database schema already exists in:
 
-\`\`\`  
-11\_Database.md  
+\`\`\`
+11\_Database.md
 \`\`\`
 
 Do not recreate the database schema.
@@ -30,7 +49,7 @@ Instead, use this document to understand \*\*how to implement, optimize, secure,
 
 Always use:
 
-\- Supabase  
+\- Supabase
 \- PostgreSQL
 
 Never replace PostgreSQL unless explicitly instructed.
@@ -41,11 +60,11 @@ Never replace PostgreSQL unless explicitly instructed.
 
 Every database decision should prioritize:
 
-\- Scalability  
-\- Security  
-\- Performance  
-\- Data Integrity  
-\- Maintainability  
+\- Scalability
+\- Security
+\- Performance
+\- Data Integrity
+\- Maintainability
 \- Consistency
 
 Never sacrifice data integrity for convenience.
@@ -56,12 +75,12 @@ Never sacrifice data integrity for convenience.
 
 Always:
 
-\- Normalize data where appropriate.  
-\- Use foreign keys.  
-\- Use indexes where necessary.  
-\- Use UUIDs for primary keys.  
-\- Use timestamps on important tables.  
-\- Avoid duplicated data.  
+\- Normalize data where appropriate.
+\- Use foreign keys.
+\- Use indexes where necessary.
+\- Use UUIDs for primary keys.
+\- Use timestamps on important tables.
+\- Avoid duplicated data.
 \- Maintain referential integrity.
 
 \---
@@ -70,14 +89,14 @@ Always:
 
 Use:
 
-\`\`\`  
-UUID  
+\`\`\`
+UUID
 \`\`\`
 
 Example
 
-\`\`\`  
-id UUID PRIMARY KEY  
+\`\`\`
+id UUID PRIMARY KEY
 \`\`\`
 
 Avoid integer auto-increment IDs unless specifically required.
@@ -90,8 +109,8 @@ Use proper relationships.
 
 Examples:
 
-\- One-to-One  
-\- One-to-Many  
+\- One-to-One
+\- One-to-Many
 \- Many-to-Many
 
 Always enforce relationships using foreign keys.
@@ -106,14 +125,14 @@ Every related table should have proper foreign key constraints.
 
 Example
 
-\`\`\`  
+\`\`\`
 user\_id
 
 venue\_id
 
 event\_id
 
-membership\_id  
+membership\_id
 \`\`\`
 
 Never store unrelated IDs without relationships.
@@ -126,20 +145,20 @@ Tables
 
 Use:
 
-\`\`\`  
-snake\_case  
+\`\`\`
+snake\_case
 \`\`\`
 
 Example
 
-\`\`\`  
+\`\`\`
 users
 
 events
 
 venue\_partners
 
-payments  
+payments
 \`\`\`
 
 \---
@@ -148,20 +167,20 @@ Columns
 
 Use:
 
-\`\`\`  
-snake\_case  
+\`\`\`
+snake\_case
 \`\`\`
 
 Example
 
-\`\`\`  
+\`\`\`
 created\_at
 
 updated\_at
 
 phone\_number
 
-membership\_type  
+membership\_type
 \`\`\`
 
 \---
@@ -170,10 +189,10 @@ membership\_type
 
 Every major table should include:
 
-\`\`\`  
+\`\`\`
 created\_at
 
-updated\_at  
+updated\_at
 \`\`\`
 
 Use UTC time.
@@ -186,8 +205,8 @@ Prefer soft deletes over permanent deletion.
 
 Example
 
-\`\`\`  
-deleted\_at  
+\`\`\`
+deleted\_at
 \`\`\`
 
 This allows data recovery and audit tracking.
@@ -202,10 +221,10 @@ Every table should have appropriate policies.
 
 Example:
 
-\- User can view only their own profile.  
-\- Venue Partner can manage only their own venues.  
-\- CBDP can view only assigned circles.  
-\- Admin has full access.
+\- User can view only their own profile.
+\- Venue Partner can manage only their own venues.
+\- Connect BDP can view only assigned Circles (FD-023 / FD-024).
+\- Platform Administrator has only \*\*assigned department-scoped\*\* access — no default universal god mode (FD-023).
 
 Never disable RLS in production.
 
@@ -229,15 +248,16 @@ Role-Based Access Control (RBAC)
 
 Roles include:
 
-\- Admin  
-\- Super Admin  
-\- User  
-\- Venue Partner  
-\- CBDP  
-\- MBDP  
-\- Enterprise BDP  
-\- Board of Governance  
-\- Circle Member
+\- Platform Administrator (department-scoped; FD-023)
+\- Super Admin (\*\*Future / Pending Founder Approval\*\* — not current by default)
+\- Registered User
+\- Venue Partner
+\- Connect BDP (legacy label CBDP may appear in code/paths — pending migration mapping)
+\- Marketplace BDP (legacy label MBDP may appear in code/paths — pending migration mapping)
+\- Enterprise BDP
+\- Board of Governance
+\- Circle Member / GCE Connect Member
+\- Enterprise Client (distinct from Enterprise BDP)
 
 Permissions should always be enforced on both the frontend and backend.
 
@@ -247,15 +267,15 @@ Permissions should always be enforced on both the frontend and backend.
 
 Queries should be:
 
-\- Efficient  
-\- Indexed  
-\- Optimized  
+\- Efficient
+\- Indexed
+\- Optimized
 \- Secure
 
 Never:
 
-\- Fetch unnecessary columns.  
-\- Use SELECT \* in production.  
+\- Fetch unnecessary columns.
+\- Use SELECT \* in production.
 \- Run unindexed queries on large tables.
 
 \---
@@ -264,11 +284,11 @@ Never:
 
 Create indexes for:
 
-\- Foreign Keys  
-\- Frequently searched fields  
-\- Email  
-\- Phone  
-\- Status  
+\- Foreign Keys
+\- Frequently searched fields
+\- Email
+\- Phone
+\- Status
 \- Created Date
 
 Avoid excessive indexing.
@@ -281,9 +301,9 @@ Use database transactions for operations involving multiple tables.
 
 Examples:
 
-\- Membership Purchase  
-\- Event Booking  
-\- Payment Processing  
+\- Membership Purchase
+\- Event Booking
+\- Payment Processing
 \- Referral Rewards
 
 Ensure all operations either complete successfully or roll back.
@@ -308,10 +328,10 @@ Supabase Storage
 
 Examples:
 
-\- Profile Photos  
-\- Event Images  
-\- Venue Images  
-\- Documents  
+\- Profile Photos
+\- Event Images
+\- Venue Images
+\- Documents
 \- Certificates
 
 Never store binary files inside PostgreSQL tables.
@@ -322,7 +342,7 @@ Never store binary files inside PostgreSQL tables.
 
 Database access should always follow this flow:
 
-\`\`\`  
+\`\`\`
 Frontend
 
 ↓
@@ -335,7 +355,7 @@ Service Layer
 
 ↓
 
-Database  
+Database
 \`\`\`
 
 Never access the database directly from UI components.
@@ -346,10 +366,10 @@ Never access the database directly from UI components.
 
 Use Supabase Edge Functions for:
 
-\- Secure server-side logic  
-\- Payment processing  
-\- Scheduled jobs  
-\- AI workflows  
+\- Secure server-side logic
+\- Payment processing
+\- Scheduled jobs
+\- AI workflows
 \- Third-party integrations
 
 Avoid exposing sensitive logic to the frontend.
@@ -360,10 +380,10 @@ Avoid exposing sensitive logic to the frontend.
 
 Always optimize:
 
-\- Query execution  
-\- Database indexes  
-\- Pagination  
-\- Search  
+\- Query execution
+\- Database indexes
+\- Pagination
+\- Search
 \- Joins
 
 Prefer pagination over loading large datasets.
@@ -376,7 +396,7 @@ Use efficient search strategies.
 
 For large datasets:
 
-\- Indexed searches  
+\- Indexed searches
 \- Full-text search where appropriate
 
 Avoid expensive wildcard queries.
@@ -389,10 +409,10 @@ Large datasets must support pagination.
 
 Examples:
 
-\- Events  
-\- Venues  
-\- Users  
-\- Payments  
+\- Events
+\- Venues
+\- Users
+\- Payments
 \- Notifications
 
 Never load thousands of rows at once.
@@ -405,11 +425,11 @@ Maintain audit logs for critical operations.
 
 Examples:
 
-\- Login  
-\- Role Changes  
-\- Membership Purchase  
-\- Payment  
-\- Venue Approval  
+\- Login
+\- Role Changes
+\- Membership Purchase
+\- Payment
+\- Venue Approval
 \- Offer Creation
 
 Audit logs should not be editable.
@@ -420,8 +440,8 @@ Audit logs should not be editable.
 
 Database should support:
 
-\- Daily backups  
-\- Point-in-time recovery  
+\- Daily backups
+\- Point-in-time recovery
 \- Disaster recovery
 
 Never rely on manual backups.
@@ -432,9 +452,9 @@ Never rely on manual backups.
 
 Protect:
 
-\- User Information  
-\- Payment Information  
-\- Authentication Data  
+\- User Information
+\- Payment Information
+\- Authentication Data
 \- Business Data
 
 Never expose sensitive fields in API responses.
@@ -445,8 +465,8 @@ Never expose sensitive fields in API responses.
 
 Keep separate databases for:
 
-\- Development  
-\- Staging  
+\- Development
+\- Staging
 \- Production
 
 Never test on production data.
@@ -457,10 +477,10 @@ Never test on production data.
 
 Database should support AI features such as:
 
-\- Lead Matching  
-\- Smart Recommendations  
-\- Personalized Events  
-\- Offer Suggestions  
+\- Lead Matching
+\- Smart Recommendations
+\- Personalized Events
+\- Offer Suggestions
 \- Analytics
 
 AI should only access authorized data.
@@ -471,26 +491,26 @@ AI should only access authorized data.
 
 Before modifying the database:
 
-\- Read 11\_Database.md.  
-\- Understand existing relationships.  
-\- Preserve referential integrity.  
-\- Maintain normalization.  
-\- Follow RLS policies.  
-\- Optimize queries.  
-\- Avoid duplicate tables.  
-\- Avoid duplicate columns.  
-\- Never remove existing relationships without approval.  
+\- Read 11\_Database.md.
+\- Understand existing relationships.
+\- Preserve referential integrity.
+\- Maintain normalization.
+\- Follow RLS policies.
+\- Optimize queries.
+\- Avoid duplicate tables.
+\- Avoid duplicate columns.
+\- Never remove existing relationships without approval.
 \- Prefer extending existing tables over creating unnecessary new ones.
 
 Whenever creating a new table:
 
 Ensure it includes:
 
-\- UUID Primary Key  
-\- created\_at  
-\- updated\_at  
-\- Proper Foreign Keys  
-\- Appropriate Indexes  
+\- UUID Primary Key
+\- created\_at
+\- updated\_at
+\- Proper Foreign Keys
+\- Appropriate Indexes
 \- RLS Policies
 
 \---
@@ -499,14 +519,14 @@ Ensure it includes:
 
 Never:
 
-\- Disable RLS.  
-\- Use SELECT \* in production.  
-\- Store passwords.  
-\- Duplicate data unnecessarily.  
-\- Create circular relationships.  
-\- Store files inside database tables.  
-\- Ignore indexing.  
-\- Ignore transactions.  
+\- Disable RLS.
+\- Use SELECT \* in production.
+\- Store passwords.
+\- Duplicate data unnecessarily.
+\- Create circular relationships.
+\- Store files inside database tables.
+\- Ignore indexing.
+\- Ignore transactions.
 \- Expose sensitive data.
 
 \---
@@ -515,11 +535,11 @@ Never:
 
 Every database implementation should:
 
-\- Be scalable.  
-\- Be secure.  
-\- Be normalized.  
-\- Be performant.  
-\- Be easy to maintain.  
+\- Be scalable.
+\- Be secure.
+\- Be normalized.
+\- Be performant.
+\- Be easy to maintain.
 \- Integrate seamlessly with the existing GCE database.
 
-Cursor should think like a Senior Database Architect, making decisions that prioritize long-term scalability, security, data integrity, and maintainability.  
+Cursor should think like a Senior Database Architect, making decisions that prioritize long-term scalability, security, data integrity, and maintainability.

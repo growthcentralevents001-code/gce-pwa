@@ -73,6 +73,15 @@ Location: `docs/core/`
 | 24 | `24_Deployment_Architecture.md` | Deployment architecture |
 | 25 | `25_Environment_Configuration.md` | Environment configuration |
 | 26 | `26_Error_Handling.md` | Error handling strategy |
+| 35 | `35_Role_Taxonomy.md` | Canonical role taxonomy + Role Mapping (legacy → current → DB enum → dashboard → permissions) |
+| 36 | `36_Commercial_Constants.md` | Canonical commercial constants (fees, commissions, limits, targets) |
+| 37 | `37_Revenue_Flow.md` | Canonical revenue flows across GCE Connect / GCE Marketplace / GCE Enterprise |
+| 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture |
+| 39 | `39_AI_Lead_Assist_Spec.md` | Canonical AI Lead Assist specification |
+
+## Numbering note
+
+Core documents `35`–`39` are **canonical business sources of truth** added after the original `00`–`26` set. Engineering docs remain `27`–`34`. Prefer the canonical docs when narrative files disagree on roles, numbers, circles, revenue flow, or AI Lead Assist.
 
 ## Engineering Documentation Files
 
@@ -103,6 +112,7 @@ Location: `.cursor/rules/`
 | `05_Security_Rules.mdc` | Security rules. Enforce authentication, authorization, data protection, validation, and security best practices across the stack. |
 | `06_Performance_Rules.mdc` | Performance optimization rules for frontend, backend, database, APIs, and infrastructure. |
 | `07_AI_Rules.mdc` | AI development rules. Follow AI architecture, Lead Assist workflows, business rules, and AI decision logic for AI-powered functionality. |
+| `08_21st_Dev_MCP.mdc` | 21st.dev MCP is search-only inspiration; no generate/install without explicit approval. |
 
 ## Cursor Skills
 
@@ -132,14 +142,29 @@ Always follow the Motion documentation when implementing frontend animations.
 
 Cursor must always follow this order before generating or modifying code:
 
-1. `.cursor/rules/`
-2. `docs/core/`
-3. `docs/engineering/`
-4. `design-system/MASTER.md`
-5. `.cursor/skills/`
-6. Official Next.js Documentation (`node_modules/next/dist/docs/`)
+1. `docs/founder-decisions/` (Founder Decisions — highest business authority)
+2. Founder Approved Business Specification (if present)
+3. `docs/core/`
+4. `.cursor/rules/`
+5. `docs/engineering/`
+6. `design-system/MASTER.md`
+7. `.cursor/skills/`
+8. Official Next.js Documentation (`node_modules/next/dist/docs/`)
 
-If documents overlap, higher-priority sources win. This matches `AGENTS.md`.
+If documents overlap, higher-priority sources win. This matches `AGENTS.md`. **Never amend a Founder Decision to match older docs.**
+
+## Founder Decisions
+
+Location: `docs/founder-decisions/`
+
+| File | Owns |
+|------|------|
+| `FD-001_Business_Model.md` | Foundational GCE business model |
+| `FD-020_Financial_and_Wallet_Architecture.md` | Wallet + internal ledger principles |
+| `FD-021_Settlement_Engine.md` | Settlement triggers and operations |
+| `FD-022_Membership_Lifecycle.md` | Membership lifecycle |
+| `FD-023_RBAC_and_Permissions.md` | RBAC, permissions, workspaces |
+| `FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
 
 ## Development Workflow
 
@@ -148,9 +173,11 @@ Before writing code, Cursor should follow this workflow:
 ```text
 Read AGENTS.md
 ↓
-Read Cursor Rules (.cursor/rules/)
+Read applicable Founder Decisions (docs/founder-decisions/)
 ↓
 Read Core Documentation (docs/core/)
+↓
+Read Cursor Rules (.cursor/rules/)
 ↓
 Read Engineering Documentation (docs/engineering/)
 ↓
@@ -174,17 +201,33 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.0.0 |
-| Last Updated | 2026-07-22 |
-| Total Core Documents | 27 |
+| Documentation Version | v1.2.0 |
+| Last Updated | 2026-08-01 |
+| Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
-| Total Cursor Rules | 8 |
+| Total Cursor Rules | 9 |
+| Total Founder Decisions | 6 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 38 |
+| Total Documentation Files (`docs/`) | 49 |
 
-Total documentation files under `docs/` = 27 core + 8 engineering + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 38.
+Total documentation files under `docs/` = 32 core + 8 engineering + 6 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 49.
 
 ## Changelog
+
+### v1.2.0
+
+- Indexed six Founder Decisions (FD-001, FD-020–FD-024) as highest business authority
+- Synchronised core Markdown documentation with Founder Decisions (membership, Circles, RBAC, wallet/settlement, terminology)
+- Updated documentation priority order to place Founder Decisions first (aligned with `AGENTS.md`)
+
+### v1.1.0
+
+- Added canonical core docs: `35_Role_Taxonomy.md`, `36_Commercial_Constants.md`, `37_Revenue_Flow.md`, `38_Circle_Architecture.md`, `39_AI_Lead_Assist_Spec.md`
+- Deduplicated commercial numbers and AI Lead Assist rules into canonical sources; partner docs now reference them
+- Documented Role Mapping (legacy ZBP/BDM/etc. → current → DB enum → dashboard → permissions)
+- Standardized vertical naming: GCE Connect, GCE Marketplace, GCE Enterprise
+- Listed `08_21st_Dev_MCP.mdc` in Cursor Rules inventory
+- Updated indexes (`README.md`, `Docs_Guide.md`, `AGENTS.md`, business/AI Cursor Rules)
 
 ### v1.0.0
 

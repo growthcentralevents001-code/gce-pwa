@@ -1,6 +1,6 @@
-\---  
-description: Business rules for the GCE platform. Always consult the appropriate business documentation before implementing or modifying any business-related feature.  
-alwaysApply: false  
+\---
+description: Business rules for the GCE platform. Always consult the appropriate business documentation before implementing or modifying any business-related feature.
+alwaysApply: false
 \---
 
 \# GCE Business Rules
@@ -15,29 +15,66 @@ Never invent, simplify, or modify business workflows unless explicitly instructe
 
 \---
 
+\# Canonical Sources of Truth
+
+Highest business authority — Founder Decisions:
+
+\- \`docs/founder-decisions/FD-001_Business_Model.md\`
+\- \`docs/founder-decisions/FD-020_Financial_and_Wallet_Architecture.md\`
+\- \`docs/founder-decisions/FD-021_Settlement_Engine.md\`
+\- \`docs/founder-decisions/FD-022_Membership_Lifecycle.md\`
+\- \`docs/founder-decisions/FD-023_RBAC_and_Permissions.md\`
+\- \`docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md\`
+
+Then living cores:
+
+\- Roles / legacy mapping: \`35\_Role\_Taxonomy.md\`
+\- Commercial numbers: \`36\_Commercial\_Constants.md\`
+\- Revenue flows: \`37\_Revenue\_Flow.md\`
+\- Circles: \`38\_Circle\_Architecture.md\` (defers to FD-024)
+\- AI Lead Assist: \`39\_AI\_Lead\_Assist\_Spec.md\`
+
+Always use full vertical names: GCE Connect, GCE Marketplace, GCE Enterprise.
+Approved BDP short names: Connect BDP, Marketplace BDP, Enterprise BDP.
+Never invent Unresolved / Pending Founder Approval items.
+
+\---
+
 \# Business Documentation
 
 The following documentation defines the business behaviour of the platform.
 
 Always consult the relevant document before writing business logic.
 
-\`\`\`  
-01\_GCE\_Overview.md  
-02\_Business\_Model.md  
-03\_Stakeholders.md  
-04\_Revenue\_Model.md  
-05\_Memberships.md  
-06\_CBDP.md  
-07\_MBDP.md  
-08\_Enterprise\_BDP.md  
-09\_Venue\_Partner.md  
-10\_AI\_Lead\_Assist.md  
-14\_Business\_Rules.md  
-18\_User\_Flows.md  
-20\_Notifications.md  
-21\_Payments.md  
-22\_AI\_Rules.md  
-23\_Analytics\_Reports.md  
+\`\`\`
+docs/founder-decisions/FD-001_Business_Model.md
+docs/founder-decisions/FD-020_Financial_and_Wallet_Architecture.md
+docs/founder-decisions/FD-021_Settlement_Engine.md
+docs/founder-decisions/FD-022_Membership_Lifecycle.md
+docs/founder-decisions/FD-023_RBAC_and_Permissions.md
+docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
+35\_Role\_Taxonomy.md
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+38\_Circle\_Architecture.md
+39\_AI\_Lead\_Assist\_Spec.md
+01\_GCE\_Overview.md
+02\_Business\_Model.md
+03\_Stakeholders.md
+04\_Revenue\_Model.md
+05\_Memberships.md
+06\_CBDP.md
+07\_MBDP.md
+08\_Enterprise\_BDP.md
+09\_Venue\_Partner.md
+10\_AI\_Lead\_Assist.md
+14\_Business\_Rules.md
+18\_User\_Flows.md
+19\_Permissions\_Roles.md
+20\_Notifications.md
+21\_Payments.md
+22\_AI\_Rules.md
+23\_Analytics\_Reports.md
 \`\`\`
 
 \---
@@ -46,10 +83,10 @@ Always consult the relevant document before writing business logic.
 
 Whenever implementing a feature:
 
-1\. Identify the business area.  
-2\. Read the relevant documentation.  
-3\. Understand the workflow.  
-4\. Implement the documented behaviour.  
+1\. Identify the business area.
+2\. Read the relevant documentation.
+3\. Understand the workflow.
+4\. Implement the documented behaviour.
 5\. Do not assume missing requirements.
 
 \---
@@ -60,18 +97,20 @@ Whenever implementing a feature:
 
 Whenever working on:
 
-\- Membership Plans  
-\- Membership Benefits  
-\- Membership Pricing  
-\- Subscription Logic  
+\- Membership Plans
+\- Membership Benefits
+\- Membership Pricing
+\- Subscription Logic
 \- Member Upgrades
 
 Read:
 
-\`\`\`  
-05\_Memberships.md  
-04\_Revenue\_Model.md  
-14\_Business\_Rules.md  
+\`\`\`
+05\_Memberships.md
+36\_Commercial\_Constants.md
+38\_Circle\_Architecture.md
+04\_Revenue\_Model.md
+14\_Business\_Rules.md
 \`\`\`
 
 \---
@@ -80,56 +119,65 @@ Read:
 
 Whenever working on:
 
-\- CBDP  
-\- Business Development  
-\- Circle Creation  
-\- Circle Expansion  
+\- CBDP
+\- Business Development
+\- Circle Creation
+\- Circle Expansion
 \- CBDP Dashboard
 
 Read:
 
-\`\`\`  
-06\_CBDP.md  
-14\_Business\_Rules.md  
-18\_User\_Flows.md  
+\`\`\`
+06\_CBDP.md
+35\_Role\_Taxonomy.md
+36\_Commercial\_Constants.md
+38\_Circle\_Architecture.md
+14\_Business\_Rules.md
+18\_User\_Flows.md
 \`\`\`
 
 \---
 
-\#\# Marketplace
+\#\# GCE Marketplace
 
 Whenever working on:
 
-\- Marketplace  
-\- Venue Onboarding  
-\- Offers  
-\- Cashback  
+\- GCE Marketplace
+\- Venue Onboarding
+\- Offers
+\- Cashback
 \- Coupons
 
 Read:
 
-\`\`\`  
-07\_MBDP.md  
-09\_Venue\_Partner.md  
-04\_Revenue\_Model.md  
-14\_Business\_Rules.md  
+\`\`\`
+07\_MBDP.md
+09\_Venue\_Partner.md
+35\_Role\_Taxonomy.md
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+04\_Revenue\_Model.md
+14\_Business\_Rules.md
 \`\`\`
 
 \---
 
-\#\# Enterprise
+\#\# GCE Enterprise
 
 Whenever working on:
 
-\- Enterprise Clients  
-\- Corporate Events  
-\- Enterprise Dashboard
+\- GCE Enterprise Clients
+\- Corporate Events
+\- GCE Enterprise Dashboard
 
 Read:
 
-\`\`\`  
-08\_Enterprise\_BDP.md  
-14\_Business\_Rules.md  
+\`\`\`
+08\_Enterprise\_BDP.md
+35\_Role\_Taxonomy.md
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+14\_Business\_Rules.md
 \`\`\`
 
 \---
@@ -138,17 +186,20 @@ Read:
 
 Whenever working on:
 
-\- Venue Registration  
-\- Venue Management  
-\- Venue Dashboard  
+\- Venue Registration
+\- Venue Management
+\- Venue Dashboard
 \- Venue Earnings
 
 Read:
 
-\`\`\`  
-09\_Venue\_Partner.md  
-04\_Revenue\_Model.md  
-14\_Business\_Rules.md  
+\`\`\`
+09\_Venue\_Partner.md
+35\_Role\_Taxonomy.md
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+04\_Revenue\_Model.md
+14\_Business\_Rules.md
 \`\`\`
 
 \---
@@ -157,17 +208,19 @@ Read:
 
 Whenever working on:
 
-\- Lead Routing  
-\- Lead Matching  
-\- Lead Distribution  
+\- Lead Routing
+\- Lead Matching
+\- Lead Distribution
 \- AI Recommendations
 
 Read:
 
-\`\`\`  
-10\_AI\_Lead\_Assist.md  
-22\_AI\_Rules.md  
-18\_User\_Flows.md  
+\`\`\`
+39\_AI\_Lead\_Assist\_Spec.md
+10\_AI\_Lead\_Assist.md
+22\_AI\_Rules.md
+36\_Commercial\_Constants.md
+18\_User\_Flows.md
 \`\`\`
 
 \---
@@ -176,18 +229,20 @@ Read:
 
 Whenever working on:
 
-\- Payments  
-\- Wallet  
-\- Refunds  
-\- Revenue Distribution  
+\- Payments
+\- Wallet
+\- Refunds
+\- Revenue Distribution
 \- Commissions
 
 Read:
 
-\`\`\`  
-21\_Payments.md  
-04\_Revenue\_Model.md  
-14\_Business\_Rules.md  
+\`\`\`
+21\_Payments.md
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+04\_Revenue\_Model.md
+14\_Business\_Rules.md
 \`\`\`
 
 \---
@@ -196,16 +251,16 @@ Read:
 
 Whenever working on:
 
-\- Email  
-\- SMS  
-\- Push Notifications  
+\- Email
+\- SMS
+\- Push Notifications
 \- In-App Notifications
 
 Read:
 
-\`\`\`  
-20\_Notifications.md  
-18\_User\_Flows.md  
+\`\`\`
+20\_Notifications.md
+18\_User\_Flows.md
 \`\`\`
 
 \---
@@ -218,9 +273,9 @@ Identify the dashboard role first.
 
 Then consult:
 
-\`\`\`  
-12\_Dashboards.md  
-18\_User\_Flows.md  
+\`\`\`
+12\_Dashboards.md
+18\_User\_Flows.md
 \`\`\`
 
 \---
@@ -229,17 +284,17 @@ Then consult:
 
 Whenever working on:
 
-\- Reports  
-\- KPIs  
-\- Revenue Reports  
-\- Dashboards  
+\- Reports
+\- KPIs
+\- Revenue Reports
+\- Dashboards
 \- Statistics
 
 Read:
 
-\`\`\`  
-23\_Analytics\_Reports.md  
-04\_Revenue\_Model.md  
+\`\`\`
+23\_Analytics\_Reports.md
+04\_Revenue\_Model.md
 \`\`\`
 
 \---
@@ -250,8 +305,10 @@ Never calculate commissions manually.
 
 Always follow:
 
-\`\`\`  
-04\_Revenue\_Model.md  
+\`\`\`
+36\_Commercial\_Constants.md
+37\_Revenue\_Flow.md
+04\_Revenue\_Model.md
 \`\`\`
 
 Revenue calculations must match the documented business model.
@@ -264,8 +321,8 @@ Whenever implementing workflows involving multiple user actions:
 
 Read:
 
-\`\`\`  
-18\_User\_Flows.md  
+\`\`\`
+18\_User\_Flows.md
 \`\`\`
 
 Do not change the documented sequence of actions.
@@ -276,15 +333,15 @@ Do not change the documented sequence of actions.
 
 Whenever implementing:
 
-\- Validation Rules  
-\- Platform Restrictions  
-\- Membership Conditions  
+\- Validation Rules
+\- Platform Restrictions
+\- Membership Conditions
 \- Platform Behaviour
 
 Always read:
 
-\`\`\`  
-14\_Business\_Rules.md  
+\`\`\`
+14\_Business\_Rules.md
 \`\`\`
 
 This document takes precedence over assumptions.
@@ -297,10 +354,10 @@ Whenever implementing AI-powered functionality:
 
 Always follow:
 
-\`\`\`  
+\`\`\`
+39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
-
-22\_AI\_Rules.md  
+22\_AI\_Rules.md
 \`\`\`
 
 Never invent AI decision-making logic.
@@ -313,8 +370,16 @@ Whenever implementing permissions, dashboards, workflows or ownership:
 
 Read:
 
-\`\`\`  
-03\_Stakeholders.md  
+\`\`\`
+docs/founder-decisions/FD-001_Business_Model.md
+docs/founder-decisions/FD-020_Financial_and_Wallet_Architecture.md
+docs/founder-decisions/FD-021_Settlement_Engine.md
+docs/founder-decisions/FD-022_Membership_Lifecycle.md
+docs/founder-decisions/FD-023_RBAC_and_Permissions.md
+docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
+35\_Role\_Taxonomy.md
+03\_Stakeholders.md
+19\_Permissions\_Roles.md
 \`\`\`
 
 Ensure each stakeholder only has access to documented responsibilities.
@@ -325,9 +390,9 @@ Ensure each stakeholder only has access to documented responsibilities.
 
 Business documentation always overrides:
 
-\- Existing implementation  
-\- AI assumptions  
-\- Previous conversations  
+\- Existing implementation
+\- AI assumptions
+\- Previous conversations
 \- Generated code
 
 If documentation and code differ:
@@ -358,13 +423,13 @@ Always verify:
 
 Never:
 
-\- Invent business rules.  
-\- Modify commission calculations.  
-\- Skip documented workflows.  
-\- Change user journeys.  
-\- Bypass business validation.  
-\- Hardcode business values.  
-\- Ignore stakeholder responsibilities.  
+\- Invent business rules.
+\- Modify commission calculations.
+\- Skip documented workflows.
+\- Change user journeys.
+\- Bypass business validation.
+\- Hardcode business values.
+\- Ignore stakeholder responsibilities.
 \- Implement undocumented business behaviour.
 
 \---
@@ -375,4 +440,4 @@ Every business feature implemented in the GCE platform must faithfully follow th
 
 Documentation is the single source of truth.
 
-When in doubt, read the relevant business documentation before writing code.  
+When in doubt, read the relevant business documentation before writing code.

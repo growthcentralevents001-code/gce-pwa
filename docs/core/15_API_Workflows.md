@@ -1,6 +1,21 @@
- API Workflows
+# API Workflows
 
- Overview
+## Authority
+
+**FD-001** — unified platform; one GCE account; verticals.
+**FD-023** — RBAC / least privilege / no automatic cross-role authority.
+**FD-021** — payment success ≠ settlement eligibility.
+**FD-022** — membership activation ≠ automatic Circle seat.
+**FD-024** — Connect BDP initiates Circles; platform activates.
+**FD-020** — financial ledgers (API must not treat Wallet as one undifferentiated ledger).
+
+Exact route paths, permission codes, and API contracts remain **Pending Technical Design** where not implemented. Legacy path segments such as `/api/cbdp/**` or `/api/mbdp/**` are **technical compatibility labels** pending explicit route/role migration mapping — preferred product names are **Connect BDP** and **Marketplace BDP**.
+
+Do not imply separate login accounts per role, administrator god mode, or that RM/PRM APIs grant automatic financial authority.
+
+---
+
+Overview
 
 The GCE platform follows a modular REST API architecture where every business module communicates through secure APIs.
 
@@ -10,7 +25,7 @@ Each stakeholder only has access to APIs permitted for their role.
 
  API Architecture
 
-\`\`\`  
+\`\`\`
 Frontend (Next.js PWA)
 
 ↓
@@ -31,15 +46,15 @@ Supabase Database
 
 ↓
 
-Response  
+Response
 \`\`\`
 
  Authentication APIs
 
  Register User
 
-\`\`\`  
-POST /api/auth/register  
+\`\`\`
+POST /api/auth/register
 \`\`\`
 
 Purpose
@@ -48,20 +63,20 @@ Purpose
 
 Request
 
- Name  
- Mobile  
- Email  
+ Name
+ Mobile
+ Email
  Password
 
 Response
 
- User Created  
+ User Created
  Verification Required
 
  Login
 
-\`\`\`  
-POST /api/auth/login  
+\`\`\`
+POST /api/auth/login
 \`\`\`
 
 Purpose
@@ -70,15 +85,15 @@ Purpose
 
 Response
 
- JWT Token  
- Refresh Token  
- User Profile  
+ JWT Token
+ Refresh Token
+ User Profile
  User Role
 
  Logout
 
-\`\`\`  
-POST /api/auth/logout  
+\`\`\`
+POST /api/auth/logout
 \`\`\`
 
 Purpose
@@ -87,362 +102,362 @@ Purpose
 
  Forgot Password
 
-\`\`\`  
-POST /api/auth/forgotpassword  
+\`\`\`
+POST /api/auth/forgotpassword
 \`\`\`
 
  Reset Password
 
-\`\`\`  
-POST /api/auth/resetpassword  
+\`\`\`
+POST /api/auth/resetpassword
 \`\`\`
 
  User APIs
 
  Get Profile
 
-\`\`\`  
-GET /api/user/profile  
+\`\`\`
+GET /api/user/profile
 \`\`\`
 
  Update Profile
 
-\`\`\`  
-PUT /api/user/profile  
+\`\`\`
+PUT /api/user/profile
 \`\`\`
 
  Upload Profile Image
 
-\`\`\`  
-POST /api/user/avatar  
+\`\`\`
+POST /api/user/avatar
 \`\`\`
 
  Business Profile
 
-\`\`\`  
-PUT /api/user/business  
+\`\`\`
+PUT /api/user/business
 \`\`\`
 
  Membership APIs
 
  Membership Plans
 
-\`\`\`  
-GET /api/memberships/plans  
+\`\`\`
+GET /api/memberships/plans
 \`\`\`
 
  Purchase Membership
 
-\`\`\`  
-POST /api/memberships/purchase  
+\`\`\`
+POST /api/memberships/purchase
 \`\`\`
 
  Renew Membership
 
-\`\`\`  
-POST /api/memberships/renew  
+\`\`\`
+POST /api/memberships/renew
 \`\`\`
 
  Membership History
 
-\`\`\`  
-GET /api/memberships/history  
+\`\`\`
+GET /api/memberships/history
 \`\`\`
 
  Event APIs
 
  Get Events
 
-\`\`\`  
-GET /api/events  
+\`\`\`
+GET /api/events
 \`\`\`
 
  Event Details
 
-\`\`\`  
-GET /api/events/{id}  
+\`\`\`
+GET /api/events/{id}
 \`\`\`
 
  Create Event
 
-\`\`\`  
-POST /api/events  
+\`\`\`
+POST /api/events
 \`\`\`
 
 Venue/Admin Only
 
  Update Event
 
-\`\`\`  
-PUT /api/events/{id}  
+\`\`\`
+PUT /api/events/{id}
 \`\`\`
 
  Delete Event
 
-\`\`\`  
-DELETE /api/events/{id}  
+\`\`\`
+DELETE /api/events/{id}
 \`\`\`
 
  Booking APIs
 
  Book Event
 
-\`\`\`  
-POST /api/bookings  
+\`\`\`
+POST /api/bookings
 \`\`\`
 
  Booking Details
 
-\`\`\`  
-GET /api/bookings/{id}  
+\`\`\`
+GET /api/bookings/{id}
 \`\`\`
 
  Cancel Booking
 
-\`\`\`  
-PUT /api/bookings/cancel  
+\`\`\`
+PUT /api/bookings/cancel
 \`\`\`
 
  Booking History
 
-\`\`\`  
-GET /api/bookings/history  
+\`\`\`
+GET /api/bookings/history
 \`\`\`
 
  QR Ticket APIs
 
  Generate Ticket
 
-\`\`\`  
-POST /api/ticket/generate  
+\`\`\`
+POST /api/ticket/generate
 \`\`\`
 
  Scan Ticket
 
-\`\`\`  
-POST /api/ticket/scan  
+\`\`\`
+POST /api/ticket/scan
 \`\`\`
 
  Verify Ticket
 
-\`\`\`  
-POST /api/ticket/verify  
+\`\`\`
+POST /api/ticket/verify
 \`\`\`
 
  Marketplace APIs
 
  Business Listing
 
-\`\`\`  
-POST /api/marketplace/business  
+\`\`\`
+POST /api/marketplace/business
 \`\`\`
 
  Get Businesses
 
-\`\`\`  
-GET /api/marketplace/businesses  
+\`\`\`
+GET /api/marketplace/businesses
 \`\`\`
 
  Marketplace Offers
 
-\`\`\`  
-GET /api/marketplace/offers  
+\`\`\`
+GET /api/marketplace/offers
 \`\`\`
 
  Create Offer
 
-\`\`\`  
-POST /api/marketplace/offers  
+\`\`\`
+POST /api/marketplace/offers
 \`\`\`
 
  Update Offer
 
-\`\`\`  
-PUT /api/marketplace/offers/{id}  
+\`\`\`
+PUT /api/marketplace/offers/{id}
 \`\`\`
 
  Delete Offer
 
-\`\`\`  
-DELETE /api/marketplace/offers/{id}  
+\`\`\`
+DELETE /api/marketplace/offers/{id}
 \`\`\`
 
  Venue APIs
 
  Venue Registration
 
-\`\`\`  
-POST /api/venue/register  
+\`\`\`
+POST /api/venue/register
 \`\`\`
 
  Venue Dashboard
 
-\`\`\`  
-GET /api/venue/dashboard  
+\`\`\`
+GET /api/venue/dashboard
 \`\`\`
 
  Venue Analytics
 
-\`\`\`  
-GET /api/venue/analytics  
+\`\`\`
+GET /api/venue/analytics
 \`\`\`
 
  Venue Revenue
 
-\`\`\`  
-GET /api/venue/revenue  
+\`\`\`
+GET /api/venue/revenue
 \`\`\`
 
- CBDP APIs
+ Connect BDP APIs (legacy path prefix `/api/cbdp` — pending migration mapping)
 
  Dashboard
 
-\`\`\`  
-GET /api/cbdp/dashboard  
+\`\`\`
+GET /api/cbdp/dashboard
 \`\`\`
 
  Members
 
-\`\`\`  
-GET /api/cbdp/members  
+\`\`\`
+GET /api/cbdp/members
 \`\`\`
 
  Circles
 
-\`\`\`  
-GET /api/cbdp/circles  
+\`\`\`
+GET /api/cbdp/circles
 \`\`\`
 
  Membership Sales
 
-\`\`\`  
-GET /api/cbdp/sales  
+\`\`\`
+GET /api/cbdp/sales
 \`\`\`
 
  Commission
 
-\`\`\`  
-GET /api/cbdp/commission  
+\`\`\`
+GET /api/cbdp/commission
 \`\`\`
 
- MBDP APIs
+ Marketplace BDP APIs (legacy path prefix `/api/mbdp` — pending migration mapping)
 
  Dashboard
 
-\`\`\`  
-GET /api/mbdp/dashboard  
+\`\`\`
+GET /api/mbdp/dashboard
 \`\`\`
 
  Venue Partners
 
-\`\`\`  
-GET /api/mbdp/venuepartners  
+\`\`\`
+GET /api/mbdp/venuepartners
 \`\`\`
 
  Marketplace Revenue
 
-\`\`\`  
-GET /api/mbdp/revenue  
+\`\`\`
+GET /api/mbdp/revenue
 \`\`\`
 
  Offer Analytics
 
-\`\`\`  
-GET /api/mbdp/offers  
+\`\`\`
+GET /api/mbdp/offers
 \`\`\`
 
  Franchise Details
 
-\`\`\`  
-GET /api/mbdp/franchise  
+\`\`\`
+GET /api/mbdp/franchise
 \`\`\`
 
  Enterprise APIs
 
  Dashboard
 
-\`\`\`  
-GET /api/enterprise/dashboard  
+\`\`\`
+GET /api/enterprise/dashboard
 \`\`\`
 
  Enterprise Clients
 
-\`\`\`  
-GET /api/enterprise/clients  
+\`\`\`
+GET /api/enterprise/clients
 \`\`\`
 
  Projects
 
-\`\`\`  
-GET /api/enterprise/projects  
+\`\`\`
+GET /api/enterprise/projects
 \`\`\`
 
  Create Quotation
 
-\`\`\`  
-POST /api/enterprise/quotation  
+\`\`\`
+POST /api/enterprise/quotation
 \`\`\`
 
  Vendor & Venue Quotation
 
-\`\`\`  
-POST /api/enterprise/sendquotation  
+\`\`\`
+POST /api/enterprise/sendquotation
 \`\`\`
 
  AI Lead Assist APIs
 
  Submit Requirement
 
-\`\`\`  
-POST /api/leads/create  
+\`\`\`
+POST /api/leads/create
 \`\`\`
 
  Upload ID
 
-\`\`\`  
-POST /api/leads/uploadid  
+\`\`\`
+POST /api/leads/uploadid
 \`\`\`
 
  Lead Validation
 
-\`\`\`  
-POST /api/leads/validate  
+\`\`\`
+POST /api/leads/validate
 \`\`\`
 
 PRM Only
 
  Validation Payment
 
-\`\`\`  
-POST /api/leads/payment  
+\`\`\`
+POST /api/leads/payment
 \`\`\`
 
  AI Matching
 
-\`\`\`  
-POST /api/leads/assign  
+\`\`\`
+POST /api/leads/assign
 \`\`\`
 
 System Only
 
  Pass Lead
 
-\`\`\`  
-POST /api/leads/pass  
+\`\`\`
+POST /api/leads/pass
 \`\`\`
 
 Rainmaker Giver Only
 
  Lead Status
 
-\`\`\`  
-GET /api/leads/status  
+\`\`\`
+GET /api/leads/status
 \`\`\`
 
  Ground Verification
 
-\`\`\`  
-POST /api/leads/verify  
+\`\`\`
+POST /api/leads/verify
 \`\`\`
 
  Dashboard APIs
@@ -451,156 +466,156 @@ Each stakeholder has dedicated dashboard endpoints.
 
 Examples
 
-\`\`\`  
-GET /api/admin/dashboard  
-GET /api/user/dashboard  
-GET /api/member/dashboard  
-GET /api/venue/dashboard  
-GET /api/venueadmin/dashboard  
-GET /api/cbdp/dashboard  
-GET /api/mbdp/dashboard  
-GET /api/enterprise/dashboard  
-GET /api/prm/dashboard  
-GET /api/rm/dashboard  
-GET /api/governance/dashboard  
+\`\`\`
+GET /api/admin/dashboard
+GET /api/user/dashboard
+GET /api/member/dashboard
+GET /api/venue/dashboard
+GET /api/venueadmin/dashboard
+GET /api/cbdp/dashboard
+GET /api/mbdp/dashboard
+GET /api/enterprise/dashboard
+GET /api/prm/dashboard
+GET /api/rm/dashboard
+GET /api/governance/dashboard
 \`\`\`
 
  Notification APIs
 
  Get Notifications
 
-\`\`\`  
-GET /api/notifications  
+\`\`\`
+GET /api/notifications
 \`\`\`
 
  Mark as Read
 
-\`\`\`  
-PUT /api/notifications/read  
+\`\`\`
+PUT /api/notifications/read
 \`\`\`
 
  Push Notifications
 
-\`\`\`  
-POST /api/notifications/push  
+\`\`\`
+POST /api/notifications/push
 \`\`\`
 
  Payment APIs
 
  Create Payment
 
-\`\`\`  
-POST /api/payments/create  
+\`\`\`
+POST /api/payments/create
 \`\`\`
 
  Verify Payment
 
-\`\`\`  
-POST /api/payments/verify  
+\`\`\`
+POST /api/payments/verify
 \`\`\`
 
  Payment History
 
-\`\`\`  
-GET /api/payments/history  
+\`\`\`
+GET /api/payments/history
 \`\`\`
 
  Wallet
 
-\`\`\`  
-GET /api/wallet  
+\`\`\`
+GET /api/wallet
 \`\`\`
 
  Reports APIs
 
-\`\`\`  
-GET /api/reports  
-GET /api/reports/export  
-GET /api/analytics  
+\`\`\`
+GET /api/reports
+GET /api/reports/export
+GET /api/analytics
 \`\`\`
 
  Admin APIs
 
 Platform Admin can manage:
 
- Users  
- Members  
- Venue Partners  
- CBDPs  
- MBDPs  
- Enterprise BDPs  
- Events  
- Offers  
- Memberships  
- Payments  
- AI Lead Assist  
- Reports  
+ Users
+ Members
+ Venue Partners
+ Connect BDPs
+ Marketplace BDPs
+ Enterprise BDPs
+ Events
+ Offers
+ Memberships
+ Payments
+ AI Lead Assist
+ Reports
  Settings
 
 Examples
 
-\`\`\`  
-GET /api/admin/users  
-GET /api/admin/members  
-GET /api/admin/venues  
-GET /api/admin/events  
-GET /api/admin/payments  
-GET /api/admin/reports  
+\`\`\`
+GET /api/admin/users
+GET /api/admin/members
+GET /api/admin/venues
+GET /api/admin/events
+GET /api/admin/payments
+GET /api/admin/reports
 \`\`\`
 
  API Security
 
 Every API follows:
 
- JWT Authentication  
- RoleBased Access Control (RBAC)  
- HTTPS Only  
- Request Validation  
- Rate Limiting  
- Input Sanitization  
- Audit Logging  
+ JWT Authentication
+ RoleBased Access Control (RBAC)
+ HTTPS Only
+ Request Validation
+ Rate Limiting
+ Input Sanitization
+ Audit Logging
  Secure Headers
 
  Standard API Response
 
 Successful Response
 
-\`\`\`json  
-{  
-  "success": true,  
-  "message": "Request completed successfully.",  
-  "data": {}  
-}  
+\`\`\`json
+{
+  "success": true,
+  "message": "Request completed successfully.",
+  "data": {}
+}
 \`\`\`
 
 Error Response
 
-\`\`\`json  
-{  
-  "success": false,  
-  "message": "Something went wrong.",  
-  "error": {}  
-}  
+\`\`\`json
+{
+  "success": false,
+  "message": "Something went wrong.",
+  "error": {}
+}
 \`\`\`
 
  Future APIs
 
 Future modules will include APIs for:
 
- AI Recommendations  
- Loyalty & Rewards  
- Wallet & Credits  
- Subscription Credits  
- CRM  
- Marketing Automation  
- Chat & Messaging  
- Video Meetings  
- Digital Contracts  
- Vendor Marketplace  
+ AI Recommendations
+ Loyalty & Rewards
+ Wallet & Credits
+ Subscription Credits
+ CRM
+ Marketing Automation
+ Chat & Messaging
+ Video Meetings
+ Digital Contracts
+ Vendor Marketplace
  Business Ranking
 
  LongTerm Vision
 
 The GCE API architecture is designed as a scalable, modular, and secure service layer that powers every module of the platform.
 
-Each API follows standardized authentication, validation, and business rules, allowing seamless communication between the Next.js PWA, Supabase database, AI Lead Assist engine, dashboards, and future integrations while supporting millions of users and businesses across the GCE ecosystem.  
+Each API follows standardized authentication, validation, and business rules, allowing seamless communication between the Next.js PWA, Supabase database, AI Lead Assist engine, dashboards, and future integrations while supporting millions of users and businesses across the GCE ecosystem.

@@ -1,6 +1,12 @@
- Revenue Model
+# Revenue Model
 
- Overview
+## Authority
+
+**Business model:** FD-001 · **Ledgers:** FD-020 · **Settlement:** FD-021 · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+
+Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Future revenue categories in FD-001 are inactive until separately approved. Tax rates: do not invent.
+
+Overview
 
 The GCE (Growth Central Events) Revenue Model is designed to generate sustainable recurring income while creating value for every stakeholder within the ecosystem.
 
@@ -14,15 +20,15 @@ The GCE ecosystem generates revenue from multiple independent business channels.
 
  Primary Revenue Streams
 
- Membership Subscriptions  
- Marketplace Revenue  
- Enterprise Revenue  
- Venue Partner Revenue  
- Event Revenue Sharing  
- Franchise Fees  
- Offer Management  
- Business Services  
- Advertising & Promotions (Future)  
+ Membership Subscriptions
+ Marketplace Revenue
+ Enterprise Revenue
+ Venue Partner Revenue
+ Event Revenue Sharing
+ Franchise Fees
+ Offer Management
+ Business Services
+ Advertising & Promotions (Future)
  Premium Platform Services (Future)
 
  1\. Membership Revenue
@@ -35,64 +41,49 @@ Members pay a quarterly subscription to participate in business networking, refe
 
  Associate Membership
 
- Quarterly Subscription  
- Local Circle Access  
- Business Networking  
+ Quarterly Subscription
+ Local Circle Access
+ Business Networking
  Referral Opportunities
 
  Core Membership
 
- Quarterly Subscription  
- Nationwide Business Opportunities  
- Premium Visibility  
+ Quarterly Subscription
+ Nationwide Business Opportunities
+ Premium Visibility
  Additional Business Benefits
 
- 2\. Marketplace Revenue
+ 2. GCE Marketplace Revenue
 
-The Marketplace allows verified businesses to promote events, products, services, and customer offers.
+**GCE Marketplace** allows verified businesses to promote events, products, services, and customer offers.
 
 Revenue is generated whenever a business uses Marketplace services.
 
 Marketplace income includes:
 
- Event Listings  
- Offer Campaigns  
- Venue Promotions  
- Customer Acquisition Programs  
+ Event Listings
+ Offer Campaigns
+ Venue Promotions
+ Customer Acquisition Programs
  Marketplace Commissions
 
- Marketplace Revenue Sharing
+ GCE Marketplace Revenue Sharing
 
-Marketplace operates on an \*\*80:20 Revenue Sharing Model\*\*.
+**GCE Marketplace** revenue sharing model: see canonical values and example: **`36_Commercial_Constants.md`** (GCE Marketplace revenue share).
 
- Venue Partner → \*\*80%\*\*  
- GCE Platform → \*\*20%\*\*
-
- Example
-
-Event Revenue:
-
-₹1,00,000
-
-Venue Partner
-
-₹80,000
-
-GCE Platform
-
-₹20,000
+ Flow: **`37_Revenue_Flow.md`** (GCE Marketplace section).
 
  3\. Enterprise Revenue
 
-Enterprise projects generate revenue through corporate clients.
+**GCE Enterprise** projects generate revenue through corporate clients.
 
 Revenue sources include:
 
- Corporate Events  
- Conferences  
- Exhibitions  
- Employee Engagement Programs  
- Enterprise Event Management  
+ Corporate Events
+ Conferences
+ Exhibitions
+ Employee Engagement Programs
+ Enterprise Event Management
  Business Consulting
 
 Enterprise projects usually have higher transaction values than regular marketplace events.
@@ -103,9 +94,9 @@ Membership subscriptions generate recurring monthly and quarterly cash flow.
 
 Revenue increases through:
 
- New Member Acquisition  
- Membership Renewals  
- Circle Expansion  
+ New Member Acquisition
+ Membership Renewals
+ Circle Expansion
  City Expansion
 
 Recurring subscriptions provide predictable platform income.
@@ -116,23 +107,23 @@ GCE operates multiple franchise models.
 
 Revenue is generated through:
 
- Connect Business Development Partner (CBDP)  
- Marketplace Business Development Partner (MBDP)  
+ GCE Connect Business Development Partner (Connect BDP)
+ GCE Marketplace Business Development Partner (Marketplace BDP)
  Enterprise Business Development Partner (Enterprise BDP)
 
 Revenue includes:
 
- Franchise Fees  
- Franchise Expansion  
+ Franchise Fees
+ Franchise Expansion
  Business Development
 
  6\. Venue Partner Revenue
 
 Venue Partners generate revenue by:
 
- Hosting Events  
- Running Marketplace Offers  
- Acquiring Customers  
+ Hosting Events
+ Running Marketplace Offers
+ Acquiring Customers
  Increasing Sales
 
 The platform earns its revenue share from these business activities.
@@ -141,9 +132,9 @@ The platform earns its revenue share from these business activities.
 
 Revenue is generated from:
 
- GCE Hosted Events  
- Marketplace Events  
- Enterprise Events  
+ GCE Hosted Events
+ Marketplace Events
+ Enterprise Events
  Partner Hosted Events
 
 Different event categories may have different pricing and revenuesharing structures.
@@ -154,10 +145,10 @@ Businesses can launch promotional campaigns through GCE Marketplace.
 
 Examples:
 
- Discounts  
- Cashback Offers  
- Shopping Festivals  
- Seasonal Campaigns  
+ Discounts
+ Cashback Offers
+ Shopping Festivals
+ Seasonal Campaigns
  Customer Acquisition Programs
 
 Revenue is generated through offer listing, campaign management, and platform commissions.
@@ -166,11 +157,11 @@ Revenue is generated through offer listing, campaign management, and platform co
 
 Future premium services may include:
 
- Business Promotion Packages  
- Featured Listings  
- Sponsored Campaigns  
- Premium Analytics  
- AI Business Insights  
+ Business Promotion Packages
+ Featured Listings
+ Sponsored Campaigns
+ Premium Analytics
+ AI Business Insights
  Marketing Services
 
 These services will create additional recurring revenue streams.
@@ -181,10 +172,10 @@ Revenue generated within the ecosystem is distributed according to predefined bu
 
 Typical distribution includes:
 
- Platform Revenue  
- Stakeholder Commissions  
- Business Incentives  
- Referral Rewards  
+ Platform Revenue
+ Stakeholder Commissions
+ Business Incentives
+ Referral Rewards
  Franchise Earnings
 
 Distribution percentages vary depending on the business module.
@@ -193,13 +184,13 @@ Distribution percentages vary depending on the business module.
 
 Revenue growth is achieved through:
 
- Membership Growth  
- Marketplace Expansion  
- Enterprise Projects  
- Franchise Network Expansion  
- City Expansion  
- AI Lead Distribution  
- Business Retention  
+ Membership Growth
+ Marketplace Expansion
+ Enterprise Projects
+ Franchise Network Expansion
+ City Expansion
+ AI Lead Distribution
+ Business Retention
  Customer Acquisition
 
  LongTerm Revenue Vision
@@ -208,4 +199,4 @@ The longterm objective is to build a highly scalable recurring revenue model whe
 
 The platform is designed to reduce dependency on any single revenue source while continuously expanding through memberships, business partnerships, marketplace activity, enterprise projects, and franchise development.
 
-This diversified approach ensures longterm financial stability and sustainable business growth.  
+This diversified approach ensures longterm financial stability and sustainable business growth.

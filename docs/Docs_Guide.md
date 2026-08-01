@@ -1,24 +1,24 @@
-\# GCE Documentation Guide
+# GCE Documentation Guide
 
-\#\# Purpose
+## Purpose
 
-This document explains how Cursor AI should use the documentation contained in the \`docs\` folder.
+This document explains how Cursor AI should use the documentation contained in the `docs` folder.
 
 Documentation layout:
 
-\`\`\`
+```
 docs/
 ├── README.md
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
 ├── core/
 └── engineering/
-\`\`\`
+```
 
-- Master inventory: \`docs/Documentation_Manifest.md\`
-- Core / business docs: \`docs/core/\`
-- Engineering / expert docs: \`docs/engineering/\`
-- Cursor Rules: \`.cursor/rules/\`
+- Master inventory: `docs/Documentation_Manifest.md`
+- Core / business docs: `docs/core/`
+- Engineering / expert docs: `docs/engineering/`
+- Cursor Rules: `.cursor/rules/`
 
 The GCE project contains complete business documentation and AI expert documentation.
 
@@ -26,63 +26,92 @@ Before writing any code, always identify the type of task and read the relevant 
 
 Never make assumptions if documentation already exists.
 
-\---
+---
 
-\# Documentation Categories
+# Founder Decisions and Canonical Documents (Always Prefer)
+
+**Highest business authority:** `docs/founder-decisions/`
+
+```
+FD-001_Business_Model.md
+FD-020_Financial_and_Wallet_Architecture.md
+FD-021_Settlement_Engine.md
+FD-022_Membership_Lifecycle.md
+FD-023_RBAC_and_Permissions.md
+FD-024_GCE_Connect_Circle_Lifecycle.md
+```
+
+Then living canonical cores (summaries that defer to Founder Decisions):
+
+```
+02_Business_Model.md
+35_Role_Taxonomy.md
+36_Commercial_Constants.md
+37_Revenue_Flow.md
+38_Circle_Architecture.md
+39_AI_Lead_Assist_Spec.md
+```
+
+Always write vertical names as **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**.
+Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**.
+
+Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings.
+
+# Documentation Categories
 
 The documentation is divided into two categories.
 
-\#\# Core Documentation
+## Core Documentation
 
 Contains:
 
-\- Business Logic  
-\- Workflows  
-\- Database Design  
-\- Revenue Model  
-\- Stakeholders  
-\- Dashboards  
-\- APIs  
-\- Security  
-\- Deployment
+- Business Logic
+- Workflows
+- Database Design
+- Revenue Model
+- Stakeholders
+- Dashboards
+- APIs
+- Security
+- Deployment
 
-These documents define \*\*what\*\* the platform should do.
+These documents define **what** the platform should do.
 
-\---
+---
 
-\#\# AI Expert Documentation
+## AI Expert Documentation
 
 Contains:
 
-\- UI Standards  
-\- Software Architecture  
-\- Database Standards  
-\- Security Standards  
-\- Performance Standards  
-\- Component Standards  
-\- Coding Rules
+- UI Standards
+- Software Architecture
+- Database Standards
+- Security Standards
+- Performance Standards
+- Component Standards
+- Coding Rules
 
-These documents define \*\*how\*\* the platform should be built.
+These documents define **how** the platform should be built.
 
-\---
+---
 
-\# Documentation Reading Order
+# Documentation Reading Order
 
 Always read documentation in the following order.
 
-\#\# Step 1
+## Step 1
 
 Read
 
-\`\`\`  
-33\_Cursor\_Coding\_Rules.md  
-\`\`\`
+```
+33\_Cursor\_Coding\_Rules.md
+```
 
 This defines the global development rules.
 
-\---
+---
 
-\#\# Step 2
+## Step 2
 
 Read the relevant business documentation.
 
@@ -102,21 +131,21 @@ Payments
 
 User Flows
 
-\---
+---
 
-\#\# Step 3
+## Step 3
 
 Read
 
-\`\`\`  
-29\_Full\_Stack\_Architecture\_Expert.md  
-\`\`\`
+```
+29\_Full\_Stack\_Architecture\_Expert.md
+```
 
 Understand the software architecture.
 
-\---
+---
 
-\#\# Step 4
+## Step 4
 
 Read any required expert documents.
 
@@ -158,15 +187,15 @@ Animations
 
 27\_Frontend\_Animations.md
 
-\---
+---
 
-\# Which Documentation Should Be Read?
+# Which Documentation Should Be Read?
 
-\#\# When Creating a New Page
+## When Creating a New Page
 
 Read:
 
-\`\`\`  
+```
 33\_Cursor\_Coding\_Rules.md
 
 29\_Full\_Stack\_Architecture\_Expert.md
@@ -175,186 +204,186 @@ Read:
 
 34\_Component\_Library.md
 
-27\_Frontend\_Animations.md  
-\`\`\`
+27\_Frontend\_Animations.md
+```
 
-\---
+---
 
-\#\# When Creating a New Component
+## When Creating a New Component
 
 Read:
 
-\`\`\`  
+```
 34\_Component\_Library.md
 
 28\_UI\_UX\_Pro\_Max\_Expert.md
 
-27\_Frontend\_Animations.md  
-\`\`\`
+27\_Frontend\_Animations.md
+```
 
 Search the project first.
 
 Reuse an existing component whenever possible.
 
-\---
+---
 
-\#\# When Editing an Existing Component
+## When Editing an Existing Component
 
 Read:
 
-\`\`\`  
+```
 34\_Component\_Library.md
 
-28\_UI\_UX\_Pro\_Max\_Expert.md  
-\`\`\`
+28\_UI\_UX\_Pro\_Max\_Expert.md
+```
 
 Modify the existing component instead of creating another one.
 
-\---
+---
 
-\#\# When Creating a Dashboard
+## When Creating a Dashboard
 
 Read:
 
-\`\`\`  
+```
 12\_Dashboards.md
 
 28\_UI\_UX\_Pro\_Max\_Expert.md
 
 34\_Component\_Library.md
 
-27\_Frontend\_Animations.md  
-\`\`\`
+27\_Frontend\_Animations.md
+```
 
-\---
+---
 
-\#\# When Working on Authentication
+## When Working on Authentication
 
 Read:
 
-\`\`\`  
+```
 16\_Authentication.md
 
 17\_Security.md
 
-31\_Security\_Best\_Practices\_Expert.md  
-\`\`\`
+31\_Security\_Best\_Practices\_Expert.md
+```
 
-\---
+---
 
-\#\# When Working on Payments
+## When Working on Payments
 
 Read:
 
-\`\`\`  
+```
 21\_Payments.md
 
 17\_Security.md
 
 31\_Security\_Best\_Practices\_Expert.md
 
-30\_Database\_Architecture\_Expert.md  
-\`\`\`
+30\_Database\_Architecture\_Expert.md
+```
 
-\---
+---
 
-\#\# When Working on APIs
+## When Working on APIs
 
 Read:
 
-\`\`\`  
+```
 15\_API\_Workflows.md
 
 29\_Full\_Stack\_Architecture\_Expert.md
 
-31\_Security\_Best\_Practices\_Expert.md  
-\`\`\`
+31\_Security\_Best\_Practices\_Expert.md
+```
 
-\---
+---
 
-\#\# When Working on the Database
+## When Working on the Database
 
 Read:
 
-\`\`\`  
+```
 11\_Database.md
 
-30\_Database\_Architecture\_Expert.md  
-\`\`\`
+30\_Database\_Architecture\_Expert.md
+```
 
-\---
+---
 
-\#\# When Working on AI Features
+## When Working on AI Features
 
 Read:
 
-\`\`\`  
+```
 10\_AI\_Lead\_Assist.md
 
 22\_AI\_Rules.md
 
-29\_Full\_Stack\_Architecture\_Expert.md  
-\`\`\`
+29\_Full\_Stack\_Architecture\_Expert.md
+```
 
-\---
+---
 
-\#\# When Working on Business Logic
+## When Working on Business Logic
 
 Read:
 
-\`\`\`  
+```
 14\_Business\_Rules.md
 
-Relevant Business Documentation  
-\`\`\`
+Relevant Business Documentation
+```
 
 Business documentation is always the source of truth.
 
-\---
+---
 
-\#\# When Working on Deployment
+## When Working on Deployment
 
 Read:
 
-\`\`\`  
+```
 24\_Deployment\_Architecture.md
 
-25\_Environment\_Configuration.md  
-\`\`\`
+25\_Environment\_Configuration.md
+```
 
-\---
+---
 
-\#\# When Optimizing Performance
+## When Optimizing Performance
 
 Read:
 
-\`\`\`  
+```
 32\_Performance\_Optimization\_Expert.md
 
 27\_Frontend\_Animations.md
 
-29\_Full\_Stack\_Architecture\_Expert.md  
-\`\`\`
+29\_Full\_Stack\_Architecture\_Expert.md
+```
 
-\---
+---
 
-\#\# When Fixing Bugs
+## When Fixing Bugs
 
 Read:
 
-\`\`\`  
+```
 26\_Error\_Handling.md
 
 33\_Cursor\_Coding\_Rules.md
 
-Relevant Documentation  
-\`\`\`
+Relevant Documentation
+```
 
 Understand the feature before changing it.
 
-\---
+---
 
-\# Reusability Rules
+# Reusability Rules
 
 Before creating anything new:
 
@@ -362,28 +391,31 @@ Search the existing project.
 
 If a similar implementation exists:
 
-\- Reuse it.  
-\- Extend it.  
-\- Improve it.
+- Reuse it.
+- Extend it.
+- Improve it.
 
 Avoid duplication.
 
-\---
+---
 
-\# Documentation Priority
+# Documentation Priority
 
-If multiple documents contain similar information, use this priority.
+Authority order (matches `AGENTS.md`):
 
-1\. Business Documentation  
-2\. Cursor Coding Rules  
-3\. AI Expert Documentation  
-4\. Existing Codebase
+1. Founder Decisions (`docs/founder-decisions/`)
+2. Founder Approved Business Specification (if present)
+3. Canonical core documentation (`docs/core/`)
+4. Cursor Rules (`.cursor/rules/`)
+5. Engineering documentation (`docs/engineering/`)
+6. Application implementation
 
-Business documentation always wins.
+When lower-level documentation conflicts with a Founder Decision, update the lower-level document. **Never change a Founder Decision to match older documentation.**
 
-\---
+Do not invent Unresolved / Proposed / Future / Pending items.
 
-\# Development Workflow
+
+# Development Workflow
 
 Every feature should follow this workflow.
 
@@ -425,9 +457,9 @@ Security Review
 
 Complete
 
-\---
+---
 
-\# Before Writing Code
+# Before Writing Code
 
 Always ask:
 
@@ -445,21 +477,21 @@ Always ask:
 
 Only then begin coding.
 
-\---
+---
 
-\# Before Creating New Files
+# Before Creating New Files
 
 Always check whether:
 
-\- Similar file already exists.  
-\- Existing implementation can be extended.  
-\- New file is actually necessary.
+- Similar file already exists.
+- Existing implementation can be extended.
+- New file is actually necessary.
 
 Avoid unnecessary files.
 
-\---
+---
 
-\# Project Philosophy
+# Project Philosophy
 
 The GCE platform should evolve as one unified software system.
 
@@ -471,23 +503,23 @@ Reusability is more important than duplication.
 
 Scalability is more important than shortcuts.
 
-\---
+---
 
-\# Cursor AI Final Instructions
+# Cursor AI Final Instructions
 
 Whenever a task is requested:
 
-1\. Determine the feature.  
-2\. Read the relevant documentation.  
-3\. Follow the architecture.  
-4\. Reuse existing code.  
-5\. Reuse existing components.  
-6\. Follow business rules.  
-7\. Follow UI standards.  
-8\. Follow security standards.  
-9\. Follow performance standards.  
+1\. Determine the feature.
+2\. Read the relevant documentation.
+3\. Follow the architecture.
+4\. Reuse existing code.
+5\. Reuse existing components.
+6\. Follow business rules.
+7\. Follow UI standards.
+8\. Follow security standards.
+9\. Follow performance standards.
 10\. Generate production-ready code.
 
 Never skip documentation.
 
-Documentation is the primary source of truth for the GCE platform.  
+Documentation is the primary source of truth for the GCE platform.

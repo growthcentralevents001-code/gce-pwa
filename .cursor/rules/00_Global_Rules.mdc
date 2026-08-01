@@ -1,6 +1,6 @@
-\---  
-description: Global development rules for the GCE platform. Always follow these rules before writing, modifying, or deleting any code.  
-alwaysApply: true  
+\---
+description: Global development rules for the GCE platform. Always follow these rules before writing, modifying, or deleting any code.
+alwaysApply: true
 \---
 
 \# GCE Global Development Rules
@@ -17,6 +17,18 @@ Always consider the impact on the complete platform.
 
 \---
 
+
+
+\---
+
+\# Founder Decisions
+
+Highest business authority lives in \`docs/founder-decisions/\`.
+
+When documentation conflicts with a Founder Decision, follow the Founder Decision.
+
+Never invent Unresolved or Pending Founder Approval rules.
+
 \# Development Philosophy
 
 Always think before writing code.
@@ -27,7 +39,7 @@ Understand
 
 ↓
 
-Read Documentation
+Read Founder Decisions then Documentation
 
 ↓
 
@@ -61,8 +73,8 @@ Before implementing any feature, determine which documentation is relevant and r
 
 Documentation is located inside:
 
-\`\`\`  
-docs/  
+\`\`\`
+docs/
 \`\`\`
 
 Never make assumptions if documentation already exists.
@@ -111,13 +123,13 @@ Performance Documentation
 
 Before creating:
 
-\- Components  
-\- Functions  
-\- Hooks  
-\- Services  
-\- Utilities  
-\- Types  
-\- APIs  
+\- Components
+\- Functions
+\- Hooks
+\- Services
+\- Utilities
+\- Types
+\- APIs
 \- Database Queries
 
 Search the existing codebase first.
@@ -160,12 +172,12 @@ Maintain consistency.
 
 Every piece of code must be:
 
-\- Production Ready  
-\- Typed  
-\- Modular  
-\- Reusable  
-\- Readable  
-\- Maintainable  
+\- Production Ready
+\- Typed
+\- Modular
+\- Reusable
+\- Readable
+\- Maintainable
 \- Scalable
 
 Avoid temporary fixes.
@@ -218,8 +230,8 @@ Never duplicate UI components.
 
 Never:
 
-\- Create duplicate tables  
-\- Create duplicate relationships  
+\- Create duplicate tables
+\- Create duplicate relationships
 \- Create unnecessary columns
 
 Follow the documented database architecture.
@@ -232,9 +244,9 @@ Security is mandatory.
 
 Never:
 
-\- Expose secrets  
-\- Bypass authentication  
-\- Ignore authorization  
+\- Expose secrets
+\- Bypass authentication
+\- Ignore authorization
 \- Skip validation
 
 Protect all sensitive data.
@@ -245,10 +257,10 @@ Protect all sensitive data.
 
 Always:
 
-\- Minimize unnecessary rendering  
-\- Optimize database queries  
-\- Reduce bundle size  
-\- Avoid duplicate requests  
+\- Minimize unnecessary rendering
+\- Optimize database queries
+\- Reduce bundle size
+\- Avoid duplicate requests
 \- Write efficient code
 
 Performance is part of every feature.
@@ -271,8 +283,8 @@ Log errors appropriately.
 
 Every frontend feature must support:
 
-\- Keyboard Navigation  
-\- Focus Management  
+\- Keyboard Navigation
+\- Focus Management
 \- Screen Readers
 
 Accessibility is required.
@@ -285,8 +297,8 @@ The GCE platform is a Progressive Web App.
 
 Always prioritize:
 
-\- Mobile  
-\- Tablet  
+\- Mobile
+\- Tablet
 \- Desktop
 
 Never design desktop-first.
@@ -299,7 +311,7 @@ Before installing any new package:
 
 Check whether:
 
-\- The functionality already exists.  
+\- The functionality already exists.
 \- Another installed package already provides it.
 
 Avoid unnecessary dependencies.
@@ -312,11 +324,11 @@ Assume these technologies already exist in the project.
 
 Use them instead of introducing alternatives.
 
-\- Next.js  
-\- React  
-\- TypeScript  
-\- Tailwind CSS  
-\- Motion  
+\- Next.js
+\- React
+\- TypeScript
+\- Tailwind CSS
+\- Motion
 \- Supabase
 
 \---
@@ -325,8 +337,8 @@ Use them instead of introducing alternatives.
 
 Always understand:
 
-\- Why the existing code exists.  
-\- What depends on it.  
+\- Why the existing code exists.
+\- What depends on it.
 \- What could break.
 
 Avoid unnecessary modifications.
@@ -349,9 +361,9 @@ Write code that is ready to commit.
 
 Avoid:
 
-\- Dead Code  
-\- Debug Code  
-\- Console Logs  
+\- Dead Code
+\- Debug Code
+\- Console Logs
 \- Temporary Comments
 
 \---
@@ -382,17 +394,17 @@ Before completing any task verify:
 
 Never:
 
-\- Duplicate Components  
-\- Duplicate APIs  
-\- Duplicate Business Logic  
-\- Ignore Documentation  
-\- Ignore Existing Architecture  
-\- Ignore Security  
-\- Ignore Performance  
-\- Ignore TypeScript  
-\- Hardcode Secrets  
-\- Hardcode Business Logic  
-\- Create Quick Fixes  
+\- Duplicate Components
+\- Duplicate APIs
+\- Duplicate Business Logic
+\- Ignore Documentation
+\- Ignore Existing Architecture
+\- Ignore Security
+\- Ignore Performance
+\- Ignore TypeScript
+\- Hardcode Secrets
+\- Hardcode Business Logic
+\- Create Quick Fixes
 \- Break Existing Features
 
 \---
@@ -403,4 +415,4 @@ Every implementation should improve the project.
 
 Never reduce code quality.
 
-Think like a Senior Software Architect building a long-term enterprise SaaS platform rather than completing a one-time coding task.  
+Think like a Senior Software Architect building a long-term enterprise SaaS platform rather than completing a one-time coding task.

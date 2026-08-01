@@ -1,5 +1,11 @@
 \# GCE Project Architecture
 
+## Authority
+
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-024). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology.
+
+
+
 \#\# Project Name
 
 \*\*Growth Central Events (GCE)\*\*
@@ -18,13 +24,13 @@ The platform combines business networking, event management, marketplace service
 
 The primary objectives of GCE are:
 
-\- Build India's largest business networking ecosystem.  
-\- Connect businesses with verified opportunities.  
-\- Create AI-powered lead distribution.  
-\- Enable event discovery and booking.  
-\- Build a business marketplace.  
-\- Support enterprise event management.  
-\- Generate recurring membership revenue.  
+\- Build India's largest business networking ecosystem.
+\- Connect businesses with verified opportunities.
+\- Create AI-powered lead distribution.
+\- Enable event discovery and booking.
+\- Build a business marketplace.
+\- Support enterprise event management.
+\- Generate recurring membership revenue.
 \- Create a scalable franchise ecosystem.
 
 \---
@@ -39,29 +45,29 @@ Business networking ecosystem.
 
 Features:
 
-\- Business Circles  
-\- Power Circles  
-\- Referrals  
-\- AI Lead Assist  
-\- Business Meetings  
+\- Business Circles
+\- Power Circles
+\- Referrals
+\- AI Lead Assist
+\- Business Meetings
 \- Membership System
 
 \---
 
 \#\# 2\. GCE Marketplace
 
-Marketplace for businesses.
+**GCE Marketplace** for businesses.
 
 Features:
 
-\- Venue Partners  
-\- Shops  
-\- Hotels  
-\- Restaurants  
-\- Banquet Halls  
-\- Event Venues  
-\- Offers  
-\- Marketplace Events  
+\- Venue Partners
+\- Shops
+\- Hotels
+\- Restaurants
+\- Banquet Halls
+\- Event Venues
+\- Offers
+\- GCE Marketplace Events
 \- Customer Bookings
 
 \---
@@ -72,11 +78,11 @@ Corporate event management platform.
 
 Features:
 
-\- Corporate Clients  
-\- Enterprise Projects  
-\- Vendor Quotations  
-\- Venue Quotations  
-\- Enterprise Events  
+\- Corporate Clients
+\- GCE Enterprise Projects
+\- Vendor Quotations
+\- Venue Quotations
+\- GCE Enterprise Events
 \- Project Management
 
 \---
@@ -85,18 +91,18 @@ Features:
 
 Frontend
 
-\- Next.js  
-\- React  
+\- Next.js
+\- React
 \- Tailwind CSS
 
 Backend
 
-\- Supabase  
+\- Supabase
 \- PostgreSQL
 
 Authentication
 
-\- Supabase Auth  
+\- Supabase Auth
 \- JWT
 
 Hosting
@@ -105,7 +111,7 @@ Hosting
 
 Deployment
 
-\- GitHub Actions  
+\- GitHub Actions
 \- CI/CD
 
 Application Type
@@ -118,22 +124,22 @@ Application Type
 
 The platform consists of the following modules:
 
-\- Authentication  
-\- User Management  
-\- Memberships  
-\- Business Profiles  
-\- Business Categories  
-\- Business Tags  
-\- Specialization Tags  
-\- Events  
-\- Bookings  
-\- Marketplace  
-\- Enterprise  
-\- AI Lead Assist  
-\- Payments  
-\- Notifications  
-\- Reports  
-\- Dashboards  
+\- Authentication
+\- User Management
+\- Memberships
+\- Business Profiles
+\- Business Categories
+\- Business Tags
+\- Specialization Tags
+\- Events
+\- Bookings
+\- GCE Marketplace
+\- GCE Enterprise
+\- AI Lead Assist
+\- Payments
+\- Notifications
+\- Reports
+\- Dashboards
 \- Security
 
 \---
@@ -142,16 +148,16 @@ The platform consists of the following modules:
 
 The platform supports multiple stakeholders.
 
-\- User  
-\- Circle Member  
-\- Venue Partner  
-\- Platform Admin  
-\- Venue Admin  
-\- Connect Business Development Partner (CBDP)  
-\- Marketplace Business Development Partner (MBDP)  
-\- Enterprise Business Development Partner  
-\- Relationship Manager (RM)  
-\- Platform Relationship Manager (PRM)  
+\- User
+\- Circle Member
+\- Venue Partner
+\- Platform Admin
+\- Venue Admin
+\- GCE Connect Business Development Partner (Connect BDP)
+\- GCE Marketplace Business Development Partner (Marketplace BDP)
+\- Enterprise Business Development Partner
+\- Relationship Manager (RM)
+\- Platform Relationship Manager (PRM)
 \- Board of Governance
 
 Each stakeholder has dedicated permissions, dashboards, APIs, and workflows.
@@ -162,13 +168,13 @@ Each stakeholder has dedicated permissions, dashboards, APIs, and workflows.
 
 The GCE platform generates revenue through:
 
-\- Membership Fees  
-\- Marketplace Commission  
-\- Enterprise Projects  
-\- Validation Fees  
-\- Franchise Fees  
-\- Training Fees  
-\- Event Revenue  
+\- Membership Fees
+\- GCE Marketplace Commission
+\- GCE Enterprise Projects
+\- Validation Fees
+\- Franchise Fees
+\- Training Fees
+\- Event Revenue
 \- Offer Campaigns
 
 \---
@@ -217,16 +223,16 @@ Each stakeholder receives a dedicated dashboard.
 
 Dashboards include:
 
-\- Platform Admin Dashboard  
-\- Venue Partner Dashboard  
-\- Venue Admin Dashboard  
-\- CBDP Dashboard  
-\- MBDP Dashboard  
-\- Enterprise Dashboard  
-\- Circle Member Dashboard  
-\- User Dashboard  
-\- RM Dashboard  
-\- PRM Dashboard  
+\- Platform Admin Dashboard
+\- Venue Partner Dashboard
+\- Venue Admin Dashboard
+\- Connect BDP Dashboard
+\- Marketplace BDP Dashboard
+\- GCE Enterprise Dashboard
+\- Circle Member Dashboard
+\- User Dashboard
+\- RM Dashboard
+\- PRM Dashboard
 \- Board of Governance Dashboard
 
 \---
@@ -235,14 +241,14 @@ Dashboards include:
 
 Security includes:
 
-\- JWT Authentication  
-\- Role-Based Access Control (RBAC)  
-\- Row Level Security (RLS)  
-\- API Security  
-\- Payment Security  
-\- Audit Logs  
-\- Fraud Prevention  
-\- Secure Database  
+\- JWT Authentication
+\- Role-Based Access Control (RBAC)
+\- Row Level Security (RLS)
+\- API Security
+\- Payment Security
+\- Audit Logs
+\- Fraud Prevention
+\- Secure Database
 \- Secure Infrastructure
 
 \---
@@ -253,17 +259,17 @@ The platform uses a centralized PostgreSQL database.
 
 Major database modules include:
 
-\- Authentication  
-\- Users  
-\- Memberships  
-\- Business Profiles  
-\- Marketplace  
-\- Enterprise  
-\- Events  
-\- Bookings  
-\- Payments  
-\- AI Lead Assist  
-\- Notifications  
+\- Authentication
+\- Users
+\- Memberships
+\- Business Profiles
+\- GCE Marketplace
+\- GCE Enterprise
+\- Events
+\- Bookings
+\- Payments
+\- AI Lead Assist
+\- Notifications
 \- Reports
 
 \---
@@ -274,16 +280,16 @@ The platform follows a modular REST API architecture.
 
 Major API groups:
 
-\- Authentication APIs  
-\- User APIs  
-\- Membership APIs  
-\- Event APIs  
-\- Booking APIs  
-\- Marketplace APIs  
-\- Enterprise APIs  
-\- AI Lead Assist APIs  
-\- Dashboard APIs  
-\- Payment APIs  
+\- Authentication APIs
+\- User APIs
+\- Membership APIs
+\- Event APIs
+\- Booking APIs
+\- GCE Marketplace APIs
+\- GCE Enterprise APIs
+\- AI Lead Assist APIs
+\- Dashboard APIs
+\- Payment APIs
 \- Notification APIs
 
 \---
@@ -292,25 +298,25 @@ Major API groups:
 
 The complete project documentation is organized as follows:
 
-\`\`\`  
-00\_Project\_Architecture.md  
-01\_GCE\_Overview.md  
-02\_Business\_Model.md  
-03\_Stakeholders.md  
-04\_Revenue\_Model.md  
-05\_Memberships.md  
-06\_CBDP.md  
-07\_MBDP.md  
-08\_Enterprise\_BDP.md  
-09\_Venue\_Partner.md  
-10\_AI\_Lead\_Assist.md  
-11\_Database.md  
-12\_Dashboards.md  
-13\_UI\_Guidelines.md  
-14\_Business\_Rules.md  
-15\_API\_Workflows.md  
-16\_Authentication.md  
-17\_Security.md  
+\`\`\`
+00\_Project\_Architecture.md
+01\_GCE\_Overview.md
+02\_Business\_Model.md
+03\_Stakeholders.md
+04\_Revenue\_Model.md
+05\_Memberships.md
+06\_CBDP.md
+07\_MBDP.md
+08\_Enterprise\_BDP.md
+09\_Venue\_Partner.md
+10\_AI\_Lead\_Assist.md
+11\_Database.md
+12\_Dashboards.md
+13\_UI\_Guidelines.md
+14\_Business\_Rules.md
+15\_API\_Workflows.md
+16\_Authentication.md
+17\_Security.md
 \`\`\`
 
 \---
@@ -319,15 +325,15 @@ The complete project documentation is organized as follows:
 
 The project follows these principles:
 
-\- Mobile First  
-\- Responsive Design  
-\- Modular Architecture  
-\- Role-Based System  
-\- API First Development  
-\- Secure by Design  
-\- AI Powered Automation  
-\- Scalable Infrastructure  
-\- Reusable Components  
+\- Mobile First
+\- Responsive Design
+\- Modular Architecture
+\- Role-Based System
+\- API First Development
+\- Secure by Design
+\- AI Powered Automation
+\- Scalable Infrastructure
+\- Reusable Components
 \- Clean Code Standards
 
 \---
@@ -336,15 +342,15 @@ The project follows these principles:
 
 Cursor AI should always follow these rules:
 
-\- Use this document as the primary project reference.  
-\- Read all linked documentation before generating code.  
-\- Follow the defined business rules.  
-\- Respect stakeholder permissions.  
-\- Use the approved database structure.  
-\- Follow API standards.  
-\- Follow UI Guidelines.  
-\- Follow Security Guidelines.  
-\- Build reusable and scalable components.  
+\- Use this document as the primary project reference.
+\- Read all linked documentation before generating code.
+\- Follow the defined business rules.
+\- Respect stakeholder permissions.
+\- Use the approved database structure.
+\- Follow API standards.
+\- Follow UI Guidelines.
+\- Follow Security Guidelines.
+\- Build reusable and scalable components.
 \- Never introduce business logic that conflicts with the documentation.
 
 \---
@@ -353,4 +359,4 @@ Cursor AI should always follow these rules:
 
 Growth Central Events (GCE) is designed as a complete Business Growth Ecosystem rather than a traditional event platform.
 
-The long-term vision is to create a unified platform where networking, marketplace services, enterprise solutions, AI-powered lead distribution, memberships, business analytics, and franchise operations work together seamlessly through a single, secure, scalable, and intelligent Progressive Web Application.  
+The long-term vision is to create a unified platform where networking, marketplace services, enterprise solutions, AI-powered lead distribution, memberships, business analytics, and franchise operations work together seamlessly through a single, secure, scalable, and intelligent Progressive Web Application.

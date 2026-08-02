@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026
+**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition / dashboard financial language:** FD-028
 
-Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023 (no automatic RM/PRM finance authority). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income). Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Exact dashboard workflows remain Pending Technical Design.
+Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023/FD-028 (no automatic RM/PRM finance authority). Do not use one unqualified “Revenue” figure — distinguish Booked Value, Collected Value, Eligible Revenue, GCE Platform Revenue, Estimated Commission, Earned Commission, Settlement Pending, Paid Amount, Refunded Amount, Recoverable Amount, Original Currency, and Reporting Currency (FD-028). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income). Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Exact dashboard workflows remain Pending Technical Design.
 
 Overview
 

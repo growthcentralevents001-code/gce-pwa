@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027
+**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Revenue recognition:** FD-028
 
-GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027); do not use outdated **Power Circle** as current. FD-024 historically wrote “GCE Power Sector”. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026).
+GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027); do not use outdated **Power Circle** as current. FD-024 historically wrote “GCE Power Sector”. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026). Revenue recognition follows FD-028 (Marketplace 80/20; Affiliate future-only; ZBP removed; multi-currency-capable).
 
 Project Overview
 

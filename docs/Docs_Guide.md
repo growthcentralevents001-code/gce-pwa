@@ -42,6 +42,7 @@ FD-024_GCE_Connect_Circle_Lifecycle.md
 FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 FD-027_Membership_Commercial_and_Operating_Architecture.md
+FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 ```
 
 Then living canonical cores (summaries that defer to Founder Decisions):
@@ -64,7 +65,9 @@ For GCE Enterprise commercial and operating rules (Franchise Pack, client-based 
 
 For GCE Connect Circle Membership commercial and operating rules (Associate/Core tiers, Tags, seats, Core eligibility, renewal, freeze, transfer, refund, rejoining), **FD-027** is the most specific Founder authority. Living summaries: `05_Memberships.md`, `36_Commercial_Constants.md`. Lifecycle timing concepts also remain in FD-022.
 
-Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings.
+For revenue recognition, commercial classification, Marketplace/Enterprise/Connect revenue treatment, advertising, promotional visibility, sponsorships, franchise fees, refunds/reversals/taxes/commissions, reporting, audit, and multi-currency architecture, **FD-028** is the most specific Founder authority. Living summaries: `04_Revenue_Model.md`, `37_Revenue_Flow.md`, `21_Payments.md`, `36_Commercial_Constants.md`.
+
+Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings. Under FD-028, **ZBP is removed** from the current commercial model; **Affiliate is future-only** (no active commission).
 
 # Documentation Categories
 

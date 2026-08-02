@@ -4,13 +4,15 @@
 
 Commercial **numeric** constants historically documented in partner narratives.
 
+**Revenue recognition / commercial classification:** highest authority is `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`. Values and labels in this file must defer to FD-028 on recognition, Marketplace split, Affiliate status, ZBP removal, deposits-as-liabilities, multi-currency, and unresolved fee categories.
+
 **Connect BDP commercial and operating numbers:** highest authority is `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`. Values in this file for Connect BDP must defer to FD-025 on conflict.
 
 **GCE Enterprise commercial and operating numbers:** highest authority is `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Values in this file for Enterprise must defer to FD-026 on conflict.
 
 **GCE Connect Circle Membership commercial numbers:** highest authority is `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`. Values in this file for membership must defer to FD-027 on conflict.
 
-Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, and many Marketplace partner package values remain **Undocumented** or pending dedicated commercial Founder Decisions — do not invent.
+Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, Marketplace BDP fee model, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, and rounding remain **Pending** where not Founder-approved — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
 
@@ -20,7 +22,7 @@ This document is the **single source of truth** for every numeric commercial con
 
 Partner narrative, workflows, and KPIs remain in partner documents. Those documents must **reference this file** for numbers instead of restating them. For Connect BDP, this file summarises FD-025 — it does not replace FD-025.
 
-**Do not invent missing values.** Where a number is not stated in source docs or Founder Decisions, it is listed under **Undocumented**.
+**Do not invent missing values.** Where a number is not stated in source docs or Founder Decisions, it is listed under **Undocumented** or **Pending Founder Approval**.
 
 ---
 
@@ -34,15 +36,28 @@ Always use:
 
 ---
 
+## Core financial concepts (FD-028)
+
+| Concept | Rule |
+|---------|------|
+| Gross Transaction Value | Not automatically GCE revenue |
+| Collected Amount | Successfully received and reconciled only |
+| Eligible Revenue | After exclusions (taxes, refunds, reversals, chargebacks, invalid amounts, excluded credits, Founder-approved non-commissionable components) |
+| Platform Revenue | GCE earned share — not total transaction value |
+| Settlement-Eligible Amount | After FD-020 / FD-021 conditions; payment ≠ settlement |
+
+---
+
 ## GCE Marketplace revenue share
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Venue Partner share | **80%** | `04_Revenue_Model.md`, `09_Venue_Partner.md`, `14_Business_Rules.md`, `21_Payments.md` |
-| GCE Platform share | **20%** | same |
-| Documented example base | ₹1,00,000 → Venue ₹80,000 / GCE ₹20,000 | `04_Revenue_Model.md`, `09_Venue_Partner.md` |
+| Constant | Value | Source |
+|----------|-------|--------|
+| Venue Partner entitlement | **80%** of Eligible Marketplace Revenue | FD-028 |
+| GCE Marketplace Platform Commission | **20%** of Eligible Marketplace Revenue | FD-028 |
+| Documented example base | ₹1,00,000 Eligible → Venue ₹80,000 / GCE ₹20,000 | `04_Revenue_Model.md`, `09_Venue_Partner.md` |
+| Marketplace Affiliate commission | **Not active** (future-only; separate Founder Decision required) | FD-028 |
 
-**Scope note (documented):** Marketplace revenue sharing is described for Marketplace business activity. Event-category-specific sharing “may differ” (`04_Revenue_Model.md`) — exact per-category variants are **not enumerated** in documentation.
+**Scope note:** Marketplace revenue sharing applies to eligible Marketplace business activity after recognition conditions. Event-category-specific variants remain **not enumerated** — do not invent.
 
 ---
 
@@ -60,9 +75,11 @@ Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, ter
 | Development target per Franchise Unit | **5 platform-activated Circles within 10 months** | FD-025 |
 | Average pace | Approximately **one activated Circle every two months** (must not be described as one Circle every month) | FD-025 |
 | Milestone reviews (cumulative activated Circles) | Month 2: 1 · Month 4: 2 · Month 6: 3 · Month 8: 4 · Month 10: 5 | FD-025 |
-| Commission | **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit | FD-025 |
+| Commission | **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit | FD-025 / FD-028 |
 | Renewal commission | Continues at **20%** on eligible renewals while the Franchise Unit remains active, the Connect BDP remains responsible, required retention/operating duties continue, and revenue remains eligible | FD-025 |
-| Commission calculation base | Eligible successfully collected, linked, activated, settlement-eligible, correctly attributed subscription revenue (exclusions in FD-025) | FD-025 |
+| Commission calculation base | Eligible successfully collected, linked, activated, settlement-eligible, correctly attributed subscription revenue (exclusions in FD-025 / FD-028) | FD-025 / FD-028 |
+| Commissionable items (when eligible) | Associate subscription/renewal, Core upgrade/renewal, Tag 3, Tag 4 | FD-025 / FD-027 / FD-028 |
+| Not automatically commissionable | GST/taxes, refunds/reversals/chargebacks, transfer/admin fees, event/training/advertising/sponsorship/technology fees, Lead Assist, complimentary/promotional credits, uncollected amounts | FD-025 / FD-028 |
 | Commission payout cadence | Calculated monthly; normally processed on the first day of the following month (exact banking-day adjustment: Pending Technical Design) | FD-025 |
 | Tier 1 maximum Franchise Units | **10** (5 zones × up to 2 units; maxima, not guaranteed appointments) | FD-025 |
 | Tier 2 maximum Franchise Units | **5** (5 zones × up to 1 unit) | FD-025 |
@@ -82,46 +99,42 @@ Circle lifecycle capacity (members per Circle): minimum activation **15** foundi
 
 ## GCE Marketplace — Marketplace BDP constants (legacy label: MBDP)
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Max Venue Partners per franchise | **20** | `03_Stakeholders.md`, `07_MBDP.md`, `14_Business_Rules.md` |
-| Marketplace franchise fee | **₹50,000** | `07_MBDP.md`, `14_Business_Rules.md` |
-| Initial training fee (mandatory) | **₹5,000** | `07_MBDP.md`, `14_Business_Rules.md` |
-| Finance company charge on financed amount | **20%** | `07_MBDP.md` |
-| Total repayment under documented finance example | **₹60,000** | `07_MBDP.md` |
-| Remaining payable after training fee | **₹55,000** | `07_MBDP.md` |
-| EMI start | From **2nd month** | `07_MBDP.md` |
-| Month 1 revenue target | **₹2,00,000** | `07_MBDP.md`, `14_Business_Rules.md` |
-| Month 2+ minimum monthly revenue target | **₹5,00,000** | `07_MBDP.md`, `14_Business_Rules.md` |
-| Commission | **10%** | `07_MBDP.md` |
-| Commission calculation base | **Undocumented** | — |
-| Definition of “revenue” for targets (GMV vs platform share) | **Undocumented** | — |
+**Authority note (FD-028):** Marketplace BDP Franchise or Partner Fee is an approved **revenue category in principle**. Exact fee, payment structure, refundability, financing, renewal, territory or capacity rights, commission treatment, recovery treatment, and tax treatment remain **Pending Founder Approval**. Do not treat historical narrative figures as Founder-final.
+
+| Constant | Value | Status |
+|----------|-------|--------|
+| Marketplace BDP Franchise / Partner Fee | **Pending Founder Approval** | FD-028 |
+| Max Venue Partners / capacity model | **Pending Founder Approval** | FD-028 |
+| Training fee / finance / EMI / targets / commission rate | **Pending Founder Approval** | FD-028 |
+| Commission calculation base | **Undocumented / Pending Founder Approval** | FD-028 |
+
+**Historical narrative only (not FD-028-final — do not implement as approved commercial law):** older `07_MBDP.md` text recorded franchise fee ₹50,000, training fee ₹5,000, finance charge 20%, total repayment ₹60,000, remaining ₹55,000, EMI from 2nd month, Month 1 target ₹2,00,000, Month 2+ ₹5,00,000, commission 10%. Those figures remain **superseded as final** until a dedicated Founder Decision approves them.
 
 ---
 
 ## GCE Enterprise — Enterprise BDP constants
 
-**Authority:** FD-026. Full business and operating rules: `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Narrative: `08_Enterprise_BDP.md`.
+**Authority:** FD-026. Full business and operating rules: `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Narrative: `08_Enterprise_BDP.md`. Recognition principles: FD-028.
 
 Commercial operating unit: **Enterprise BDP Franchise Pack**. Allocation is **client-based**, not territory-based. Enterprise Clients, projects, and data remain with **GCE**. Physical fulfilment is vendor/stakeholder-led — GCE does not directly execute events (FD-026).
 
 | Constant | Value | Source |
 |----------|-------|--------|
-| Minimum Enterprise project value | **₹1,00,000** eligible event revenue (excludes GST and statutory taxes) | FD-026 |
+| Minimum Enterprise project value | **₹1,00,000** eligible event revenue (excludes GST and statutory taxes) | FD-026 / FD-028 |
 | Direct-payment Franchise Pack fee | **₹30,000** upfront per Franchise Pack (one-time; non-refundable after training or activation; not a security deposit; separate fee for every additional pack; no launch-phase discount) | FD-026 |
 | Financed package total value | **₹36,000** per Franchise Pack | FD-026 |
 | Financed initial payment | **₹5,000** | FD-026 |
-| Financed recoverable balance | **₹31,000** | FD-026 |
+| Financed recoverable balance | **₹31,000** (recoverable balance is **not** event revenue — FD-028) | FD-026 / FD-028 |
 | Maximum monthly finance recovery | Up to **₹5,000** from earned and approved Enterprise BDP commission only (lower of ₹5,000 or available approved commission; no automatic cash-shortfall demand; unrecovered balance carries forward; no interest beyond fixed ₹36,000) | FD-026 |
 | Active-client capacity per Franchise Pack | **30** | FD-026 |
 | Standard packs per individual / controlled entity | Maximum **2** active packs (**60** active clients); more requires special platform approval | FD-026 |
 | Monthly target per Franchise Pack | **₹3,00,000** eligible Enterprise event revenue (collected, attributed; excludes GST/taxes/refunds/reversals/chargebacks/cancelled/uncollected) | FD-026 |
 | Rolling three-month target per Franchise Pack | **₹9,00,000** eligible Enterprise event revenue | FD-026 |
-| Standard GCE platform commission | **20%** of eligible Enterprise event revenue | FD-026 |
-| Reduced platform commission range | **15%–19%** for qualifying strategic projects (not automatic); **below 15%** requires special Founder or senior-authority approval | FD-026 |
-| Enterprise BDP commission | Flat **25%** of eligible GCE platform commission actually earned (no tiered launch commission) | FD-026 |
-| Enterprise Vendor Opportunity Fee | Success-based concept approved; **exact % and distribution unresolved** — do not invent | FD-026 |
-| Standard client payment structure | **30% / 40% / 30%** (confirmation / readiness-or-execution milestone / completion) — standard model, not inflexible; payment ≠ settlement eligibility | FD-026 / FD-021 |
+| Standard GCE platform commission | **20%** of eligible Enterprise event revenue | FD-026 / FD-028 |
+| Reduced platform commission range | **15%–19%** for qualifying strategic projects (not automatic); **below 15%** requires special Founder or senior-authority approval | FD-026 / FD-028 |
+| Enterprise BDP commission | Flat **25%** of eligible GCE platform commission actually earned (no tiered launch commission; not 25% of total project value) | FD-026 / FD-028 |
+| Enterprise Vendor Opportunity Fee | Success-based concept approved; **non-active**; **exact % and distribution unresolved** — do not invent | FD-026 / FD-028 |
+| Standard client payment structure | **30% / 40% / 30%** (confirmation / readiness-or-execution milestone / completion) — standard model, not inflexible; payment ≠ settlement eligibility | FD-026 / FD-021 / FD-028 |
 | Recommended Enterprise Platform Expert capacity | Maximum **10** active standard Enterprise projects (weighted major/multi-city capacity unresolved) | FD-026 |
 
 Illustrative commission examples at ₹10,00,000 eligible event revenue (not guaranteed income):
@@ -137,28 +150,28 @@ Illustrative commission examples at ₹10,00,000 eligible event revenue (not gua
 
 ## Offer / campaign constants
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Minimum campaign revenue value | **₹50,000** | `07_MBDP.md`, `09_Venue_Partner.md`, `14_Business_Rules.md` |
+| Constant | Value | Source |
+|----------|-------|--------|
+| Minimum Marketplace campaign commercial value | **₹50,000** | FD-028 |
+| Treatment | Minimum approved campaign value — **not** guaranteed collected revenue and **not** automatically recognised revenue | FD-028 |
 
 ---
 
 ## AI Lead Assist commercial constants
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Validation fee | **₹500** | `10_AI_Lead_Assist.md`, `14_Business_Rules.md`, `18_User_Flows.md`, `21_Payments.md`, `22_AI_Rules.md` |
-| Genuine-lead subscription credit | **₹500** | `10_AI_Lead_Assist.md` |
-| Credit recipient | Documented as the receiving member after genuine ground verification | `10_AI_Lead_Assist.md` |
+| Constant | Value | Status |
+|----------|-------|--------|
+| Validation fee / credit amounts historically documented | **₹500** (narrative) | **Pending Lead Assist Commercial Revenue** — FD-028 does **not** activate ₹500 fee, escrow, voucher, forfeiture, or Lead Assist commission |
+| Credit recipient | Documented as the receiving member after genuine ground verification | Lead Assist docs only |
 | Whether validation fee funds the credit | **Undocumented** | — |
 
-Full AI workflow: `39_AI_Lead_Assist_Spec.md`.
+Full AI workflow: `39_AI_Lead_Assist_Spec.md`. Do not merge Lead Assist into membership, Connect BDP subscription commission, Marketplace, or Enterprise revenue (FD-028).
 
 ---
 
 ## Membership commercial constants
 
-**Authority:** FD-027. Full commercial and operating rules: `FD-027_Membership_Commercial_and_Operating_Architecture.md`. Narrative: `05_Memberships.md`. Lifecycle timing: FD-022.
+**Authority:** FD-027. Full commercial and operating rules: `FD-027_Membership_Commercial_and_Operating_Architecture.md`. Narrative: `05_Memberships.md`. Lifecycle timing: FD-022. Recognition: FD-028.
 
 Official launch product: **GCE Connect Circle Membership — Associate Tier**. Member title: **GCE Connect Circle Member**. Core Tier is future / achievement-based and **not** directly purchasable at launch.
 
@@ -179,17 +192,39 @@ Official launch product: **GCE Connect Circle Membership — Associate Tier**. M
 | Freeze maximum | **90 days** | FD-027 / FD-022 |
 | Recommended seat protection during freeze | **Up to 30 days** (not automatic full-90-day seat protection) | FD-027 |
 | First transfer in 12 months | **Free** | FD-027 |
-| Additional transfer in same 12 months | **₹1,000 plus tax** | FD-027 |
+| Additional transfer in same 12 months | **₹1,000 plus tax** (Administrative Fee Revenue — not automatically Connect BDP commissionable — FD-028) | FD-027 / FD-028 |
 | Rejoining fee at launch | **None** | FD-027 |
 | Post-activation refund | Normally **non-refundable** (exact matrix Pending Founder/Legal Approval) | FD-027 |
 | Recommended Associate tenure before Core eligibility | **Six months** continuous active Associate Tier | FD-027 |
-| Connect BDP commission on eligible membership / Tag 3 / Tag 4 revenue | **20%** of eligible GCE Connect subscription revenue (FD-025 / FD-027); transfer fees and Lead Assist fees not automatically commissionable | FD-025 / FD-027 |
+| Connect BDP commission on eligible membership / Tag 3 / Tag 4 revenue | **20%** of eligible GCE Connect subscription revenue (FD-025 / FD-027 / FD-028); recognition requires collection + activation | FD-025 / FD-027 / FD-028 |
+| Core upgrade recognition | Actual upgrade amount collected only — not full Core subscription again | FD-028 |
 
 Associate example before tax: ₹6,000 + Tag 3 ₹1,500 + Tag 4 ₹1,500 = ₹9,000 maximum quarterly. Future Core example: ₹9,000 + Tag 3 ₹2,250 + Tag 4 ₹2,250.
 
-**Lead Assist commercial constants** (₹500 validation fee, credits, etc.) remain under Lead Assist documentation — **not** approved under FD-027 as base membership rules.
+**Lead Assist commercial constants** remain under Lead Assist documentation — **not** approved under FD-027 or activated under FD-028 as base membership revenue.
 
 Membership benefits and rules: `05_Memberships.md`. Circle rules: `38_Circle_Architecture.md`.
+
+---
+
+## Deposits and removed ZBP model (FD-028)
+
+| Item | Rule |
+|------|------|
+| Refundable security / partner deposit | **Liability** when received — not revenue |
+| ZBP role / commission / security deposit / wallet / settlement | **Removed completely** — not active |
+
+---
+
+## Multi-currency (FD-028)
+
+| Item | Rule |
+|------|------|
+| Architecture | Multi-currency-capable — not permanently INR-only |
+| INR | May be initial domestic transaction / internal reporting currency |
+| Currency activation | Country-by-country after payment, banking, settlement, invoicing, tax, refund, chargeback, FX, regulatory, payout, and Founder approval |
+| FX history | Preserve original amount/currency/rate/source/timestamp — do not recalculate historical FX with later rates |
+| Rounding | Pending Technical and Finance Approval |
 
 ---
 
@@ -198,10 +233,10 @@ Membership benefits and rules: `05_Memberships.md`. Circle rules: `38_Circle_Arc
 Franchise Activation Fee payments apply to:
 
 - **Connect BDP Franchise Unit** — ₹50,000 per unit (FD-025); deferred finance not active under FD-025
-- Marketplace BDP Franchise — see Marketplace BDP constants above
+- Marketplace BDP Franchise / Partner Fee — **Pending Founder Approval** (FD-028)
 - **Enterprise BDP Franchise Pack** — ₹30,000 direct per pack, or financed ₹36,000 (₹5,000 initial + ₹31,000 recoverable from approved commission only) (FD-026)
 
-Exact payment-route implementation, GST/TDS treatment, and banking-day payout adjustment remain Pending Technical Design / Pending Accounting Review / Pending Legal Review where not stated in Founder Decisions.
+Exact payment-route implementation, GST/TDS treatment, and banking-day payout adjustment remain Pending Technical Design / Pending Accounting Review / Pending Legal Review / Pending Tax Review where not stated in Founder Decisions.
 
 ---
 
@@ -227,6 +262,7 @@ When business changes a commercial number:
 
 ## Cross References
 
+- Revenue recognition authority: `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 - Connect BDP commercial authority: `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 - GCE Enterprise commercial authority: `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 - Membership commercial authority: `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`

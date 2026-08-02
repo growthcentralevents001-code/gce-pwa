@@ -5,7 +5,7 @@
 **Highest authority for GCE Enterprise business and operating rules:**
 `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · FD-028 (revenue recognition — milestone recognition; proposal value not revenue; VOF non-active) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Enterprise Business Development Partner**. Approved short name: **Enterprise BDP**.
 

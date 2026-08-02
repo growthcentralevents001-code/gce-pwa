@@ -28,6 +28,7 @@ Highest business authority — Founder Decisions:
 \- \`docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md\`
 \- \`docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md\`
 \- `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
+\- `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 
 Then living cores:
 
@@ -165,6 +166,7 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 07\_MBDP.md
 09\_Venue\_Partner.md
 35\_Role\_Taxonomy.md
@@ -173,6 +175,8 @@ Read:
 04\_Revenue\_Model.md
 14\_Business\_Rules.md
 \`\`\`
+
+Marketplace transaction share is 80% Venue Partner / 20% GCE of Eligible Marketplace Revenue. Affiliate is future-only. Marketplace BDP fee details remain Pending Founder Approval. Do not invent Affiliate 5% or final Marketplace BDP fee/finance terms.
 
 \---
 
@@ -262,12 +266,15 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 21\_Payments.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
 04\_Revenue\_Model.md
 14\_Business\_Rules.md
 \`\`\`
+
+Payment collection does not automatically create earned Platform Revenue or settlement eligibility. Keep FD-028 financial concepts separate.
 
 \---
 
@@ -330,12 +337,14 @@ Never calculate commissions manually.
 Always follow:
 
 \`\`\`
+docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
 04\_Revenue\_Model.md
+21\_Payments.md
 \`\`\`
 
-Revenue calculations must match the documented business model.
+Revenue calculations must match the documented business model and FD-028 terminology (Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Settlement-Eligible Amount). Do not treat Affiliate as active, invent Marketplace BDP fee details, treat ZBP as current, classify GST as Platform Revenue, treat proposal value as revenue, or treat payment as automatic settlement.
 
 \---
 

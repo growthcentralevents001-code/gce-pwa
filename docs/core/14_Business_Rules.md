@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**.
 
 Overview
 
@@ -200,21 +200,22 @@ Minimum campaign value: **`36_Commercial_Constants.md`** (Offer / campaign const
 
  Revenue Sharing Rules
 
-**GCE Marketplace** revenue sharing percentages: **`36_Commercial_Constants.md`**.
+**GCE Marketplace** active model (FD-028): **80% Venue Partner entitlement / 20% GCE Marketplace Platform Commission** of Eligible Marketplace Revenue. Numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
-Flow: **`37_Revenue_Flow.md`**.
+No active Marketplace Affiliate commission. Keep Gross Transaction Value / Collected Amount / Eligible Revenue / Platform Revenue / Settlement-Eligible Amount separate. Pipeline and proposal values are not recognised revenue. GST is not Platform Revenue. Refunds reverse commission proportionally; chargebacks create hold/recovery. ZBP is not part of the current model.
 
 Revenue distribution is calculated automatically.
 
  Connect BDP Rules
 
-Commercial and operating authority: **FD-025**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
+Commercial and operating authority: **FD-025**. Recognition / commission scope also **FD-028**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
 
-Key rules (do not invent beyond FD-025):
+Key rules (do not invent beyond FD-025 / FD-028):
 
 - Operating unit: **Connect BDP Franchise Unit**; fee **₹50,000 per unit**; deferred finance **not active**
 - Capacity: up to **5** Circles per Franchise Unit; target **5 platform-activated Circles in 10 months** (~one every two months)
-- Commission: **20%** of eligible GCE Connect subscription revenue, including eligible renewals while responsible
+- Commission: **20%** of eligible GCE Connect subscription revenue (Associate/Core/Tag 3/4 when collected, activated, attributed, settlement-eligible), including eligible renewals while responsible
+- Not automatically commissionable: GST/taxes, refunds/reversals, transfer/admin fees, event/training/advertising/sponsorship/Lead Assist, uncollected amounts
 - Territory: **Performance-Protected Assigned Territory** (not permanently owned); Tier maxima 10 / 5 / 2
 - Expansion: not automatic; separate fee; standard max **two** active Franchise Units
 - Performance: missing two consecutive milestone reviews → formal review + sixty-day corrective process (**not** automatic cancellation)
@@ -223,27 +224,25 @@ Key rules (do not invent beyond FD-025):
 
  Marketplace BDP Rules
 
-Venue Partner limit, franchise/training fees, finance math, targets, and commission: **`36_Commercial_Constants.md`** (Marketplace BDP).
-Additional franchise required beyond the documented Venue Partner limit.
-Finance option available.
+**FD-028:** Marketplace BDP Franchise or Partner Fee is a recognised revenue category in principle; exact fee, financing, renewal, capacity, commission, recovery, and tax treatment remain **Pending Founder Approval**. Do not invent final Marketplace BDP commercial details. Narrative: `07_MBDP.md`. Constants status: **`36_Commercial_Constants.md`** (Marketplace BDP).
 
  Enterprise BDP Rules
 
-Commercial and operating authority: **FD-026**. Numeric summary: **`36_Commercial_Constants.md`** (Enterprise BDP). Narrative: `08_Enterprise_BDP.md`.
+Commercial and operating authority: **FD-026**. Recognition principles: **FD-028**. Numeric summary: **`36_Commercial_Constants.md`** (Enterprise BDP). Narrative: `08_Enterprise_BDP.md`.
 
-Key rules (do not invent beyond FD-026):
+Key rules (do not invent beyond FD-026 / FD-028):
 
 - GCE Enterprise is a technology / workflow / financial-control platform — **not** a direct physical event executor; fulfilment is vendor/stakeholder-led
 - Operating unit: **Enterprise BDP Franchise Pack**; up to **30** active clients per pack; standard max **two** packs / **60** clients
-- Direct fee **₹30,000** / financed **₹36,000** (₹5,000 + ₹31,000 recoverable from approved commission only, max ₹5,000/month)
+- Direct fee **₹30,000** / financed **₹36,000** (₹5,000 + ₹31,000 recoverable from approved commission only, max ₹5,000/month); recoverable balance is **not** event revenue
 - Allocation is **client-based**, not territory-based; BDP does not own clients
 - Minimum project value **₹1,00,000** (excludes GST/taxes)
-- Targets per pack: **₹3,00,000** monthly · **₹9,00,000** rolling three months (eligible collected revenue only)
+- Targets per pack: **₹3,00,000** monthly · **₹9,00,000** rolling three months (eligible collected revenue only; proposal value does not count)
 - Platform commission **20%** standard (authorised reduced **15%–19%**; below 15% special approval)
-- Enterprise BDP commission: flat **25%** of eligible platform commission (not tiered; not guaranteed income)
+- Enterprise BDP commission: flat **25%** of eligible platform commission (not tiered; not 25% of total project value; not guaranteed income)
 - Enterprise Platform Expert is internal/controlled — not a franchisee; recommends vendors; does not physically execute
-- Standard payment **30% / 40% / 30%**; payment ≠ settlement eligibility
-- Vendor Opportunity Fee is an approved success-based concept; **% and distribution unresolved**
+- Standard payment **30% / 40% / 30%**; payment ≠ settlement eligibility; milestone recognition required
+- Vendor Opportunity Fee is an approved success-based concept; **non-active**; **% and distribution unresolved**
 - Performance: progressive sixty-day process — **not** automatic cancellation after one or two weak months
 - Serious misconduct may trigger immediate suspension or termination
 

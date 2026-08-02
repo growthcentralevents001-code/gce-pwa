@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Settlement / hold:** FD-021 · **Ledgers:** FD-020 · **RBAC:** FD-023 · **Commercial share:** `36_Commercial_Constants.md`
+**Settlement / hold:** FD-021 · **Ledgers:** FD-020 · **RBAC:** FD-023 · **Revenue recognition:** FD-028 · **Commercial share:** `36_Commercial_Constants.md`
 
-Venue Partner accesses **own** business data only. Settlement for Marketplace events follows successful completion and the approved **48-hour** post-event hold (FD-021), not payment alone. Platform share historically documented as 80/20 in Commercial Constants — event-category variants remain not enumerated.
+Venue Partner accesses **own** business data only. Settlement for Marketplace events follows successful completion and the approved **48-hour** post-event hold (FD-021), not payment alone. Active Marketplace split: **80% Venue Partner entitlement / 20% GCE Marketplace Platform Commission** of Eligible Marketplace Revenue (FD-028). Affiliate commission is not active. Minimum campaign commercial value ₹50,000 is not guaranteed collected or recognised revenue. Event-category variants remain not enumerated.
 
 ## Canonical references
 

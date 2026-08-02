@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -21,11 +21,13 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - Connect BDP commercial unit is the **Connect BDP Franchise Unit** (FD-025): assigned Performance-Protected territory, separate fee per unit, up to five Circles per unit — not ownership of territory, Circles, members, or data.
 - GCE Enterprise is a technology-enabled, stakeholder-fulfilled procurement / workflow / financial-control platform (FD-026). GCE does **not** directly execute physical events. Enterprise BDP allocation is **client-based** (Franchise Pack); Enterprise Platform Expert is internal/controlled.
 - GCE Connect Circle Membership launch product is **Associate Tier** at ₹6,000/quarter (FD-027); Core Tier is future/achievement-based and not directly purchasable; membership ≠ automatic Circle seat.
-- User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020).
-- Payment collection does **not** automatically mean settlement eligibility (FD-021).
+- User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020). Wallet credits are not automatically revenue (FD-028).
+- Payment collection does **not** automatically mean settlement eligibility or earned Platform Revenue (FD-021 / FD-028). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate.
+- Active Marketplace model: **80% Venue Partner / 20% GCE** of Eligible Marketplace Revenue; Affiliate is future-only; ZBP is removed (FD-028).
 - Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.
+- Financial architecture must be **multi-currency-capable**; INR may be initial domestic/reporting currency — not permanently INR-only (FD-028).
 
-Do not invent missing commercial percentages, tax rates, or future revenue products. Future revenue categories in FD-001 are **not active** until separately approved.
+Do not invent missing commercial percentages, tax rates, Marketplace BDP fee details, advertising prices, Lead Assist commercial activation, or future Affiliate products. Category existence under FD-028 does not automatically activate products or prices.
 
 ---
 

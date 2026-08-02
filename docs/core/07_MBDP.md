@@ -2,7 +2,9 @@
 
 ## Authority
 
-**Platform model:** FD-001 · **RBAC:** FD-023 · **Settlement:** FD-021 · **Ledgers:** FD-020 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Platform model:** FD-001 · **RBAC:** FD-023 · **Settlement:** FD-021 · **Ledgers:** FD-020 · **Revenue recognition:** FD-028 · **Commercial numbers:** `36_Commercial_Constants.md`
+
+**FD-028:** Marketplace BDP Franchise or Partner Fee is a recognised category in principle; exact fee, financing, renewal, capacity, commission, recovery, and tax treatment remain **Pending Founder Approval**. Active Marketplace transaction split: **80% Venue Partner / 20% GCE**. Affiliate commission is **not active**.
 
 Approved role name: **GCE Marketplace Business Development Partner (Marketplace BDP)**. Legacy filename/label **MBDP** retained for compatibility.
 
@@ -76,7 +78,7 @@ A Marketplace BDP is responsible for:
 
 ## Venue Partner Limit
 
-Each Marketplace BDP can manage a maximum number of Venue Partners per franchise defined in **`36_Commercial_Constants.md`** (Marketplace BDP → Max Venue Partners).
+Each Marketplace BDP capacity / Venue Partner limit remains **Pending Founder Approval** under FD-028 — see **`36_Commercial_Constants.md`** (Marketplace BDP).
 
 If a Marketplace BDP wants to onboard more than the documented franchise limit, an additional Marketplace Franchise must be purchased.
 
@@ -84,21 +86,21 @@ If a Marketplace BDP wants to onboard more than the documented franchise limit, 
 
 ## Franchise Model
 
-Marketplace Franchise Fee and capacity: **`36_Commercial_Constants.md`** (Marketplace BDP franchise fee and venue limit).
+Marketplace Franchise Fee and capacity: **Pending Founder Approval under FD-028** — see **`36_Commercial_Constants.md`** (Marketplace BDP). Historical narrative figures in older text are not Founder-final.
 
-Additional Venue Partner capacity requires purchasing another franchise.
+Additional Venue Partner capacity rules remain unresolved until Marketplace BDP commercial terms are Founder-approved.
 
 ---
 
 ## Finance Option
 
-If an eligible applicant cannot pay the full franchise fee, GCE may provide financing through an approved finance partner.
+Any Marketplace BDP financing option remains **Pending Founder Approval** (FD-028). Do not invent training fee, finance charge, EMI, or repayment totals as final commercial law.
 
 ### Finance Rules
 
-All training fee, finance charge, repayment totals, remaining payable, and EMI start month: **`36_Commercial_Constants.md`** (Marketplace BDP finance rows).
+Status: **`36_Commercial_Constants.md`** (Marketplace BDP — Pending Founder Approval).
 
-Finance approval depends on eligibility and company policy.
+Finance approval depends on eligibility and company policy only after Founder-approved terms exist.
 
 ---
 
@@ -108,7 +110,7 @@ Every Marketplace BDP is expected to continuously grow Marketplace revenue.
 
 ### Revenue Targets
 
-Month 1 and Month 2+ targets: **`36_Commercial_Constants.md`** (Marketplace BDP revenue targets).
+Exact Month 1 / Month 2+ targets: **Pending Founder Approval** (FD-028). See **`36_Commercial_Constants.md`**. Historical narrative targets are not Founder-final.
 
 The platform continuously tracks monthly performance through the Marketplace BDP Dashboard.
 
@@ -118,7 +120,7 @@ The platform continuously tracks monthly performance through the Marketplace BDP
 
 Every Venue Partner can create promotional campaigns through the GCE Marketplace.
 
-Minimum Campaign Revenue Value: **`36_Commercial_Constants.md`** (Offer / campaign constants).
+Minimum Campaign commercial value: **₹50,000** (**`36_Commercial_Constants.md`** / FD-028) — minimum approved campaign value, **not** guaranteed collected or recognised revenue.
 
 Examples include:
 
@@ -226,7 +228,7 @@ The platform measures Marketplace BDP performance using:
 
 Marketplace Business Development Partners receive:
 
-- Commission rate: **`36_Commercial_Constants.md`** (Marketplace BDP → Commission)
+- Commission rate: **Pending Founder Approval** — **`36_Commercial_Constants.md`** (Marketplace BDP); do not invent
 - Marketplace Business Income
 - Franchise Expansion Opportunities
 - Dedicated Dashboard

@@ -52,7 +52,7 @@ Location: `docs/core/`
 | 01 | `01_GCE_Overview.md` | GCE ecosystem, vision, platform introduction |
 | 02 | `02_Business_Model.md` | Complete GCE business model |
 | 03 | `03_Stakeholders.md` | Stakeholders and responsibilities |
-| 04 | `04_Revenue_Model.md` | Revenue sources, commissions and earnings |
+| 04 | `04_Revenue_Model.md` | Revenue sources / recognition (defers to FD-028) |
 | 05 | `05_Memberships.md` | Membership narrative (defers to FD-027; lifecycle also FD-022) |
 | 06 | `06_CBDP.md` | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07 | `07_MBDP.md` | Marketplace Business Development Partner |
@@ -170,6 +170,7 @@ Location: `docs/founder-decisions/`
 | `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 | `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 | `FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
+| `FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 
 ## Development Workflow
 
@@ -206,18 +207,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.2.0 |
-| Last Updated | 2026-08-01 |
+| Documentation Version | v1.6.0 |
+| Last Updated | 2026-08-02 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 9 |
+| Total Founder Decisions | 10 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 52 |
+| Total Documentation Files (`docs/`) | 53 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 9 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 52.
+Total documentation files under `docs/` = 32 core + 8 engineering + 10 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 53.
 
 ## Changelog
+
+### v1.6.0
+
+- Indexed FD-028 (Revenue Recognition and Commercial Architecture) as highest authority for revenue recognition and commercial classification
+- Synchronised living Markdown documentation with FD-028 (five financial concepts, Marketplace 80/20, Affiliate future-only, ZBP removed, advertising/sponsorship/promotional visibility, multi-currency, refunds/GST/attribution)
 
 ### v1.5.0
 

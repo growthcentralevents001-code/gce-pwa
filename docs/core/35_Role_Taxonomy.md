@@ -39,7 +39,7 @@ Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Com
 | Platform Taxonomy Team | — | Final taxonomy publishing authority |
 | Finance Administrator | — | Permission-controlled; segregation of duties (FD-023) |
 
-**Legacy terms requiring explicit migration mapping (do not silently equate):** ZBP, BDM, Affiliate, Franchisee, CBDP, MBDP, BD Partner, Generic Enterprise role. See Role Mapping below.
+**Legacy terms requiring explicit migration mapping (do not silently equate):** ZBP (obsolete under FD-028), BDM, Affiliate (future-only under FD-028), Franchisee, CBDP, MBDP, BD Partner, Generic Enterprise role. See Role Mapping below.
 
 ---
 
@@ -163,9 +163,9 @@ Permissions
 | Enterprise / enterprise_client (type labels) | Enterprise BDP *(when acting as partner)* / Enterprise client *(when buyer)* | `enterprise` | Documented: Enterprise BDP Dashboard. App route (inventory): `/dashboard/enterprise` | `19_Permissions_Roles.md` → Enterprise BDP *(partner)*; client flows in `08` / `18` |
 | CBDP (legacy label) | **Connect BDP** (approved) | **Pending explicit DB enum migration mapping** | Documented: Connect BDP / CBDP Dashboard | `19_Permissions_Roles.md` / FD-023 |
 | MBDP (legacy label) | **Marketplace BDP** (approved) | **Pending explicit DB enum migration mapping** | Documented: Marketplace BDP / MBDP Dashboard | `19_Permissions_Roles.md` / FD-023 |
-| ZBP | **Pending business confirmation** (legacy/code label) | `zbp` | App routes (inventory): `/dashboard/zbp`, `/zbp`, `/zbp/apply`; admin `/admin/zbp*` | Pending — do not invent |
+| ZBP | **Obsolete / removed from current commercial model** (FD-028) — legacy/code label only | `zbp` | App routes (inventory): `/dashboard/zbp`, `/zbp`, `/zbp/apply`; admin `/admin/zbp*` | Do not invent current ZBP commission or deposit rules |
 | BDM | **Pending business confirmation** (legacy/code label) | `bdm` | App routes (inventory): `/dashboard/bdm`, legacy `/bdm-dashboard` | Pending — do not invent |
-| Affiliate | **Pending business confirmation** (legacy/code label) | `affiliate` | App routes (inventory): `/dashboard/affiliate`, `/affiliate/**` | Pending — do not invent |
+| Affiliate | **Future-only** under FD-028 (no active Marketplace Affiliate commission); legacy/code label | `affiliate` | App routes (inventory): `/dashboard/affiliate`, `/affiliate/**` | Do not invent active Affiliate rate/settlement |
 | Franchisee | **Pending business confirmation** (legacy/code label) | `franchisee` | App route (inventory): `/dashboard/franchisee` | Pending — do not invent |
 | Board of Governance | Board of Governance | **Not present** in generated `user_role` enum inventory | Documented: Board of Governance Dashboard | `19_Permissions_Roles.md` → BOG |
 | RM | Relationship Manager (RM) | **Not present** in generated `user_role` enum inventory | Documented: RM Dashboard | `19_Permissions_Roles.md` → RM |

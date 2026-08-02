@@ -42,7 +42,7 @@ Location: `docs/core/`
 | 01_GCE_Overview.md | GCE ecosystem, vision, platform introduction |
 | 02_Business_Model.md | Complete GCE business model |
 | 03_Stakeholders.md | Stakeholders and responsibilities |
-| 04_Revenue_Model.md | Revenue sources, commissions and earnings |
+| 04_Revenue_Model.md | Revenue recognition / sources (defers to FD-028) |
 | 05_Memberships.md | Membership narrative (defers to FD-027; lifecycle also FD-022) |
 | 06_CBDP.md | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07_MBDP.md | Marketplace Business Development Partner |
@@ -88,6 +88,7 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 | `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 | `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
+| `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 
 ## Canonical core living documents
 

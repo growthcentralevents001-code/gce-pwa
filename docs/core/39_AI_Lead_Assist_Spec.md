@@ -9,14 +9,15 @@ Narrative partners:
 - Historical explainer: `10_AI_Lead_Assist.md` (must defer here for rules)
 - Broader AI engine rules: `22_AI_Rules.md` (must defer here for Lead Assist; may retain non–Lead Assist AI modules)
 
-Commercial amounts: `36_Commercial_Constants.md` (Lead Assist amounts — **not** part of FD-027 membership constitution).
+Commercial amounts: `36_Commercial_Constants.md` (Lead Assist amounts — **Pending Lead Assist Commercial Revenue**; FD-028 does not activate ₹500 fee, escrow, voucher, or Lead Assist commission).
 Circle context: `38_Circle_Architecture.md`.
 Roles: `35_Role_Taxonomy.md`.
 Membership commercial (separate): FD-027 / `05_Memberships.md`.
+Revenue recognition (separate): FD-028.
 
 Always use vertical names **GCE Connect**, **GCE Marketplace**, **GCE Enterprise** when referring to lead sources or members.
 
-Lead Assist remains a separate service from base GCE Connect Circle Membership. FD-027 does not approve Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission.
+Lead Assist remains a separate service from base GCE Connect Circle Membership. FD-027 and FD-028 do not approve Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission.
 
 ---
 

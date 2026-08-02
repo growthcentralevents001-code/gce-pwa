@@ -2,7 +2,7 @@
 
 ## Authority
 
-Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Exact dashboard report designs remain Pending Technical Design.
+Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Revenue recognition, commercial classification, refunds/reversals, multi-currency reporting, and audit/rule-version language follow **FD-028**. Reports should separately show Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, stakeholder entitlement, refunds, reversals, chargebacks, taxes, TDS, pending/paid settlement, recoverable balances, net retained platform amount, and original vs reporting currency. Exact dashboard report designs remain Pending Technical Design.
 
 Analytics & Reports
 

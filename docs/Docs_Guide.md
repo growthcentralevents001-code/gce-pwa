@@ -40,6 +40,7 @@ FD-022_Membership_Lifecycle.md
 FD-023_RBAC_and_Permissions.md
 FD-024_GCE_Connect_Circle_Lifecycle.md
 FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
+FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 ```
 
 Then living canonical cores (summaries that defer to Founder Decisions):
@@ -57,6 +58,8 @@ Always write vertical names as **GCE Connect**, **GCE Marketplace**, and **GCE E
 Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**.
 
 For Connect BDP commercial and operating rules (Franchise Unit, fee, territory, Circle targets, commission, performance, expansion, reassignment), **FD-025** is the most specific Founder authority. Living summaries: `06_CBDP.md`, `36_Commercial_Constants.md`.
+
+For GCE Enterprise commercial and operating rules (Franchise Pack, client-based allocation, platform commission, Enterprise BDP commission, Platform Expert, fulfilment, multi-city, Vendor Opportunity Fee concept), **FD-026** is the most specific Founder authority. Living summaries: `08_Enterprise_BDP.md`, `36_Commercial_Constants.md`.
 
 Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings.
 

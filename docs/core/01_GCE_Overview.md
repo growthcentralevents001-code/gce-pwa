@@ -2,15 +2,15 @@
 
 ## Authority
 
-**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md`
+**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026
 
-GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Legacy “Power Circles” naming is unresolved relative to FD-024 **GCE Power Sector** taxonomy — do not invent Power Circle rules.
+GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Legacy “Power Circles” naming is unresolved relative to FD-024 **GCE Power Sector** taxonomy — do not invent Power Circle rules. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026).
 
 Project Overview
 
 Growth Central Events (GCE) is an AI-powered Business Growth Ecosystem designed to connect professionals, entrepreneurs, SMEs, retailers, venue partners, service providers, and corporate organizations through structured networking, business referrals, marketplace services, enterprise solutions, and intelligent lead distribution.
 
-Unlike traditional event management platforms, GCE is not limited to event discovery or ticket booking. It combines business networking, membership management, marketplace commerce, enterprise event management, AIpowered lead routing, franchise operations, and business intelligence into one unified Progressive Web Application (PWA).
+Unlike traditional event management platforms, GCE is not limited to event discovery or ticket booking. It combines business networking, membership management, marketplace commerce, enterprise procurement and vendor-led fulfilment coordination (FD-026), AIpowered lead routing, franchise operations, and business intelligence into one unified Progressive Web Application (PWA).
 
 The platform is designed to become a complete digital ecosystem where businesses can build relationships, generate qualified leads, increase sales, expand their network, and manage business operations through rolebased dashboards.
 
@@ -59,16 +59,18 @@ It provides businesses with digital visibility while helping users discover veri
 
  3\. GCE Enterprise
 
-GCE Enterprise provides endtoend business event solutions for corporate organizations.
+GCE Enterprise is a technology-enabled, stakeholder-fulfilled corporate event procurement, matching, coordination, workflow, and financial-control platform (FD-026). GCE does **not** directly execute physical events.
 
 **GCE Enterprise** Services include:
 
- Corporate Events
+ Corporate Event Procurement and Coordination
  Conferences
  Exhibitions
  Employee Engagement Programs
  Business Meetings
- GCE Enterprise Event Solutions
+ Vendor-Led Fulfilment Coordination via approved stakeholders
+
+Authority: FD-026 · Narrative: `08_Enterprise_BDP.md` · Numbers: `36_Commercial_Constants.md`.
 
  Platform Objectives
 

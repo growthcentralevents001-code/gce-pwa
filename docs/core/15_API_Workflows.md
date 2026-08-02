@@ -8,11 +8,12 @@
 **FD-022** — membership activation ≠ automatic Circle seat.
 **FD-024** — Connect BDP initiates Circles; platform activates.
 **FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).
+**FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, and Vendor Opportunity Fee commercial rules (do not invent API routes or VOF percentages from FD-026 alone).
 **FD-020** — financial ledgers (API must not treat Wallet as one undifferentiated ledger).
 
 Exact route paths, permission codes, and API contracts remain **Pending Technical Design** where not implemented. Legacy path segments such as `/api/cbdp/**` or `/api/mbdp/**` are **technical compatibility labels** pending explicit route/role migration mapping — preferred product names are **Connect BDP** and **Marketplace BDP**.
 
-Do not imply separate login accounts per role, administrator god mode, or that RM/PRM APIs grant automatic financial authority.
+Do not imply separate login accounts per role, administrator god mode, that RM/PRM APIs grant automatic financial authority, or that GCE Enterprise APIs imply direct physical event execution.
 
 ---
 
@@ -404,6 +405,8 @@ POST /api/enterprise/quotation
 \`\`\`
 POST /api/enterprise/sendquotation
 \`\`\`
+
+Enterprise API capabilities required by FD-026 (exact routes Pending Technical Design): Franchise Pack and client-attribution surfaces; Event Requirement Brief; Enterprise Platform Expert assignment; vendor shortlist/quotation comparison; Master Project / City Units; commission calculation (platform commission and 25% BDP share); financed-pack recovery; Vendor Opportunity Fee tracking where applicable (percentage unresolved). Do not invent final route contracts or VOF rates.
 
  AI Lead Assist APIs
 

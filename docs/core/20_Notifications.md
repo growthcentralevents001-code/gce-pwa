@@ -5,6 +5,7 @@
 **FD-022** — membership lifecycle notification *events* (seat reservation, renewal window, grace, freeze, suspension, reinstatement, transfer, rejoining). Exact channels, copy, and schedules beyond Founder-approved timing rules remain **Pending Technical Design** / Notification Architecture.
 **FD-024** — Circle lifecycle notifications must not imply Connect BDP independent activation.
 **FD-025** — Connect BDP Franchise Unit milestone, performance-review, expansion, and commission notifications must not imply guaranteed income or automatic cancellation.
+**FD-026** — Enterprise Franchise Pack target, finance-recovery, attribution/dormancy, Platform Expert assignment, and commission notifications must not imply guaranteed income, territory ownership, or automatic cancellation.
 **FD-023** — notifications are role- and permission-scoped.
 **FD-001** — one account; role-based delivery.
 
@@ -131,13 +132,16 @@ Marketplace BDPs receive notifications for:
 
 Enterprise BDPs receive notifications for:
 
- New Enterprise Lead
+ New Enterprise Lead / Attribution Events
  Client Approval
- Quotation Request
- Vendor Confirmation
- Venue Confirmation
- Project Status
- Revenue Updates
+ Quotation / Proposal Status
+ Vendor / Venue Confirmation (via Platform Expert workflow)
+ Project Status / Readiness / Completion Evidence
+ Franchise Pack Target Progress (₹3L monthly / ₹9L rolling)
+ Commission Updates (subject to settlement eligibility; not guaranteed)
+ Finance Recovery Deductions (financed pack, where applicable)
+ Performance Review / Corrective-Plan Notices
+ Dormancy / Reassignment Review Notices
 
  PRM Notifications
 

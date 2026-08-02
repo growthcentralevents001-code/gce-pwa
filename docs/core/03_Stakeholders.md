@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Connect BDP commercial:** FD-025 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Commercial numbers:** `36_Commercial_Constants.md`
 
-Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025).
+Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Enterprise Platform Expert, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025). Enterprise BDP allocation is client-based; Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data (FD-026).
 
 Overview
 
@@ -28,6 +28,8 @@ Platform Admin
         ├──────── GCE Marketplace Business Development Partners (Marketplace BDP)
         │
         ├──────── Enterprise Business Development Partners (Enterprise BDP)
+        │
+        ├──────── Enterprise Platform Experts (internal / controlled — FD-026)
         │
         ├──────── Venue Partners
         │
@@ -177,25 +179,43 @@ Marketplace BDPs develop the **GCE Marketplace** business network.
 
  6\. Enterprise Business Development Partner (Enterprise BDP)
 
-Enterprise BDPs are responsible for acquiring corporate clients and expanding **GCE Enterprise**.
+Enterprise BDPs are independent GCE business partners authorised to operate approved **Enterprise BDP Franchise Packs** under **client-based** allocation (FD-026). GCE Enterprise is a technology / workflow / financial-control platform; physical fulfilment is vendor/stakeholder-led.
 
  Responsibilities
 
- Corporate Client Acquisition
- Enterprise Business Development
- Enterprise Sales
- Business Relationship Development
+ Corporate Client Acquisition and Qualification
+ Enterprise Client Attribution Support
+ Requirement Capture / Brief Coordination
+ Proposal and Commercial Coordination
+ Coordination with Enterprise Platform Expert
+ Repeat-Business Development and Relationship Management
 
  Business Rules
 
- Franchise fee and undocumented commercial gaps: **`36_Commercial_Constants.md`** (Enterprise BDP section).
+ Commercial and operating authority: **FD-026**.
+ Numeric limits, fees, targets, commission: **`36_Commercial_Constants.md`** (Enterprise BDP section).
  Narrative and workflow: `08_Enterprise_BDP.md`.
 
  Benefits
 
- Enterprise Commission
- Corporate Network
- HighValue Business Opportunities
+ Eligible Commission Income (25% of eligible GCE platform commission — not guaranteed)
+ Franchise Pack Expansion Opportunities (separate pack; standard max two packs)
+ Corporate Network within attributed client relationships
+
+ 6a\. GCE Enterprise Platform Expert
+
+Enterprise Platform Experts are internal GCE employees or directly controlled specialists (FD-026). They are **not** franchisees, territory owners, or client/project owners.
+
+ Responsibilities
+
+ Review Event Requirement Briefs
+ Service-Requirement Breakdown
+ Vendor Search / Shortlist / Quotation Coordination
+ Proposal Inputs and Approval Workflow Coordination
+ Readiness and Completion-Evidence Tracking
+ Digital Project Closure Support
+
+ Access is project-scoped under FD-023. Exact compensation amounts remain unresolved.
 
  7\. Platform Relationship Manager (PRM)
 

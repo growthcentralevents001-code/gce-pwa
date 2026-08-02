@@ -56,7 +56,7 @@ Location: `docs/core/`
 | 05 | `05_Memberships.md` | Membership plans and benefits |
 | 06 | `06_CBDP.md` | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07 | `07_MBDP.md` | Marketplace Business Development Partner |
-| 08 | `08_Enterprise_BDP.md` | Enterprise Business Development Partner |
+| 08 | `08_Enterprise_BDP.md` | Enterprise BDP narrative (defers to FD-026) |
 | 09 | `09_Venue_Partner.md` | Venue Partner workflow |
 | 10 | `10_AI_Lead_Assist.md` | AI Lead Assist workflow |
 | 11 | `11_Database.md` | Database schema and relationships |
@@ -168,6 +168,7 @@ Location: `docs/founder-decisions/`
 | `FD-023_RBAC_and_Permissions.md` | RBAC, permissions, workspaces |
 | `FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
 | `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
+| `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 
 ## Development Workflow
 
@@ -209,13 +210,18 @@ Additional mandatory behaviors:
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 7 |
+| Total Founder Decisions | 8 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 50 |
+| Total Documentation Files (`docs/`) | 51 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 7 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 50.
+Total documentation files under `docs/` = 32 core + 8 engineering + 8 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 51.
 
 ## Changelog
+
+### v1.4.0
+
+- Indexed FD-026 (GCE Enterprise Business and Operating Architecture) as highest authority for GCE Enterprise
+- Synchronised living Markdown documentation with FD-026 (Franchise Pack, client-based allocation, platform/BDP commission, Platform Expert, fulfilment, multi-city)
 
 ### v1.3.0
 

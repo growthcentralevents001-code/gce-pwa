@@ -11,6 +11,7 @@ Schema narratives in this file are **illustrative** until migrations and generat
 - **FD-023** — roles, permissions, workspaces, and access-control principles
 - **FD-024** — GCE Connect Circle lifecycle, capacity, and seat architecture
 - **FD-025** — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance). Exact Franchise Unit tables/enums remain **Pending Technical Design**
+- **FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, Master Project / City Unit, Vendor Opportunity Fee tracking concepts. Exact schemas/enums remain **Pending Technical Design**
 
 Also: **FD-001** (unified platform / one account / verticals); **FD-021** (settlement eligibility principles).
 
@@ -18,6 +19,7 @@ Also: **FD-001** (unified platform / one account / verticals); **FD-021** (settl
 
 - Exact database enums (including `user_role` values)
 - Exact Connect BDP Franchise Unit schema, status enums, or commission-attribution tables
+- Exact Enterprise Franchise Pack, client-attribution, Platform Expert, Master Project / City Unit, or Vendor Opportunity Fee schemas
 - Final table/column names and constraints
 - Exact membership or Circle state-machine enum values
 - Supabase RLS policy definitions
@@ -252,6 +254,7 @@ Supported Roles
  Connect BDP
  Marketplace BDP
  Enterprise BDP
+ Enterprise Platform Expert (internal/controlled — FD-026; exact enum Pending Technical Design)
  Venue Partner
  Circle Member / GCE Connect Member
  Enterprise Client (distinct from Enterprise BDP)
@@ -259,7 +262,7 @@ Supported Roles
 
 Exact `user_role` enum values and RLS policies: **Pending Technical Design**. Legacy labels (ZBP, BDM, Affiliate, Franchisee, CBDP, MBDP) require explicit migration mapping — see `35_Role_Taxonomy.md`.
 
-Each role has specific database permissions only where explicitly granted (FD-023). Membership rows do **not** automatically imply Circle seat rows (FD-022 / FD-024). Financial ledger tables, if modeled, must follow FD-020 separation principles — schema details **Pending Technical Design**.
+Each role has specific database permissions only where explicitly granted (FD-023). Membership rows do **not** automatically imply Circle seat rows (FD-022 / FD-024). Financial ledger tables, if modeled, must follow FD-020 separation principles — schema details **Pending Technical Design**. Enterprise Franchise Pack, client-attribution, Master Project / City Unit, and Vendor Opportunity Fee tables remain **Pending Technical Design** (FD-026).
 
  Database Relationships
 

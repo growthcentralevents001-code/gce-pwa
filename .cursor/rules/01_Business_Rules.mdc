@@ -26,6 +26,7 @@ Highest business authority — Founder Decisions:
 \- \`docs/founder-decisions/FD-023_RBAC_and_Permissions.md\`
 \- \`docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md\`
 \- \`docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md\`
+\- \`docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md\`
 
 Then living cores:
 
@@ -55,6 +56,7 @@ docs/founder-decisions/FD-022_Membership_Lifecycle.md
 docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -174,18 +176,28 @@ Read:
 Whenever working on:
 
 \- GCE Enterprise Clients
+\- Enterprise BDP
+\- Enterprise BDP Franchise Pack
+\- Enterprise Platform Expert
 \- Corporate Events
 \- GCE Enterprise Dashboard
+\- Vendor Opportunity Fee
+\- Multi-city Enterprise projects
 
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 08\_Enterprise\_BDP.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
 14\_Business\_Rules.md
+18\_User\_Flows.md
+21\_Payments.md
 \`\`\`
+
+GCE Enterprise commercial and operating rules defer to FD-026. Do not invent Vendor Opportunity Fee percentages, treat Enterprise Platform Expert as a franchisee, imply GCE physically executes events, or treat Enterprise allocation as geographic territory ownership.
 
 \---
 
@@ -385,6 +397,7 @@ docs/founder-decisions/FD-022_Membership_Lifecycle.md
 docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md

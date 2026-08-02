@@ -27,10 +27,11 @@ Business meaning of roles, membership, Circles, and financial ledgers is governe
 \- FD-023 — RBAC / least privilege
 \- FD-024 — Circle lifecycle and seats
 \- FD-025 — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance)
+\- FD-026 — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, Vendor Opportunity Fee tracking concepts
 
-Exact database enums, RLS policy SQL, Franchise Unit schemas, commission-attribution tables, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it.
+Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages.
 
-Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\*. Connect BDP commercial numbers defer to FD-025 / \`36_Commercial_Constants.md\`.
+Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\* / \*\*Enterprise BDP\*\* / \*\*Enterprise Platform Expert\*\*. Connect BDP commercial numbers defer to FD-025 / \`36_Commercial_Constants.md\`. Enterprise commercial numbers defer to FD-026 / \`36_Commercial_Constants.md\`.
 
 \# Project Context
 
@@ -256,6 +257,7 @@ Roles include:
 \- Connect BDP (legacy label CBDP may appear in code/paths — pending migration mapping)
 \- Marketplace BDP (legacy label MBDP may appear in code/paths — pending migration mapping)
 \- Enterprise BDP
+\- Enterprise Platform Expert (internal/controlled — FD-026; exact enum Pending Technical Design)
 \- Board of Governance
 \- Circle Member / GCE Connect Member
 \- Enterprise Client (distinct from Enterprise BDP)

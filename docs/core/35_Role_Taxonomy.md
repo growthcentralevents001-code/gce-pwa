@@ -4,11 +4,11 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial and operating architecture — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
-Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025**. Circles: `38_Circle_Architecture.md` / FD-024.
+Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025** / **FD-026**. Circles: `38_Circle_Architecture.md` / FD-024.
 
 ---
 
@@ -69,13 +69,14 @@ Aligned with FD role families and existing product documentation:
 | 2 | Board of Governance / Circle Board | GCE Connect | Approved internal Circle governance — does not own/create/activate Circles |
 | 3 | Relationship Manager (RM) | Ops | Assigned operational support — no automatic finance authority |
 | 4 | Platform Relationship Manager (PRM) | Ops / escalations | Escalation & verification duties — no automatic finance authority |
-| 5 | Connect BDP | GCE Connect | Initiate/grow Circles & memberships within assigned scope |
+| 5 | Connect BDP | GCE Connect | Initiate/grow Circles & memberships within assigned Franchise Unit scope (FD-025) |
 | 6 | Marketplace BDP | GCE Marketplace | Onboard/support Venue Partners within assigned scope |
-| 7 | Enterprise BDP | GCE Enterprise | Enterprise client acquisition & BD within assigned scope |
+| 7 | Enterprise BDP | GCE Enterprise | Enterprise Client acquisition & BD under client-based Franchise Pack attribution (FD-026) |
 | 8 | Venue Partner | GCE Marketplace | Own events, offers, bookings |
 | 9 | Circle Member / GCE Connect Member | GCE Connect | Networking & seats (seat separate from membership) |
 | 10 | Registered User / Visitor | Demand | Public/authenticated general access |
 | — | Enterprise Client | GCE Enterprise | Client/project functions (not a BDP) |
+| — | Enterprise Platform Expert | GCE Enterprise | Internal/controlled specialist for requirement breakdown, vendor matching, and digital project coordination (FD-026) — not a franchisee |
 | — | Platform Taxonomy Team | Platform | Taxonomy publish authority |
 | — | Finance / Compliance / Support / Security Administrators | Platform | Department-scoped admin families (FD-023) |
 
@@ -101,7 +102,8 @@ Hard boundaries (Founder-aligned):
 | RM / PRM | Automatic settlement, refund, ledger, or payout authority |
 | Connect BDP | Activate Circles independently; auto-access other verticals; self-approve commission |
 | Marketplace BDP | Act as Venue Partner by default; release settlements/refunds without permission |
-| Enterprise BDP | Release payments/settlements without permission; auto-access other verticals |
+| Enterprise BDP | Release payments/settlements without permission; auto-access other verticals; own clients/projects; execute physical events; self-approve commission |
+| Enterprise Platform Expert | Physically execute events; unrestricted platform data access; approve refunds/settlements independently; accept vendor kickbacks |
 | Venue Partner | Access other Venue Partner private data |
 | Circle Member | Administer Circle as platform owner; be Connect BDP for same conflicting Circle |
 | Any Admin | Operate with unrestricted universal god mode by default |
@@ -206,4 +208,4 @@ Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`,
 - Commercial limits/fees: `36_Commercial_Constants.md`
 - GCE Connect circles: `38_Circle_Architecture.md`
 - Partner docs (legacy filenames): `06_CBDP.md` (Connect BDP), `07_MBDP.md` (Marketplace BDP), `08_Enterprise_BDP.md`, `09_Venue_Partner.md`
-- Founder Decisions: FD-001, FD-023, FD-024, FD-025
+- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026

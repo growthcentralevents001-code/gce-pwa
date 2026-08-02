@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025
+**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
 
-Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. Connect BDP targets are Franchise Unit Circle milestones (FD-025), not a monthly sales-target substitute invented here.
+Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. Connect BDP targets are Franchise Unit Circle milestones (FD-025). Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026) — GCE does not directly execute physical events.
 
 Overview
 
@@ -211,39 +211,41 @@ Revenue Distribution
 
  7\. Enterprise Flow
 
-Enterprise Client
+Enterprise Client / Lead
 
 ↓
 
-Requirement Submission
+Enterprise BDP Qualification and Client Attribution (client-based — FD-026)
 
 ↓
 
-Enterprise BDP
+Event Requirement Brief
 
 ↓
 
-Quotation
+Enterprise Platform Expert Assignment
 
 ↓
 
-Approval
+Service Breakdown → Vendor Search / Verification / Shortlist
 
 ↓
 
-Vendor Selection
+Quotation Collection → Comparative Review → Expert Recommendation
 
 ↓
 
-Venue Selection
+Client Approval → Contract / Purchase Order → Initial Payment
 
 ↓
 
-Project Execution
+Work Orders → Readiness Tracking → Vendor-Led Physical Execution
 
 ↓
 
-Project Completion
+Completion Evidence → Client Confirmation → Settlements / Commission → Closure
+
+(Multi-city: Master Project + City Units — one active client slot when centrally contracted — FD-026)
 
  8\. AI Lead Assist Flow
 

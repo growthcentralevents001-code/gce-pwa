@@ -2,7 +2,7 @@
 
 ## Authority
 
-Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-025). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025.
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-026). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025. GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution).
 
 
 
@@ -29,7 +29,7 @@ The primary objectives of GCE are:
 \- Create AI-powered lead distribution.
 \- Enable event discovery and booking.
 \- Build a business marketplace.
-\- Support enterprise event management.
+\- Support enterprise event procurement and vendor-led fulfilment (FD-026).
 \- Generate recurring membership revenue.
 \- Create a scalable franchise ecosystem.
 
@@ -74,16 +74,19 @@ Features:
 
 \#\# 3\. GCE Enterprise
 
-Corporate event management platform.
+Technology-enabled corporate event procurement, matching, coordination, workflow, and financial-control platform (FD-026). GCE does not directly execute physical events.
 
 Features:
 
-\- Corporate Clients
+\- Enterprise Clients (client-based attribution)
+\- Enterprise BDP Franchise Packs
+\- Enterprise Platform Expert assignment
+\- Event Requirement Briefs / Service Requirements
+\- Vendor Search, Shortlist, Quotations, Work Orders
+\- Master Project / City Units (multi-city)
 \- GCE Enterprise Projects
-\- Vendor Quotations
-\- Venue Quotations
-\- GCE Enterprise Events
-\- Project Management
+\- Vendor-Led Physical Execution coordination
+\- Commission and settlement controls
 
 \---
 

@@ -7,6 +7,7 @@
 **FD-020 / FD-021** — financial access and settlement controls are permission-separated; payment ≠ settlement.
 **FD-022 / FD-024** — membership and Circle seat are separate; Connect BDP cannot independently activate Circles.
 **FD-025** — Connect BDP does not own territory, Circles, members, or data; cannot self-approve personal commission or move platform funds; Franchise Unit access remains permission-scoped.
+**FD-026** — Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data; Expert access is project-scoped; neither may physically execute events or approve refunds/settlements independently.
 
 Exact Supabase RLS policy definitions and the full permission matrix are **Pending Technical Design** — not Founder-approved as a finished code matrix. Prefer role names in `35_Role_Taxonomy.md`.
 
@@ -78,6 +79,7 @@ Supported Roles
  Connect BDP (GCE Connect Business Development Partner)
  Marketplace BDP (GCE Marketplace Business Development Partner)
  Enterprise Business Development Partner
+ Enterprise Platform Expert (internal/controlled — FD-026)
  Venue Partner
  Circle Member
  User

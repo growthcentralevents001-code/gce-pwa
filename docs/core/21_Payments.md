@@ -5,10 +5,11 @@
 **Wallet / internal ledgers:** `docs/founder-decisions/FD-020_Financial_and_Wallet_Architecture.md`
 **Settlement eligibility & operations:** `docs/founder-decisions/FD-021_Settlement_Engine.md`
 **Connect BDP Franchise Unit fee / commission commercial rules:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
+**GCE Enterprise Franchise Pack / commission / payment commercial rules:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, or FD-025 (for Connect BDP commercials), the Founder Decision wins.
+Where this file conflicts with FD-020, FD-021, FD-025 (Connect), or FD-026 (Enterprise), the Founder Decision wins.
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -17,9 +18,10 @@ Where this file conflicts with FD-020, FD-021, or FD-025 (for Connect BDP commer
 - **Payment collection does not automatically mean settlement eligibility.**
 - Membership settlement follows successful payment **and** membership activation (FD-021 / FD-022).
 - Marketplace event settlement follows successful completion **and** the approved post-event hold (**48 hours** per FD-021).
-- Enterprise may use the approved standard milestone model: **30% initial / 40% execution / 30% completion** (unless a separately approved contract specifies otherwise).
+- Enterprise may use the approved standard milestone model: **30% confirmation / 40% readiness-or-execution / 30% completion** (unless a separately approved contract specifies otherwise) (FD-021 / FD-026).
 - Refunds, disputes, fraud reviews, and chargebacks may freeze, reverse, or adjust settlement.
 - BDP commissions are separately calculated, recorded, and audited; **pending commission is not guaranteed payable**.
+- Enterprise BDP commission is flat **25%** of eligible GCE platform commission (FD-026); Enterprise financed-pack recovery deducts from earned and approved Enterprise BDP commission only.
 - Financial entries must not be silently edited or deleted; corrections use reversal/adjustment entries.
 - RM and PRM do not automatically have financial movement authority.
 - Exact tax rates, GST/TDS treatment, gateway provider, refund matrix: **Pending Legal/Accounting Review** or **Pending Technical Design** — do not invent.
@@ -198,7 +200,7 @@ Applicable for:
 
  Connect BDP Franchise Unit (₹50,000 per Franchise Unit — FD-025; deferred finance not active under FD-025)
  Marketplace BDP Franchise
- Enterprise BDP Franchise
+ Enterprise BDP Franchise Pack (₹30,000 direct per pack, or financed ₹36,000 with ₹5,000 initial + ₹31,000 recoverable from approved commission only — FD-026; no launch discount)
 
 Flow
 
@@ -226,6 +228,8 @@ Certain franchise models (for example Marketplace BDP) include a mandatory train
 
 Connect BDP Franchise Activation Fee package inclusions (training and platform support) are defined in FD-025. Connect BDP deferred finance is **not active** under FD-025. Do not treat Marketplace/Enterprise finance-option language as applying to Connect BDP launch terms.
 
+Enterprise BDP may use the Founder-approved financed Franchise Pack (₹36,000 total; ₹5,000 initial; ₹31,000 recoverable from earned and approved Enterprise BDP commission only, up to ₹5,000 per month). Recovery does not create an automatic monthly cash-shortfall demand. Exit does not automatically erase the balance (FD-026).
+
 Flow
 
 Registration
@@ -246,13 +250,13 @@ Business Activation
 
 Enterprise projects follow milestone-based payments.
 
-**Founder-approved standard milestone model (FD-021)** unless a separately approved contract specifies otherwise:
+**Founder-approved standard milestone model (FD-021 / FD-026)** unless a separately approved contract specifies otherwise:
 
-- **30%** Initial
-- **40%** Execution
+- **30%** Project confirmation
+- **40%** Approved readiness or execution milestone
 - **30%** Completion
 
-Client payment to GCE does **not** by itself settle vendors. Settlement eligibility follows milestone completion conditions (FD-021).
+Client payment to GCE does **not** by itself settle vendors, earn Enterprise BDP commission, or earn Vendor Opportunity Fee. Settlement eligibility follows milestone completion conditions (FD-021 / FD-026).
 
 Typical Flow
 
@@ -268,7 +272,7 @@ Initial / Advance Payment (per milestone rules)
 
 ↓
 
-Project Execution
+Vendor-Led Physical Execution (GCE coordinates digitally — FD-026)
 
 ↓
 

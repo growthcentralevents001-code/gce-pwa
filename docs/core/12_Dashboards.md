@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025
+**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026
 
-Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023 (no automatic RM/PRM finance authority). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income). Exact dashboard workflows remain Pending Technical Design.
+Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023 (no automatic RM/PRM finance authority). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income). Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Exact dashboard workflows remain Pending Technical Design.
 
 Overview
 
@@ -129,18 +129,21 @@ Modules:
 
  6\. Enterprise Business Development Partner Dashboard
 
-The Enterprise Dashboard manages corporate business opportunities.
+The Enterprise Dashboard manages attributed Enterprise Clients and Franchise Pack performance (FD-026). GCE does not use this dashboard to imply direct physical event execution.
 
 Modules:
 
  Dashboard Overview
- Corporate Leads
- Client Management
- Project Pipeline
- Quotation Management
- Venue Coordination
- Vendor Coordination
- Revenue Dashboard
+ Active Client Capacity (30 per Franchise Pack; max two packs standard)
+ Corporate Leads / Attribution Status
+ Client Management (client-based — not territory ownership)
+ Project Pipeline (including Master Project / City Units for multi-city)
+ Event Requirement Brief / Proposal Status
+ Quotation and Approval Tracking
+ Venue / Vendor Coordination (with Platform Expert)
+ Revenue Dashboard (eligible collected revenue vs ₹3L / ₹9L targets)
+ Commission Dashboard (25% of eligible platform commission; not guaranteed)
+ Finance Recovery Visibility (financed pack, where applicable)
  Performance Analytics
  Reports
  Notifications

@@ -2,7 +2,7 @@
 
 ## Authority
 
-Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025** (Franchise Unit milestones, 20% eligible subscription commission including renewals while responsible; illustrative income examples are not guaranteed). Exact dashboard report designs remain Pending Technical Design.
+Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Exact dashboard report designs remain Pending Technical Design.
 
 Analytics & Reports
 
@@ -132,13 +132,14 @@ Marketplace BDPs can view:
 
 Enterprise dashboards include:
 
- Enterprise Clients
- Active Projects
+ Enterprise Clients (active-client capacity utilization)
+ Active Projects (including Master Project / City Units where multi-city)
  Completed Projects
- Vendor Quotations
- Venue Quotations
- Project Revenue
- Client Satisfaction
+ Vendor / Venue Quotations
+ Eligible Collected Project Revenue (vs ₹3,00,000 monthly / ₹9,00,000 rolling targets — not proposal value)
+ GCE Platform Commission vs Enterprise BDP Commission (25% of eligible platform commission)
+ Finance Recovery Status (financed pack, where applicable)
+ Client Satisfaction / Feedback Signals
 
  AI Lead Assist Analytics
 

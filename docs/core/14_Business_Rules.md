@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022). Connect BDP commercial and operating rules defer to **FD-025**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**.
 
 Overview
 
@@ -217,11 +217,23 @@ Finance option available.
 
  Enterprise BDP Rules
 
- Franchise Fee required — amount in **`36_Commercial_Constants.md`** (Enterprise BDP).
- Finance option available.
- Enterprise clients must be acquired through approved business channels.
- Quotations are generated through the platform.
- Enterprise projects follow platform approval workflows.
+Commercial and operating authority: **FD-026**. Numeric summary: **`36_Commercial_Constants.md`** (Enterprise BDP). Narrative: `08_Enterprise_BDP.md`.
+
+Key rules (do not invent beyond FD-026):
+
+- GCE Enterprise is a technology / workflow / financial-control platform — **not** a direct physical event executor; fulfilment is vendor/stakeholder-led
+- Operating unit: **Enterprise BDP Franchise Pack**; up to **30** active clients per pack; standard max **two** packs / **60** clients
+- Direct fee **₹30,000** / financed **₹36,000** (₹5,000 + ₹31,000 recoverable from approved commission only, max ₹5,000/month)
+- Allocation is **client-based**, not territory-based; BDP does not own clients
+- Minimum project value **₹1,00,000** (excludes GST/taxes)
+- Targets per pack: **₹3,00,000** monthly · **₹9,00,000** rolling three months (eligible collected revenue only)
+- Platform commission **20%** standard (authorised reduced **15%–19%**; below 15% special approval)
+- Enterprise BDP commission: flat **25%** of eligible platform commission (not tiered; not guaranteed income)
+- Enterprise Platform Expert is internal/controlled — not a franchisee; recommends vendors; does not physically execute
+- Standard payment **30% / 40% / 30%**; payment ≠ settlement eligibility
+- Vendor Opportunity Fee is an approved success-based concept; **% and distribution unresolved**
+- Performance: progressive sixty-day process — **not** automatic cancellation after one or two weak months
+- Serious misconduct may trigger immediate suspension or termination
 
  Venue Partner Rules
 

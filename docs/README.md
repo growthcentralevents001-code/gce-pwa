@@ -46,7 +46,7 @@ Location: `docs/core/`
 | 05_Memberships.md | Membership plans and benefits |
 | 06_CBDP.md | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07_MBDP.md | Marketplace Business Development Partner |
-| 08_Enterprise_BDP.md | Enterprise Business Development Partner |
+| 08_Enterprise_BDP.md | Enterprise BDP narrative (defers to FD-026) |
 | 09_Venue_Partner.md | Venue Partner workflow |
 | 10_AI_Lead_Assist.md | AI Lead Assist workflow |
 | 11_Database.md | Database schema and relationships |
@@ -86,6 +86,7 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-023_RBAC_and_Permissions.md` | RBAC and permissions |
 | `docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md` | Circle lifecycle |
 | `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
+| `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 
 ## Canonical core living documents
 

@@ -2,7 +2,7 @@
 
 ## Authority
 
-**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Connect BDP commercial:** FD-025
+**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026
 
 Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win.
 
@@ -117,23 +117,33 @@ Marketplace BDP commission (where applicable; rate in Commercial Constants)
 ```text
 Corporate / institutional lead
   ↓
-Enterprise BDP engagement
+Enterprise BDP qualification and client attribution (client-based — FD-026)
   ↓
-Requirement → quotation → approval
+Event Requirement Brief → Enterprise Platform Expert assignment
   ↓
-Vendor / Venue coordination
+Service breakdown → vendor search / shortlist / quotations
   ↓
-Project execution
+Proposal → client approval → Contract / Purchase Order
   ↓
-Milestone / final payments
+Client payments (standard 30% / 40% / 30% — FD-021 / FD-026)
   ↓
-Completion
+Vendor work orders → Vendor-Led Physical Execution
+  ↓
+Completion evidence → client confirmation
+  ↓
+Settlement eligibility (payment ≠ automatic settlement)
+  ↓
+GCE platform commission → Enterprise BDP commission (25% of eligible platform commission)
+  ↓
+Vendor Opportunity Fee tracking where applicable (% unresolved)
+  ↓
+Project closure
 ```
 
-**Platform income:** enterprise project fees.
-**Partner income:** Enterprise BDP commission (**percentage undocumented** — see Commercial Constants).
-**Payment pattern:** Quotation → Approval → milestones. **Standard Founder-approved model (FD-021):** 30% initial / 40% execution / 30% completion (unless separately approved contract). Vendor settlement ≠ mere client payment to GCE.
-**Detail docs:** `08_Enterprise_BDP.md`, `18_User_Flows.md`.
+**Platform income:** eligible GCE platform commission on Enterprise event revenue (standard **20%**; authorised reduced **15%–19%**).
+**Partner income:** Enterprise BDP commission = flat **25%** of eligible platform commission (FD-026). Not guaranteed income. Illustrative examples in `36_Commercial_Constants.md`.
+**Payment pattern:** Quotation → Approval → milestones. **Standard Founder-approved model (FD-021 / FD-026):** 30% confirmation / 40% readiness-or-execution / 30% completion (unless separately approved contract). Vendor settlement ≠ mere client payment to GCE.
+**Detail docs:** `08_Enterprise_BDP.md`, `18_User_Flows.md`, FD-026.
 
 ### D. Franchise fee revenue
 
@@ -142,18 +152,22 @@ Partner application (Connect BDP / Marketplace BDP / Enterprise BDP)
   ↓
 Approval
   ↓
-Franchise fee (Connect BDP: ₹50,000 per Franchise Unit — FD-025)
+Franchise fee
+  (Connect BDP: ₹50,000 per Franchise Unit — FD-025)
+  (Enterprise BDP: ₹30,000 direct per Franchise Pack, or financed ₹36,000 — FD-026)
   ↓
 Training / package inclusions where documented for that vertical
   ↓
 Optional finance path only where documented and Founder-approved for that vertical
   (Connect BDP deferred finance: not active under FD-025)
+  (Enterprise BDP financed pack: recovery from approved commission only — FD-026)
   ↓
-Franchise / Franchise Unit active → capacity limits apply
+Franchise / Franchise Unit / Franchise Pack active → capacity limits apply
 ```
 
 Fees and finance math: `36_Commercial_Constants.md`.
 Connect BDP Franchise Unit commercial rules: FD-025.
+Enterprise BDP Franchise Pack commercial rules: FD-026.
 Payments applicability: `21_Payments.md`.
 
 ### E. AI Lead Assist validation fee

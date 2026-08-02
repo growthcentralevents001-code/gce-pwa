@@ -6,7 +6,9 @@ Commercial **numeric** constants historically documented in partner narratives.
 
 **Connect BDP commercial and operating numbers:** highest authority is `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`. Values in this file for Connect BDP must defer to FD-025 on conflict.
 
-Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, and many non-Connect partner package values remain **Undocumented** or pending dedicated commercial Founder Decisions — do not invent.
+**GCE Enterprise commercial and operating numbers:** highest authority is `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Values in this file for Enterprise must defer to FD-026 on conflict.
+
+Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, and many Marketplace partner package values remain **Undocumented** or pending dedicated commercial Founder Decisions — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
 
@@ -63,7 +65,7 @@ Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, ter
 | Tier 1 maximum Franchise Units | **10** (5 zones × up to 2 units; maxima, not guaranteed appointments) | FD-025 |
 | Tier 2 maximum Franchise Units | **5** (5 zones × up to 1 unit) | FD-025 |
 | Tier 3 maximum Franchise Units | **2** (2 platform-defined operating territories; “2.5 zones” is planning reference only) | FD-025 |
-| Marketplace / Enterprise territory | Remain **separate** from Connect BDP territory rights | FD-025 |
+| Marketplace / Enterprise territory | Remain **separate** from Connect BDP territory rights (Enterprise BDP allocation is **client-based**, not territory-based — FD-026) | FD-025 / FD-026 |
 | Expansion | Not automatic; after qualifying (5 Circles + performance/compliance); GCE may reserve an additional unit opportunity up to **5 months**; separate ₹50,000 fee; separate 5-Circle / 10-month target | FD-025 |
 | Standard person / controlled-entity limit | Maximum **2** active Franchise Units (higher count requires special platform approval) | FD-025 |
 | Illustrative full-capacity commission example | 40 × ₹2,000 → ₹80,000/Circle; × 5 Circles → ₹4,00,000; × 20% → ₹80,000 monthly commission — **illustrative only, not guaranteed income** | FD-025 |
@@ -97,12 +99,37 @@ Circle lifecycle capacity (members per Circle): minimum activation **15** foundi
 
 ## GCE Enterprise — Enterprise BDP constants
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Enterprise franchise fee | **₹25,000** | `08_Enterprise_BDP.md` |
-| Commission % | **Undocumented** | `08_Enterprise_BDP.md` states commission exists; no percentage |
-| Training fee (₹) | **Undocumented** (mandatory under finance option; amount not stated) | `08_Enterprise_BDP.md` |
-| Fixed monthly sales target (₹) | **Undocumented** (capacity monitored via analytics rather than fixed sales volume alone) | `08_Enterprise_BDP.md` |
+**Authority:** FD-026. Full business and operating rules: `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Narrative: `08_Enterprise_BDP.md`.
+
+Commercial operating unit: **Enterprise BDP Franchise Pack**. Allocation is **client-based**, not territory-based. Enterprise Clients, projects, and data remain with **GCE**. Physical fulfilment is vendor/stakeholder-led — GCE does not directly execute events (FD-026).
+
+| Constant | Value | Source |
+|----------|-------|--------|
+| Minimum Enterprise project value | **₹1,00,000** eligible event revenue (excludes GST and statutory taxes) | FD-026 |
+| Direct-payment Franchise Pack fee | **₹30,000** upfront per Franchise Pack (one-time; non-refundable after training or activation; not a security deposit; separate fee for every additional pack; no launch-phase discount) | FD-026 |
+| Financed package total value | **₹36,000** per Franchise Pack | FD-026 |
+| Financed initial payment | **₹5,000** | FD-026 |
+| Financed recoverable balance | **₹31,000** | FD-026 |
+| Maximum monthly finance recovery | Up to **₹5,000** from earned and approved Enterprise BDP commission only (lower of ₹5,000 or available approved commission; no automatic cash-shortfall demand; unrecovered balance carries forward; no interest beyond fixed ₹36,000) | FD-026 |
+| Active-client capacity per Franchise Pack | **30** | FD-026 |
+| Standard packs per individual / controlled entity | Maximum **2** active packs (**60** active clients); more requires special platform approval | FD-026 |
+| Monthly target per Franchise Pack | **₹3,00,000** eligible Enterprise event revenue (collected, attributed; excludes GST/taxes/refunds/reversals/chargebacks/cancelled/uncollected) | FD-026 |
+| Rolling three-month target per Franchise Pack | **₹9,00,000** eligible Enterprise event revenue | FD-026 |
+| Standard GCE platform commission | **20%** of eligible Enterprise event revenue | FD-026 |
+| Reduced platform commission range | **15%–19%** for qualifying strategic projects (not automatic); **below 15%** requires special Founder or senior-authority approval | FD-026 |
+| Enterprise BDP commission | Flat **25%** of eligible GCE platform commission actually earned (no tiered launch commission) | FD-026 |
+| Enterprise Vendor Opportunity Fee | Success-based concept approved; **exact % and distribution unresolved** — do not invent | FD-026 |
+| Standard client payment structure | **30% / 40% / 30%** (confirmation / readiness-or-execution milestone / completion) — standard model, not inflexible; payment ≠ settlement eligibility | FD-026 / FD-021 |
+| Recommended Enterprise Platform Expert capacity | Maximum **10** active standard Enterprise projects (weighted major/multi-city capacity unresolved) | FD-026 |
+
+Illustrative commission examples at ₹10,00,000 eligible event revenue (not guaranteed income):
+
+- At 20% platform commission → ₹2,00,000 platform commission → ₹50,000 Enterprise BDP commission → ₹1,50,000 retained by GCE
+- At 15% platform commission → ₹1,50,000 platform commission → ₹37,500 Enterprise BDP commission → ₹1,12,500 retained by GCE
+
+**Historical note:** older documentation recorded Enterprise franchise fee as ₹25,000 and commission as undocumented. Those figures are **superseded** by FD-026.
+
+**Performance (FD-026):** formal review may be triggered by two consecutive missed monthly targets, missed rolling three-month target, or material servicing failure — progressive sixty-day corrective process; **not** automatic cancellation after one or two weak months. Serious misconduct may trigger immediate suspension or termination.
 
 ---
 
@@ -148,7 +175,7 @@ Franchise Activation Fee payments apply to:
 
 - **Connect BDP Franchise Unit** — ₹50,000 per unit (FD-025); deferred finance not active under FD-025
 - Marketplace BDP Franchise — see Marketplace BDP constants above
-- Enterprise BDP Franchise — see Enterprise BDP constants above
+- **Enterprise BDP Franchise Pack** — ₹30,000 direct per pack, or financed ₹36,000 (₹5,000 initial + ₹31,000 recoverable from approved commission only) (FD-026)
 
 Exact payment-route implementation, GST/TDS treatment, and banking-day payout adjustment remain Pending Technical Design / Pending Accounting Review / Pending Legal Review where not stated in Founder Decisions.
 
@@ -177,6 +204,7 @@ When business changes a commercial number:
 ## Cross References
 
 - Connect BDP commercial authority: `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
+- GCE Enterprise commercial authority: `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 - Revenue narrative: `04_Revenue_Model.md`, `37_Revenue_Flow.md`
 - Roles: `35_Role_Taxonomy.md`
 - Connect BDP: `06_CBDP.md`

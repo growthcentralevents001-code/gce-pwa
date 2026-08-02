@@ -5,7 +5,7 @@
 **Highest authority for Connect BDP commercial and operating rules:**
 `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
@@ -97,7 +97,9 @@ Missing milestones does **not** automatically cause immediate cancellation (FD-0
 
 Connect BDP earns **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit (FD-025).
 
-Commission is **not** guaranteed income. It applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, correctly attributed, and not under material dispute or hold.
+Commission applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, correctly attributed, and not under material dispute or hold.
+
+Eligible commissionable items may include Associate Tier subscription/renewal, Core upgrade/renewal when applicable, and Tag 3 / Tag 4 subscriptions (FD-027). Not automatically commissionable: GST/taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees, complimentary/promotional credits, uncollected amounts.
 
 Exclusions from commission base include GST and other statutory taxes, refunds, reversals, chargebacks, failed payments, complimentary memberships, free trials, promotional credits, unauthorised collections, amounts not received, fraudulent / suspended / invalidly attributed transactions (full list: FD-025).
 
@@ -139,7 +141,7 @@ Full responsibility list: FD-025.
 
 ## Authority limits
 
-Connect BDP may initiate and support Circle development.
+Connect BDP may initiate and support Circle development and may assist membership onboarding.
 
 Connect BDP may **not** independently:
 
@@ -147,6 +149,8 @@ Connect BDP may **not** independently:
 - Change Circle lifecycle status
 - Suspend, merge, or archive a Circle
 - Delete Circle history
+- Activate membership manually or collect membership payment into a personal account (FD-027)
+- Issue unofficial membership, change pricing, promise a seat without platform confirmation, add unapproved Tags, bypass KYC, override seat exclusivity, or guarantee Core eligibility / referrals / revenue (FD-027)
 - Approve personal commission
 - Move platform funds
 - Change official taxonomy

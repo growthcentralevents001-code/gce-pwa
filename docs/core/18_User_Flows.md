@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
+**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
 
-Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. Connect BDP targets are Franchise Unit Circle milestones (FD-025). Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026) — GCE does not directly execute physical events.
+Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally. Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026).
 
 Overview
 
@@ -67,23 +67,33 @@ User
 
 ↓
 
-View Membership Plans
+View Launch Membership (GCE Connect Circle Membership — Associate Tier only — FD-027)
 
 ↓
 
-Select Plan
+Select Associate Tier (+ optional Tag 3 / Tag 4)
 
 ↓
 
-Payment
+Platform Verification / KYC / Terms
 
 ↓
 
-Membership Activated
+Online Payment (platform only — Connect BDP cannot collect personally)
 
 ↓
 
-Access GCE Connect Features
+Membership Activated (when conditions met — payment alone insufficient)
+
+↓
+
+Separate Circle Seat Reservation / Allocation (7 days)
+
+↓
+
+Access GCE Connect Features (subject to seat and policy)
+
+(Core Tier upgrade is a future achievement-based path — not a direct launch purchase)
 
  3\. Circle Member Flow
 

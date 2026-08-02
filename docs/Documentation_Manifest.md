@@ -53,7 +53,7 @@ Location: `docs/core/`
 | 02 | `02_Business_Model.md` | Complete GCE business model |
 | 03 | `03_Stakeholders.md` | Stakeholders and responsibilities |
 | 04 | `04_Revenue_Model.md` | Revenue sources, commissions and earnings |
-| 05 | `05_Memberships.md` | Membership plans and benefits |
+| 05 | `05_Memberships.md` | Membership narrative (defers to FD-027; lifecycle also FD-022) |
 | 06 | `06_CBDP.md` | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07 | `07_MBDP.md` | Marketplace Business Development Partner |
 | 08 | `08_Enterprise_BDP.md` | Enterprise BDP narrative (defers to FD-026) |
@@ -169,6 +169,7 @@ Location: `docs/founder-decisions/`
 | `FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
 | `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 | `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
+| `FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 
 ## Development Workflow
 
@@ -210,13 +211,18 @@ Additional mandatory behaviors:
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 8 |
+| Total Founder Decisions | 9 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 51 |
+| Total Documentation Files (`docs/`) | 52 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 8 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 51.
+Total documentation files under `docs/` = 32 core + 8 engineering + 9 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 52.
 
 ## Changelog
+
+### v1.5.0
+
+- Indexed FD-027 (Membership Commercial and Operating Architecture) as highest authority for GCE Connect Circle Membership commercial and operating rules
+- Synchronised living Markdown documentation with FD-027 (Associate Tier launch, Tags, Core architecture, seat/renewal/freeze/transfer/refund rules)
 
 ### v1.4.0
 

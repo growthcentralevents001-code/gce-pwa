@@ -27,6 +27,7 @@ Highest business authority — Founder Decisions:
 \- \`docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md\`
 \- \`docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md\`
 \- \`docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md\`
+\- `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 
 Then living cores:
 
@@ -57,6 +58,7 @@ docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
+docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -110,12 +112,15 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md
 05\_Memberships.md
 36\_Commercial\_Constants.md
 38\_Circle\_Architecture.md
 04\_Revenue\_Model.md
 14\_Business\_Rules.md
 \`\`\`
+
+Membership commercial and operating rules defer to FD-027. Do not invent Core thresholds, weighted scores, monthly/annual plans, +50% fourth-Tag pricing, nationwide guarantees, or Lead Assist commercial rules as part of base membership.
 
 \---
 
@@ -398,6 +403,7 @@ docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
+docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md

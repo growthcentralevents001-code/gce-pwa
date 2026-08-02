@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -20,6 +20,7 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - Circles are **GCE platform assets**; Connect BDP and Circle Board do **not** own Circles.
 - Connect BDP commercial unit is the **Connect BDP Franchise Unit** (FD-025): assigned Performance-Protected territory, separate fee per unit, up to five Circles per unit — not ownership of territory, Circles, members, or data.
 - GCE Enterprise is a technology-enabled, stakeholder-fulfilled procurement / workflow / financial-control platform (FD-026). GCE does **not** directly execute physical events. Enterprise BDP allocation is **client-based** (Franchise Pack); Enterprise Platform Expert is internal/controlled.
+- GCE Connect Circle Membership launch product is **Associate Tier** at ₹6,000/quarter (FD-027); Core Tier is future/achievement-based and not directly purchasable; membership ≠ automatic Circle seat.
 - User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020).
 - Payment collection does **not** automatically mean settlement eligibility (FD-021).
 - Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.

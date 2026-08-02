@@ -8,6 +8,8 @@ Commercial **numeric** constants historically documented in partner narratives.
 
 **GCE Enterprise commercial and operating numbers:** highest authority is `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`. Values in this file for Enterprise must defer to FD-026 on conflict.
 
+**GCE Connect Circle Membership commercial numbers:** highest authority is `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`. Values in this file for membership must defer to FD-027 on conflict.
+
 Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, and many Marketplace partner package values remain **Undocumented** or pending dedicated commercial Founder Decisions — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
@@ -156,14 +158,36 @@ Full AI workflow: `39_AI_Lead_Assist_Spec.md`.
 
 ## Membership commercial constants
 
-| Constant | Value | Source docs |
-|----------|-------|-------------|
-| Subscription model | **Quarterly** | `05_Memberships.md`, `04_Revenue_Model.md` (plans described as quarterly) |
-| Plans | Associate Membership; Core Membership | `05_Memberships.md`, `04_Revenue_Model.md` |
-| Associate price (₹) | **Undocumented** | — |
-| Core price (₹) | **Undocumented** | — |
+**Authority:** FD-027. Full commercial and operating rules: `FD-027_Membership_Commercial_and_Operating_Architecture.md`. Narrative: `05_Memberships.md`. Lifecycle timing: FD-022.
 
-**Language note:** `04_Revenue_Model.md` also states memberships generate recurring “monthly and quarterly” cash flow. Plan structure in `05_Memberships.md` is quarterly. Treat **plan cadence as quarterly** per `05_Memberships.md`; the monthly phrasing in `04` is cash-flow language, not a second plan cadence, until business clarifies.
+Official launch product: **GCE Connect Circle Membership — Associate Tier**. Member title: **GCE Connect Circle Member**. Core Tier is future / achievement-based and **not** directly purchasable at launch.
+
+| Constant | Value | Source |
+|----------|-------|--------|
+| Launch billing cadence | **Quarterly only** (monthly/annual plans not active) | FD-027 |
+| Associate Tier price | **₹6,000 per quarter** plus applicable taxes | FD-027 |
+| Future Core Tier price | **₹9,000 per quarter** plus applicable taxes (not directly purchasable at launch) | FD-027 |
+| Included Business Tags | **Tag 1 and Tag 2** included | FD-027 |
+| Tag 3 | **+25%** of active base subscription | FD-027 |
+| Tag 4 | **+25%** of active base subscription (not +50%) | FD-027 |
+| Max Business Tags | **4** | FD-027 |
+| Business Specializations per member | **1** approved | FD-027 |
+| Primary Circle seats per membership | **1** (one member = one physical Circle seat) | FD-027 |
+| Seat reservation | **7 days** | FD-027 / FD-022 |
+| Renewal notice | **30 days** before expiry | FD-027 / FD-022 |
+| Grace period | **30 days** after expiry | FD-027 / FD-022 |
+| Freeze maximum | **90 days** | FD-027 / FD-022 |
+| Recommended seat protection during freeze | **Up to 30 days** (not automatic full-90-day seat protection) | FD-027 |
+| First transfer in 12 months | **Free** | FD-027 |
+| Additional transfer in same 12 months | **₹1,000 plus tax** | FD-027 |
+| Rejoining fee at launch | **None** | FD-027 |
+| Post-activation refund | Normally **non-refundable** (exact matrix Pending Founder/Legal Approval) | FD-027 |
+| Recommended Associate tenure before Core eligibility | **Six months** continuous active Associate Tier | FD-027 |
+| Connect BDP commission on eligible membership / Tag 3 / Tag 4 revenue | **20%** of eligible GCE Connect subscription revenue (FD-025 / FD-027); transfer fees and Lead Assist fees not automatically commissionable | FD-025 / FD-027 |
+
+Associate example before tax: ₹6,000 + Tag 3 ₹1,500 + Tag 4 ₹1,500 = ₹9,000 maximum quarterly. Future Core example: ₹9,000 + Tag 3 ₹2,250 + Tag 4 ₹2,250.
+
+**Lead Assist commercial constants** (₹500 validation fee, credits, etc.) remain under Lead Assist documentation — **not** approved under FD-027 as base membership rules.
 
 Membership benefits and rules: `05_Memberships.md`. Circle rules: `38_Circle_Architecture.md`.
 
@@ -205,6 +229,7 @@ When business changes a commercial number:
 
 - Connect BDP commercial authority: `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 - GCE Enterprise commercial authority: `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
+- Membership commercial authority: `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 - Revenue narrative: `04_Revenue_Model.md`, `37_Revenue_Flow.md`
 - Roles: `35_Role_Taxonomy.md`
 - Connect BDP: `06_CBDP.md`

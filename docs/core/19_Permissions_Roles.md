@@ -161,7 +161,7 @@ Connect Business Operations (scoped to assigned Franchise Unit(s) — FD-025)
 
  Permissions
 
- Register Members
+ Support member onboarding (platform-only activation — cannot manually activate membership or collect payment personally — FD-027)
  Support Membership Sales
  Create Business Circles (request/initiate; cannot independently activate — FD-024 / FD-025)
  Manage Assigned Circles

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026
+**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027
 
-GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Legacy “Power Circles” naming is unresolved relative to FD-024 **GCE Power Sector** taxonomy — do not invent Power Circle rules. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026).
+GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027); do not use outdated **Power Circle** as current. FD-024 historically wrote “GCE Power Sector”. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026).
 
 Project Overview
 
@@ -37,7 +37,7 @@ Key Features:
  Business Networking
  Business Referral Exchange
  Membership Programs
- Power Circles
+ GC Power Sector Circles / Business Circles
  Category Locking
  AI Lead Assist
  Business Ranking
@@ -105,7 +105,7 @@ Core modules include:
  Offer Management
  Referral Tracking
  Business Ranking System
- Power Circle Management
+ GC Power Sector / Circle Management
  Franchise Management
 
  Business Philosophy

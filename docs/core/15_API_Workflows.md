@@ -6,6 +6,7 @@
 **FD-023** — RBAC / least privilege / no automatic cross-role authority.
 **FD-021** — payment success ≠ settlement eligibility.
 **FD-022** — membership activation ≠ automatic Circle seat.
+**FD-027** — membership commercial rules (Associate-only launch purchase, Tag add-ons, Core upgrade path, platform-only activation; do not invent API routes or Core thresholds).
 **FD-024** — Connect BDP initiates Circles; platform activates.
 **FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).
 **FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, and Vendor Opportunity Fee commercial rules (do not invent API routes or VOF percentages from FD-026 alone).

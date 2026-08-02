@@ -8,6 +8,7 @@ Schema narratives in this file are **illustrative** until migrations and generat
 
 - **FD-020** — financial / wallet / internal ledger architecture principles
 - **FD-022** — membership lifecycle concepts (activation, grace, freeze, seat reservation, etc.)
+- **FD-027** — membership commercial concepts (Associate/Core tiers, Tag pricing, transfer fees, Core Progress). Exact schemas/enums remain **Pending Technical Design**
 - **FD-023** — roles, permissions, workspaces, and access-control principles
 - **FD-024** — GCE Connect Circle lifecycle, capacity, and seat architecture
 - **FD-025** — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance). Exact Franchise Unit tables/enums remain **Pending Technical Design**

@@ -2,7 +2,7 @@
 
 ## Authority
 
-Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-026). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025. GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution).
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-027). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025. GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution). Membership commercial: FD-027.
 
 
 
@@ -46,7 +46,7 @@ Business networking ecosystem.
 Features:
 
 \- Business Circles
-\- Power Circles
+\- GC Power Sector / Business Circles (FD-027; do not use Power Circle as current)
 \- Referrals
 \- AI Lead Assist
 \- Business Meetings

@@ -1,13 +1,13 @@
-\---  
-description: AI development rules for the GCE platform. Automatically follow the documented AI architecture, Lead Assist workflows, business rules, and AI decision logic whenever implementing or modifying AI-powered functionality.  
-globs:  
-  \- "app/api/\*\*/\*.ts"  
-  \- "app/api/\*\*/\*.tsx"  
-  \- "app/\*\*/actions.ts"  
-  \- "services/ai/\*\*/\*.ts"  
-  \- "lib/ai/\*\*/\*.ts"  
-  \- "supabase/\*\*/\*.ts"  
-alwaysApply: false  
+\---
+description: AI development rules for the GCE platform. Automatically follow the documented AI architecture, Lead Assist workflows, business rules, and AI decision logic whenever implementing or modifying AI-powered functionality.
+globs:
+  \- "app/api/\*\*/\*.ts"
+  \- "app/api/\*\*/\*.tsx"
+  \- "app/\*\*/actions.ts"
+  \- "services/ai/\*\*/\*.ts"
+  \- "lib/ai/\*\*/\*.ts"
+  \- "supabase/\*\*/\*.ts"
+alwaysApply: false
 \---
 
 \# GCE AI Rules
@@ -18,14 +18,14 @@ This rule governs every AI-powered feature across the GCE platform.
 
 Whenever creating or modifying:
 
-\- AI Lead Assist  
-\- Recommendation Engine  
-\- Matching Engine  
-\- Lead Distribution  
-\- AI Search  
-\- AI Automation  
-\- AI Notifications  
-\- AI Scoring  
+\- AI Lead Assist
+\- Recommendation Engine
+\- Matching Engine
+\- Lead Distribution
+\- AI Search
+\- AI Automation
+\- AI Notifications
+\- AI Scoring
 \- AI Analytics
 
 always follow the official AI documentation before writing code.
@@ -38,38 +38,42 @@ Always consult the following documentation before implementing AI functionality.
 
 \#\# AI Lead Assist
 
-\`\`\`  
-10\_AI\_Lead\_Assist.md  
+\`\`\`
+39\_AI\_Lead\_Assist\_Spec.md
+10\_AI\_Lead\_Assist.md
+36\_Commercial\_Constants.md
 \`\`\`
 
 Defines:
 
-\- Lead Assist Workflow  
-\- Lead Routing  
-\- Lead Processing  
+\- Lead Assist Workflow
+\- Lead Routing
+\- Lead Processing
 \- AI Business Flow
+
+Lead Assist is a **separate service** from base GCE Connect Circle Membership. Do not treat FD-027 membership commercial rules as approving Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission.
 
 \---
 
 \#\# AI Rules
 
-\`\`\`  
-22\_AI\_Rules.md  
+\`\`\`
+22\_AI\_Rules.md
 \`\`\`
 
 Defines:
 
-\- AI Decision Rules  
-\- Lead Matching Logic  
-\- Recommendation Logic  
+\- AI Decision Rules
+\- Lead Matching Logic
+\- Recommendation Logic
 \- AI Behaviour
 
 \---
 
 \#\# Business Rules
 
-\`\`\`  
-14\_Business\_Rules.md  
+\`\`\`
+14\_Business\_Rules.md
 \`\`\`
 
 AI must always respect platform business rules.
@@ -78,8 +82,8 @@ AI must always respect platform business rules.
 
 \#\# User Flows
 
-\`\`\`  
-18\_User\_Flows.md  
+\`\`\`
+18\_User\_Flows.md
 \`\`\`
 
 AI must never break documented workflows.
@@ -88,10 +92,10 @@ AI must never break documented workflows.
 
 \#\# Security
 
-\`\`\`  
+\`\`\`
 17\_Security.md
 
-31\_Security\_Best\_Practices\_Expert.md  
+31\_Security\_Best\_Practices\_Expert.md
 \`\`\`
 
 AI must always follow platform security standards.
@@ -112,12 +116,12 @@ Business documentation always overrides AI assumptions.
 
 AI should be:
 
-\- Predictable  
-\- Explainable  
-\- Secure  
-\- Accurate  
-\- Consistent  
-\- Efficient  
+\- Predictable
+\- Explainable
+\- Secure
+\- Accurate
+\- Consistent
+\- Efficient
 \- Helpful
 
 Never generate random business behaviour.
@@ -128,9 +132,9 @@ Never generate random business behaviour.
 
 Before implementing any AI feature:
 
-1\. Read Business Documentation.  
-2\. Read AI Documentation.  
-3\. Understand User Flow.  
+1\. Read Business Documentation.
+2\. Read AI Documentation.
+3\. Understand User Flow.
 4\. Implement AI around documented workflows.
 
 Never create undocumented AI behaviour.
@@ -143,16 +147,17 @@ Whenever implementing Lead Assist:
 
 Always read:
 
-\`\`\`  
+\`\`\`
+39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
-
-22\_AI\_Rules.md  
+22\_AI\_Rules.md
+36\_Commercial\_Constants.md
 \`\`\`
 
 Never change:
 
-\- Lead Routing  
-\- Matching Logic  
+\- Lead Routing
+\- Matching Logic
 \- Distribution Workflow
 
 unless explicitly instructed.
@@ -165,8 +170,8 @@ Recommendations should always be based on documented business rules.
 
 Never recommend:
 
-\- Unauthorized actions  
-\- Invalid business operations  
+\- Unauthorized actions
+\- Invalid business operations
 \- Restricted data
 
 \---
@@ -175,9 +180,9 @@ Never recommend:
 
 AI decisions should be:
 
-\- Deterministic whenever possible  
-\- Traceable  
-\- Consistent  
+\- Deterministic whenever possible
+\- Traceable
+\- Consistent
 \- Based on documented rules
 
 Avoid unpredictable behaviour.
@@ -188,10 +193,10 @@ Avoid unpredictable behaviour.
 
 Whenever matching:
 
-\- Members  
-\- Businesses  
-\- Leads  
-\- Events  
+\- Members
+\- Businesses
+\- Leads
+\- Events
 \- Venues
 
 follow documented matching rules.
@@ -204,10 +209,10 @@ Never invent new scoring systems.
 
 AI must never expose:
 
-\- Personal Information  
-\- Financial Information  
-\- Internal Platform Data  
-\- Hidden Business Logic  
+\- Personal Information
+\- Financial Information
+\- Internal Platform Data
+\- Hidden Business Logic
 \- Secure Credentials
 
 Privacy is mandatory.
@@ -218,14 +223,14 @@ Privacy is mandatory.
 
 Always validate:
 
-\- User Input  
-\- AI Prompts  
+\- User Input
+\- AI Prompts
 \- AI Responses
 
 Protect against:
 
-\- Prompt Injection  
-\- Malicious Input  
+\- Prompt Injection
+\- Malicious Input
 \- Unauthorized Access
 
 \---
@@ -234,8 +239,8 @@ Protect against:
 
 AI should provide:
 
-\- Clear Responses  
-\- Helpful Suggestions  
+\- Clear Responses
+\- Helpful Suggestions
 \- Business-Compliant Recommendations
 
 Avoid hallucinations.
@@ -250,9 +255,9 @@ Ask for clarification instead of inventing behaviour.
 
 Automation should:
 
-\- Save user time  
-\- Reduce repetitive work  
-\- Follow business rules  
+\- Save user time
+\- Reduce repetitive work
+\- Follow business rules
 \- Never bypass validation
 
 Automation should never bypass security.
@@ -263,15 +268,15 @@ Automation should never bypass security.
 
 Log:
 
-\- AI Errors  
-\- Failed Operations  
+\- AI Errors
+\- Failed Operations
 \- Processing Events
 
 Never log:
 
-\- Sensitive User Data  
-\- Passwords  
-\- Tokens  
+\- Sensitive User Data
+\- Passwords
+\- Tokens
 \- Confidential Business Information
 
 \---
@@ -280,9 +285,9 @@ Never log:
 
 AI features should:
 
-\- Execute efficiently  
-\- Minimize unnecessary computation  
-\- Reuse existing data where possible  
+\- Execute efficiently
+\- Minimize unnecessary computation
+\- Reuse existing data where possible
 \- Avoid duplicate processing
 
 \---
@@ -301,11 +306,11 @@ Avoid "black box" behaviour where possible.
 
 AI should integrate cleanly with:
 
-\- Authentication  
-\- Business Rules  
-\- Notifications  
-\- Analytics  
-\- Database  
+\- Authentication
+\- Business Rules
+\- Notifications
+\- Analytics
+\- Database
 \- Dashboard
 
 AI should never become isolated business logic.
@@ -348,15 +353,15 @@ Always verify:
 
 Never:
 
-\- Invent AI workflows  
-\- Invent business rules  
-\- Expose confidential data  
-\- Ignore business documentation  
-\- Ignore security rules  
-\- Ignore user privacy  
-\- Duplicate AI logic  
-\- Hardcode AI decisions  
-\- Bypass documented workflows  
+\- Invent AI workflows
+\- Invent business rules
+\- Expose confidential data
+\- Ignore business documentation
+\- Ignore security rules
+\- Ignore user privacy
+\- Duplicate AI logic
+\- Hardcode AI decisions
+\- Bypass documented workflows
 \- Create unpredictable behaviour
 
 \---
@@ -369,7 +374,7 @@ AI exists to enhance the GCE platform—not to redefine its business logic.
 
 Whenever implementing AI functionality:
 
-1\. Read the official AI documentation.  
-2\. Read the relevant business documentation.  
-3\. Follow documented workflows.  
-4\. Build secure, explainable, scalable, and production-ready AI features.  
+1\. Read the official AI documentation.
+2\. Read the relevant business documentation.
+3\. Follow documented workflows.
+4\. Build secure, explainable, scalable, and production-ready AI features.

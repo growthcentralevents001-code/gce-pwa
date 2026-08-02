@@ -5,6 +5,7 @@
 **FD-022** — membership lifecycle notification *events* (seat reservation, renewal window, grace, freeze, suspension, reinstatement, transfer, rejoining). Exact channels, copy, and schedules beyond Founder-approved timing rules remain **Pending Technical Design** / Notification Architecture.
 **FD-024** — Circle lifecycle notifications must not imply Connect BDP independent activation.
 **FD-025** — Connect BDP Franchise Unit milestone, performance-review, expansion, and commission notifications must not imply guaranteed income or automatic cancellation.
+**FD-027** — Membership commercial notifications (renewal, grace, freeze seat-protection up to 30 days recommended, transfer, Core Progress) must not imply guaranteed referrals/nationwide access or invent Core thresholds.
 **FD-026** — Enterprise Franchise Pack target, finance-recovery, attribution/dormancy, Platform Expert assignment, and commission notifications must not imply guaranteed income, territory ownership, or automatic cancellation.
 **FD-023** — notifications are role- and permission-scoped.
 **FD-001** — one account; role-based delivery.

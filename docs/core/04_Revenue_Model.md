@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Business model:** FD-001 · **Ledgers:** FD-020 · **Settlement:** FD-021 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+**Business model:** FD-001 · **Ledgers:** FD-020 · **Settlement:** FD-021 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
 
-Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Future revenue categories in FD-001 are inactive until separately approved. Tax rates: do not invent. Connect BDP and Enterprise commission examples are illustrative only (FD-025 / FD-026).
+Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Future revenue categories in FD-001 are inactive until separately approved. Tax rates: do not invent. Connect BDP, Enterprise, and Membership commission examples are illustrative only where so labelled (FD-025 / FD-026 / FD-027).
 
 Overview
 
@@ -39,19 +39,21 @@ Members pay a quarterly subscription to participate in business networking, refe
 
  Membership Plans
 
- Associate Membership
+Launch product (FD-027):
 
- Quarterly Subscription
- Local Circle Access
- Business Networking
- Referral Opportunities
+ GCE Connect Circle Membership — Associate Tier
+ Quarterly subscription only (**₹6,000** per quarter + applicable taxes)
+ Local Circle networking eligibility (one primary Circle seat — separately approved)
+ Business networking and referral opportunities (not guaranteed)
+ Two included Business Tags; Tag 3 / Tag 4 available at +25% each
 
- Core Membership
+Future Core Tier (not directly purchasable at launch):
 
- Quarterly Subscription
- Nationwide Business Opportunities
- Premium Visibility
- Additional Business Benefits
+ GCE Connect Circle Membership — Core Tier
+ Future achievement-based upgrade (**₹9,000** per quarter + tax when offered)
+ Access to eligible cross-city and expanded opportunities through the active GCE network (not a nationwide guarantee)
+
+Billing: quarterly only at launch. Monthly/annual plans are not active. Numbers: `36_Commercial_Constants.md`.
 
  2. GCE Marketplace Revenue
 
@@ -102,7 +104,7 @@ Revenue increases through:
  Circle Expansion
  City Expansion
 
-Recurring subscriptions provide predictable platform income.
+Recurring subscriptions provide predictable platform income. At launch, membership billing is **quarterly only** (FD-027). Phrasing about “monthly and quarterly” cash flow must not be read as an active monthly membership plan.
 
  5\. Franchise Revenue
 
@@ -121,7 +123,7 @@ Revenue includes:
  Franchise Pack Expansion (Enterprise BDP: separate pack for additional capacity; standard max two packs)
  Business Development
 
-Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible renewals while responsible (FD-025). Commission is not guaranteed income. Numbers: `36_Commercial_Constants.md`.
+Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible renewals while responsible, and may include eligible Associate/Core subscription and Tag 3 / Tag 4 revenue when settlement-eligible (FD-025 / FD-027). Transfer fees and Lead Assist fees are not automatically commissionable. Commission is not guaranteed income. Numbers: `36_Commercial_Constants.md`.
 
 Enterprise BDP earns flat **25%** of eligible GCE platform commission on attributed Enterprise projects (FD-026). Commission is not guaranteed income.
 

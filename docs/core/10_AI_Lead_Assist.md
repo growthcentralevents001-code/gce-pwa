@@ -3,11 +3,12 @@
 ## Canonical references
 
 - **Complete AI Lead Assist specification (rules, lifecycle, fairness):** `39_AI_Lead_Assist_Spec.md`
-- **Fees and subscription credit amounts:** `36_Commercial_Constants.md`
+- **Fees and subscription credit amounts:** `36_Commercial_Constants.md` (Lead Assist commercial constants — **not** approved under FD-027 membership constitution)
+- **Membership commercial authority (separate):** FD-027 / `05_Memberships.md`
 - **Circle context:** `38_Circle_Architecture.md`
 - **Roles:** `35_Role_Taxonomy.md`
 
-This file retains explanatory narrative. **Authoritative rules live in `39_AI_Lead_Assist_Spec.md`.**
+This file retains explanatory narrative. **Authoritative rules live in `39_AI_Lead_Assist_Spec.md`.** Lead Assist remains a separate service from base GCE Connect Circle Membership (FD-027).
 
  Overview
 

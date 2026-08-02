@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**.
 
 Overview
 
@@ -54,11 +54,19 @@ Unverified users may have limited platform access.
 
  Membership Rules
 
- Memberships are subscriptionbased.
- Memberships must be renewed before expiry.
- Expired memberships lose premium benefits.
- Memberships are nontransferable.
- One individual can hold only one active membership account.
+Commercial and operating authority: **FD-027**. Lifecycle timing: **FD-022**. Numbers: **`36_Commercial_Constants.md`**. Narrative: `05_Memberships.md`.
+
+Key rules (do not invent beyond FD-027):
+
+- Official launch product: **GCE Connect Circle Membership — Associate Tier** (₹6,000/quarter + tax); quarterly only; Core Tier not directly purchasable at launch
+- Platform-only application, payment, activation, renewal, upgrade, transfer, freeze, suspension, termination, and rejoining
+- One membership = eligibility for **one** primary Circle seat; paid membership ≠ automatic seat
+- One Business Specialization; max **four** Business Tags; Tags 1–2 included; Tag 3 and Tag 4 each **+25%** of base (not +50%)
+- Transfers are controlled (not “nontransferable”): first free in 12 months; additional **₹1,000 + tax**
+- Freeze up to 90 days; recommended seat protection during freeze **up to 30 days**
+- Normally non-refundable after activation; no rejoining fee at launch
+- Membership does not guarantee referrals, revenue, or nationwide opportunities
+- Lead Assist commercial rules remain separate from base membership (not FD-027)
 
  Business Category Rules
 
@@ -72,11 +80,15 @@ This means:
 
  Business Tag Rules
 
-Every business profile must include:
+Every active GCE Connect Circle Member may hold one approved Business Specialization and up to four approved Business Tags (FD-027):
 
- Business Category
- Business Tags
- Specialization Tags
+- Tag 1 and Tag 2 — included
+- Tag 3 and Tag 4 — each +25% of active base subscription
+- Use **Protected Tag Scope**; do not use “business monopoly”
+- Taxonomy term: **GC Power Sector** (do not use Power Circle as current)
+- Multiple Tags do not create additional physical seats
+
+Specialization exclusivity remains **One Business Specialization = One Exclusive Seat per Circle** (FD-024).
 
 These tags are mandatory because they are used by:
 

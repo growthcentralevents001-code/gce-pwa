@@ -75,6 +75,7 @@ These documents define **what** the platform must do.
 | `docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
 | `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 | `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
+| `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 
 #### Canonical core living documents
 

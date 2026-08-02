@@ -8,11 +8,12 @@
 **Related Founder Decisions:**
 
 - Membership vs Circle seat, reservation, waitlist, grace: `FD-022_Membership_Lifecycle.md`
+- Membership commercial (tiers, Tags, Core, transfers, freeze seat protection): `FD-027_Membership_Commercial_and_Operating_Architecture.md`
 - Circle access and role boundaries: `FD-023_RBAC_and_Permissions.md`
 - Platform ownership and vertical model: `FD-001_Business_Model.md`
 - Connect BDP Franchise Unit capacity, targets, and commercial pack: `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
-This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024, **FD-024 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, or merger/split voting rules.
+This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024, **FD-024 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Where membership commercial Tag/seat-scope rules conflict with FD-027, **FD-027 wins**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, or merger/split voting rules.
 
 ---
 
@@ -20,9 +21,9 @@ This document is the living **canonical core** summary of Circle architecture. W
 
 Owns detailed GCE Connect Circle architecture and Circle lifecycle documentation for the repository (formation, activation, capacity, seats, expansion, governance boundaries, archival).
 
-Membership plan benefits: `05_Memberships.md`.
+Membership plan benefits: `05_Memberships.md` (defers to **FD-027** for commercial rules).
 Connect BDP narrative: `06_CBDP.md` (legacy filename; approved term **Connect BDP**).
-Commercial partner numbers: `36_Commercial_Constants.md` (Connect BDP values defer to **FD-025**).
+Commercial partner numbers: `36_Commercial_Constants.md` (Connect BDP values defer to **FD-025**; membership values defer to **FD-027**).
 Roles: `35_Role_Taxonomy.md`.
 
 Always use **GCE Connect** (never “Connect” alone).
@@ -126,15 +127,17 @@ Closure must result in **Suspended**, **Merged**, or **Archived** — **never si
 
 ## Seats and specialization exclusivity
 
-### Taxonomy hierarchy (FD-024)
+### Taxonomy hierarchy (FD-024 / FD-027)
 
 ```text
-GCE Power Sector
+GC Power Sector   (FD-027 approved commercial taxonomy term)
   → Business Specialization
-    → Business Tags
+    → Business Tags (max four; Tags 1–2 included; Tag 3/4 +25% each — FD-027)
 ```
 
-### Exclusivity rule (Founder Approved)
+FD-024 historically wrote **GCE Power Sector**. For current membership commercial terminology, use **GC Power Sector** (FD-027). Do not use **Power Circle** as current taxonomy.
+
+Each active Circle Member may hold one approved Business Specialization and up to four Business Tags. Use **Protected Tag Scope**. Multiple Tags do not create additional physical seats (FD-027).
 
 **One Business Specialization = One Exclusive Seat within one Circle.**
 
@@ -229,9 +232,11 @@ Permitted through **controlled platform processes** (FD-024).
 
 ## Power Sector vs legacy “Power Circles”
 
-FD-024 uses **GCE Power Sector** as the top taxonomy layer above Business Specialization.
+FD-027 approved commercial taxonomy term: **GC Power Sector**.
 
-Older overview docs named **Power Circles** without a definition. Until a Founder Decision defines Power Circles (if distinct), treat them as **Unresolved / legacy naming** and do not invent Power Circle behavior. Prefer **GCE Power Sector → Business Specialization → Business Tags**.
+FD-024 historically used **GCE Power Sector** as the top taxonomy layer above Business Specialization.
+
+Older overview docs named **Power Circles** without a definition. Treat **Power Circle** as obsolete / legacy naming — do not invent Power Circle behavior. Prefer **GC Power Sector → Business Specialization → Business Tags**.
 
 ---
 

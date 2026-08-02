@@ -6,10 +6,11 @@
 **Settlement eligibility & operations:** `docs/founder-decisions/FD-021_Settlement_Engine.md`
 **Connect BDP Franchise Unit fee / commission commercial rules:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 **GCE Enterprise Franchise Pack / commission / payment commercial rules:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
+**Membership commercial (tiers, Tags, transfers, refunds):** `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025 (Connect), or FD-026 (Enterprise), the Founder Decision wins.
+Where this file conflicts with FD-020, FD-021, FD-025, FD-026, or FD-027 (for membership commercials), the Founder Decision wins.
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -100,13 +101,25 @@ User
 
 ↓
 
-Choose Membership
+Choose Associate Tier (launch) / optional Tag 3–4 (FD-027)
 
 ↓
 
-Online Payment
+Online Payment (platform only)
 
 ↓
+
+Membership Activation (when conditions met)
+
+↓
+
+Separate Circle Seat Reservation / Allocation
+
+↓
+
+Dashboard Update
+
+Membership payments may also include Tag 3 / Tag 4 add-ons and, when Core is offered after eligibility, Core upgrade/renewal payments. Transfer administrative fees (₹1,000 + tax after the first free transfer in 12 months) are separate and not automatically commissionable to Connect BDP (FD-027).
 
 Membership Activated
 
@@ -349,7 +362,13 @@ The system automatically calculates commissions based on predefined business rul
 
 Refund eligibility depends on the service.
 
-Examples
+Membership (FD-027):
+
+- Before activation, refund may be considered for GCE rejection, inability to provide approved seat or activate service, duplicate payment, or billing error.
+- After activation, membership is normally **non-refundable**.
+- Exact membership refund matrix remains Pending Founder and Legal Approval.
+
+Other examples:
 
  Event Cancellation
  Duplicate Payment

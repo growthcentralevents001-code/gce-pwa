@@ -28,6 +28,7 @@ Business meaning of roles, membership, Circles, and financial ledgers is governe
 \- FD-024 — Circle lifecycle and seats
 \- FD-025 — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance)
 \- FD-026 — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, Vendor Opportunity Fee tracking concepts
+\- FD-027 — Membership commercial concepts (Associate/Core tiers, Tags, Core Progress, transfer fees)
 
 Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages.
 

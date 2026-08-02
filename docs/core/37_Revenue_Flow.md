@@ -2,7 +2,7 @@
 
 ## Authority
 
-**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026
+**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026
 
 Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win.
 
@@ -70,26 +70,29 @@ Renewal & Retention
 ```text
 Prospect
   ↓
-Membership presentation / registration (often via Connect BDP)
+Platform membership application (Associate Tier at launch — FD-027)
   ↓
-Quarterly subscription payment (Associate or Core)
+Verification / KYC / terms
   ↓
-Verification / terms / applicable approval
+Quarterly subscription payment (Associate ₹6,000 + tax; optional Tag 3/4 at +25% each)
   ↓
-Membership activated (payment alone is insufficient — FD-022)
+Membership activated (payment alone is insufficient — FD-022 / FD-027)
   ↓
-Settlement eligibility for membership revenue (FD-021)
+Separate Circle seat reservation / allocation (7-day reservation — FD-022 / FD-027)
   ↓
-Circle allocation + category seat
+Settlement eligibility for membership / Tag revenue (FD-021)
   ↓
-Networking / referrals / AI Lead Assist eligibility
+Networking / platform-recorded referrals / dual-confirmed closed business
   ↓
-Renewal (or temporary benefit suspension if not renewed)
+Renewal (30-day notice) / Grace (30 days) / Freeze / Transfer as applicable
+  ↓
+Future Core upgrade path only after eligibility + network readiness (not direct purchase at launch)
 ```
 
-**Platform income:** membership subscription fees.
-**Partner income:** Connect BDP commission = **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit, including eligible renewals while the Franchise Unit remains active and responsible (FD-025). Commission is not guaranteed income. Rate and base summary: `36_Commercial_Constants.md`.
-**Detail docs:** `05_Memberships.md`, `06_CBDP.md` (Connect BDP narrative), FD-025.
+**Platform income:** Associate Tier subscription, Tag 3/4 subscriptions, future Core upgrade/renewal when applicable.
+**Partner income:** Connect BDP commission = **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core and Tag 3/4 revenue when collected, attributed, activated, and settlement-eligible (FD-025 / FD-027). Transfer fees and Lead Assist fees are not automatically commissionable. Commission is not guaranteed income.
+**Lead Assist** remains a separate service (not FD-027 base membership commercial).
+**Detail docs:** `05_Memberships.md`, `06_CBDP.md`, FD-027, FD-025.
 
 ### B. GCE Marketplace — venue / offer / event revenue
 

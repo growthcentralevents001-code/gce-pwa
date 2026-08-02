@@ -43,7 +43,7 @@ Location: `docs/core/`
 | 02_Business_Model.md | Complete GCE business model |
 | 03_Stakeholders.md | Stakeholders and responsibilities |
 | 04_Revenue_Model.md | Revenue sources, commissions and earnings |
-| 05_Memberships.md | Membership plans and benefits |
+| 05_Memberships.md | Membership narrative (defers to FD-027; lifecycle also FD-022) |
 | 06_CBDP.md | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07_MBDP.md | Marketplace Business Development Partner |
 | 08_Enterprise_BDP.md | Enterprise BDP narrative (defers to FD-026) |
@@ -87,6 +87,7 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md` | Circle lifecycle |
 | `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 | `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
+| `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 
 ## Canonical core living documents
 

@@ -3,9 +3,10 @@
 ## Canonical references
 
 - **AI Lead Assist (authoritative):** `39_AI_Lead_Assist_Spec.md`
-- **Fees:** `36_Commercial_Constants.md`
+- **Fees:** `36_Commercial_Constants.md` (Lead Assist amounts — not approved under FD-027)
+- **Membership commercial (separate):** FD-027 / `05_Memberships.md`
 
-This file covers the broader GCE AI Engine. For Lead Assist lifecycle and fairness rules, follow `39_AI_Lead_Assist_Spec.md`.
+This file covers the broader GCE AI Engine. For Lead Assist lifecycle and fairness rules, follow `39_AI_Lead_Assist_Spec.md`. Lead Assist remains separate from base GCE Connect Circle Membership (FD-027).
 
  Overview
 

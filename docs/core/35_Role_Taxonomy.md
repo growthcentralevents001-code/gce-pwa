@@ -4,11 +4,11 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
-Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025** / **FD-026**. Circles: `38_Circle_Architecture.md` / FD-024.
+Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025** / **FD-026** / **FD-027**. Circles: `38_Circle_Architecture.md` / FD-024.
 
 ---
 
@@ -73,7 +73,7 @@ Aligned with FD role families and existing product documentation:
 | 6 | Marketplace BDP | GCE Marketplace | Onboard/support Venue Partners within assigned scope |
 | 7 | Enterprise BDP | GCE Enterprise | Enterprise Client acquisition & BD under client-based Franchise Pack attribution (FD-026) |
 | 8 | Venue Partner | GCE Marketplace | Own events, offers, bookings |
-| 9 | Circle Member / GCE Connect Member | GCE Connect | Networking & seats (seat separate from membership) |
+| 9 | GCE Connect Circle Member | GCE Connect | Active Circle Membership holder (Associate/Core are tier labels — FD-027); Circle seat is separate |
 | 10 | Registered User / Visitor | Demand | Public/authenticated general access |
 | — | Enterprise Client | GCE Enterprise | Client/project functions (not a BDP) |
 | — | Enterprise Platform Expert | GCE Enterprise | Internal/controlled specialist for requirement breakdown, vendor matching, and digital project coordination (FD-026) — not a franchisee |
@@ -208,4 +208,4 @@ Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`,
 - Commercial limits/fees: `36_Commercial_Constants.md`
 - GCE Connect circles: `38_Circle_Architecture.md`
 - Partner docs (legacy filenames): `06_CBDP.md` (Connect BDP), `07_MBDP.md` (Marketplace BDP), `08_Enterprise_BDP.md`, `09_Venue_Partner.md`
-- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026
+- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026, FD-027

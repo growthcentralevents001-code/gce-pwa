@@ -2,218 +2,268 @@
 
 ## Authority
 
-**Highest authority for membership lifecycle:** `docs/founder-decisions/FD-022_Membership_Lifecycle.md`
+**Highest authority for GCE Connect Circle Membership commercial and operating rules:**
+`docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 
-**Related:** FD-024 (Circle seats), FD-021 (membership settlement), FD-023 (access during grace/suspension), FD-001 (platform model).
+**Highest authority for membership lifecycle timing/state concepts:**
+`docs/founder-decisions/FD-022_Membership_Lifecycle.md`
 
-This file retains plan benefits and member responsibilities for **GCE Connect**. Where this file conflicts with FD-022, **FD-022 wins**.
+**Related:** FD-024 (Circle seats) · FD-021 (membership settlement) · FD-023 (access during grace/suspension) · FD-025 (Connect BDP 20% on eligible subscription/Tag revenue) · FD-001 (platform model)
+
+This living document summarises membership commercial and operating rules for **GCE Connect**. On commercial/operating conflict, **FD-027 wins**. On pure lifecycle-state conflict, **FD-022 wins**. Do not invent unresolved FD-027 items (exact Core thresholds, weighted scores, daily proration formula, refund matrix, waitlist tie-breaks, Lead Assist commercial rules).
 
 ## Canonical references
 
-- **Membership lifecycle (Founder):** `docs/founder-decisions/FD-022_Membership_Lifecycle.md`
+- **Membership commercial (Founder):** FD-027
+- **Membership lifecycle (Founder):** FD-022
 - **Circle seats / architecture:** `38_Circle_Architecture.md` / FD-024
-- **Plan prices (undocumented):** `36_Commercial_Constants.md`
-- **AI Lead Assist:** `39_AI_Lead_Assist_Spec.md`
+- **Commercial numbers:** `36_Commercial_Constants.md` (defers to FD-027 for membership)
+- **AI Lead Assist (separate service):** `39_AI_Lead_Assist_Spec.md` — commercial rules are **not** approved under FD-027
 - **Roles:** `35_Role_Taxonomy.md`
 
+---
 
- Overview
+## Official naming
 
-The GCE Membership Program is the foundation of the **GCE Connect** ecosystem. It is designed to build a trusted business community where professionals, entrepreneurs, and business owners collaborate, exchange referrals, and grow together.
+| Concept | Approved name |
+|---------|---------------|
+| Formal launch membership | **GCE Connect Circle Membership — Associate Tier** |
+| Future formal membership | **GCE Connect Circle Membership — Core Tier** |
+| Member title | **GCE Connect Circle Member** |
+| Launch tier | **Associate Tier** |
+| Future upgrade tier | **Core Tier** |
 
-Unlike traditional networking organizations, GCE memberships are supported by AIpowered business matching, structured networking, digital referral tracking, and rolebased business growth opportunities.
+Hierarchy:
 
-Memberships operate on a \*\*Quarterly Subscription Model\*\*.
+```text
+GCE Connect
+└── Circle Membership
+    ├── Associate Tier
+    └── Core Tier
+```
 
- Membership Objectives
+The person remains a GCE Connect Circle Member. Associate and Core are **tier labels**. Do not use “Associate Member” as the primary permanent member identity where the approved naming can be used.
 
-The primary objectives of the membership program are:
+Legacy labels such as “Associate Membership” / “Core Membership” may appear in older text or code — treat as legacy pending migration.
 
- Build trusted business communities
- Generate qualified business referrals
- Increase member visibility
- Encourage collaboration
- Create longterm business relationships
- Improve business growth through structured networking
- Support AIpowered lead distribution
+---
 
- Membership Types
+## Launch membership model
 
-Currently, GCE offers two membership plans.
+- Only **Associate Tier** is directly purchasable during launch.
+- **Core Tier** is not directly purchasable during launch.
+- Associate Tier price: **₹6,000 per quarter** plus applicable taxes.
+- Billing is **quarterly only** at launch.
+- Monthly and annual membership plans are **not active**. Any future monthly or annual plan requires separate Founder approval.
 
- 1\. Associate Membership
+Numeric summary: `36_Commercial_Constants.md`.
 
-Associate Membership is designed for professionals and business owners who want to participate in their local business community.
+---
 
- Subscription
+## Platform-only membership
 
- Quarterly Membership
+Membership may be applied for, verified, paid for, activated, renewed, upgraded, downgraded, transferred, frozen, suspended, terminated, or rejoined **only** through the authorised GCE platform workflow.
 
- Benefits
+No offline, verbal, unofficial, privately issued, or manually activated membership is valid.
 
- Local Circle Access
- Business Networking
- Weekly / Scheduled Meetings
- Referral Opportunities
- Business Visibility
- AI Lead Assist Eligibility
- Member Dashboard
- Digital Business Profile
+Connect BDP may assist with onboarding but may **not** activate membership manually, collect payment into a personal account, change pricing, issue unofficial membership, promise a seat without platform confirmation, add unapproved Tags, bypass KYC, override seat exclusivity, guarantee Core eligibility, or guarantee referrals or revenue (FD-027 / FD-025).
 
- 2\. Core Membership
+---
 
-Core Membership is the premium membership designed for members looking to expand beyond their local city.
+## Associate Tier
 
- Subscription
+Associate Tier may include eligibility for one approved primary Circle seat, one approved Business Specialization, two included Business Tags, ability to purchase Tag 3 and Tag 4, local Circle networking, local referrals and opportunities, digital member profile, app-based referral management, dual-confirmed closed-business records, Trust and performance history, attendance and meeting tools, Circle governance participation, member support, available platform opportunities, Core progress tracking, approved GCE Connect activities, and dashboards/analytics/security/notifications according to policy.
 
- Quarterly Membership
+Membership does **not** guarantee referrals, leads, revenue, closed business, client acquisition, nationwide opportunities, Core upgrade, permanent Circle seat, lifetime category protection, or any fixed return.
 
- Benefits
+Lead Assist eligibility is a **separate service** and is not a base FD-027 membership commercial benefit.
 
-Everything included in Associate Membership, plus:
+---
 
- Nationwide Business Opportunities
- CrossCity Referral Access
- Higher Business Visibility
- Priority Business Opportunities
- Premium Member Recognition
- Enhanced Networking
+## Membership and Circle seat separation
 
- Membership Eligibility
+A paid membership does **not** automatically guarantee a particular Circle seat.
 
-Anyone can apply for membership, including:
+A member requires:
 
- Entrepreneurs
- Business Owners
- Professionals
- Consultants
- Retail Businesses
- Service Providers
- Startups
- SMEs
+1. Active eligible membership
+2. Separately approved Circle seat
 
-Membership approval is subject to platform verification and business category availability.
+Seat approval remains subject to verification, KYC/compliance, business eligibility, Business Specialization availability, Circle capacity, taxonomy compatibility, platform approval, and governance/conduct requirements (FD-022 / FD-024 / FD-027).
 
- Business Category Locking
+Approved principle: **One member = one physical Circle seat**.
 
-Each GCE Connect Circle follows Founder-approved specialization exclusivity (FD-024 / `38_Circle_Architecture.md`):
+Multiple Tags do **not** create additional physical seats, introductions, voting rights, identities, or Circle ownership.
 
-**One Business Specialization = One Exclusive Seat within one Circle.**
+---
 
-Specialization exclusivity does **not** automatically apply city-wide. Membership and Circle seat are **separate** concepts (FD-022). Active membership does **not** automatically guarantee immediate Circle placement.
+## Business Specialization and Tags
 
- Business Tags & Specialization Tags
+Each active Circle Member may hold:
 
-Every member profile includes:
+- One approved **Business Specialization**
+- Maximum **four** approved **Business Tags**
 
- Business Category
- Business Tags
- Specialization Tags
+| Tag | Pricing |
+|-----|---------|
+| Tag 1 | Included |
+| Tag 2 | Included |
+| Tag 3 | **+25%** of active base subscription |
+| Tag 4 | **+25%** of active base subscription |
 
-Example:
+The fourth Tag is **not** +50%. Any old +50% reference is obsolete.
 
-Business Category:
+Associate Tier example (before tax):
 
- Chartered Accountant
+- Base: ₹6,000 / quarter
+- Tag 3: ₹1,500 / quarter
+- Tag 4: ₹1,500 / quarter
+- Maximum quarterly before tax: ₹9,000
 
-Business Tags:
+Future Core Tier example (before tax): base ₹9,000; Tag 3 ₹2,250; Tag 4 ₹2,250.
 
- Taxation
- Accounting
- Compliance
+Paid Tags follow the active membership term, may be prorated mid-cycle (exact proration Pending Technical Design), renew with membership, may be removed at renewal, require taxonomy validation, and do not bypass specialization exclusivity.
 
-Specialization Tags:
+Use **Protected Tag Scope**. Do not use “business monopoly” as a constitutional term. Unassigned vacant Tags remain available to another eligible non-competing business, subject to conflict review and platform approval.
 
- GST
- Income Tax
- Company Registration
- Audit
- ROC Compliance
+---
 
-These tags help the AI engine match the most suitable member for business opportunities.
+## Taxonomy governance
 
- AI Lead Assist
+Use: **GC Power Sector** · Business Specialization · Business Tags · Digital Member Profile · Intelligent Referral Routing.
 
-Every active member becomes eligible for AIpowered business matching.
+Do not use the outdated term **Power Circle** as current taxonomy.
 
-The AI system analyzes:
+Local governance may recommend taxonomy changes. Platform Taxonomy Team has final authority. Regional or district Tags are not valid until published by the platform.
 
- Business Category
- Specialization Tags
- Referral History
- Performance Score
- Circle Activity
+Note: Circle lifecycle documentation historically used “GCE Power Sector” (FD-024). For membership commercial terminology under FD-027, use **GC Power Sector**.
 
-Based on these factors, qualified business opportunities are routed to the most suitable members.
+---
 
- Member Responsibilities
+## Referrals and closed business
 
-Every member is expected to:
+Official referral activity must be recorded through the GCE platform. Verbal, meeting-only, WhatsApp-only, or off-platform referrals do **not** count for official records, performance, Trust, Core eligibility, leaderboards, or rewards/commission calculations.
 
- Attend Business Meetings
- Participate in Networking Activities
- Give Genuine Referrals
- Maintain Profile Information
- Follow Circle Rules
- Maintain Professional Conduct
- Support Other Members
+Closed business requires **dual confirmation** by the lead giver and the receiving member. Revenue is not verified until both confirmations are complete.
 
- Member Benefits
+Do not count toward performance or Core eligibility: self-referrals, duplicates, fake referrals, cancelled/reversed/unconfirmed business, circular manipulation, fake attendance, off-platform claims, activity under investigation, or fraudulent transactions.
 
-Active members receive:
+Exact referral-routing algorithm remains unresolved unless separately approved.
 
- Qualified Business Referrals
- Verified Business Network
- AI Lead Distribution
- Business Visibility
- Marketplace Access
- Networking Opportunities
- Digital Business Profile
- Business Analytics
+---
 
- Membership Renewal and Grace (Founder Approved — FD-022)
+## Core Tier architecture (future)
 
-Memberships operate on a quarterly subscription cycle (plan cadence). Prices remain undocumented in `36_Commercial_Constants.md`.
+Core Tier is a future **achievement-based** upgrade. It is **not** directly purchasable during launch, **not** automatically activated, and **not** permanent for life.
 
-- Renewal communication begins **30 days** before expiry.
-- Grace period after expiry: **30 days**.
-- During grace: membership is **not fully active**; some benefits may be restricted; the **existing Circle seat remains protected**.
-- Grace is **not** the same as fully Active membership.
-- After grace without renewal: membership may move to Expired; seat protection may end; historical records are preserved.
-- Exact grace benefit restrictions: governed by FD-023 / product architecture (**Unresolved** detail matrix).
+Approved principle: Eligibility is earned; Core activation is purchased only after eligibility and network readiness are confirmed.
 
- Membership Lifecycle (Founder Approved — FD-022)
+Recommended minimum Associate tenure: **six months** of continuous active Associate Tier membership (usually two completed quarterly cycles).
 
-Membership activation and Circle allocation are **separate** actions.
+Core activation requires member eligibility, GCE network readiness, platform review, member acceptance, upgrade payment, and no compliance hold.
 
-Activation requires applicable conditions including: successful payment; required verification/KYC; eligibility; terms acceptance; platform approval where required. Payment alone does **not** always activate membership.
+### Core eligibility (concepts)
 
-Founder-approved lifecycle concepts include: application → payment/verification/approval → Active → Grace / Frozen / Suspended / Expired / Terminated / Rejoining Review (exact technical enums may be refined).
+Mandatory conditions should include six months active Associate tenure, valid verification/KYC, no unresolved serious compliance/disciplinary case, fully paid dues, required profile completeness, platform-recorded referral activity, no manipulation/fraud, and satisfactory Circle participation.
 
-Additional Founder-approved rules (summaries — full text in FD-022):
+Achievement conditions may include attendance, qualified referrals given/accepted, dual-confirmed closed business, Trust Rank, timely lead response, positive feedback, platform usage, Circle participation, governance contribution, profile completeness, and complaint history.
 
-- Circle seat reservation: **7 days**.
-- Waitlist support is **required** (priority rules: **Unresolved**).
-- Upgrade may be **prorated** (exact formula: **Unresolved**).
-- Downgrade normally applies at **renewal**.
-- City / Circle / category / specialization transfers are **controlled**, not automatic.
-- Membership freeze: up to **90 days** in the applicable membership cycle (exact seat-protection and expiry-extension during freeze: **Unresolved**).
-- Suspension and termination are **separate** states.
-- Rejoining is **conditional** and does **not** automatically restore the previous Circle seat.
-- Trust, participation, referral, and performance history should normally be **preserved** across renewal, freeze, transfer, or temporary inactivity.
+Recommended launch rule: all mandatory conditions plus at least **four** approved achievement conditions.
 
-Conceptual high-level journey:
+Exact numerical thresholds remain **Pending Founder Approval**. A complex weighted eligibility score is **not** approved at launch — do not invent one.
 
-Registration / Application
-→ Verification & Payment
-→ Membership Activation (when conditions met)
-→ Circle seat reservation / waitlist / allocation (separate)
-→ Networking & referrals
-→ Renewal (from 30 days before expiry) / Grace / Freeze / Transfer as applicable
+### Network readiness
 
+Core activation also requires adequate GCE network readiness. Do **not** promise nationwide access at launch.
 
- LongTerm Membership Vision
+Approved wording: Access to eligible cross-city and expanded business opportunities available through the active GCE network.
 
-The GCE Membership Program is designed to become India's most trusted business networking community by combining structured networking, AIpowered referrals, exclusive business categories, and digital business management into one integrated ecosystem.
+Exact city count / launch gate remains Pending Founder Approval. A three-city benchmark may be mentioned only as a recommendation, not a fixed rule.
 
-The goal is to help every member build meaningful business relationships, generate sustainable revenue, and achieve longterm business growth through collaboration.
+### Core price and upgrade
+
+Future Core Tier price: **₹9,000 per quarter** plus applicable taxes.
+
+For a mid-cycle approved upgrade: member pays prorated difference; existing expiry date remains unchanged; Core benefits activate after approval and payment; no additional Circle seat is created. Full-quarter difference: ₹3,000. Exact proration formula remains Pending Technical Design.
+
+### Core Progress module
+
+The PWA should support a Core Progress module (statuses and enums Pending Technical Design) showing tenure, status, attendance, referrals, dual-confirmed business, Trust Rank, complaints, profile completeness, platform participation, completed/pending conditions, network-readiness status, and upgrade-offer status.
+
+### Core retention and reversion
+
+One weak quarter must **not** automatically cause reversion. Recommended process: warning → review → improvement period → reversion at renewal after persistent failure; immediate suspension for serious misconduct. History and Trust records must remain preserved.
+
+---
+
+## Activation and seat reservation
+
+Membership activation requires verified user account, KYC/business verification, plan selection, successful payment, terms acceptance, and no compliance hold. Circle seat activation remains separate.
+
+Seat reservation: **seven days** after seat eligibility approval; payment and activation must complete within the period; seat releases after seven days if incomplete; extension requires authorised approval; indefinite manual holds are not allowed (FD-022 / FD-027).
+
+---
+
+## Renewal and grace
+
+- Renewal notice: **30 days** before expiry
+- Grace period: **30 days** after expiry
+
+During grace: renewal eligibility remains; seat remains protected; full access may be restricted; new Tags may not be added; new benefits may not activate; certain financial/commissionable actions may be restricted; full access restores after renewal.
+
+After grace: membership becomes inactive; seat may be released; waitlisted member may receive seat; history remains preserved; rejoining may be required.
+
+Renewal uses the plan price applicable on the renewal date. Original joining price is not permanently guaranteed.
+
+---
+
+## Downgrade, freeze, transfers, waitlist
+
+**Downgrade (Core → Associate):** may be requested during active term; normally takes effect at renewal; no mid-cycle refund; Tag pricing recalculates at renewal; history preserved.
+
+**Freeze:** up to **90 days**; requires approved reason; one active freeze at a time; pauses benefits; may extend expiry by approved freeze duration; preserves history. Recommended Circle seat protection during freeze: **up to 30 days**. Do **not** state that a 90-day freeze automatically protects the seat for 90 days. Beyond 30 days, seat may be released where continuity requires.
+
+**Transfers** (city, Circle, Specialization, Tag, category-related): subject to verification, seat availability, taxonomy compatibility, conflict review, platform approval, and compliance.
+
+- First approved transfer in 12 months — **Free**
+- Additional transfer in same 12 months — **₹1,000 plus tax**
+
+History remains preserved. Previous seat is not permanently owned.
+
+**Waitlist:** verified eligible applicant, payment readiness, waitlist timestamp, Circle suitability, conflict review. No Connect BDP or governance body may privately sell or promise a waitlist position. Exact tie-break rules remain unresolved.
+
+---
+
+## Refunds, suspension, termination, rejoining
+
+Before activation, refund may be considered for GCE rejection, inability to provide approved seat or activate service, duplicate payment, or billing error.
+
+After activation, membership is normally **non-refundable**. No refund merely because the member did not attend, did not receive referrals, did not use the platform, changed their mind, did not achieve Core eligibility, did not receive nationwide opportunities, was suspended for misconduct, or had below-expectation business outcomes.
+
+Exact refund matrix remains Pending Founder and Legal Approval.
+
+Suspension/termination may apply for KYC/compliance issues, payment dispute, data misuse, referral manipulation, harassment, false claims, governance breach, platform-security abuse, fraud, or repeated violations. Suspension or termination does not automatically create a refund.
+
+Rejoining requires cooling-off where applicable, resolution of dues and compliance matters, fresh verification where required, current pricing/policies, and available Circle seat. **No separate rejoining fee at launch.** Previous price, seat, Circle, specialization, or Tags are not guaranteed.
+
+---
+
+## Membership revenue and Connect BDP commission
+
+Under FD-025, Connect BDP earns **20%** of eligible GCE Connect subscription revenue.
+
+Eligible commissionable items may include Associate subscription/renewal, Core upgrade/renewal (when applicable), and Tag 3 / Tag 4 subscriptions — when collected, attributed, activated, settlement-eligible, and not refunded/reversed.
+
+Not automatically commissionable: GST and statutory taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees, complimentary/promotional credits, uncollected amounts (FD-027).
+
+---
+
+## Lead Assist separation
+
+GCE Connect Lead Assist is a **separate service**. FD-027 does **not** approve Lead Assist ₹500 fee, escrow, deficit-reward, subscription credit voucher, forfeiture, blocking, or Lead Assist commission. Those remain under a separate Founder Decision / `39_AI_Lead_Assist_Spec.md`.
+
+---
+
+## Long-term vision
+
+The GCE Connect Circle Membership program builds a trusted business networking community through platform-governed Associate Tier membership, Protected Tag Scope, dual-confirmed referrals, and a future achievement-based Core Tier — without guaranteeing referrals, revenue, nationwide access, or permanent seats.

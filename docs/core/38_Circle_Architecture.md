@@ -10,8 +10,9 @@
 - Membership vs Circle seat, reservation, waitlist, grace: `FD-022_Membership_Lifecycle.md`
 - Circle access and role boundaries: `FD-023_RBAC_and_Permissions.md`
 - Platform ownership and vertical model: `FD-001_Business_Model.md`
+- Connect BDP Franchise Unit capacity, targets, and commercial pack: `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
-This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024, **FD-024 wins**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, or merger/split voting rules.
+This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024, **FD-024 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, or merger/split voting rules.
 
 ---
 
@@ -21,7 +22,7 @@ Owns detailed GCE Connect Circle architecture and Circle lifecycle documentation
 
 Membership plan benefits: `05_Memberships.md`.
 Connect BDP narrative: `06_CBDP.md` (legacy filename; approved term **Connect BDP**).
-Commercial partner numbers: `36_Commercial_Constants.md` (subject to later commercial Founder Decisions).
+Commercial partner numbers: `36_Commercial_Constants.md` (Connect BDP values defer to **FD-025**).
 Roles: `35_Role_Taxonomy.md`.
 
 Always use **GCE Connect** (never “Connect” alone).
@@ -180,7 +181,9 @@ Connect BDP circle-related authority (summary):
 
 ### Partner capacity packs
 
-Historical commercial documentation records a maximum number of Circles per Connect BDP franchise pack in `36_Commercial_Constants.md`. That commercial pack limit is **not redefined by FD-024**. Exact Connect BDP capacity-pack commercial terms remain subject to a dedicated Connect BDP commercial Founder Decision when issued. Until then, treat historical pack numbers as **commercial documentation pending dedicated Founder commercial decision**, and treat Circle **lifecycle** rules in this file / FD-024 as authoritative for Circle entities themselves.
+Each **Connect BDP Franchise Unit** may develop up to **five** GCE Connect Circles, with a target of five **platform-activated** Circles within ten months (FD-025). Only platform-activated Circles count toward the completed target. Draft, Formation, or Pending Activation Circles do not count as completed.
+
+Circle **lifecycle** capacity (15 founding members minimum for activation; 40 maximum members) remains governed by FD-024. Partner commercial pack, fee, territory, commission, expansion, and performance rules are governed by **FD-025** (summary in `36_Commercial_Constants.md` / `06_CBDP.md`).
 
 Partner narrative: `06_CBDP.md`.
 

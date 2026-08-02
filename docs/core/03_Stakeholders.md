@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Connect BDP commercial:** FD-025 · **Commercial numbers:** `36_Commercial_Constants.md`
 
-Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023).
+Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025).
 
 Overview
 
@@ -126,29 +126,31 @@ Venue Partners provide venues, products, services, and promotional offers throug
 
  4\. GCE Connect Business Development Partner (Connect BDP)
 
-Connect BDPs are responsible for expanding the **GCE Connect** ecosystem.
+Connect BDPs are independent GCE business partners authorised to operate approved **Connect BDP Franchise Units** within Performance-Protected Assigned Territory (FD-025).
 
  Responsibilities
 
- Build Business Circles
+ Build Business Circles (initiate / support; platform activates — FD-024)
  Recruit Members
- Increase Membership Sales
- Manage Circle Performance
+ Support eligible membership growth and renewals
+ Manage assigned Circle performance within Franchise Unit scope
  Conduct Business Development
  Support Members
+ Report performance and escalate compliance issues
 
  Business Rules
 
- Numeric limits, targets, and commission: **`36_Commercial_Constants.md`** (Connect BDP section).
+ Commercial and operating authority: **FD-025**.
+ Numeric limits, fee, commission, Tier maxima, expansion: **`36_Commercial_Constants.md`** (Connect BDP section).
  Narrative and workflow: `06_CBDP.md`.
- Circle capacity rules: `38_Circle_Architecture.md`.
+ Circle capacity rules: `38_Circle_Architecture.md` / FD-024.
 
  Benefits
 
- Commission Income
- Business Expansion
- Franchise Growth
- Leadership Opportunities
+ Eligible Commission Income (20% of eligible Connect subscription revenue — not guaranteed)
+ Franchise Unit Expansion Opportunities (not automatic; separate fee; standard max two active units)
+ Business Expansion within assigned territory
+ Leadership Opportunities within partner operating model
 
  5\. GCE Marketplace Business Development Partner (Marketplace BDP)
 

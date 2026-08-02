@@ -10,12 +10,14 @@ Schema narratives in this file are **illustrative** until migrations and generat
 - **FD-022** — membership lifecycle concepts (activation, grace, freeze, seat reservation, etc.)
 - **FD-023** — roles, permissions, workspaces, and access-control principles
 - **FD-024** — GCE Connect Circle lifecycle, capacity, and seat architecture
+- **FD-025** — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance). Exact Franchise Unit tables/enums remain **Pending Technical Design**
 
 Also: **FD-001** (unified platform / one account / verticals); **FD-021** (settlement eligibility principles).
 
 **Pending Technical Design — do not invent:**
 
 - Exact database enums (including `user_role` values)
+- Exact Connect BDP Franchise Unit schema, status enums, or commission-attribution tables
 - Final table/column names and constraints
 - Exact membership or Circle state-machine enum values
 - Supabase RLS policy definitions

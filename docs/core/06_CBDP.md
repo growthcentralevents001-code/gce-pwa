@@ -2,197 +2,241 @@
 
 ## Authority
 
-**Platform model:** FD-001 · **RBAC:** FD-023 · **Circles:** FD-024 · **Memberships:** FD-022 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Highest authority for Connect BDP commercial and operating rules:**
+`docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
-Approved role name: **GCE Connect Business Development Partner (Connect BDP)**. Legacy filename/label **CBDP** retained for compatibility; use Connect BDP in current documentation.
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · Commercial number summary: `36_Commercial_Constants.md`
 
-Connect BDP may **initiate** Circle creation but **cannot independently activate** Circles. Circles are owned by **GCE**, not by the Connect BDP. Connect BDP cannot simultaneously be Circle Member of the same conflicting Circle (FD-023). Commercial pack limits in historical docs remain subject to dedicated commercial Founder Decision when issued.
+Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
-Overview
+Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-The GCE Connect Business Development Partner (Connect BDP) is the primary business development role responsible for expanding the **GCE Connect** ecosystem within assigned cities and business circles.
+This living document summarises Connect BDP operations. On conflict, **FD-025 wins**. Do not invent unresolved FD-025 items (exact performance score, retention/attendance/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, deferred-finance package, exact DB/API/RLS designs).
 
-A Connect BDP focuses on building strong networking communities by onboarding members, initiating Circle creation requests (platform activation required — FD-024), managing memberships, and ensuring consistent business growth.
+---
 
-Connect BDPs play a key role in increasing GCE's recurring membership revenue and strengthening local business communities.
+## Commercial status
 
- Primary Objectives
+A Connect BDP is an independent GCE business partner authorised to operate an approved **Connect BDP Franchise Unit** within a platform-assigned territory.
 
-The main objectives of a Connect BDP are:
+A Connect BDP is **not** automatically a GCE employee and does **not** own GCE, territory, Circles, members, data, or platform assets.
 
- Build Business Circles
- Increase Membership Sales
- Expand GCE Connect
- Develop Local Business Communities
- Improve Member Retention
- Support Business Networking
- Generate Recurring Revenue
+---
 
- Core Responsibilities
+## Connect BDP Franchise Unit
 
-A Connect BDP is responsible for:
+The commercial operating unit is the **Connect BDP Franchise Unit**.
 
- Recruiting New Members
- Creating New Business Circles (initiate request; platform approval/activation required)
- Conducting Member Meetings
- Promoting GCE Memberships
- Monitoring Circle Performance
- Supporting Members
- Coordinating with Relationship Managers
- Maintaining Business Standards
- Growing the Local GCE Community
+Each Franchise Unit is separate and has its own territory, fee, Circle capacity, target period, commission attribution, performance record, and compliance record.
 
- Business Circle Allocation
+One Franchise Unit does **not** provide unlimited Circle or territory rights. Every additional Franchise Unit requires separate approval, territory, activation, fee, capacity, target, performance review, and commission attribution (FD-025).
 
-Each Connect BDP can manage a maximum number of business circles defined in **`36_Commercial_Constants.md`** (Connect BDP → Max business circles).
+Numeric constants: `36_Commercial_Constants.md` (defers to FD-025).
 
-Each circle operates independently but follows the same platform business rules. See `38_Circle_Architecture.md`.
+---
 
- Monthly Sales Target
+## Franchise Activation Fee
 
-Every Connect BDP is expected to generate consistent membership revenue.
+Approved fee: **₹50,000 per Franchise Unit** (FD-025).
 
- Performance Target
+The fee is one-time, non-refundable after activation, not a security deposit, and does not purchase permanent territory or ownership of Circles or members. Every additional Franchise Unit requires a separate ₹50,000 fee.
 
-Month 1
+**Deferred finance is not active under FD-025.** Any future deferred package requires separate Founder approval plus legal/accounting review.
 
- Build Initial Circle
- Start Membership Sales
+Package inclusions (summary): Business Partner certification, platform licence, Connect BDP dashboard access, Connect operations / community-building / business-development training, Circle-formation tools, initial operational support, and ongoing platform support under GCE policy. Full list: FD-025.
 
-Month 2 onwards
+---
 
- Maintain Monthly Membership Growth
+## Territory
 
-Expected Monthly Sales Target: **`36_Commercial_Constants.md`** (Connect BDP → Monthly sales target).
+Territory is assigned by GCE. Approved terminology: **Performance-Protected Assigned Territory**.
 
-The platform continuously monitors business performance to ensure sustainable growth.
+Territory is not permanently owned. GCE may restructure boundaries based on demand, performance, compliance, growth, operational requirements, and platform strategy (FD-025).
 
- Commission Model
+### City-tier allocation maxima (not guaranteed appointments)
 
-Connect BDPs earn incentives based on membership sales and business growth.
+| City tier | Structure | Maximum Franchise Units |
+|-----------|-----------|-------------------------|
+| Tier 1 | Five platform-defined zones; up to two Franchise Units per zone | **10** |
+| Tier 2 | Five platform-defined zones; up to one Franchise Unit per zone | **5** |
+| Tier 3 | Approximately five planning zones; two platform-defined operating territories | **2** |
 
-Current Commission: **`36_Commercial_Constants.md`** (Connect BDP → Commission).
+Where two Connect BDPs operate in one Tier 1 zone, they must receive separate clusters or clearly defined scopes. Tier 3 “2.5 zones” is a planning reference only, not an undefined operating boundary.
 
-Commission calculations are managed automatically through the platform dashboard.
+Marketplace and Enterprise territory rights remain separate.
 
- Franchise Model
+---
 
-Every approved Connect BDP receives one franchise allocation.
+## Circle capacity and development target
 
-If a Connect BDP wishes to expand beyond the assigned franchise, an additional franchise reservation can be purchased.
+Each Franchise Unit may develop **up to five** GCE Connect Circles.
 
-Additional franchise allocation follows the platform's franchise policy.
+Approved target: **five platform-activated Circles within ten months**.
 
- Finance Option
+Average pace: approximately **one activated Circle every two months**. It must **not** be written as one Circle per month.
 
-If an eligible applicant cannot pay the complete franchise fee, GCE may provide a finance option through an approved finance partner.
+Only **platform-activated** Circles count toward the completed target. Draft, Formation, or Pending Activation Circles do not count as completed.
 
-Key points:
+Each activated Circle must comply with FD-024 (minimum activation remains 15 founding members; maximum Circle capacity remains 40 members). Connect BDP may initiate and support Circle development but **cannot independently activate**, change lifecycle status, suspend, merge, archive, or delete Circle history.
 
- Initial Training Fee is mandatory.
- Finance approval depends on eligibility.
- Repayment starts after the initial business period.
- Financing terms are managed according to the official franchise policy.
+### Milestone reviews (cumulative activated Circles)
 
- Performance Monitoring
+- Month 2: 1
+- Month 4: 2
+- Month 6: 3
+- Month 8: 4
+- Month 10: 5
 
-Connect BDP performance is continuously monitored using business KPIs.
+Missing milestones does **not** automatically cause immediate cancellation (FD-025).
 
-Performance indicators include:
+**Historical note:** older narratives referenced a ₹5,00,000 monthly sales target. That figure is **not** the Founder-approved Franchise Unit target under FD-025.
 
- Membership Sales
- Circle Growth
- Active Members
- Meeting Performance
- Member Retention
- Revenue Generation
- Business Expansion
+---
 
-If performance falls below the expected benchmark for an extended period, the platform may issue notifications, provide support, or initiate a performance review.
+## Commission model
 
- Dashboard Access
+Connect BDP earns **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit (FD-025).
 
-Each Connect BDP receives a dedicated dashboard with access to:
+Commission is **not** guaranteed income. It applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, correctly attributed, and not under material dispute or hold.
 
- Membership Sales
- Revenue Dashboard
- Circle Management
- Member Management
- Business Analytics
- Performance Reports
- Notifications
- Training Resources
- Support Center
+Exclusions from commission base include GST and other statutory taxes, refunds, reversals, chargebacks, failed payments, complimentary memberships, free trials, promotional credits, unauthorised collections, amounts not received, fraudulent / suspended / invalidly attributed transactions (full list: FD-025).
 
- Business Workflow
+Formula:
 
-Typical Connect BDP workflow:
+```text
+Eligible GCE Connect Subscription Revenue × 20% = Connect BDP Commission
+```
 
-Lead Generation
+### Illustrative full-capacity example (not guaranteed)
 
-↓
+- 40 members × ₹2,000 monthly equivalent = ₹80,000 monthly subscription revenue per Circle
+- ₹80,000 × 5 Circles = ₹4,00,000 monthly subscription revenue
+- ₹4,00,000 × 20% = ₹80,000 monthly Connect BDP commission
 
-Prospect Meeting
+This is an illustrative full-capacity example only. It must **not** be described as guaranteed income.
 
-↓
+### Renewal commission
 
-Membership Presentation
+The Connect BDP continues earning **20%** on eligible renewals while the Franchise Unit remains active, the Connect BDP remains responsible for the Circle, required retention and operating responsibilities continue, and revenue remains eligible.
 
-↓
+### Attribution and payout
 
-Member Registration
+Commission records should remain linked to member, membership, Circle, Franchise Unit, Connect BDP, subscription period, payment, activation, settlement status, refund/reversal, and commission amount. Historical attribution must remain preserved after reassignment.
 
-↓
+Commission is calculated monthly and normally processed on the first day of the following month, subject to reconciliation, activation, settlement eligibility, refunds, chargebacks, fraud review, compliance holds, and attribution validation. Exact banking-day adjustment remains Pending Technical Design.
 
-Subscription Purchase
+Numeric summary: `36_Commercial_Constants.md`. Settlement principles: FD-020 / FD-021.
 
-↓
+---
 
-Circle Allocation
+## Responsibilities (summary)
 
-↓
+Connect BDP responsibilities include prospect identification, membership consultation, business verification support, KYC coordination, category / specialization / tag guidance, seat-availability checks, founding-member recruitment, Circle creation requests, activation preparation, Circle growth, member retention, renewal support, governance guidance, meeting-quality oversight, complaint escalation, compliance support, performance reporting, and coordination with platform roles.
 
-Business Networking
+Full responsibility list: FD-025.
 
-↓
+---
 
-Referral Generation
+## Authority limits
 
-↓
+Connect BDP may initiate and support Circle development.
 
-Member Retention
+Connect BDP may **not** independently:
 
-↓
+- Activate a Circle
+- Change Circle lifecycle status
+- Suspend, merge, or archive a Circle
+- Delete Circle history
+- Approve personal commission
+- Move platform funds
+- Change official taxonomy
 
-Revenue Growth
+---
 
- Key Performance Indicators (KPIs)
+## Performance management
 
-The platform measures Connect BDP performance using:
+Missing **two consecutive milestone review periods** triggers a formal performance review. It does **not** automatically trigger immediate cancellation.
 
- Monthly Revenue
- Membership Growth
- Active Circles
- Member Retention Rate
- Meeting Attendance
- New Member Acquisition
- Business Development Activities
+Approved corrective process (FD-025):
 
- Benefits
+1. Performance review
+2. Written corrective plan
+3. Sixty-day improvement period
+4. Additional training or supervision
+5. Temporary restrictions where required
+6. Territory or Circle reassignment where necessary
+7. Cancellation after continued failure
 
-Connect BDPs receive:
+Exact performance score, retention threshold, attendance threshold, complaint threshold, and Circle Health Score formula remain unresolved / Pending Founder Approval or Pending Technical Design — do not invent them.
 
- Commission Income
- Business Growth Opportunities
- Leadership Position
- Franchise Expansion Opportunities
- Business Network Development
- Dedicated Dashboard
- Training & Support
- Performance Analytics
+---
 
- LongTerm Vision
+## Serious misconduct
 
-The Connect BDP program is designed to create a nationwide network of business development leaders who build strong local business communities while expanding the GCE Connect ecosystem.
+Immediate suspension or termination may apply for fraud, unauthorised money collection, false KYC, fake members, commission manipulation, data theft, brand misuse, member harassment, serious conflict of interest, repeated compliance violations, criminal or regulatory risk, deliberate false reporting, and platform-security abuse (FD-025).
 
-Connect BDPs are expected to become longterm growth partners by increasing memberships, strengthening business circles, and contributing to the overall expansion of the GCE platform.
+---
+
+## Expansion
+
+A Connect BDP may apply for another Franchise Unit after successfully developing five Circles and meeting performance and compliance conditions. Expansion is **not** automatic.
+
+GCE may reserve an additional Franchise Unit opportunity for up to **five months**. Every additional unit requires a separate **₹50,000** fee and receives a separate target: five additional activated Circles within ten months.
+
+Standard limit: maximum **two** active Franchise Units per individual or controlled business entity. A higher number requires special platform approval.
+
+---
+
+## Exit and reassignment
+
+When a Connect BDP exits or is terminated:
+
+- Circles, members, and territory remain with / return to GCE
+- Member access should continue
+- Historical attribution remains preserved
+- Earned and approved commission remains payable subject to valid deductions
+- Pending commission remains subject to review
+- Future revenue follows the approved reassignment date
+- Historical earned commission must not be transferred silently
+
+Exact reassignment treatment for subscriptions spanning the effective date remains Pending Technical Design.
+
+---
+
+## Dashboard access
+
+Each Connect BDP receives dedicated dashboard access (included in the Franchise Activation Fee package) covering membership sales, revenue, Circle management, member management, Franchise Unit performance, commission, analytics, notifications, training resources, and support — subject to FD-023 workspace and permission boundaries. Exact dashboard workflows remain Pending Technical Design.
+
+---
+
+## Business workflow (summary)
+
+```text
+Prospect identification
+  ↓
+Membership consultation / verification / KYC coordination
+  ↓
+Membership registration and eligible subscription purchase
+  ↓
+Circle creation request / founding-member recruitment
+  ↓
+Platform validation and activation (FD-024; Connect BDP cannot self-activate)
+  ↓
+Circle growth, retention, renewal support
+  ↓
+Commission attribution to Franchise Unit (FD-025)
+```
+
+---
+
+## Key performance indicators
+
+Platform monitoring may include activated Circles vs milestone reviews, eligible subscription revenue attributed to the Franchise Unit, retention and renewal support activity, meeting quality / complaint escalation signals, compliance status, and expansion eligibility.
+
+Exact KPI formulas and thresholds beyond FD-025 milestone structure remain unresolved where not Founder-approved.
+
+---
+
+## Long-term vision
+
+The Connect BDP program creates a nationwide network of independent business partners who develop GCE Connect Circles under Franchise Units, expand local business communities, and earn eligible subscription-revenue commission — without ownership of Circles, members, territory, or platform assets.

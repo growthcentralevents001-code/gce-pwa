@@ -26,10 +26,11 @@ Business meaning of roles, membership, Circles, and financial ledgers is governe
 \- FD-022 — membership lifecycle
 \- FD-023 — RBAC / least privilege
 \- FD-024 — Circle lifecycle and seats
+\- FD-025 — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance)
 
-Exact database enums, RLS policy SQL, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it.
+Exact database enums, RLS policy SQL, Franchise Unit schemas, commission-attribution tables, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it.
 
-Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\*.
+Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\*. Connect BDP commercial numbers defer to FD-025 / \`36_Commercial_Constants.md\`.
 
 \# Project Context
 

@@ -22,6 +22,7 @@ docs/
 ├── README.md
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
+├── founder-decisions/
 ├── core/
 └── engineering/
 
@@ -34,6 +35,7 @@ AGENTS.md
 | Path | Purpose |
 |------|---------|
 | `docs/` | Documentation root and indexes |
+| `docs/founder-decisions/` | Founder Decisions (highest business authority) |
 | `docs/core/` | Core product / business documentation |
 | `docs/engineering/` | Engineering and AI-expert standards |
 | `.cursor/rules/` | Mandatory Cursor Rules (`.mdc`) |
@@ -52,7 +54,7 @@ Location: `docs/core/`
 | 03 | `03_Stakeholders.md` | Stakeholders and responsibilities |
 | 04 | `04_Revenue_Model.md` | Revenue sources, commissions and earnings |
 | 05 | `05_Memberships.md` | Membership plans and benefits |
-| 06 | `06_CBDP.md` | Connect Business Development Partner |
+| 06 | `06_CBDP.md` | Connect BDP narrative (defers to FD-025; legacy filename CBDP) |
 | 07 | `07_MBDP.md` | Marketplace Business Development Partner |
 | 08 | `08_Enterprise_BDP.md` | Enterprise Business Development Partner |
 | 09 | `09_Venue_Partner.md` | Venue Partner workflow |
@@ -165,6 +167,7 @@ Location: `docs/founder-decisions/`
 | `FD-022_Membership_Lifecycle.md` | Membership lifecycle |
 | `FD-023_RBAC_and_Permissions.md` | RBAC, permissions, workspaces |
 | `FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
+| `FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 
 ## Development Workflow
 
@@ -206,13 +209,18 @@ Additional mandatory behaviors:
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 6 |
+| Total Founder Decisions | 7 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 49 |
+| Total Documentation Files (`docs/`) | 50 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 6 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 49.
+Total documentation files under `docs/` = 32 core + 8 engineering + 7 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 50.
 
 ## Changelog
+
+### v1.3.0
+
+- Indexed FD-025 (Connect BDP Commercial and Operating Architecture) as highest authority for Connect BDP commercial and operating rules
+- Synchronised living Markdown documentation with FD-025 (Franchise Unit, fee, commission, targets, territory, performance, expansion)
 
 ### v1.2.0
 

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022).
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022). Connect BDP commercial and operating rules defer to **FD-025**.
 
 Overview
 
@@ -196,11 +196,18 @@ Revenue distribution is calculated automatically.
 
  Connect BDP Rules
 
-Circle limit, monthly sales target, and commission: **`36_Commercial_Constants.md`** (Connect BDP).
-Circle rules: **`38_Circle_Architecture.md`**.
-Additional franchise available.
-Finance option available.
-Performance is continuously monitored.
+Commercial and operating authority: **FD-025**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
+
+Key rules (do not invent beyond FD-025):
+
+- Operating unit: **Connect BDP Franchise Unit**; fee **₹50,000 per unit**; deferred finance **not active**
+- Capacity: up to **5** Circles per Franchise Unit; target **5 platform-activated Circles in 10 months** (~one every two months)
+- Commission: **20%** of eligible GCE Connect subscription revenue, including eligible renewals while responsible
+- Territory: **Performance-Protected Assigned Territory** (not permanently owned); Tier maxima 10 / 5 / 2
+- Expansion: not automatic; separate fee; standard max **two** active Franchise Units
+- Performance: missing two consecutive milestone reviews → formal review + sixty-day corrective process (**not** automatic cancellation)
+- Circles, members, and data remain with GCE; Connect BDP cannot independently activate Circles
+- Serious misconduct may trigger immediate suspension or termination
 
  Marketplace BDP Rules
 

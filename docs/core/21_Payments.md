@@ -4,10 +4,11 @@
 
 **Wallet / internal ledgers:** `docs/founder-decisions/FD-020_Financial_and_Wallet_Architecture.md`
 **Settlement eligibility & operations:** `docs/founder-decisions/FD-021_Settlement_Engine.md`
+**Connect BDP Franchise Unit fee / commission commercial rules:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020 or FD-021, the Founder Decision wins.
+Where this file conflicts with FD-020, FD-021, or FD-025 (for Connect BDP commercials), the Founder Decision wins.
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -195,9 +196,9 @@ Lead Distribution
 
 Applicable for:
 
+ Connect BDP Franchise Unit (₹50,000 per Franchise Unit — FD-025; deferred finance not active under FD-025)
  Marketplace BDP Franchise
  Enterprise BDP Franchise
- Future Franchise Models
 
 Flow
 
@@ -221,7 +222,9 @@ Dashboard Activation
 
  Training Fee
 
-Certain franchise models include a mandatory training fee.
+Certain franchise models (for example Marketplace BDP) include a mandatory training fee under their documented finance package.
+
+Connect BDP Franchise Activation Fee package inclusions (training and platform support) are defined in FD-025. Connect BDP deferred finance is **not active** under FD-025. Do not treat Marketplace/Enterprise finance-option language as applying to Connect BDP launch terms.
 
 Flow
 

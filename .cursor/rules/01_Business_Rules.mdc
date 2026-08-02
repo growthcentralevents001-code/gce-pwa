@@ -25,6 +25,7 @@ Highest business authority — Founder Decisions:
 \- \`docs/founder-decisions/FD-022_Membership_Lifecycle.md\`
 \- \`docs/founder-decisions/FD-023_RBAC_and_Permissions.md\`
 \- \`docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md\`
+\- \`docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md\`
 
 Then living cores:
 
@@ -53,6 +54,7 @@ docs/founder-decisions/FD-021_Settlement_Engine.md
 docs/founder-decisions/FD-022_Membership_Lifecycle.md
 docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
+docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -115,19 +117,22 @@ Read:
 
 \---
 
-\#\# CBDP
+\#\# Connect BDP (legacy label: CBDP)
 
 Whenever working on:
 
-\- CBDP
+\- Connect BDP
+\- Connect BDP Franchise Unit
 \- Business Development
 \- Circle Creation
 \- Circle Expansion
-\- CBDP Dashboard
+\- Connect BDP Dashboard
+\- Legacy CBDP paths or labels
 
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 06\_CBDP.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
@@ -135,6 +140,8 @@ Read:
 14\_Business\_Rules.md
 18\_User\_Flows.md
 \`\`\`
+
+Connect BDP commercial and operating rules defer to FD-025. Do not invent deferred finance, automatic cancellation, guaranteed income, or permanent territory ownership.
 
 \---
 
@@ -377,6 +384,7 @@ docs/founder-decisions/FD-021_Settlement_Engine.md
 docs/founder-decisions/FD-022_Membership_Lifecycle.md
 docs/founder-decisions/FD-023_RBAC_and_Permissions.md
 docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
+docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md

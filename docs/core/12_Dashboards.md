@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001
+**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025
 
-Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023 (no automatic RM/PRM finance authority).
+Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023 (no automatic RM/PRM finance authority). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income). Exact dashboard workflows remain Pending Technical Design.
 
 Overview
 
@@ -92,7 +92,7 @@ Modules:
 
  4\. GCE Connect Business Development Partner (Connect BDP) Dashboard
 
-The Connect BDP Dashboard is designed to manage GCE Connect operations.
+The Connect BDP Dashboard is designed to manage GCE Connect operations for assigned **Franchise Unit(s)** (FD-025).
 
 Modules:
 
@@ -101,12 +101,13 @@ Modules:
  Membership Sales
  Active Members
  Member Registration
- Monthly Sales Target
- Commission Dashboard
- Franchise Management
+ Franchise Unit Circle Milestone Target (5 activated Circles / 10 months — not “one Circle per month”)
+ Commission Dashboard (20% eligible subscription revenue; not guaranteed income)
+ Franchise Unit Management
  Performance Analytics
  Notifications
  Reports
+ Territory / assignment visibility (Performance-Protected Assigned Territory — not ownership)
 
  5\. GCE Marketplace Business Development Partner (Marketplace BDP) Dashboard
 

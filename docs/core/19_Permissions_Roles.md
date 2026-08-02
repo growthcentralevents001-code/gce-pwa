@@ -5,8 +5,9 @@
 **Highest authority for RBAC principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
 **Role names / taxonomy:** `35_Role_Taxonomy.md`
+**Connect BDP commercial authority limits:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
-This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**.
+This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**. Connect BDP commercial operating limits defer to **FD-025**.
 
 ### Founder-aligned access principles (summary)
 
@@ -17,11 +18,12 @@ This file retains detailed permission narrative and historical matrices. Where i
 - RM and PRM do **not** automatically have refund, settlement, payout, or ledger authority.
 - BDPs cannot approve or release **personal** commission.
 - Circle Member cannot simultaneously be Connect BDP for the same Circle / directly conflicting Connect structure.
+- Connect BDP may initiate/support Circles but cannot independently activate, suspend, merge, archive, or delete Circle history (FD-024 / FD-025).
 - Exact permission codes and matrix: **Pending Technical Design** — do not invent.
 
 ### Terminology note
 
-Prefer **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**, **Circle Member**, **Enterprise Client**. Legacy labels CBDP/MBDP may appear in historical sections and filenames (`06_CBDP.md`, `07_MBDP.md`) pending migration mapping.
+Prefer **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**, **Circle Member**, **Enterprise Client**. Legacy labels CBDP/MBDP may appear in historical sections and filenames (`06_CBDP.md`, `07_MBDP.md`) pending migration mapping. **Connect BDP Franchise Unit** is a commercial construct (FD-025), not automatically a separate RBAC role enum.
 
 
 Overview
@@ -152,20 +154,20 @@ Does **not** automatically receive settlement, refund, ledger, or payout authori
 
  Access Level
 
-Connect Business Operations
+Connect Business Operations (scoped to assigned Franchise Unit(s) — FD-025)
 
  Permissions
 
  Register Members
- Sell Memberships
- Create Business Circles (request/initiate; cannot independently activate — FD-024)
+ Support Membership Sales
+ Create Business Circles (request/initiate; cannot independently activate — FD-024 / FD-025)
  Manage Assigned Circles
- View Sales
- View Commissions
- Manage Franchise
- View Performance Reports
+ View Sales / Eligible Subscription Attribution
+ View Commissions (not self-approve personal commission)
+ Manage Franchise Unit (view/support assigned unit; cannot privately sell/transfer unit)
+ View Performance Reports / Milestone Progress
 
-Cannot manage **GCE Marketplace** or **GCE Enterprise** modules.
+Cannot manage **GCE Marketplace** or **GCE Enterprise** modules. Cannot independently change Circle lifecycle status, move platform funds, or change official taxonomy (FD-025).
 
  Marketplace BDP (legacy: MBDP)
 

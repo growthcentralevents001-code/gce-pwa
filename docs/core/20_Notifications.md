@@ -4,6 +4,7 @@
 
 **FD-022** — membership lifecycle notification *events* (seat reservation, renewal window, grace, freeze, suspension, reinstatement, transfer, rejoining). Exact channels, copy, and schedules beyond Founder-approved timing rules remain **Pending Technical Design** / Notification Architecture.
 **FD-024** — Circle lifecycle notifications must not imply Connect BDP independent activation.
+**FD-025** — Connect BDP Franchise Unit milestone, performance-review, expansion, and commission notifications must not imply guaranteed income or automatic cancellation.
 **FD-023** — notifications are role- and permission-scoped.
 **FD-001** — one account; role-based delivery.
 
@@ -108,12 +109,12 @@ Venue Partners receive notifications for:
 Connect BDPs receive notifications for:
 
  New Member Registration
- Membership Sales
- Sales Target Progress
- Commission Updates
+ Membership Sales / Eligible Subscription Activity
+ Franchise Unit Milestone Progress (5 activated Circles / 10 months — FD-025)
+ Commission Updates (subject to settlement eligibility; not guaranteed income)
  Circle Creation Request / Formation Status (platform activation required — FD-024)
- Franchise Updates
- Performance Reports
+ Franchise Unit Updates / Expansion Reservation Status
+ Performance Review / Corrective-Plan Notices (missing consecutive milestones does not auto-cancel)
 
  Marketplace BDP Notifications
 

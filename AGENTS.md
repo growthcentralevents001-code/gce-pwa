@@ -73,6 +73,7 @@ These documents define **what** the platform must do.
 | `docs/founder-decisions/FD-022_Membership_Lifecycle.md` | Membership lifecycle |
 | `docs/founder-decisions/FD-023_RBAC_and_Permissions.md` | RBAC, permissions, workspaces |
 | `docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md` | GCE Connect Circle lifecycle |
+| `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md` | Connect BDP commercial and operating architecture |
 
 #### Canonical core living documents
 

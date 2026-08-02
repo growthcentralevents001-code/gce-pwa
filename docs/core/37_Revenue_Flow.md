@@ -2,7 +2,7 @@
 
 ## Authority
 
-**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022
+**Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Connect BDP commercial:** FD-025
 
 Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win.
 
@@ -88,8 +88,8 @@ Renewal (or temporary benefit suspension if not renewed)
 ```
 
 **Platform income:** membership subscription fees.
-**Partner income:** Connect BDP commission on membership sales (rate in `36_Commercial_Constants.md`).
-**Detail docs:** `05_Memberships.md`, `06_CBDP.md` (Connect BDP narrative).
+**Partner income:** Connect BDP commission = **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit, including eligible renewals while the Franchise Unit remains active and responsible (FD-025). Commission is not guaranteed income. Rate and base summary: `36_Commercial_Constants.md`.
+**Detail docs:** `05_Memberships.md`, `06_CBDP.md` (Connect BDP narrative), FD-025.
 
 ### B. GCE Marketplace — venue / offer / event revenue
 
@@ -142,15 +142,19 @@ Partner application (Connect BDP / Marketplace BDP / Enterprise BDP)
   ↓
 Approval
   ↓
-Franchise fee (and training fee where documented)
+Franchise fee (Connect BDP: ₹50,000 per Franchise Unit — FD-025)
   ↓
-Optional finance path (where documented)
+Training / package inclusions where documented for that vertical
   ↓
-Franchise active → capacity limits apply
+Optional finance path only where documented and Founder-approved for that vertical
+  (Connect BDP deferred finance: not active under FD-025)
+  ↓
+Franchise / Franchise Unit active → capacity limits apply
 ```
 
 Fees and finance math: `36_Commercial_Constants.md`.
-Payments applicability notes: `21_Payments.md` (see Commercial Constants for Connect BDP gap note).
+Connect BDP Franchise Unit commercial rules: FD-025.
+Payments applicability: `21_Payments.md`.
 
 ### E. AI Lead Assist validation fee
 

@@ -2,7 +2,7 @@
 
 ## Authority
 
-Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-024). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology.
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-025). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025.
 
 
 

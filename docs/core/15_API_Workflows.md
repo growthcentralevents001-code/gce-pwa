@@ -7,6 +7,7 @@
 **FD-021** — payment success ≠ settlement eligibility.
 **FD-022** — membership activation ≠ automatic Circle seat.
 **FD-024** — Connect BDP initiates Circles; platform activates.
+**FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).
 **FD-020** — financial ledgers (API must not treat Wallet as one undifferentiated ledger).
 
 Exact route paths, permission codes, and API contracts remain **Pending Technical Design** where not implemented. Legacy path segments such as `/api/cbdp/**` or `/api/mbdp/**` are **technical compatibility labels** pending explicit route/role migration mapping — preferred product names are **Connect BDP** and **Marketplace BDP**.

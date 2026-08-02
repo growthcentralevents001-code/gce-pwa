@@ -4,11 +4,11 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial and operating architecture — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
-Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md`. Circles: `38_Circle_Architecture.md` / FD-024.
+Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025**. Circles: `38_Circle_Architecture.md` / FD-024.
 
 ---
 
@@ -206,4 +206,4 @@ Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`,
 - Commercial limits/fees: `36_Commercial_Constants.md`
 - GCE Connect circles: `38_Circle_Architecture.md`
 - Partner docs (legacy filenames): `06_CBDP.md` (Connect BDP), `07_MBDP.md` (Marketplace BDP), `08_Enterprise_BDP.md`, `09_Venue_Partner.md`
-- Founder Decisions: FD-001, FD-023, FD-024
+- Founder Decisions: FD-001, FD-023, FD-024, FD-025

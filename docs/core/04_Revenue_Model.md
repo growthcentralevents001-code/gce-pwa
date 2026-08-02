@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Business model:** FD-001 · **Ledgers:** FD-020 · **Settlement:** FD-021 · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+**Business model:** FD-001 · **Ledgers:** FD-020 · **Settlement:** FD-021 · **Connect BDP commercial:** FD-025 · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
 
-Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Future revenue categories in FD-001 are inactive until separately approved. Tax rates: do not invent.
+Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Future revenue categories in FD-001 are inactive until separately approved. Tax rates: do not invent. Connect BDP commission examples are illustrative only (FD-025).
 
 Overview
 
@@ -107,15 +107,17 @@ GCE operates multiple franchise models.
 
 Revenue is generated through:
 
- GCE Connect Business Development Partner (Connect BDP)
+ GCE Connect Business Development Partner (Connect BDP) — Franchise Activation Fee **₹50,000 per Franchise Unit** (FD-025); deferred finance not active under FD-025
  GCE Marketplace Business Development Partner (Marketplace BDP)
  Enterprise Business Development Partner (Enterprise BDP)
 
 Revenue includes:
 
  Franchise Fees
- Franchise Expansion
+ Franchise Unit Expansion (Connect BDP: separate approval and separate fee — not automatic)
  Business Development
+
+Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible renewals while responsible (FD-025). Commission is not guaranteed income. Numbers: `36_Commercial_Constants.md`.
 
  6\. Venue Partner Revenue
 

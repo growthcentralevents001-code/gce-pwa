@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -18,6 +18,7 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - BDP roles are **vertical-specific**; one BDP role does not automatically control another vertical.
 - Membership and Circle seat are **separate** concepts; membership does not automatically guarantee a Circle seat.
 - Circles are **GCE platform assets**; Connect BDP and Circle Board do **not** own Circles.
+- Connect BDP commercial unit is the **Connect BDP Franchise Unit** (FD-025): assigned Performance-Protected territory, separate fee per unit, up to five Circles per unit — not ownership of territory, Circles, members, or data.
 - User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020).
 - Payment collection does **not** automatically mean settlement eligibility (FD-021).
 - Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.
@@ -278,8 +279,8 @@ For Corporate Clients
 
 For Franchise Partners
 
- Business Ownership Opportunity
- Recurring Income
+ Business Partner Opportunity (Franchise Unit operation — not ownership of territory, Circles, members, or platform assets)
+ Recurring Eligible Commission Income (not guaranteed)
  Community Development
 
  LongTerm Business Vision

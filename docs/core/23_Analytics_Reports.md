@@ -2,7 +2,7 @@
 
 ## Authority
 
-Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**.
+Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025** (Franchise Unit milestones, 20% eligible subscription commission including renewals while responsible; illustrative income examples are not guaranteed). Exact dashboard report designs remain Pending Technical Design.
 
 Analytics & Reports
 
@@ -108,12 +108,12 @@ Venue Partners can view:
 
 Connect BDPs can monitor:
 
- Membership Sales
- Monthly Revenue
+ Membership Sales (eligible subscription activity)
+ Monthly Attributed Revenue (not guaranteed commission)
  Active Members
- Business Circles Created
- Monthly Target Achievement
- Commission Earned
+ Platform-Activated Circles (only activated Circles count toward FD-025 target)
+ Franchise Unit Milestone Achievement (5 Circles / 10 months)
+ Commission Earned (subject to settlement eligibility, refunds, holds — FD-021 / FD-025)
  Performance Ranking
 
  Marketplace BDP Analytics

@@ -6,6 +6,7 @@
 **FD-001** — one GCE account; multiple compatible roles; workspaces ≠ separate accounts.
 **FD-020 / FD-021** — financial access and settlement controls are permission-separated; payment ≠ settlement.
 **FD-022 / FD-024** — membership and Circle seat are separate; Connect BDP cannot independently activate Circles.
+**FD-025** — Connect BDP does not own territory, Circles, members, or data; cannot self-approve personal commission or move platform funds; Franchise Unit access remains permission-scoped.
 
 Exact Supabase RLS policy definitions and the full permission matrix are **Pending Technical Design** — not Founder-approved as a finished code matrix. Prefer role names in `35_Role_Taxonomy.md`.
 

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023
+**Membership lifecycle:** FD-022 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025
 
-Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process.
+Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. Connect BDP targets are Franchise Unit Circle milestones (FD-025), not a monthly sales-target substitute invented here.
 
 Overview
 
@@ -311,7 +311,7 @@ Circle Management
 
 ↓
 
-Monthly Target
+Franchise Unit Milestone Target (5 platform-activated Circles within 10 months; ~one every two months — FD-025)
 
 ↓
 

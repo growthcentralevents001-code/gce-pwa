@@ -7,8 +7,9 @@
 **Role names / taxonomy:** `35_Role_Taxonomy.md`
 **Connect BDP commercial authority limits:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 **GCE Enterprise commercial / Platform Expert authority limits:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
+**Circle internal governance / Governing Body limits:** `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` / `38_Circle_Architecture.md`
 
-This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**. Connect BDP commercial operating limits defer to **FD-025**. Enterprise BDP and Enterprise Platform Expert limits defer to **FD-026**.
+This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**. Connect BDP commercial operating limits defer to **FD-025**. Enterprise BDP and Enterprise Platform Expert limits defer to **FD-026**. Circle Governing Body authority boundaries defer to **FD-030**.
 
 ### Founder-aligned access principles (summary)
 
@@ -19,7 +20,8 @@ This file retains detailed permission narrative and historical matrices. Where i
 - RM and PRM do **not** automatically have refund, settlement, payout, or ledger authority.
 - BDPs cannot approve or release **personal** commission.
 - Circle Member cannot simultaneously be Connect BDP for the same Circle / directly conflicting Connect structure.
-- Connect BDP may initiate/support Circles but cannot independently activate, suspend, merge, archive, or delete Circle history (FD-024 / FD-025).
+- Connect BDP may initiate/support Circles but cannot independently activate, suspend, merge, archive, or delete Circle history (FD-024 / FD-025 / FD-030).
+- Governing Body cannot independently activate/terminate membership, change fees/taxonomy, approve final Specializations/Tags, hold Circle funds, or open unauthorised Circle bank accounts (FD-030).
 - Enterprise BDP cannot independently approve quotations, select vendors finally, approve payments/refunds/settlements, or execute physical events (FD-026).
 - Enterprise Platform Expert is project-scoped; must not access unrelated project data or physically execute events (FD-026).
 - Exact permission codes and matrix: **Pending Technical Design** — do not invent.
@@ -96,23 +98,25 @@ Assigned administrative domains (FD-023: not unrestricted god mode by default)
  Configure Platform Settings
  Access All Dashboards
 
- Board of Governance
+ Board of Governance / Governing Body
 
  Access Level
 
-Circle Governance
+Circle Governance Support (FD-030)
 
  Permissions
 
  View Assigned Circles
- Manage Circle Members
- Approve Member Requests
- Remove Members
+ Support Circle Member Operations (advisory / escalation)
+ Recommend Member Actions (platform decides approval / activation / termination)
+ Escalate Disputes
  View Attendance
- Resolve Disputes
  View Circle Reports
+ Support Meeting Quality under GCE Phygital Circle Meeting Framework
 
-Cannot access financial data or platform settings.
+Cannot independently approve/activate or terminate membership, change fees/taxonomy, approve final Specializations/Tags, access unrestricted financial data, hold Circle funds, open unauthorised Circle bank accounts, or override platform decisions (FD-030). Finance-support role: **Circle Finance Coordinator** (not a personal collection or fund-holding treasurer).
+
+Cannot access platform settings.
 
  Relationship Manager (RM)
 

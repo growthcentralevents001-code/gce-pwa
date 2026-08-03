@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**).
 
 Overview
 
@@ -41,14 +41,16 @@ Users cannot:
 
  Identity Verification Rules
 
-Certain platform activities require identity verification.
+Certain platform activities require identity verification. Circle seat activation requires platform-recorded **business verification** covering identity, authority, business existence, operating capability, Specialization eligibility, and compliance (FD-030). Use a risk-based **multi-evidence** approach — GST alone is not the only legitimacy test.
 
-Accepted documents may include:
+Accepted identity documents may include:
 
  Aadhaar
  Passport
  Driving Licence
  PAN (where applicable)
+
+Verification outcomes (FD-030): **Verified** · **Conditionally Verified** · **On Hold** · **Rejected**. Preserve evidence, method, verifier, conditions, and decision reason. Full summary: `38_Circle_Architecture.md`.
 
 Unverified users may have limited platform access.
 
@@ -70,25 +72,27 @@ Key rules (do not invent beyond FD-027):
 
  Business Category Rules
 
-Each GCE Connect Circle follows Founder-approved specialization exclusivity: **One Business Specialization = One Exclusive Seat per Circle** (FD-024). Not automatically city-wide.
+Each GCE Connect Circle follows Founder-approved specialization exclusivity: **One Business Specialization = One Exclusive Seat per Circle** (FD-024 / FD-030). Not automatically city-wide. Four fixed **GC Power Sectors** organise Specializations; the 40 seats are **not** rigidly 10/10/10/10 (FD-030).
 
 This means:
 
- Only one member per primary business category in a circle.
- Direct competitors cannot occupy the same category seat.
- Business category changes require approval.
+ Only one member per primary Business Specialization in a circle (protected seat).
+ Direct competitors cannot occupy the same protected Specialization seat without platform-approved limited overlap.
+ Specialization / Protected Tag Scope changes require approved workflow and platform approval.
+ Existing members / Governing Body / Connect BDP do not independently decide final taxonomy outcomes.
 
  Business Tag Rules
 
-Every active GCE Connect Circle Member may hold one approved Business Specialization and up to four approved Business Tags (FD-027):
+Every active GCE Connect Circle Member may hold one approved Business Specialization and up to four approved Business Tags (FD-027 / FD-030):
 
 - Tag 1 and Tag 2 — included
 - Tag 3 and Tag 4 — each +25% of active base subscription
 - Use **Protected Tag Scope**; do not use “business monopoly”
 - Taxonomy term: **GC Power Sector** (do not use Power Circle as current)
+- Four sectors: Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle
 - Multiple Tags do not create additional physical seats
 
-Specialization exclusivity remains **One Business Specialization = One Exclusive Seat per Circle** (FD-024).
+Specialization exclusivity remains **One Business Specialization = One Exclusive Seat per Circle** (FD-024 / FD-030).
 
 These tags are mandatory because they are used by:
 
@@ -101,24 +105,31 @@ These tags are mandatory because they are used by:
 
  Circle Rules
 
-Every business circle must:
+Every GCE Connect Circle must (FD-030 / `38_Circle_Architecture.md`):
 
- Follow attendance guidelines
- Maintain professional conduct
- Encourage referral sharing
- Follow governance policies
- Respect business exclusivity
+ Maximum **40** active physical members; Provisionally Active at **20–39**; Fully Constituted at **40** (do not call 20 a full Circle)
+ Follow **GCE Phygital Circle Meeting Framework** — physical meetings every **15 days**; digital supports prep/follow-up and must not replace physical meetings
+ Expected attendance at least **75%** physical; two consecutive unexplained absences → warning; three → formal review; below **60%** over rolling three months → Corrective Action Plan; attendance alone does not auto-terminate
+ Maintain professional conduct; progressive discipline; no Circle officer unilaterally terminates a member
+ Encourage platform-recorded referrals and Dual-Confirmed Closed Business (no unilateral final amount)
+ Respect Protected Tag Scope / Specialization exclusivity
+ Optional GCE Circle Business Growth Workshops — no automatic Connect BDP 20% or Governing Body workshop commission
+ No personal fee collection; no unauthorised Circle bank account
+ Voting advisory/nomination only — cannot decide membership, fees, taxonomy, suspension, or closure
+ Membership does not guarantee referrals or revenue
 
-The Board of Governance oversees circle discipline.
+The **Governing Body** supports circle discipline and escalates issues; final membership, taxonomy, finance, and termination authority remains with the **platform** (FD-030).
 
  Referral Rules
 
 Members should:
 
- Share genuine referrals
- Avoid fake referrals
+ Share genuine referrals recorded through the platform
+ Avoid fake or low-quality referrals
  Maintain professional ethics
- Update referral status
+ Update referral status on the platform
+ Use Dual-Confirmed Closed Business for official closed amounts
+ Not treat off-platform records as the official Circle performance ledger
 
 Repeated misuse may result in platform action.
 
@@ -208,7 +219,7 @@ Revenue distribution is calculated automatically by the platform Commission Engi
 
  Connect BDP Rules
 
-Commercial and operating authority: **FD-025**. Commission Engine / finance recovery: **FD-029**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
+Commercial and operating authority: **FD-025**. Commission Engine / finance recovery: **FD-029**. Circle support duties / governance boundaries: **FD-030**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`. Circle internal ops: FD-030 / `38_Circle_Architecture.md`.
 
 Key rules (do not invent beyond FD-025 / FD-029):
 

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Revenue recognition:** FD-028 · **Commission Engine:** FD-029
+**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Revenue recognition:** FD-028 · **Commission Engine:** FD-029 · **Circle architecture / governance:** FD-030
 
-GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027); do not use outdated **Power Circle** as current. FD-024 historically wrote “GCE Power Sector”. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026). Revenue recognition follows FD-028. Commission Engine / Marketplace **80/10/10** / BDP finance recovery follow FD-029 (Affiliate future-only; ZBP removed).
+GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027 / FD-030); do not use outdated **Power Circle** as current. Four fixed sectors (FD-030): Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle — flexible seat distribution, not rigid 10/10/10/10. FD-024 historically wrote “GCE Power Sector” and remains Circle lifecycle authority. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026). Revenue recognition follows FD-028. Commission Engine / Marketplace **80/10/10** / BDP finance recovery follow FD-029 (Affiliate future-only; ZBP removed). Circle meetings follow the **GCE Phygital Circle Meeting Framework** (physical every 15 days — FD-030).
 
 Project Overview
 

@@ -5,7 +5,7 @@
 **FD-023** — RBAC, least privilege, department-scoped administration, no default universal admin god mode; RM/PRM have no automatic financial authority.
 **FD-001** — one GCE account; multiple compatible roles; workspaces ≠ separate accounts.
 **FD-020 / FD-021** — financial access and settlement controls are permission-separated; payment ≠ settlement.
-**FD-022 / FD-027 / FD-024** — membership and Circle seat are separate; membership is platform-only (FD-027); Connect BDP cannot independently activate Circles or manually activate membership.
+**FD-022 / FD-027 / FD-024 / FD-030** — membership and Circle seat are separate; membership is platform-only (FD-027); Connect BDP cannot independently activate Circles or manually activate membership; Governing Body cannot independently terminate members or hold Circle funds (FD-030).
 **FD-025** — Connect BDP does not own territory, Circles, members, or data; cannot self-approve personal commission or move platform funds; Franchise Unit access remains permission-scoped.
 **FD-026** — Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data; Expert access is project-scoped; neither may physically execute events or approve refunds/settlements independently.
 

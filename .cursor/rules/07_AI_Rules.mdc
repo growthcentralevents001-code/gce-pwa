@@ -53,6 +53,8 @@ Defines:
 
 Lead Assist is a **separate service** from base GCE Connect Circle Membership. Do not treat FD-027 membership commercial rules as approving Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission.
 
+For Circle-related AI features (matching, referral routing, attendance insights), respect FD-030 / `38_Circle_Architecture.md`: Protected Tag Scope, one primary Specialization, platform-recorded referrals, Dual-Confirmed Closed Business, and no guaranteed business outcomes. Do not invent workshop commission or voting rules.
+
 \---
 
 \#\# AI Rules

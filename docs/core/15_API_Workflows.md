@@ -10,6 +10,7 @@
 **FD-028** — revenue recognition / commercial classification (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, multi-currency; do not invent schemas, FX policy, or Affiliate rates).
 **FD-029** — Commission Engine / stakeholder entitlement (Marketplace 80/10/10, Connect & Marketplace BDP finance recovery Month 0, commission states; do not invent max MBDP units, split rates, or hold periods).
 **FD-024** — Connect BDP initiates Circles; platform activates.
+**FD-030** — Circle verification, Governing Body, meetings, attendance, Dual-Confirmed Closed Business, workshops; do not invent workshop commission, voting %, or substitute limits. Exact API routes remain Pending Technical Design.
 **FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).
 **FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, and Vendor Opportunity Fee commercial rules (do not invent API routes or VOF percentages from FD-026 alone).
 **FD-020** — financial ledgers (API must not treat Wallet as one undifferentiated ledger).

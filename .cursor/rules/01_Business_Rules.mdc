@@ -30,13 +30,14 @@ Highest business authority — Founder Decisions:
 \- `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 \- `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 \- `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
+\- `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md`
 
 Then living cores:
 
 \- Roles / legacy mapping: \`35\_Role\_Taxonomy.md\`
 \- Commercial numbers: \`36\_Commercial\_Constants.md\`
 \- Revenue flows: \`37\_Revenue\_Flow.md\`
-\- Circles: \`38\_Circle\_Architecture.md\` (defers to FD-024)
+\- Circles: \`38\_Circle\_Architecture.md\` (lifecycle → FD-024; internal structure/governance → FD-030)
 \- AI Lead Assist: \`39\_AI\_Lead\_Assist\_Spec.md\`
 
 Always use full vertical names: GCE Connect, GCE Marketplace, GCE Enterprise.
@@ -61,6 +62,9 @@ docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
+docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -418,11 +422,15 @@ docs/founder-decisions/FD-024_GCE_Connect_Circle_Lifecycle.md
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
+docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md
 \`\`\`
 
+Circles: lifecycle → FD-024; internal structure, Governing Body, verification, meetings, attendance, workshops → FD-030. Governing Body cannot independently approve/terminate membership or change taxonomy/fees.
 Ensure each stakeholder only has access to documented responsibilities.
 
 \---

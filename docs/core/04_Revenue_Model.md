@@ -195,7 +195,7 @@ Minimum campaign value ₹50,000 is not guaranteed collected or recognised reven
 
 Administrative Fee Revenue may include approved transfer, verification, document-processing, and service fees. The FD-027 ₹1,000 additional transfer fee is Administrative Fee Revenue — separate from membership subscription, not automatically Connect BDP commissionable, subject to tax, and excluded from membership-performance metrics.
 
-Training, workshop, masterclass, ticketing/booking, and technology/digital-service revenue are approved categories in principle; exact prices, refunds, commissions, and tax treatment remain unresolved unless approved elsewhere.
+Training, workshop, masterclass, ticketing/booking, and technology/digital-service revenue are approved categories in principle; exact prices, refunds, commissions, and tax treatment remain unresolved unless approved elsewhere. **GCE Circle Business Growth Workshops** (FD-030) are normally optional; Connect BDP does **not** automatically earn 20% of workshop revenue; Governing Body does not automatically receive a share; workshop commission must not be inferred from membership or BDP commission rules.
 
 **Lead Assist** remains **Pending Lead Assist Commercial Revenue** — FD-028 does not activate ₹500 fee, escrow, voucher, or Lead Assist commission. Do not merge into membership, Connect BDP subscription commission, Marketplace, or Enterprise revenue.
 

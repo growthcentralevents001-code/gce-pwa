@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement), FD-030 (GCE Connect Circle architecture and governance).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -17,7 +17,8 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - **One GCE account**; multiple compatible roles; **role-based workspaces** (a workspace is not a separate account).
 - BDP roles are **vertical-specific**; one BDP role does not automatically control another vertical.
 - Membership and Circle seat are **separate** concepts; membership does not automatically guarantee a Circle seat.
-- Circles are **GCE platform assets**; Connect BDP and Circle Board do **not** own Circles.
+- Circles are **GCE platform assets**; Connect BDP and Governing Body (legacy Circle Board) do **not** own Circles (FD-024 / FD-030).
+- Circle internal structure uses four fixed **GC Power Sectors**, one primary Business Specialization, Protected Tag Scope, and max four Tags; seats are flexible across sectors (not rigid 10/10/10/10) — FD-030.
 - Connect BDP commercial unit is the **Connect BDP Franchise Unit** (FD-025): assigned Performance-Protected territory, separate fee per unit, up to five Circles per unit — not ownership of territory, Circles, members, or data.
 - GCE Enterprise is a technology-enabled, stakeholder-fulfilled procurement / workflow / financial-control platform (FD-026). GCE does **not** directly execute physical events. Enterprise BDP allocation is **client-based** (Franchise Pack); Enterprise Platform Expert is internal/controlled.
 - GCE Connect Circle Membership launch product is **Associate Tier** at ₹6,000/quarter (FD-027); Core Tier is future/achievement-based and not directly purchasable; membership ≠ automatic Circle seat.
@@ -152,30 +153,21 @@ Renewal & Retention
 
  Business Categories
 
-The platform supports multiple industries including:
+GCE Connect Circles organise businesses under four fixed **GC Power Sectors** (FD-030) — taxonomy structures, not separate Circles; seat distribution is flexible (not rigid 10/10/10/10):
 
- Professional Services
- Retail Businesses
- Hospitality
- Restaurants
- Hotels
- Banquet Halls
- Healthcare
- Education
- Technology
- Manufacturing
- Real Estate
- Financial Services
- Legal Services
- Home Services
- Event Services
- Corporate Organizations
+1. Real Estate, Infrastructure & Construction Sector
+2. Industrial, Manufacturing & Logistics Sector
+3. Professional, Financial & Business Services Sector
+4. Consumer, Hospitality, Health & Lifestyle Sector
+
+Illustrative industries within those sectors may include professional services, retail, hospitality, restaurants, hotels, banquet halls, healthcare, education, technology, manufacturing, real estate, financial services, legal services, home services, event services, and corporate organizations.
 
 Every business is classified using:
 
- Business Category
+ GC Power Sector
+ Business Specialization
+ Protected Tag Scope
  Business Tags
- Specialization Tags
 
 This allows the AI engine to accurately match business opportunities.
 

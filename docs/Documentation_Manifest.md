@@ -78,7 +78,7 @@ Location: `docs/core/`
 | 35 | `35_Role_Taxonomy.md` | Canonical role taxonomy + Role Mapping (legacy → current → DB enum → dashboard → permissions) |
 | 36 | `36_Commercial_Constants.md` | Canonical commercial constants (fees, commissions, limits, targets) |
 | 37 | `37_Revenue_Flow.md` | Canonical revenue flows across GCE Connect / GCE Marketplace / GCE Enterprise |
-| 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture |
+| 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance) |
 | 39 | `39_AI_Lead_Assist_Spec.md` | Canonical AI Lead Assist specification |
 
 ## Numbering note
@@ -172,6 +172,7 @@ Location: `docs/founder-decisions/`
 | `FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 | `FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 | `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
+| `FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
 
 ## Development Workflow
 
@@ -208,18 +209,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.7.0 |
+| Documentation Version | v1.8.0 |
 | Last Updated | 2026-08-03 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 11 |
+| Total Founder Decisions | 12 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 54 |
+| Total Documentation Files (`docs/`) | 55 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 11 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 54.
+Total documentation files under `docs/` = 32 core + 8 engineering + 12 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 55.
 
 ## Changelog
+
+### v1.8.0
+
+- Indexed FD-030 (GCE Connect Circle Architecture and Governance) as highest authority for Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops
+- Synchronised living Markdown with FD-030 (40-member capacity; 20 Provisional / 40 Fully Constituted; four GC Power Sectors; flexible seats; Circle Finance Coordinator; Phygital meetings; no automatic workshop commission)
 
 ### v1.7.0
 

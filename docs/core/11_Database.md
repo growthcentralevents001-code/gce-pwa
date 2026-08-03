@@ -16,6 +16,7 @@ Schema narratives in this file are **illustrative** until migrations and generat
 - **FD-027** — membership commercial concepts (Associate/Core tiers, Tag pricing, transfer fees, Core Progress). Exact schemas/enums remain **Pending Technical Design**
 - **FD-028** — Revenue recognition / commercial classification concepts (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, refunds/recoveries, multi-currency). Exact schemas/enums remain **Pending Technical Design**
 - **FD-029** — Commission Engine / stakeholder entitlement concepts (commission states, Marketplace 80/10/10, Connect/Marketplace BDP finance recovery, Recoverable Balances, attribution). Exact schemas/enums remain **Pending Technical Design**
+- **FD-030** — Circle internal architecture / governance concepts (verification outcomes, Governing Body roles, attendance states, Dual-Confirmed Closed Business, workshop records, Protected Tag Scope). Exact schemas/enums remain **Pending Technical Design**
 
 Also: **FD-001** (unified platform / one account / verticals).
 

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles:** FD-024 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles lifecycle:** FD-024 · **Circles internal governance:** FD-030 / `38_Circle_Architecture.md` · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Commercial numbers:** `36_Commercial_Constants.md`
 
-Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Enterprise Platform Expert, Circle Member, Enterprise Client, Board of Governance / Circle Board. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025). Enterprise BDP allocation is client-based; Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data (FD-026).
+Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Enterprise Platform Expert, Circle Member, Enterprise Client, **Governing Body** (legacy: Board of Governance / Circle Board). Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025 / FD-030). Enterprise BDP allocation is client-based; Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data (FD-026). Governing Body supports Circle operations but does not own Circles, approve final membership/taxonomy, or terminate members independently (FD-030).
 
 Overview
 
@@ -145,7 +145,7 @@ Connect BDPs are independent GCE business partners authorised to operate approve
  Commercial and operating authority: **FD-025**.
  Numeric limits, fee, commission, Tier maxima, expansion: **`36_Commercial_Constants.md`** (Connect BDP section).
  Narrative and workflow: `06_CBDP.md`.
- Circle capacity rules: `38_Circle_Architecture.md` / FD-024.
+ Circle capacity and governance: `38_Circle_Architecture.md` / FD-024 (lifecycle) / FD-030 (internal structure).
 
  Benefits
 
@@ -254,18 +254,20 @@ Relationship Managers provide operational support to all stakeholders.
  Member Success
  Platform Support
 
- 9\. Board of Governance
+ 9\. Governing Body (legacy: Board of Governance)
 
-The Board of Governance manages and maintains the quality of individual GCE Connect Circles.
+The Governing Body supports quality and operations of individual GCE Connect Circles. It does **not** own the Circle (FD-030).
 
  Responsibilities
 
- Circle Governance
- Membership Approval
- Dispute Resolution
- Community Standards
- Performance Monitoring
- Circle Quality Management
+ Circle Governance Support
+ Meeting Quality and Attendance Support
+ Dispute Escalation (platform decides)
+ Community Standards Support
+ Performance Monitoring Support
+ Circle Quality Management Support
+
+Does **not** independently approve/activate membership, terminate members, change fees/taxonomy, approve final Specializations/Tags, hold Circle funds, or open unauthorised Circle bank accounts (FD-030). Core roles include Circle President, Circle Vice President, Secretary, **Circle Finance Coordinator**, Sergeant at Arms, Membership and Growth Coordinator, and Referral and Performance Coordinator. Term: **six months**.
 
  Benefits
 
@@ -328,7 +330,7 @@ PRMs validate business opportunities.
 
 RMs support the ecosystem.
 
-Board of Governance maintains circle quality.
+Board of Governance / Governing Body maintains circle quality (supports ops; platform retains final membership and taxonomy authority — FD-030).
 
 Platform Administrators manage the complete platform.
 

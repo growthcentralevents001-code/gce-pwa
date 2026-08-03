@@ -2,7 +2,7 @@
 
 ## Authority
 
-Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Connect BDP commercial analytics must follow **FD-025** / **FD-029**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Revenue recognition follows **FD-028**. Commission Engine states and Marketplace 80/10/10 follow **FD-029**. Reports should separately show Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Estimated/Provisional/Earned/On-Hold/Settlement-Eligible/Paid/Reversed Commission, Recoverable Balance, stakeholder entitlement, refunds, reversals, chargebacks, taxes, TDS, finance recovery, pending/paid settlement, net retained platform amount, and original vs reporting currency. Exact dashboard report designs remain Pending Technical Design.
+Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Circle attendance, Dual-Confirmed Closed Business, Governing Body, and verification analytics follow **FD-030** / `38_Circle_Architecture.md` (expected ≥75% physical attendance; visitor does not reserve a seat; no automatic membership termination from attendance alone). Connect BDP commercial analytics must follow **FD-025** / **FD-029**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Revenue recognition follows **FD-028**. Commission Engine states and Marketplace 80/10/10 follow **FD-029**. Reports should separately show Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Estimated/Provisional/Earned/On-Hold/Settlement-Eligible/Paid/Reversed Commission, Recoverable Balance, stakeholder entitlement, refunds, reversals, chargebacks, taxes, TDS, finance recovery, pending/paid settlement, net retained platform amount, and original vs reporting currency. Do not invent workshop commission shares. Exact dashboard report designs remain Pending Technical Design.
 
 Analytics & Reports
 
@@ -194,12 +194,14 @@ Reports include:
 Business Circle reports include:
 
  Active Circles
- Members Per Circle
- Attendance
- Referrals Given
+ Members Per Circle (max 40; Provisionally Active 20–39; Fully Constituted at 40 — FD-030)
+ Attendance (≥75% expected physical; CAP thresholds — FD-030)
+ Referrals Given (platform-recorded)
  Referrals Received
- Business Generated
+ Dual-Confirmed Closed Business
  Circle Performance Ranking
+ Sector Balance / Specialization Occupancy
+ Governance Compliance
 
  Business Performance Analytics
 

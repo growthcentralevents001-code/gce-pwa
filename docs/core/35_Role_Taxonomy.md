@@ -4,11 +4,11 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle ownership boundaries), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle lifecycle ownership boundaries), FD-030 (Governing Body roles and Circle governance limits), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
-Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025** / **FD-026** / **FD-027**. Circles: `38_Circle_Architecture.md` / FD-024.
+Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Commercial_Constants.md` / **FD-025** / **FD-026** / **FD-027**. Circles: `38_Circle_Architecture.md` / FD-024 (lifecycle) / FD-030 (internal governance).
 
 ---
 
@@ -33,7 +33,8 @@ Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Com
 | GCE Connect Circle Member / Circle Member | Circle Member | Seat holder in a specific Circle |
 | Venue Partner | — | |
 | Enterprise Client | — | Distinct from Enterprise BDP |
-| Board of Governance / Circle Board | BOG / Circle Board | Does **not** own Circles |
+| Board of Governance / Circle Board / **Governing Body** | BOG / Circle Board / Governing Body | Does **not** own Circles; does not independently activate/terminate membership or change taxonomy/fees (FD-030) |
+| Circle Finance Coordinator | Circle finance-support role within Governing Body | Must not collect fees personally, hold Circle funds, or operate unauthorised Circle bank accounts (FD-030). Prefer this term over “Treasurer” for Circle finance support |
 | Relationship Manager | RM | No automatic financial authority |
 | Platform Relationship Manager | PRM | No automatic financial authority |
 | Platform Taxonomy Team | — | Final taxonomy publishing authority |
@@ -66,7 +67,7 @@ Aligned with FD role families and existing product documentation:
 | # | Canonical Role (approved wording) | Vertical focus | Primary responsibility (summary) |
 |---|-----------------------------------|----------------|----------------------------------|
 | 1 | Platform Administrator (department-scoped) | Platform-wide | Assigned admin domains only — not universal superuser by default (FD-023) |
-| 2 | Board of Governance / Circle Board | GCE Connect | Approved internal Circle governance — does not own/create/activate Circles |
+| 2 | Board of Governance / Circle Board / Governing Body | GCE Connect | Approved internal Circle governance support — does not own/create/activate Circles; cannot independently terminate members or change fees/taxonomy (FD-030). Core roles: President, Vice President, Secretary, Circle Finance Coordinator, Sergeant at Arms, Membership and Growth Coordinator, Referral and Performance Coordinator. Term: six months |
 | 3 | Relationship Manager (RM) | Ops | Assigned operational support — no automatic finance authority |
 | 4 | Platform Relationship Manager (PRM) | Ops / escalations | Escalation & verification duties — no automatic finance authority |
 | 5 | Connect BDP | GCE Connect | Initiate/grow Circles & memberships within assigned Franchise Unit scope (FD-025) |
@@ -98,7 +99,7 @@ Hard boundaries (Founder-aligned):
 
 | Role | Must not (summary) |
 |------|---------------------|
-| Circle Board | Own, create, or independently activate Circles; unrestricted platform finance |
+| Circle Board / Governing Body | Own, create, or independently activate Circles; independently approve/activate or terminate membership; change fees/taxonomy; approve final Specializations/Tags; hold Circle funds; open unauthorised Circle bank accounts; unrestricted platform finance; decide regulated decisions by Circle vote alone (FD-030) |
 | RM / PRM | Automatic settlement, refund, ledger, or payout authority |
 | Connect BDP | Activate Circles independently; auto-access other verticals; self-approve commission |
 | Marketplace BDP | Act as Venue Partner by default; release settlements/refunds without permission |
@@ -208,4 +209,4 @@ Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`,
 - Commercial limits/fees: `36_Commercial_Constants.md`
 - GCE Connect circles: `38_Circle_Architecture.md`
 - Partner docs (legacy filenames): `06_CBDP.md` (Connect BDP), `07_MBDP.md` (Marketplace BDP), `08_Enterprise_BDP.md`, `09_Venue_Partner.md`
-- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026, FD-027
+- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026, FD-027, FD-030

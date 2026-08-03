@@ -8,13 +8,13 @@
 **Commission Engine / finance recovery (supersedes FD-025 finance-inactive only):**
 `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
 Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position). Do not invent unresolved items (exact performance score, retention/attendance/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs).
+This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position). On Circle internal governance, meetings, attendance, verification, and Governing Body boundaries, **FD-030 wins**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
 
 ---
 
@@ -89,7 +89,7 @@ Average pace: approximately **one activated Circle every two months**. It must *
 
 Only **platform-activated** Circles count toward the completed target. Draft, Formation, or Pending Activation Circles do not count as completed.
 
-Each activated Circle must comply with FD-024 (minimum activation remains 15 founding members; maximum Circle capacity remains 40 members). Connect BDP may initiate and support Circle development but **cannot independently activate**, change lifecycle status, suspend, merge, archive, or delete Circle history.
+Each activated Circle must comply with FD-024 lifecycle rules (minimum activation remains 15 founding members; maximum Circle capacity remains 40 members) and FD-030 constitution thresholds (**Provisionally Active** at 20–39 approved and paid members; **Fully Constituted** at 40 — do not call 20 a full Circle). Connect BDP may initiate and support Circle development but **cannot independently activate**, change lifecycle status, suspend, merge, archive, or delete Circle history. Connect BDP does **not** own the Circle and does **not** automatically receive 20% of workshop revenue (FD-030).
 
 ### Milestone reviews (cumulative activated Circles)
 
@@ -183,7 +183,7 @@ Approved corrective process (FD-025):
 6. Territory or Circle reassignment where necessary
 7. Cancellation after continued failure
 
-Exact performance score, retention threshold, attendance threshold, complaint threshold, and Circle Health Score formula remain unresolved / Pending Founder Approval or Pending Technical Design — do not invent them.
+Exact Connect BDP franchise performance score, franchise retention threshold, franchise complaint threshold, and Circle Health Score formula remain unresolved / Pending Founder Approval or Pending Technical Design — do not invent them. **Circle member** attendance standards are Founder-approved under **FD-030** (expected ≥75% physical; absence warning/review/CAP thresholds) — do not treat those as unresolved franchise KPIs.
 
 ---
 

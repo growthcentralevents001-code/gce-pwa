@@ -29,6 +29,8 @@ When documentation conflicts with a Founder Decision, follow the Founder Decisio
 
 Never invent Unresolved or Pending Founder Approval rules.
 
+For GCE Connect Circle **lifecycle**, prefer FD-024. For Circle **internal structure and governance** (capacity constitution, GC Power Sectors, Governing Body, verification, meetings, attendance, workshops, discipline), prefer FD-030. Living summary: \`docs/core/38_Circle_Architecture.md\`.
+
 \# Development Philosophy
 
 Always think before writing code.

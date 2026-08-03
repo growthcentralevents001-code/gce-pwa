@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles:** FD-024 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
+**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles lifecycle:** FD-024 · **Circles internal ops / verification:** FD-030 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
 
-Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally. Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026).
+Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally. Circle seat activation requires platform-recorded business verification (outcomes: Verified / Conditionally Verified / On Hold / Rejected — FD-030). Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026).
 
 Overview
 

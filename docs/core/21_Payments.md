@@ -12,7 +12,7 @@
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, or FD-029, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**.
+Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, or FD-030, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**.
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -27,7 +27,7 @@ Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, o
 - Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates **Recoverable Balance**. Chargebacks place amount on hold/reversal and may create recovery (FD-029).
 - BDP commissions are platform-calculated; no stakeholder may approve their own commission-affecting exception. Historical earned commission is not automatically transferred on reassignment.
 - GST/TDS recorded separately and excluded from Platform Revenue / commission bases unless separately approved; exact rates Pending Tax Review.
-- Revenue normally via approved platform-connected channels; no personal-account collection; cash is not a standard launch workflow (FD-028).
+- Revenue normally via approved platform-connected channels; no personal-account collection; cash is not a standard launch workflow (FD-028). No unauthorised Circle bank account or personal fee collection for Circle membership/workshops (FD-030). Workshop payments use approved platform channels; Connect BDP does not automatically earn 20% of workshop revenue (FD-030).
 - Financial/commission entries must not be silently edited or hard-deleted; corrections use reversal/adjustment entries with rule-version linkage (FD-020 / FD-028 / FD-029).
 - Multi-currency-capable architecture required; preserve original-currency and FX history for commission records (FD-028 / FD-029).
 - RM and PRM do not automatically have financial movement authority.

@@ -78,6 +78,7 @@ These documents define **what** the platform must do.
 | `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 | `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 | `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
+| `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
 
 #### Canonical core living documents
 
@@ -89,7 +90,7 @@ When roles, commercial numbers, revenue movement, GCE Connect circles, or AI Lea
 | `docs/core/35_Role_Taxonomy.md` | Official role names, families, legacy mapping |
 | `docs/core/36_Commercial_Constants.md` | Documented fees, commissions, limits, targets |
 | `docs/core/37_Revenue_Flow.md` | Money-flow narrative across verticals |
-| `docs/core/38_Circle_Architecture.md` | Living Circle architecture (defers to FD-024) |
+| `docs/core/38_Circle_Architecture.md` | Living Circle architecture (lifecycle → FD-024; internal structure/governance → FD-030) |
 | `docs/core/39_AI_Lead_Assist_Spec.md` | AI Lead Assist lifecycle and fairness rules |
 
 Always use the full vertical names: **GCE Connect**, **GCE Marketplace**, **GCE Enterprise**.

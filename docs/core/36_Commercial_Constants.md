@@ -109,7 +109,9 @@ Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, ter
 | Standard person / controlled-entity limit | Maximum **2** active Franchise Units (higher count requires special platform approval) | FD-025 |
 | Illustrative full-capacity commission example | 40 × ₹2,000 → ₹80,000/Circle; × 5 Circles → ₹4,00,000; × 20% → ₹80,000 monthly commission — **illustrative only, not guaranteed income** | FD-025 |
 
-Circle lifecycle capacity (members per Circle): minimum activation **15** founding members; maximum **40** members — FD-024 (not redefined by FD-025).
+Circle lifecycle capacity (members per Circle): minimum activation **15** founding members; maximum **40** members — FD-024. Constitution thresholds (FD-030): **Provisionally Active** at **20–39** approved and paid members; **Fully Constituted** at **40** (do not describe 20 as a full Circle). Seat distribution across four GC Power Sectors is **flexible** (not rigid 10/10/10/10).
+
+**GCE Circle Business Growth Workshops** (FD-030): normally optional; payments via approved platform channels; Connect BDP does **not** automatically earn 20% of workshop revenue; Governing Body does not automatically receive a share; workshop pricing/fee/refund/platform fee/commission remain Unresolved — do not infer from membership or BDP commission.
 
 **Historical note:** FD-025 previously stated deferred finance was not active. **FD-029 supersedes that finance-inactive position only** and activates the Commission-Recovery Finance Option above. Other FD-025 operating rules remain in force.
 

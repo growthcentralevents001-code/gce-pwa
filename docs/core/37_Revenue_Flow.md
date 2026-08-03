@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Highest authority for revenue recognition / commercial classification:** FD-028 · **Commission Engine / entitlement / BDP finance recovery:** FD-029 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 (finance amended by FD-029) · **GCE Enterprise:** FD-026
+**Highest authority for revenue recognition / commercial classification:** FD-028 · **Commission Engine / entitlement / BDP finance recovery:** FD-029 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 (finance amended by FD-029) · **GCE Enterprise:** FD-026 · **Circle workshops / fee-collection controls:** FD-030
 
-Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**.
+Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle workshop commercial controls **FD-030**.
 
 **Rule:** Payment receipt ≠ automatic settlement eligibility. Vertical-specific settlement triggers apply (FD-021). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate (FD-028). Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029). Pipeline/proposal values are not recognised revenue.
 
@@ -36,7 +36,7 @@ GCE generates revenue through multiple channels so the platform is not dependent
 10. Franchise and Partner-Pack Fee Revenue (Connect / Marketplace / Enterprise per FD-025/026/029)
 11. Vendor Opportunity Fee Revenue (concept only — non-active)
 12. Pending Lead Assist Commercial Revenue (not activated; non-commissionable by default)
-13. Ticketing / Booking, Technology / Digital-Service, Training / Workshop / Masterclass, Other Founder-Approved Revenue (details unresolved where not approved; non-commissionable by default)
+13. Ticketing / Booking, Technology / Digital-Service, Training / Workshop / Masterclass, Other Founder-Approved Revenue (details unresolved where not approved; non-commissionable by default). **GCE Circle Business Growth Workshops** (FD-030): normally optional; no automatic Connect BDP 20% or Governing Body share; pricing/fee/refund/platform fee/commission Unresolved.
 
 **Affiliate:** future-only — no active Marketplace Affiliate commission. **ZBP:** removed completely from current commercial model.
 

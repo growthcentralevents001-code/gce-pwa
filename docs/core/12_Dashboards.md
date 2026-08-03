@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition:** FD-028 · **Commission Engine / entitlement states:** FD-029
+**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition:** FD-028 · **Commission Engine / entitlement states:** FD-029 · **Circle governance / attendance / verification:** FD-030 / `38_Circle_Architecture.md`
 
-Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023/FD-028/FD-029 (no automatic RM/PRM finance authority; no self-approval of commission exceptions). Do not use one unqualified “Revenue” or “earnings” figure — distinguish Booked Value, Collected Value, Eligible Revenue, GCE Platform Revenue, Estimated Commission, Provisional Commission, Earned Commission, Commission on Hold, Settlement-Eligible Commission, Paid Commission, Reversed Commission, Recoverable Balance, TDS, franchise finance recovery, Net payout, Original Currency, and Payout/Reporting Currency (FD-028 / FD-029). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income) plus finance recovery when applicable. Marketplace BDP modules must reflect 10% commission and finance recovery. Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Exact dashboard workflows remain Pending Technical Design.
+Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023/FD-028/FD-029 (no automatic RM/PRM finance authority; no self-approval of commission exceptions). Do not use one unqualified “Revenue” or “earnings” figure — distinguish Booked Value, Collected Value, Eligible Revenue, GCE Platform Revenue, Estimated Commission, Provisional Commission, Earned Commission, Commission on Hold, Settlement-Eligible Commission, Paid Commission, Reversed Commission, Recoverable Balance, TDS, franchise finance recovery, Net payout, Original Currency, and Payout/Reporting Currency (FD-028 / FD-029). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income) plus finance recovery when applicable. Marketplace BDP modules must reflect 10% commission and finance recovery. Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Governing Body dashboards support Circle ops but must not imply independent membership approval/termination (FD-030). Exact dashboard workflows remain Pending Technical Design.
 
 Overview
 
@@ -216,20 +216,22 @@ Modules:
  Reports
  Notifications
 
- 11\. Board of Governance Dashboard
+ 11\. Board of Governance / Governing Body Dashboard
 
-The Board of Governance Dashboard manages GCE Connect circle governance.
+The Governing Body Dashboard supports GCE Connect Circle governance. Membership approval, activation, and termination remain **platform-controlled** (FD-030).
 
 Modules:
 
  Circle Overview
- Member Approval
- Member Removal
- Attendance Reports
+ Member Recommendations / Escalations (not independent approval or removal)
+ Attendance Reports (75% expected physical attendance; CAP thresholds — FD-030)
  Circle Performance
- Dispute Management
+ Dispute Escalation
  Governance Reports
+ Meeting Support (GCE Phygital Circle Meeting Framework)
  Notifications
+
+Governing Body status does not grant unrestricted finance or data access (FD-023 / FD-030).
 
  Common Dashboard Features
 

@@ -8,10 +8,11 @@
 **FD-025** — Connect BDP Franchise Unit milestone, performance-review, expansion, and commission notifications must not imply guaranteed income or automatic cancellation.
 **FD-027** — Membership commercial notifications (renewal, grace, freeze seat-protection up to 30 days recommended, transfer, Core Progress) must not imply guaranteed referrals/nationwide access or invent Core thresholds.
 **FD-026** — Enterprise Franchise Pack target, finance-recovery, attribution/dormancy, Platform Expert assignment, and commission notifications must not imply guaranteed income, territory ownership, or automatic cancellation.
+**FD-031** — Lead Assist notifications (deadline, reassigned, human review, accept/decline/clarify, consent/privacy) must not imply payment gates on Core Lead Rights or invent SLAs beyond Founder-approved concepts.
 **FD-023** — notifications are role- and permission-scoped.
 **FD-001** — one account; role-based delivery.
 
-Founder-approved timing already fixed elsewhere: seat reservation **7 days**; renewal communication begins **30 days** before expiry; grace **30 days**. Do not invent additional SLAs.
+Founder-approved timing already fixed elsewhere: seat reservation **7 days**; renewal communication begins **30 days** before expiry; grace **30 days**. Lead response deadlines by urgency are recommended in FD-031 / `39_AI_Lead_Assist_Spec.md` but exact operating-hours SLAs remain **Unresolved**. Do not invent additional SLAs.
 
 ---
 
@@ -69,7 +70,7 @@ Users receive notifications for:
  QR Ticket Generation
  Payment Success
  Payment Failure
- AI Lead Status
+ AI Lead Status (quality state / offer / outcome — FD-031)
  Marketplace Offers
  Profile Updates
 
@@ -80,7 +81,13 @@ Members / GCE Connect Members may receive notifications for (FD-022 aligned conc
  Upcoming Meetings
  Referral Received
  Referral Given
- AI Lead Assigned
+ AI Lead Assigned / Offered
+ Response Deadline Approaching
+ Clarification Requested / Received
+ Lead Accepted / Declined / Reassigned
+ Human Review Required (where applicable)
+ Customer Withdrew / Expired / Disputed
+ Privacy / Consent Warning
  Membership Renewal (communication begins **30 days** before expiry)
  Membership Grace Period started / ending
  Membership Freeze approved / ended
@@ -145,16 +152,17 @@ Enterprise BDPs receive notifications for:
  Performance Review / Corrective-Plan Notices
  Dormancy / Reassignment Review Notices
 
- PRM Notifications
+ PRM / Opportunity Desk Notifications
 
-Platform Relationship Managers receive notifications for:
+Platform Relationship Managers / Opportunity Desk operators receive notifications for (FD-031):
 
  New AI Lead Request
- ID Verification Pending
- Lead Verification Required
- Payment Confirmation
- Lead Approval
- Lead Rejection
+ Verification / Human Review Required
+ Consent / Privacy Flag
+ Duplicate or Invalid Report
+ Lead Approval / Rejection at Quality Gate
+ Assignment / Reassignment Events
+ Optional Paid-Product Payment Confirmation (only when activated — not a Core Lead Rights gate)
 
  RM Notifications
 
@@ -212,7 +220,7 @@ Notifications are categorized by priority.
 
  Payment Failure
  Security Alert
- AI Lead Assignment
+ AI Lead Assignment / Deadline Approaching / Human Review (FD-031)
  Enterprise Approval
  System Error
 

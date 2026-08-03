@@ -358,6 +358,8 @@ Commissions
 
 Lead Assist
 
+(Lead Assist data: preserve assignment history; no hard-delete of leads except approved legal privacy workflow — FD-031 / `39_AI_Lead_Assist_Spec.md`. Exact enums/schemas Pending Technical Design.)
+
 Venue Operations
 
 must always follow the documented business model.

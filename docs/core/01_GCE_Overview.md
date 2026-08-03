@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Revenue recognition:** FD-028 · **Commission Engine:** FD-029 · **Circle architecture / governance:** FD-030
+**Foundational model:** `docs/founder-decisions/FD-001_Business_Model.md` · **GCE Enterprise:** FD-026 · **Membership commercial:** FD-027 · **Revenue recognition:** FD-028 · **Commission Engine:** FD-029 · **Circle architecture / governance:** FD-030 · **AI Lead Assist / Lead Intelligence:** FD-031 / `39_AI_Lead_Assist_Spec.md`
 
-GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027 / FD-030); do not use outdated **Power Circle** as current. Four fixed sectors (FD-030): Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle — flexible seat distribution, not rigid 10/10/10/10. FD-024 historically wrote “GCE Power Sector” and remains Circle lifecycle authority. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026). Revenue recognition follows FD-028. Commission Engine / Marketplace **80/10/10** / BDP finance recovery follow FD-029 (Affiliate future-only; ZBP removed). Circle meetings follow the **GCE Phygital Circle Meeting Framework** (physical every 15 days — FD-030).
+GCE is one unified platform with verticals **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**. Official domain (FD-001): **growthcentralevents.com**. Prefer approved role terminology in `35_Role_Taxonomy.md`. Use **GC Power Sector** taxonomy (FD-027 / FD-030); do not use outdated **Power Circle** as current. Four fixed sectors (FD-030): Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle — flexible seat distribution, not rigid 10/10/10/10. FD-024 historically wrote “GCE Power Sector” and remains Circle lifecycle authority. GCE Enterprise is a technology/workflow platform with vendor-led fulfilment — not direct physical execution (FD-026). Revenue recognition follows FD-028. Commission Engine / Marketplace **80/10/10** / BDP finance recovery follow FD-029 (Affiliate future-only; ZBP removed). Circle meetings follow the **GCE Phygital Circle Meeting Framework** (physical every 15 days — FD-030). Lead Assist is the **GCE Lead Intelligence Engine** with Opportunity Desk oversight (FD-031).
 
 Project Overview
 
@@ -39,7 +39,7 @@ Key Features:
  Membership Programs
  GC Power Sector Circles / Business Circles
  Category Locking
- AI Lead Assist
+ AI Lead Assist / GCE Lead Intelligence Engine
  Business Ranking
  Professional Communities
 
@@ -93,7 +93,7 @@ The platform includes multiple integrated modules designed to support business g
 Core modules include:
 
  Business Networking
- AI Lead Assist
+ AI Lead Assist / GCE Lead Intelligence Engine (FD-031)
  GCE Marketplace
  Enterprise Solutions
  Membership Management
@@ -194,7 +194,7 @@ Major platform components include:
  GCE Enterprise Module
  Membership Module
  Referral Engine
- AI Lead Assist Engine
+ AI Lead Assist Engine (GCE Lead Intelligence Engine — FD-031)
  Dashboard System
  Notification System
  Payment System

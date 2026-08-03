@@ -8,7 +8,7 @@
 **Highest authority for membership lifecycle timing/state concepts:**
 `docs/founder-decisions/FD-022_Membership_Lifecycle.md`
 
-**Related:** FD-024 (Circle seats / lifecycle) · FD-030 (Circle verification, Protected Tag Scope, Governing Body, attendance, seat ops) · FD-021 (membership settlement) · FD-023 (access during grace/suspension) · FD-025 (Connect BDP 20% on eligible subscription/Tag revenue) · FD-028 (revenue recognition — payment + activation required; Tag Subscription Revenue; transfer fee is Administrative Fee Revenue) · FD-029 (Connect BDP commission states and finance recovery) · FD-001 (platform model)
+**Related:** FD-024 (Circle seats / lifecycle) · FD-030 (Circle verification, Protected Tag Scope, Governing Body, attendance, seat ops) · FD-021 (membership settlement) · FD-023 (access during grace/suspension) · FD-025 (Connect BDP 20% on eligible subscription/Tag revenue) · FD-028 (revenue recognition — payment + activation required; Tag Subscription Revenue; transfer fee is Administrative Fee Revenue) · FD-029 (Connect BDP commission states and finance recovery) · FD-031 (Lead Assist separate from membership; Core Lead Rights) · FD-001 (platform model)
 
 This living document summarises membership commercial and operating rules for **GCE Connect**. On commercial/operating conflict, **FD-027 wins**. On pure lifecycle-state conflict, **FD-022 wins**. On recognition / commercial classification of membership and Tag money, **FD-028 wins**. On Circle internal verification/governance/seat-ops conflict, **FD-030 wins**. Do not invent unresolved FD-027 items (exact Core thresholds, weighted scores, daily proration formula, refund matrix, waitlist tie-breaks, Lead Assist commercial rules).
 
@@ -19,7 +19,7 @@ This living document summarises membership commercial and operating rules for **
 - **Membership lifecycle (Founder):** FD-022
 - **Circle seats / architecture:** `38_Circle_Architecture.md` / FD-024 (lifecycle) / FD-030 (internal structure, verification, governance)
 - **Commercial numbers:** `36_Commercial_Constants.md` (defers to FD-027 for membership; FD-028 for recognition)
-- **AI Lead Assist (separate service):** `39_AI_Lead_Assist_Spec.md` — commercial rules are **not** approved under FD-027
+- **AI Lead Assist (separate service):** FD-031 / `39_AI_Lead_Assist_Spec.md` — separate from base membership; **Core Lead Rights** protected; commercial prices/success fee **Unresolved**; not approved under FD-027
 - **Roles:** `35_Role_Taxonomy.md`
 
 ---
@@ -77,7 +77,7 @@ Associate Tier may include eligibility for one approved primary Circle seat, one
 
 Membership does **not** guarantee referrals, leads, revenue, closed business, client acquisition, nationwide opportunities, Core upgrade, permanent Circle seat, lifetime category protection, or any fixed return.
 
-Lead Assist eligibility is a **separate service** and is not a base FD-027 membership commercial benefit.
+Lead Assist is a **separate service** (FD-031); base membership does not sell Lead Assist Pro. **Core Lead Rights** for ordinary eligible referrals remain protected and are not a membership upsell gate.
 
 ---
 
@@ -263,7 +263,9 @@ Not automatically commissionable: GST and statutory taxes, refunds/reversals/cha
 
 ## Lead Assist separation
 
-GCE Connect Lead Assist is a **separate service**. FD-027 does **not** approve Lead Assist ₹500 fee, escrow, deficit-reward, subscription credit voucher, forfeiture, blocking, or Lead Assist commission. Those remain under a separate Founder Decision / `39_AI_Lead_Assist_Spec.md`.
+GCE Connect Lead Assist is a **separate service** from base membership (FD-031 / `39_AI_Lead_Assist_Spec.md`). FD-027 does **not** approve Lead Assist ₹500 fee, escrow, deficit-reward, subscription credit voucher, forfeiture, blocking, or Lead Assist commission.
+
+**Core Lead Rights** (ordinary give/receive, Accept/Decline/Clarify/Duplicate/Invalid/Collaborate, Dual-Confirmed Closed Business, fair eligibility-based routing) must not require purchase of Lead Assist Pro or other paid products. Optional Pro / verification / Expert Selection / Managed Opportunity prices and any success-fee model remain **Unresolved**. Do not merge Lead Assist into membership commercial benefits.
 
 ---
 

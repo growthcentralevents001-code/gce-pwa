@@ -8,8 +8,9 @@
 **Connect BDP commercial authority limits:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 **GCE Enterprise commercial / Platform Expert authority limits:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 **Circle internal governance / Governing Body limits:** `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` / `38_Circle_Architecture.md`
+**AI Lead Assist / Opportunity Desk:** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` / `39_AI_Lead_Assist_Spec.md`
 
-This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**. Connect BDP commercial operating limits defer to **FD-025**. Enterprise BDP and Enterprise Platform Expert limits defer to **FD-026**. Circle Governing Body authority boundaries defer to **FD-030**.
+This file retains detailed permission narrative and historical matrices. Where it conflicts with FD-023, **FD-023 wins**. Connect BDP commercial operating limits defer to **FD-025**. Enterprise BDP and Enterprise Platform Expert limits defer to **FD-026**. Circle Governing Body authority boundaries defer to **FD-030**. Lead Assist desk RBAC and member lead actions defer to **FD-031**.
 
 ### Founder-aligned access principles (summary)
 
@@ -25,6 +26,8 @@ This file retains detailed permission narrative and historical matrices. Where i
 - Enterprise BDP cannot independently approve quotations, select vendors finally, approve payments/refunds/settlements, or execute physical events (FD-026).
 - Enterprise Platform Expert is project-scoped; must not access unrelated project data or physically execute events (FD-026).
 - Exact permission codes and matrix: **Pending Technical Design** — do not invent.
+- **Opportunity Desk** (FD-031): RBAC-scoped verification/human-review/coordination only — must not secretly favour members, own leads, or receive hidden personal commission.
+- **Lead Receivers / members:** Accept · Decline · Clarify · Report Duplicate · Report Invalid · Request Collaborate are Core Lead Rights for ordinary eligible referrals — not payment-gated in Stage 1.
 
 ### Terminology note
 
@@ -136,24 +139,24 @@ Cannot modify system settings.
 
 Does **not** automatically receive settlement, refund, ledger, or payout authority (FD-023).
 
- Platform Relationship Manager (PRM)
+ Platform Relationship Manager (PRM) / Opportunity Desk
 
  Access Level
 
-AI Lead Verification
+Lead verification & human-review support (maps toward **GCE Lead Intelligence and Opportunity Desk** — FD-031)
 
  Permissions
 
  View New Lead Requests
- Verify User Identity
+ Verify User Identity / Consent Flags
  Verify Business Requirements
- Verify Business Tags
- Verify Circle Availability
- Approve Leads
- Reject Leads
- View Lead Reports
+ Support Quality-State Transitions
+ Verify Business Tags / Circle Availability
+ Human Review Queue
+ Approve / Reject at quality gates (no secret favouring)
+ View Lead Reports / Assignment History
 
-Cannot assign leads manually outside system rules.
+Cannot assign leads manually outside system rules; cannot own leads; cannot receive hidden personal commission from selected members.
 
 Does **not** automatically receive settlement, refund, ledger, or payout authority (FD-023).
 
@@ -263,7 +266,7 @@ Networking
  View Meetings
  Submit Referrals
  Receive Referrals
- Use AI Lead Assist
+ Use AI Lead Assist (Core Lead Rights: Accept / Decline / Clarify / Duplicate / Invalid / Collaborate — FD-031)
  View Business Ranking
 
 Cannot manage circle administration.

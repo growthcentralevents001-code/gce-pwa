@@ -111,7 +111,7 @@ Connect BDP earns **20%** of eligible GCE Connect subscription revenue attribute
 
 Commission applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, correctly attributed, and not under material dispute or hold.
 
-Eligible commissionable items may include Associate Tier subscription/renewal, Core upgrade/renewal when applicable, and Tag 3 / Tag 4 subscriptions (FD-027). Not automatically commissionable: GST/taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees, complimentary/promotional credits, uncollected amounts.
+Eligible commissionable items may include Associate Tier subscription/renewal, Core upgrade/renewal when applicable, and Tag 3 / Tag 4 subscriptions (FD-027). Not automatically commissionable: GST/taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees (FD-031 — no automatic Lead Assist commission), complimentary/promotional credits, uncollected amounts.
 
 Exclusions from commission base include GST and other statutory taxes, refunds, reversals, chargebacks, failed payments, complimentary memberships, free trials, promotional credits, unauthorised collections, amounts not received, fraudulent / suspended / invalidly attributed transactions (full list: FD-025).
 

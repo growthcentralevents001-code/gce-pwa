@@ -9,10 +9,11 @@
 **Membership commercial (tiers, Tags, transfers, refunds):** `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 **Revenue recognition / commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 **Commission Engine / stakeholder entitlement / BDP finance recovery:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
+**AI Lead Assist / Lead Intelligence commercial boundaries:** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` / `39_AI_Lead_Assist_Spec.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, or FD-030, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**.
+Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, or FD-031, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**; for Lead Assist payment gates and Core Lead Rights **FD-031**.
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -32,14 +33,14 @@ Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, F
 - Multi-currency-capable architecture required; preserve original-currency and FX history for commission records (FD-028 / FD-029).
 - RM and PRM do not automatically have financial movement authority.
 - Exact tax rates, GST/TDS treatment, gateway provider, refund matrix, FX, rounding, hold periods: **Pending Legal/Accounting/Tax Review** or **Pending Technical Design** — do not invent.
-- Lead Assist commercial activation remains unresolved. **ZBP** is obsolete (FD-028 / FD-029). Refundable deposits are liabilities, not revenue.
+- Lead Assist: ordinary referral give/receive is **not** Stage-1 payment-gated; optional Pro / verification / Expert Selection / Managed Opportunity fees and any success-fee model remain **Unresolved** (FD-031). No automatic success fee in Stage 1. **ZBP** is obsolete (FD-028 / FD-029). Refundable deposits are liabilities, not revenue.
 
 
 Overview
 
 The GCE platform includes a centralized payment management system that securely handles all financial transactions across the ecosystem.
 
-The payment system supports memberships, event bookings, **GCE Marketplace** transactions, **GCE Enterprise** projects, franchise fees, validation fees, and future walletbased transactions.
+The payment system supports memberships, event bookings, **GCE Marketplace** transactions, **GCE Enterprise** projects, franchise fees, optional Lead Assist paid products (when activated under FD-031), and future walletbased transactions.
 
 All payments are processed through secure payment gateways and automatically recorded for reporting and auditing.
 
@@ -62,7 +63,7 @@ The platform supports payments for:
  Membership Fees
  Event Bookings
  Marketplace Orders
- Validation Fees (AI Lead Assist)
+ Optional Lead Assist paid products (Pro / verification / Expert / Managed — Unresolved; not a gate on ordinary referrals — FD-031)
  Franchise Fees
  Training Fees
  Enterprise Projects
@@ -188,31 +189,13 @@ Reports
 
  AI Lead Assist Payment
 
-AI Lead Assist requires a validation fee before lead processing.
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`.
 
-Flow
+Lead Assist payment is **not** a Stage-1 gate on ordinary eligible referrals. Core Lead Rights (give/receive ordinary referral, Accept/Decline/Clarify/Duplicate/Invalid/Collaborate, Dual-Confirmed Closed Business) must not require purchase.
 
-Business Requirement
+Optional paid products — Lead Assist Pro, enhanced verification, Expert Selection, Managed Opportunity — and any success-fee / commission model remain **Unresolved**. Stage 1 has **no automatic success fee**. Exact amounts: `36_Commercial_Constants.md` (defers to FD-031 / FD-028).
 
-↓
-
-PRM Verification
-
-↓
-
-Validation Fee amount: **`36_Commercial_Constants.md`** / **`39_AI_Lead_Assist_Spec.md`**
-
-↓
-
-Payment Success
-
-↓
-
-AI Matching
-
-↓
-
-Lead Distribution
+When an optional paid product is activated and collected, payment follows the standard gateway → reconciliation → recognition path (FD-020 / FD-021 / FD-028); collection alone does not create Lead Assist commission (FD-029 / FD-031).
 
  Franchise Payments
 
@@ -412,7 +395,7 @@ The platform never stores card details.
 The GCE Wallet will support:
 
  Membership Credits
- AI Lead Credits
+ Optional Lead Assist credits (only if an approved paid product uses them — Unresolved under FD-031)
  Referral Rewards
  Cashback
  Subscription Credits

@@ -45,6 +45,7 @@ FD-027_Membership_Commercial_and_Operating_Architecture.md
 FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
+FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
 ```
 
 Then living canonical cores (summaries that defer to Founder Decisions):
@@ -72,6 +73,8 @@ For revenue recognition, commercial classification, Marketplace/Enterprise/Conne
 For commission calculation, stakeholder entitlement, BDP finance recovery, Marketplace revenue sharing (80/10/10), Venue Partner entitlement, attribution, Recoverable Balances, multi-currency commission, dashboards/statements, and audit, **FD-029** is the most specific Founder authority. Living summaries: `36_Commercial_Constants.md`, `37_Revenue_Flow.md`, `04_Revenue_Model.md`, `06_CBDP.md`, `07_MBDP.md`, `21_Payments.md`. FD-029 finalises Marketplace BDP commission and finance that were previously unresolved under FD-028.
 
 For GCE Connect Circle **lifecycle** stages and transitions, **FD-024** remains the primary Founder authority. For Circle **internal structure and governance** (40-member capacity constitution, Provisionally Active / Fully Constituted thresholds, four GC Power Sectors, Protected Tag Scope, business verification, Governing Body, GCE Phygital Circle Meeting Framework, attendance, dual-confirmed closed business, workshops, discipline, seat ops), **FD-030** is the most specific Founder authority. Living summary: `38_Circle_Architecture.md`.
+
+For AI Lead Assist / Lead Intelligence (central engine, Opportunity Desk, Core Lead Rights, quality states, Circle-first routing, human oversight, monetisation principles, cross-vertical use, phased launch), **FD-031** is the most specific Founder authority. Living summaries: `39_AI_Lead_Assist_Spec.md`, `10_AI_Lead_Assist.md`. Exact prices, escrow, forfeiture, voucher/credit, success fee, and Lead Assist commission remain Unresolved — do not invent. FD-028/FD-029 remain authoritative for recognition and commission treatment.
 
 Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings. Under FD-028 / FD-029, **ZBP is removed** from the current commercial model; **Affiliate is future-only** (no active commission).
 

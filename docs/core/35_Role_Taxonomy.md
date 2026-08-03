@@ -4,7 +4,7 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle lifecycle ownership boundaries), FD-030 (Governing Body roles and Circle governance limits), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle lifecycle ownership boundaries), FD-030 (Governing Body roles and Circle governance limits), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels), FD-031 (AI Lead Assist — Opportunity Desk, Lead Giver / Lead Receiver functional parties; not a hidden commission layer).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
@@ -36,9 +36,20 @@ Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Com
 | Board of Governance / Circle Board / **Governing Body** | BOG / Circle Board / Governing Body | Does **not** own Circles; does not independently activate/terminate membership or change taxonomy/fees (FD-030) |
 | Circle Finance Coordinator | Circle finance-support role within Governing Body | Must not collect fees personally, hold Circle funds, or operate unauthorised Circle bank accounts (FD-030). Prefer this term over “Treasurer” for Circle finance support |
 | Relationship Manager | RM | No automatic financial authority |
-| Platform Relationship Manager | PRM | No automatic financial authority |
+| Platform Relationship Manager | PRM | No automatic financial authority; legacy ops mapping toward Opportunity Desk (FD-031) — not Lead Owner |
 | Platform Taxonomy Team | — | Final taxonomy publishing authority |
 | Finance Administrator | — | Permission-controlled; segregation of duties (FD-023) |
+
+### Lead Assist functional parties (FD-031 — not separate login roles by default)
+
+| Functional party | Meaning |
+|------------------|---------|
+| **GCE Lead Intelligence and Opportunity Desk** | Platform-controlled expert team for verification, matching support, human review, coordination — does **not** own leads; no hidden personal commission |
+| **Lead Giver** | Stakeholder who submitted / referred the opportunity |
+| **Lead Receiver** | Offered / assigned eligible stakeholder (Accept / Decline / Clarify / Duplicate / Invalid / Collaborate) |
+| **Lead Source / Verifier / Selected Provider / Closer / Collaborator / Commercial Beneficiary** | Distinct parties — do not collapse into “Lead Owner” |
+
+Exact desk RBAC enums: **Pending Technical Design**. See `39_AI_Lead_Assist_Spec.md`.
 
 **Legacy terms requiring explicit migration mapping (do not silently equate):** ZBP (obsolete under FD-028), BDM, Affiliate (future-only under FD-028), Franchisee, CBDP, MBDP, BD Partner, Generic Enterprise role. See Role Mapping below.
 
@@ -69,7 +80,7 @@ Aligned with FD role families and existing product documentation:
 | 1 | Platform Administrator (department-scoped) | Platform-wide | Assigned admin domains only — not universal superuser by default (FD-023) |
 | 2 | Board of Governance / Circle Board / Governing Body | GCE Connect | Approved internal Circle governance support — does not own/create/activate Circles; cannot independently terminate members or change fees/taxonomy (FD-030). Core roles: President, Vice President, Secretary, Circle Finance Coordinator, Sergeant at Arms, Membership and Growth Coordinator, Referral and Performance Coordinator. Term: six months |
 | 3 | Relationship Manager (RM) | Ops | Assigned operational support — no automatic finance authority |
-| 4 | Platform Relationship Manager (PRM) | Ops / escalations | Escalation & verification duties — no automatic finance authority |
+| 4 | Platform Relationship Manager (PRM) | Ops / escalations | Escalation & verification duties — no automatic finance authority; may map toward Opportunity Desk ops (FD-031) without owning leads |
 | 5 | Connect BDP | GCE Connect | Initiate/grow Circles & memberships within assigned Franchise Unit scope (FD-025) |
 | 6 | Marketplace BDP | GCE Marketplace | Onboard/support Venue Partners within assigned scope |
 | 7 | Enterprise BDP | GCE Enterprise | Enterprise Client acquisition & BD under client-based Franchise Pack attribution (FD-026) |
@@ -100,7 +111,7 @@ Hard boundaries (Founder-aligned):
 | Role | Must not (summary) |
 |------|---------------------|
 | Circle Board / Governing Body | Own, create, or independently activate Circles; independently approve/activate or terminate membership; change fees/taxonomy; approve final Specializations/Tags; hold Circle funds; open unauthorised Circle bank accounts; unrestricted platform finance; decide regulated decisions by Circle vote alone (FD-030) |
-| RM / PRM | Automatic settlement, refund, ledger, or payout authority |
+| RM / PRM / Opportunity Desk | Automatic settlement, refund, ledger, or payout authority; own leads; hidden personal commission from selected members (FD-031) |
 | Connect BDP | Activate Circles independently; auto-access other verticals; self-approve commission |
 | Marketplace BDP | Act as Venue Partner by default; release settlements/refunds without permission |
 | Enterprise BDP | Release payments/settlements without permission; auto-access other verticals; own clients/projects; execute physical events; self-approve commission |
@@ -197,7 +208,7 @@ The following alignments are **not** defined in business documentation and requi
 
 Exact database role enums remain **Pending Technical Design / Pending Founder Confirmation**. Until confirmed, engineers must not silently equate legacy labels with approved roles in business logic without an approved mapping update here.
 
-Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`, `38_Circle_Architecture.md`.
+Cross references: FD-023, FD-001, FD-031, `19_Permissions_Roles.md`, `12_Dashboards.md`, `38_Circle_Architecture.md`, `39_AI_Lead_Assist_Spec.md`.
 
 ---
 
@@ -208,5 +219,6 @@ Cross references: FD-023, FD-001, `19_Permissions_Roles.md`, `12_Dashboards.md`,
 - Dashboards: `12_Dashboards.md`
 - Commercial limits/fees: `36_Commercial_Constants.md`
 - GCE Connect circles: `38_Circle_Architecture.md`
+- AI Lead Assist: `39_AI_Lead_Assist_Spec.md` / FD-031
 - Partner docs (legacy filenames): `06_CBDP.md` (Connect BDP), `07_MBDP.md` (Marketplace BDP), `08_Enterprise_BDP.md`, `09_Venue_Partner.md`
-- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026, FD-027, FD-030
+- Founder Decisions: FD-001, FD-023, FD-024, FD-025, FD-026, FD-027, FD-030, FD-031

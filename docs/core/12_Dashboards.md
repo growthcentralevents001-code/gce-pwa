@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition:** FD-028 · **Commission Engine / entitlement states:** FD-029 · **Circle governance / attendance / verification:** FD-030 / `38_Circle_Architecture.md`
+**Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition:** FD-028 · **Commission Engine / entitlement states:** FD-029 · **Circle governance / attendance / verification:** FD-030 / `38_Circle_Architecture.md` · **AI Lead Assist / Opportunity Desk:** FD-031 / `39_AI_Lead_Assist_Spec.md`
 
-Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023/FD-028/FD-029 (no automatic RM/PRM finance authority; no self-approval of commission exceptions). Do not use one unqualified “Revenue” or “earnings” figure — distinguish Booked Value, Collected Value, Eligible Revenue, GCE Platform Revenue, Estimated Commission, Provisional Commission, Earned Commission, Commission on Hold, Settlement-Eligible Commission, Paid Commission, Reversed Commission, Recoverable Balance, TDS, franchise finance recovery, Net payout, Original Currency, and Payout/Reporting Currency (FD-028 / FD-029). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income) plus finance recovery when applicable. Marketplace BDP modules must reflect 10% commission and finance recovery. Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Governing Body dashboards support Circle ops but must not imply independent membership approval/termination (FD-030). Exact dashboard workflows remain Pending Technical Design.
+Dashboards are **role-based workspaces**, not separate accounts. Prefer Connect BDP / Marketplace BDP / Enterprise BDP naming. Venue Admin remains platform-ops console unless Founder-approved as a distinct role. Financial modules must respect FD-020/FD-021/FD-023/FD-028/FD-029 (no automatic RM/PRM finance authority; no self-approval of commission exceptions). Do not use one unqualified “Revenue” or “earnings” figure — distinguish Booked Value, Collected Value, Eligible Revenue, GCE Platform Revenue, Estimated Commission, Provisional Commission, Earned Commission, Commission on Hold, Settlement-Eligible Commission, Paid Commission, Reversed Commission, Recoverable Balance, TDS, franchise finance recovery, Net payout, Original Currency, and Payout/Reporting Currency (FD-028 / FD-029). Connect BDP modules must reflect Franchise Unit targets and eligible commission (not guaranteed income) plus finance recovery when applicable. Marketplace BDP modules must reflect 10% commission and finance recovery. Enterprise modules must reflect Franchise Pack capacity/targets and platform-commission-based BDP commission (FD-026). Governing Body dashboards support Circle ops but must not imply independent membership approval/termination (FD-030). Lead Assist / PRM surfaces should evolve toward the **GCE Lead Intelligence and Opportunity Desk** and member lead states from FD-031; payment modules appear only for optional paid products (not as a gate on ordinary referrals). Exact dashboard workflows remain Pending Technical Design.
 
 Overview
 
@@ -163,7 +163,7 @@ Modules:
  Meeting Schedule
  Referrals Given
  Referrals Received
- AI Lead Assist
+ AI Lead Assist (member lead states / Core Lead Rights — FD-031)
  Business Ranking
  Notifications
 
@@ -198,23 +198,25 @@ Modules:
  Reports
  Notifications
 
- 10\. Platform Relationship Manager (PRM) Dashboard
+ 10\. Platform Relationship Manager (PRM) / Opportunity Desk Dashboard
 
-The PRM Dashboard manages AI Lead Assist verification.
+Legacy **PRM** dashboard language maps toward the **GCE Lead Intelligence and Opportunity Desk** (FD-031). Desk operators support verification and coordination; they do **not** own leads and must not receive hidden personal commission from selected members.
 
-Modules:
+Modules (conceptual — exact UI Pending Technical Design):
 
- New Lead Requests
- Lead Verification
- ID Verification
- Business Category Verification
- Tag Verification
- Circle Availability
- Payment Verification
- Lead Approval
- Lead Rejection
- Reports
+ New / Submitted Leads
+ Verification Queue (quality states: Unverified → Preliminarily Verified → Qualified → Rejected/Invalid)
+ Human Review Queue (low-confidence / sensitive / disputed)
+ Consent / Privacy Flags
+ Classification & Match Recommendations
+ Offer / Assignment Status
+ Member Lead States (Offered · Response Due · Accepted · Clarification Required · Declined · Reassigned · In Contact · Won · Lost · Disputed · Invalid · Expired · Closed)
+ Duplicate / Invalid Reviews
+ Optional Paid-Product Payment Status (Pro / verification / Expert / Managed only — not a gate on ordinary referrals)
+ Reports / Audit
  Notifications
+
+Do not centre the desk on Validation Fee / Rainmaker Pass Lead workflows.
 
  11\. Board of Governance / Governing Body Dashboard
 

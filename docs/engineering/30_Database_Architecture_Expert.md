@@ -32,10 +32,11 @@ Business meaning of roles, membership, Circles, and financial ledgers is governe
 \- FD-028 — Revenue recognition / commercial classification (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, multi-currency, refunds/attribution/audit)
 \- FD-029 — Commission Engine / stakeholder entitlement (Marketplace 80/10/10, Connect & Marketplace BDP finance recovery Month 0, commission states, Recoverable Balances; Affiliate future-only; ZBP removed)
 \- FD-030 — Circle internal architecture / governance (verification outcomes, Governing Body, attendance, Dual-Confirmed Closed Business, workshops, Protected Tag Scope)
+\- FD-031 — AI Lead Assist / Lead Intelligence (quality states, consent, assignment history, AI confidence/human override, Opportunity Desk, Core Lead Rights). Exact schemas/enums **Pending Technical Design**
 
-Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages, Affiliate rates, max MBDP units, split-commission percentages, or FX/rounding policy.
+Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, Lead Assist tables/enums, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages, Affiliate rates, max MBDP units, split-commission percentages, or FX/rounding policy.
 
-Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\* / \*\*Enterprise BDP\*\* / \*\*Enterprise Platform Expert\*\*. Connect BDP commercial numbers defer to FD-025 / FD-029 / \`36_Commercial_Constants.md\`. Enterprise commercial numbers defer to FD-026 / \`36_Commercial_Constants.md\`. Revenue recognition defers to FD-028. Commission Engine defers to FD-029. Circle internal governance defers to FD-030 / \`38_Circle_Architecture.md\`.
+Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\* / \*\*Enterprise BDP\*\* / \*\*Enterprise Platform Expert\*\*. Connect BDP commercial numbers defer to FD-025 / FD-029 / \`36_Commercial_Constants.md\`. Enterprise commercial numbers defer to FD-026 / \`36_Commercial_Constants.md\`. Revenue recognition defers to FD-028. Commission Engine defers to FD-029. Circle internal governance defers to FD-030 / \`38_Circle_Architecture.md\`. Lead Assist defers to FD-031 / \`39_AI_Lead_Assist_Spec.md\`. Lead / assignment history must be preserved — do \*\*not\*\* hard-delete leads except via an approved legal privacy workflow.
 
 \# Project Context
 
@@ -216,6 +217,8 @@ deleted\_at
 \`\`\`
 
 This allows data recovery and audit tracking.
+
+For Lead Assist / opportunity records (FD-031): preserve assignment and reassignment history; do \*\*not\*\* hard-delete leads except via an approved legal privacy workflow. Exact retention and privacy-deletion procedures remain \*\*Pending Technical Design\*\* / legal review.
 
 \---
 

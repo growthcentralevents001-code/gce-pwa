@@ -194,13 +194,19 @@ Illustrative commission examples at ₹10,00,000 eligible event revenue (not gua
 
 ## AI Lead Assist commercial constants
 
+**Authority:** FD-031 (architecture and monetisation principles) · FD-028 (recognition) · FD-029 (commission / non-commissionable-by-default).
+
 | Constant | Value | Status |
 |----------|-------|--------|
-| Validation fee / credit amounts historically documented | **₹500** (narrative) | **Pending Lead Assist Commercial Revenue** — FD-028 / FD-029 do **not** activate ₹500 fee, escrow, voucher, forfeiture, or Lead Assist commission |
-| Credit recipient | Documented as the receiving member after genuine ground verification | Lead Assist docs only |
-| Whether validation fee funds the credit | **Undocumented** | — |
+| Historical narrative validation fee / credit | **₹500** (obsolete as active Stage-1 gate) | Legacy only — **not activated** under FD-031 / FD-028 / FD-029 |
+| Core Lead Rights | Included — ordinary give/receive/view without premium purchase | FD-031 |
+| Lead Assist Pro / verification / Expert Selection / Managed Opportunity prices | **Unresolved** | FD-031 |
+| Escrow / forfeiture / voucher / subscription-credit treatment | **Unresolved** | FD-031 |
+| Success-fee model | **Future Founder Decision** (Stage 4) | FD-031 |
+| Lead Assist commission (incl. Connect BDP share) | **Not automatic** — non-commissionable by default unless separately approved | FD-029 / FD-031 |
+| Paid routing priority | **Prohibited** | FD-031 |
 
-Full AI workflow: `39_AI_Lead_Assist_Spec.md`. Non-commissionable by default under FD-029 until a separate commission model is approved.
+Full AI workflow: `39_AI_Lead_Assist_Spec.md`. Do **not** implement ₹500 fee, escrow, voucher, forfeiture, or automatic Lead Assist commission as live rules. Do not invent prices.
 
 ---
 

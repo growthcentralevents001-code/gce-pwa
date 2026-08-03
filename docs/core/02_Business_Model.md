@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement), FD-030 (GCE Connect Circle architecture and governance).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement), FD-030 (GCE Connect Circle architecture and governance), FD-031 (GCE Connect AI Lead Assist / Lead Intelligence architecture).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -217,7 +217,7 @@ AI assists in:
  Business Recommendations
  Performance Analysis
 
-The AI engine ensures fair and intelligent distribution of business opportunities across the ecosystem.
+The AI engine (**GCE Lead Intelligence Engine**, with Opportunity Desk oversight — FD-031) supports fair and intelligent distribution of business opportunities across the ecosystem. Core Lead Rights are protected; optional paid Lead Assist products remain Unresolved commercially.
 
  Integrated Business Modules
 
@@ -227,7 +227,7 @@ The complete GCE ecosystem consists of interconnected business modules:
  GCE Marketplace
  GCE Enterprise
  Membership
- AI Lead Assist
+ AI Lead Assist / GCE Lead Intelligence Engine (FD-031)
  Referral Engine
  Business Ranking
  Offer Management

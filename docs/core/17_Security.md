@@ -8,6 +8,7 @@
 **FD-022 / FD-027 / FD-024 / FD-030** — membership and Circle seat are separate; membership is platform-only (FD-027); Connect BDP cannot independently activate Circles or manually activate membership; Governing Body cannot independently terminate members or hold Circle funds (FD-030).
 **FD-025** — Connect BDP does not own territory, Circles, members, or data; cannot self-approve personal commission or move platform funds; Franchise Unit access remains permission-scoped.
 **FD-026** — Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data; Expert access is project-scoped; neither may physically execute events or approve refunds/settlements independently.
+**FD-031** — Lead Assist / Lead Intelligence: consent and privacy before sharing; quality states (not “only verified”); human review for sensitive/high-value/low-confidence cases; no hard-delete of lead/assignment history except approved legal privacy workflow; Opportunity Desk must not secretly favour members or own leads.
 
 Exact Supabase RLS policy definitions and the full permission matrix are **Pending Technical Design** — not Founder-approved as a finished code matrix. Prefer role names in `35_Role_Taxonomy.md`.
 
@@ -169,41 +170,35 @@ Users can only access their assigned dashboard.
 
  AI Lead Assist Security
 
-Every business lead passes through multiple verification stages.
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`.
 
-Lead Workflow
+Every business lead passes through classification and verification with consent/privacy controls. Distribution is **not** limited to a single “verified” label — quality states are Unverified → Preliminarily Verified → Qualified → Rejected/Invalid. Only Qualified leads enter distribution under approved rules.
 
-User Submission
+Lead Workflow (conceptual)
 
-↓
-
-ID Verification
+Submission (Lead Source / Lead Giver) + Consent / Lawful Basis
 
 ↓
 
-PRM Verification
+Quality State + AI Classification (GCE Lead Intelligence Engine)
 
 ↓
 
-Validation Fee
+Human Review when required (GCE Lead Intelligence and Opportunity Desk)
 
 ↓
 
-AI Matching
+Offer / Assignment to Eligible Lead Receiver (history preserved)
 
 ↓
 
-Lead Assignment
+Receiver Actions: Accept · Decline · Clarify · Duplicate · Invalid · Collaborate
 
 ↓
 
-Ground Verification
+Follow-up / Reassignment / Dual-Confirmed Closed Business / Closure
 
-↓
-
-Final Status
-
-Only verified leads are distributed.
+Security rules: customer consent or lawful basis before sharing personal data; purpose limitation; limited recipient access; no sale of personal data; human review for high-value, regulated, privacy-sensitive, disputed, fraud-flagged, and low-confidence leads. Do **not** hard-delete lead or assignment history except via an approved legal privacy workflow; preserve audit and assignment history.
 
  Identity Verification
 

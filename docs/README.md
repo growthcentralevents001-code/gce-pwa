@@ -69,7 +69,7 @@ Location: `docs/core/`
 | 36_Commercial_Constants.md | Canonical commercial fees, commissions, limits, targets |
 | 37_Revenue_Flow.md | Canonical money-flow by vertical |
 | 38_Circle_Architecture.md | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance) |
-| 39_AI_Lead_Assist_Spec.md | Canonical AI Lead Assist specification |
+| 39_AI_Lead_Assist_Spec.md | Canonical AI Lead Assist / Lead Intelligence specification (FD-031) |
 
 ---
 
@@ -91,6 +91,7 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 | `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 | `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
+| `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` | GCE Connect AI Lead Assist / Lead Intelligence architecture |
 
 ## Canonical core living documents
 
@@ -103,7 +104,7 @@ These living docs summarise and point to Founder Decisions. Narrative partner do
 | `36_Commercial_Constants.md` | Documented commercial numbers |
 | `37_Revenue_Flow.md` | Money-flow narrative |
 | `38_Circle_Architecture.md` | Living Circle architecture (lifecycle → FD-024; internal structure/governance → FD-030) |
-| `39_AI_Lead_Assist_Spec.md` | AI Lead Assist rules |
+| `39_AI_Lead_Assist_Spec.md` | AI Lead Assist / Lead Intelligence (defers to FD-031) |
 
 Vertical naming: always **GCE Connect**, **GCE Marketplace**, **GCE Enterprise**.
 Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**.

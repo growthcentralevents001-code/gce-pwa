@@ -2,7 +2,7 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles lifecycle:** FD-024 · **Circles internal ops / verification:** FD-030 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026
+**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles lifecycle:** FD-024 · **Circles internal ops / verification:** FD-030 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026 · **AI Lead Assist / Lead Intelligence:** FD-031 / `39_AI_Lead_Assist_Spec.md`
 
 Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally. Circle seat activation requires platform-recorded business verification (outcomes: Verified / Conditionally Verified / On Hold / Rejected — FD-030). Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026).
 
@@ -259,43 +259,34 @@ Completion Evidence → Client Confirmation → Settlements / Commission → Clo
 
  8\. AI Lead Assist Flow
 
-User Requirement
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`. Ordinary Circle referrals are **Circle-first**; Lead Assist payment is **not** a Stage-1 gate on ordinary eligible referrals.
+
+User / Member Requirement (Lead Source / Lead Giver)
 
 ↓
 
-ID Verification
+Consent / Lawful Basis + Quality State
+(Unverified → Preliminarily Verified → Qualified → Rejected/Invalid)
 
 ↓
 
-PRM Verification
+GCE Lead Intelligence Engine (classify / match / route)
++ Human Review when required (Opportunity Desk)
 
 ↓
 
-Validation Fee: **`36_Commercial_Constants.md`** / **`39_AI_Lead_Assist_Spec.md`**
+Offer to Eligible Lead Receiver (Circle-first for ordinary local Connect leads)
 
 ↓
 
-AI Matching
+Receiver Actions (Core Lead Rights — no fee required for ordinary referrals):
+Accept · Decline · Clarify · Report Duplicate · Report Invalid · Request Collaborate
 
 ↓
 
-Rainmaker Giver
+Follow-up / Reassignment (history preserved) / Dual-Confirmed Closed Business (FD-030)
 
-↓
-
-Pass Lead
-
-↓
-
-Circle Member
-
-↓
-
-Ground Verification
-
-↓
-
-Business Conversion
+Optional paid products (Pro / enhanced verification / Expert Selection / Managed Opportunity) remain **Unresolved** commercially and are not required for Core Lead Rights.
 
  9\. Connect BDP Flow
 

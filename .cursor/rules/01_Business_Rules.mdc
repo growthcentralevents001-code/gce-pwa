@@ -31,6 +31,7 @@ Highest business authority — Founder Decisions:
 \- `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 \- `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 \- `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md`
+\- `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md`
 
 Then living cores:
 
@@ -38,7 +39,7 @@ Then living cores:
 \- Commercial numbers: \`36\_Commercial\_Constants.md\`
 \- Revenue flows: \`37\_Revenue\_Flow.md\`
 \- Circles: \`38\_Circle\_Architecture.md\` (lifecycle → FD-024; internal structure/governance → FD-030)
-\- AI Lead Assist: \`39\_AI\_Lead\_Assist\_Spec.md\`
+\- AI Lead Assist: \`39\_AI\_Lead\_Assist\_Spec.md\` (defers to FD-031)
 
 Always use full vertical names: GCE Connect, GCE Marketplace, GCE Enterprise.
 Approved BDP short names: Connect BDP, Marketplace BDP, Enterprise BDP.
@@ -65,6 +66,7 @@ docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.m
 docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
+docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -251,12 +253,15 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
 39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
 22\_AI\_Rules.md
 36\_Commercial\_Constants.md
 18\_User\_Flows.md
 \`\`\`
+
+Do not implement mandatory ₹500 validation fee, pay-to-win routing, or automatic Lead Assist commission. Follow FD-031 Core Lead Rights and human-control bans.
 
 \---
 

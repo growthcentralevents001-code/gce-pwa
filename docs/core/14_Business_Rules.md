@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, FD-031.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**).
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`.
 
 Overview
 
@@ -135,64 +135,31 @@ Repeated misuse may result in platform action.
 
  AI Lead Assist Rules
 
-Every submitted business requirement follows:
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`. Narrative: `10_AI_Lead_Assist.md`.
 
-User Submission
+Key rules (do not invent unresolved prices or commissions):
 
-↓
-
-Identity Verification
-
-↓
-
-PRM Verification
-
-↓
-
-Validation Fee
-
-↓
-
-AI Matching
-
-↓
-
-Lead Distribution
-
-↓
-
-Ground Verification
-
-↓
-
-Final Status
-
-Only verified leads are distributed.
+- One central **GCE Lead Intelligence Engine** with vertical-specific rules; expert support via **GCE Lead Intelligence and Opportunity Desk**
+- **Core Lead Rights** are protected — do not charge merely to give/receive/view an ordinary eligible referral; do not withhold ordinary leads behind premium purchase
+- Quality states: **Unverified** · **Preliminarily Verified** · **Qualified** · **Rejected/Invalid** — do not call every submission “Verified”
+- Distinguish Lead Source / Lead Giver / Lead Verifier / Lead Receiver / Selected Provider / Lead Closer / Collaborator / Commercial Beneficiary — do not collapse into “Lead Owner”
+- Eligibility-first and **Circle-first** routing for ordinary local Connect leads; paid advertising/sponsorship/Pro/Expert Selection must **not** buy routing priority or override Specialization / Protected Tag Scope
+- Member actions: Accept · Decline · Clarify · Report Duplicate · Report Invalid · Request Collaboration
+- Recommended urgency deadlines: 2h / 6h / 24h / 48h (operating-hour detail Unresolved)
+- AI may recommend/classify/match/route/flag — AI may **not** award projects, transfer money, suspend members, alter Trust Rank, grant/deny Core Tier, or decide serious disputes
+- Preserve original source and assignment history; no silent overwrite; no hard-delete except approved legal privacy workflow
+- Historical ₹500 validation fee / escrow / forfeiture / voucher / subscription credit are **not active** Stage-1 rules
+- Connect BDP does **not** automatically earn Lead Assist commission; Lead Assist revenue is non-commissionable by default unless separately approved (FD-029)
+- Optional products: Lead Assist Pro · GCE Expert-Assisted Lead Selection · GCE Managed Opportunity Service — prices Unresolved
+- No guaranteed sale, conversion, or revenue
 
  Validation Fee Rules
 
-Business requirements requiring AI Lead Assist must complete the validation process.
+Do **not** treat a mandatory validation fee as a Stage-1 gate on ordinary referrals (FD-031). Optional verification / Expert Selection / Managed Opportunity fees may be charged only when Founder-approved prices exist — currently **Unresolved**. See `36_Commercial_Constants.md` and `39_AI_Lead_Assist_Spec.md`.
 
-Validation Fee: **`36_Commercial_Constants.md`** / full rules in **`39_AI_Lead_Assist_Spec.md`**.
+ Genuine / Invalid Lead Rules
 
-The fee is required before the lead becomes active.
-
- Genuine Lead Rules
-
-If a lead is marked as genuine:
-
- Business discussion continues.
- Lead remains active.
- Eligible member receives subscription credit.
-
- NonGenuine Lead Rules
-
-If a lead is marked as fake:
-
- Lead is rejected.
- Validation fee is forfeited.
- Fraudulent activity is recorded.
- User account may be suspended after repeated violations.
+Qualified leads proceed under approved routing. Invalid / rejected leads are recorded with reason. Fraud signals require human review. Do not invent automatic subscription-credit or forfeiture mechanics. Serious restriction or suspension requires human process (FD-031).
 
  Marketplace Rules
 
@@ -303,7 +270,7 @@ Supported payment types include:
  Event Bookings
  Marketplace Payments
  Franchise Payments
- Validation Fees
+ Optional Lead Assist paid products (when priced under FD-031 — not a gate on ordinary referrals)
 
  Dashboard Rules
 

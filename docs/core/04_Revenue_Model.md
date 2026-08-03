@@ -6,7 +6,7 @@
 
 **Highest authority for Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace 80/10/10:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · FD-031 (Lead Assist commercial boundaries) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md` · **Lead Assist living:** `39_AI_Lead_Assist_Spec.md`
 
 Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent advertising prices, Lead Assist commission, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, FX policy, max MBDP units, or split-commission percentages. Tax and formal accounting remain Pending Tax / CA / audit review.
 
@@ -197,7 +197,7 @@ Administrative Fee Revenue may include approved transfer, verification, document
 
 Training, workshop, masterclass, ticketing/booking, and technology/digital-service revenue are approved categories in principle; exact prices, refunds, commissions, and tax treatment remain unresolved unless approved elsewhere. **GCE Circle Business Growth Workshops** (FD-030) are normally optional; Connect BDP does **not** automatically earn 20% of workshop revenue; Governing Body does not automatically receive a share; workshop commission must not be inferred from membership or BDP commission rules.
 
-**Lead Assist** remains **Pending Lead Assist Commercial Revenue** — FD-028 does not activate ₹500 fee, escrow, voucher, or Lead Assist commission. Do not merge into membership, Connect BDP subscription commission, Marketplace, or Enterprise revenue.
+**Lead Assist** commercial treatment: **FD-031** / `39_AI_Lead_Assist_Spec.md` (with recognition classification under FD-028). Remains **Pending Lead Assist Commercial Revenue** under FD-028 — do not activate historical ₹500 fee, escrow, voucher, or Lead Assist commission as current. Optional Pro / verification / Expert Selection / Managed Opportunity prices and any success-fee model remain **Unresolved**. Stage 1 has **no automatic success fee**. Ordinary referrals are not payment-gated. Do not merge into membership, Connect BDP subscription commission, Marketplace, or Enterprise revenue. Connect BDP does not automatically earn on Lead Assist revenue (FD-029 / FD-031).
 
  Revenue Distribution
 

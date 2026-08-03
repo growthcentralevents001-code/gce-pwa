@@ -13,6 +13,7 @@
 **FD-030** — Circle verification, Governing Body, meetings, attendance, Dual-Confirmed Closed Business, workshops; do not invent workshop commission, voting %, or substitute limits. Exact API routes remain Pending Technical Design.
 **FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).
 **FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, and Vendor Opportunity Fee commercial rules (do not invent API routes or VOF percentages from FD-026 alone).
+**FD-031** — AI Lead Assist / Lead Intelligence capability groups (Accept/Decline/Clarify/Duplicate/Invalid/Collaborate, quality states, Opportunity Desk, Core Lead Rights). Exact Lead Assist APIs remain **Pending Technical Design** — do not invent fee-first Rainmaker / Validation Fee / Pass Lead contracts as current.
 **FD-020** — financial ledgers (API must not treat Wallet as one undifferentiated ledger).
 
 Exact route paths, permission codes, and API contracts remain **Pending Technical Design** where not implemented. Legacy path segments such as `/api/cbdp/**` or `/api/mbdp/**` are **technical compatibility labels** pending explicit route/role migration mapping — preferred product names are **Connect BDP** and **Marketplace BDP**.
@@ -414,59 +415,27 @@ Enterprise API capabilities required by FD-026 (exact routes Pending Technical D
 
  AI Lead Assist APIs
 
- Submit Requirement
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`. Exact routes, schemas, and permission codes: **Pending Technical Design**. Do not treat historical Validation Fee / Rainmaker Pass Lead endpoints as current contracts.
+
+Capability groups (illustrative only — not final routes):
+
+ Lead submission / source preservation / consent capture
+ Quality-state transitions (Unverified → Preliminarily Verified → Qualified → Rejected/Invalid)
+ AI classification / match recommendations (system)
+ Human-review queue (Opportunity Desk — RBAC-scoped)
+ Offer / assignment / reassignment (preserve assignment history)
+ Receiver actions: Accept · Decline · Clarify · Report Duplicate · Report Invalid · Request Collaborate
+ Status / tracking / Dual-Confirmed Closed Business signals (with FD-030)
+ Optional paid-product checkout (Pro / verification / Expert / Managed) — only when commercially activated; **not** required for Core Lead Rights
+
+Legacy example paths below (if present in older drafts) are **non-authoritative** compatibility sketches only:
 
 \`\`\`
 POST /api/leads/create
-\`\`\`
-
- Upload ID
-
-\`\`\`
-POST /api/leads/uploadid
-\`\`\`
-
- Lead Validation
-
-\`\`\`
-POST /api/leads/validate
-\`\`\`
-
-PRM Only
-
- Validation Payment
-
-\`\`\`
-POST /api/leads/payment
-\`\`\`
-
- AI Matching
-
-\`\`\`
-POST /api/leads/assign
-\`\`\`
-
-System Only
-
- Pass Lead
-
-\`\`\`
-POST /api/leads/pass
-\`\`\`
-
-Rainmaker Giver Only
-
- Lead Status
-
-\`\`\`
 GET /api/leads/status
 \`\`\`
 
- Ground Verification
-
-\`\`\`
-POST /api/leads/verify
-\`\`\`
+Do not implement fee-first Rainmaker-only Pass Lead APIs as Stage-1 Core Lead Rights gates.
 
  Dashboard APIs
 

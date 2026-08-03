@@ -2,7 +2,7 @@
 
 ## Authority
 
-Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-030). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025 (finance recovery amended by FD-029). GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution). Membership commercial: FD-027. Revenue recognition / commercial classification: FD-028. Commission Engine / Marketplace 80/10/10 / BDP finance recovery: FD-029 (Affiliate future-only; ZBP removed). Circle lifecycle: FD-024. Circle internal architecture and governance: FD-030.
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-031). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025 (finance recovery amended by FD-029). GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution). Membership commercial: FD-027. Revenue recognition / commercial classification: FD-028. Commission Engine / Marketplace 80/10/10 / BDP finance recovery: FD-029 (Affiliate future-only; ZBP removed). Circle lifecycle: FD-024. Circle internal architecture and governance: FD-030. AI Lead Assist / Lead Intelligence: FD-031 / `39_AI_Lead_Assist_Spec.md` (GCE Lead Intelligence Engine + Opportunity Desk; Stage-1 Core Lead Rights protected).
 
 
 
@@ -48,7 +48,7 @@ Features:
 \- Business Circles
 \- GC Power Sector / Business Circles (FD-027 / FD-030; four fixed sectors; flexible seats; do not use Power Circle as current)
 \- Referrals
-\- AI Lead Assist
+\- AI Lead Assist / GCE Lead Intelligence Engine (FD-031)
 \- Business Meetings
 \- Membership System
 
@@ -174,7 +174,7 @@ The GCE platform generates revenue through:
 \- Membership Fees
 \- GCE Marketplace Commission
 \- GCE Enterprise Projects
-\- Validation Fees
+\- Optional Lead Assist paid products (Unresolved — FD-031; not a Stage-1 gate on ordinary referrals)
 \- Franchise Fees
 \- Training Fees
 \- Event Revenue
@@ -184,39 +184,31 @@ The GCE platform generates revenue through:
 
 \# AI Lead Assist
 
-AI Lead Assist is the intelligence engine of GCE.
+**GCE Lead Intelligence Engine** (central) with vertical-specific rules, supported by the **GCE Lead Intelligence and Opportunity Desk** (FD-031 / `39_AI_Lead_Assist_Spec.md`).
 
-Workflow:
+Stage-1 **Core Lead Rights** are protected: ordinary give/receive, Accept/Decline/Clarify/Duplicate/Invalid/Collaborate, Dual-Confirmed Closed Business — without requiring Lead Assist Pro or other paid products. No automatic success fee in Stage 1.
 
-User Requirement
+Conceptual workflow:
 
-↓
-
-Identity Verification
+Requirement + Consent
 
 ↓
 
-PRM Verification
+Quality State + AI Classification / Match
 
 ↓
 
-Validation Fee
+Human Review when required (Opportunity Desk)
 
 ↓
 
-AI Matching
+Offer to Eligible Receiver (Circle-first for ordinary local Connect leads)
 
 ↓
 
-Rainmaker Distribution
+Receiver Actions → Follow-up / Reassignment (history preserved) → Closed Business
 
-↓
-
-Ground Verification
-
-↓
-
-Business Conversion
+Do not describe Validation Fee → Rainmaker Pass Lead as the current Stage-1 flow.
 
 \---
 

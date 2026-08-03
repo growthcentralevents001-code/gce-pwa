@@ -36,9 +36,10 @@ always follow the official AI documentation before writing code.
 
 Always consult the following documentation before implementing AI functionality.
 
-\#\# AI Lead Assist
+\#\# AI Lead Assist / Lead Intelligence
 
 \`\`\`
+docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
 39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
 36\_Commercial\_Constants.md
@@ -46,12 +47,15 @@ Always consult the following documentation before implementing AI functionality.
 
 Defines:
 
-\- Lead Assist Workflow
-\- Lead Routing
-\- Lead Processing
-\- AI Business Flow
+\- Central GCE Lead Intelligence Engine
+\- GCE Lead Intelligence and Opportunity Desk
+\- Core Lead Rights
+\- Quality states and Circle-first routing
+\- Human oversight and monetisation principles
 
-Lead Assist is a **separate service** from base GCE Connect Circle Membership. Do not treat FD-027 membership commercial rules as approving Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission.
+Lead Assist is a **separate service** from base GCE Connect Circle Membership. Do **not** treat FD-027 membership commercial rules as approving Lead Assist fee, escrow, deficit-reward, credit voucher, forfeiture, blocking, or Lead Assist commission. Do **not** implement historical ₹500 / Rainmaker-only / Pass Lead / subscription-credit narratives as active Stage-1 rules. Exact prices, escrow, forfeiture, voucher/credit, success fee, and Lead Assist commission remain **Unresolved** under FD-031 — do not invent.
+
+**Human-control hard bans:** AI must not independently award projects, transfer money, approve refunds/settlement, suspend/terminate membership, permanently alter Trust Rank, grant/deny Core Tier, or decide serious disputes.
 
 For Circle-related AI features (matching, referral routing, attendance insights), respect FD-030 / `38_Circle_Architecture.md`: Protected Tag Scope, one primary Specialization, platform-recorded referrals, Dual-Confirmed Closed Business, and no guaranteed business outcomes. Do not invent workshop commission or voting rules.
 
@@ -150,19 +154,16 @@ Whenever implementing Lead Assist:
 Always read:
 
 \`\`\`
+docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
 39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
 22\_AI\_Rules.md
 36\_Commercial\_Constants.md
 \`\`\`
 
-Never change:
+Follow FD-031 routing hierarchy (eligibility-first / Circle-first). Do not invent paid priority, mandatory validation fees, or automatic success fees.
 
-\- Lead Routing
-\- Matching Logic
-\- Distribution Workflow
-
-unless explicitly instructed.
+Never change Lead Routing / Matching Logic / Distribution Workflow away from FD-031 unless explicitly instructed by a later Founder Decision.
 
 \---
 

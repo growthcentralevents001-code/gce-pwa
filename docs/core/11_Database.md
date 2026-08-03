@@ -17,6 +17,7 @@ Schema narratives in this file are **illustrative** until migrations and generat
 - **FD-028** — Revenue recognition / commercial classification concepts (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, refunds/recoveries, multi-currency). Exact schemas/enums remain **Pending Technical Design**
 - **FD-029** — Commission Engine / stakeholder entitlement concepts (commission states, Marketplace 80/10/10, Connect/Marketplace BDP finance recovery, Recoverable Balances, attribution). Exact schemas/enums remain **Pending Technical Design**
 - **FD-030** — Circle internal architecture / governance concepts (verification outcomes, Governing Body roles, attendance states, Dual-Confirmed Closed Business, workshop records, Protected Tag Scope). Exact schemas/enums remain **Pending Technical Design**
+- **FD-031** — AI Lead Assist / Lead Intelligence concepts (quality states, consent, assignment history, AI confidence/override, Opportunity Desk, Core Lead Rights). Exact schemas/enums remain **Pending Technical Design**
 
 Also: **FD-001** (unified platform / one account / verticals).
 
@@ -25,13 +26,14 @@ Also: **FD-001** (unified platform / one account / verticals).
 - Exact database enums (including `user_role` values)
 - Exact Connect BDP Franchise Unit schema, status enums, or commission-attribution tables
 - Exact Enterprise Franchise Pack, client-attribution, Platform Expert, Master Project / City Unit, or Vendor Opportunity Fee schemas
+- Exact Lead Assist quality-state / assignment / consent / AI-confidence enums and tables (FD-031)
 - Final table/column names and constraints
 - Exact membership or Circle state-machine enum values
 - Supabase RLS policy definitions
 - Tax / settlement / ledger table schemas
 - Permission-code schemas
 
-Living role terminology: `35_Role_Taxonomy.md`. Circle living summary: `38_Circle_Architecture.md`.
+Living role terminology: `35_Role_Taxonomy.md`. Circle living summary: `38_Circle_Architecture.md`. Lead Assist living summary: `39_AI_Lead_Assist_Spec.md`.
 
 ---
 
@@ -202,17 +204,19 @@ Tables
 
  AI Lead Assist
 
-Stores AI lead information.
+Stores AI lead / opportunity information (conceptual — FD-031). Exact enums/schemas: **Pending Technical Design**.
 
-Tables
+Illustrative tables
 
  leads
- lead\_requests
- lead\_validation
- lead\_assignment
- lead\_history
- lead\_status
- ai\_matching\_scores
+ lead_requests
+ lead_validation
+ lead_assignment
+ lead_history
+ lead_status
+ ai_matching_scores
+
+**FD-031 conceptual requirements (do not invent final columns):** quality state (Unverified / Preliminarily Verified / Qualified / Rejected-Invalid); consent / lawful-basis status; assignment and reassignment history (must be preserved); AI confidence and human-override records; original source / Lead Giver attribution. Do **not** hard-delete lead or assignment history except via an approved legal privacy workflow.
 
  Notifications
 

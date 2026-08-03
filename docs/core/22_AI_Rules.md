@@ -2,301 +2,79 @@
 
 ## Canonical references
 
-- **AI Lead Assist (authoritative):** `39_AI_Lead_Assist_Spec.md`
-- **Fees:** `36_Commercial_Constants.md` (Lead Assist amounts — not approved under FD-027)
+- **AI Lead Assist / Lead Intelligence (highest Founder authority):** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md`
+- **Living Lead Assist specification:** `39_AI_Lead_Assist_Spec.md`
+- **Narrative:** `10_AI_Lead_Assist.md`
+- **Commercial constants:** `36_Commercial_Constants.md` (Lead Assist prices Unresolved — do not treat historical ₹500 as active)
 - **Membership commercial (separate):** FD-027 / `05_Memberships.md`
+- **Circle context:** FD-030 / `38_Circle_Architecture.md`
 
-This file covers the broader GCE AI Engine. For Lead Assist lifecycle and fairness rules, follow `39_AI_Lead_Assist_Spec.md`. Lead Assist remains separate from base GCE Connect Circle Membership (FD-027).
+This file covers the broader GCE AI Engine. For Lead Assist lifecycle, rights, routing, monetisation, and human oversight, follow **FD-031** and `39_AI_Lead_Assist_Spec.md`. Do not restate obsolete Validation Fee / Rainmaker-only / Pass Lead / Deficit Reward rules as active Stage-1 commercial.
 
- Overview
+---
 
-The GCE AI Engine is the intelligence layer of the platform.
+## Overview
 
-Its primary purpose is to automate business matching, distribute verified business opportunities fairly, improve networking efficiency, and maximize business growth for all stakeholders.
+The GCE AI Engine is the intelligence layer of the platform. For opportunities, GCE operates **one central GCE Lead Intelligence Engine** with vertical-specific rules, supported by the **GCE Lead Intelligence and Opportunity Desk**.
 
-The AI system never replaces human verification. It works alongside PRMs, Members, and Platform Administrators to ensure quality and transparency.
+AI works **with** human verification — it does not replace human judgment for high-risk, low-confidence, disputed, regulated, privacy-sensitive, or high-value cases.
 
- AI Objectives
+---
 
-The AI Engine is designed to:
+## AI objectives
 
- Match businesses intelligently
- Distribute verified leads
- Improve referral quality
- Reward active contributors
- Prevent fraud
- Increase business opportunities
- Improve platform efficiency
+- Classify and match opportunities intelligently
+- Support fair eligibility-based routing
+- Improve referral and lead quality
+- Detect fraud and duplicate signals
+- Support analytics and explainability
+- Never guarantee sale, conversion, or revenue
 
- AI Modules
+---
 
-The GCE AI Engine consists of:
+## AI modules
 
- AI Lead Assist
- Business Matching
- Circle Matching
- Tag Matching
- Rainmaker Engine
- Lead Verification
- Referral Intelligence
- Recommendation Engine (Future)
- Business Analytics (Future)
+- AI Lead Assist / Lead Intelligence (FD-031)
+- Business Matching
+- Circle Matching
+- Tag / Specialization Matching
+- Lead Verification Support
+- Referral Intelligence
+- Recommendation Engine (Future)
+- Business Analytics (Future)
 
- AI Lead Assist Workflow
+Legacy label **Rainmaker Engine** may appear in historical code or docs — treat as legacy naming pending migration; do not implement as the sole Stage-1 architecture.
 
-Business Requirement Submitted
+---
 
-↓
+## Lead Assist — binding constraints (FD-031)
 
-Identity Verification
+1. **Core Lead Rights protected** — do not gate ordinary give/receive/view on premium purchase or mandatory validation fee.
+2. **Quality states** — Unverified · Preliminarily Verified · Qualified · Rejected/Invalid.
+3. **Parties** — distinguish Lead Source / Giver / Verifier / Receiver / Selected Provider / Closer / Collaborator / Commercial Beneficiary.
+4. **Routing** — eligibility-first; Circle-first for ordinary local Connect; paid products must not buy priority or override Specialization / Protected Tag Scope.
+5. **Human control** — AI may recommend/classify/match/route/flag; AI may **not** award projects, transfer money, approve refunds/settlement, suspend/terminate membership, permanently alter Trust Rank, grant/deny Core Tier, or decide serious disputes.
+6. **Human review mandatory** for low-confidence, high-value, regulated, privacy, fraud, disputed, Enterprise-escalation, and restriction cases.
+7. **Preserve** original source, assignment history, AI confidence, rule/model version, and override audit. No hard-delete except approved legal privacy workflow.
+8. **No automatic success fee** at Stage 1; Lead Assist commission not automatic (FD-029).
+9. **No guarantee** of commercial outcome.
 
-↓
+Full workflow, deadlines, monetisation levels, phased launch, and unresolved list: `39_AI_Lead_Assist_Spec.md`.
 
-PRM Verification
+---
 
-↓
+## General AI behaviour (non–Lead Assist)
 
-Validation Fee Payment
+- Prefer documented business taxonomy (GC Power Sector → Business Specialization → Tags).
+- Do not invent scoring weights, exclusivity rules, or Trust Rank penalties.
+- Log AI-supported decisions with confidence and version where applicable.
+- Stakeholder favouritism and hidden personal commission from selections are prohibited.
+- Expert Desk / authorised human override is required for serious Lead Assist interventions — not silent “admin-only” black-box changes without audit.
 
-↓
+---
 
-AI Business Matching
+## Cross references
 
-↓
-
-Rainmaker Selection
-
-↓
-
-Lead Assignment
-
-↓
-
-Ground Verification
-
-↓
-
-Business Conversion
-
- Rule 1 — Verified Users Only
-
-AI processes business requirements only from verified users.
-
-Verification includes:
-
- Email Verification
- Mobile Verification
- ID Verification (where required)
-
- Rule 2 — PRM Approval Required
-
-The AI Engine cannot distribute leads until the Platform Relationship Manager (PRM) approves the business requirement.
-
- Rule 3 — Validation Fee
-
-A verified lead requires payment of the validation fee.
-
-Current Validation Fee: **`36_Commercial_Constants.md`**
-
-Without successful payment, the AI Engine does not process the request.
-
- Rule 4 — Business Category Matching
-
-The AI Engine first matches:
-
- Business Category
- Business Type
- Business Industry
-
-Only relevant businesses are considered.
-
- Rule 5 — Business Tag Matching
-
-The AI Engine compares:
-
- Business Tags
- Specialization Tags
-
-Tags are mandatory for accurate lead matching.
-
- Rule 6 — Circle Availability
-
-The AI Engine checks:
-
- Circle Availability
- Member Availability
- Business Category Availability
-
-Only active circles participate in AI matching.
-
- Rule 7 — Geographic Matching
-
-The AI Engine prioritizes:
-
- Same City
- Nearby Areas
- Same District
- Same State (if required)
-
-Future versions may support nationwide intelligent matching.
-
- Rule 8 — Rainmaker Selection
-
-The AI Engine automatically identifies the most suitable Rainmaker Giver based on platform rules.
-
-Selection considers:
-
- Internal Giving Activity
- Referral Contribution
- Business Participation
- Platform Engagement
-
-The selected Rainmaker receives the verified lead.
-
- Rule 9 — Pass Lead Workflow
-
-The Rainmaker reviews the lead and uses the \*\*Pass Lead\*\* feature to forward it to the most suitable noncompeting member within the circle.
-
-The AI Engine records:
-
- Who received the lead
- When it was passed
- Final recipient
- Current status
-
- Rule 10 — Ground Verification
-
-After lead delivery, the receiving member must verify the outcome.
-
-Possible outcomes:
-
- Genuine Lead
- NonGenuine Lead
-
-This feedback improves future AI decisions.
-
- Rule 11 — Fraud Detection
-
-The AI Engine continuously detects:
-
- Fake Users
- Duplicate Accounts
- Fake Business Leads
- Spam Requests
- Suspicious Activities
-
-Fraudulent requests are automatically flagged for review.
-
- Rule 12 — Learning Engine
-
-The AI continuously improves by analyzing:
-
- Successful Business Matches
- Lead Conversion Rate
- Member Feedback
- Business Categories
- Referral Success
- Marketplace Performance
-
-Future versions will use machine learning for smarter recommendations.
-
- Rule 13 — Business Priority
-
-When multiple businesses qualify, the AI considers:
-
- Tag Match
- Specialization Match
- Location
- Availability
- Circle Participation
- Historical Performance
-
-The best match receives higher priority.
-
- Rule 14 — Fair Distribution
-
-The AI Engine is designed to prevent repeated allocation to the same members.
-
-Business opportunities are distributed fairly across eligible participants based on platform rules.
-
- Rule 15 — No Manual Manipulation
-
-Stakeholders cannot manually override:
-
- AI Matching
- Rainmaker Selection
- Lead Priority
-
-Only Platform Admins may intervene in exceptional circumstances.
-
- Rule 16 — AI Logging
-
-Every AI decision is recorded.
-
-Logs include:
-
- Requirement ID
- User ID
- PRM Approval
- Validation Status
- Matching Result
- Rainmaker Selected
- Lead Receiver
- Final Status
- Timestamp
-
- Rule 17 — AI Performance Metrics
-
-The AI system tracks:
-
- Total Leads
- Verified Leads
- Converted Leads
- Rejected Leads
- Average Response Time
- Conversion Rate
- Fraud Detection Rate
- Member Participation
-
- Rule 18 — AI Notifications
-
-The AI automatically generates notifications for:
-
- Lead Assigned
- Lead Passed
- Lead Verified
- Lead Rejected
- Validation Pending
- Payment Pending
-
- Rule 19 — Future AI Features
-
-Planned enhancements include:
-
- AI Business Recommendations
- Smart Event Suggestions
- AI Referral Prediction
- Business Opportunity Forecasting
- Personalized Networking Suggestions
- AI Performance Ranking
- Predictive Analytics
-
- AI Security Rules
-
-The AI Engine follows platform security standards.
-
-Includes:
-
- Verified Identity
- JWT Authentication
- RoleBased Access Control (RBAC)
- Audit Logs
- Fraud Detection
- Secure API Access
- Encrypted Communication
-
- LongTerm Vision
-
-The GCE AI Engine is designed to become the intelligent decisionmaking layer of the entire ecosystem.
-
-It will automate business opportunity distribution, improve referral quality, enhance networking efficiency, reduce fraud, and ensure that verified business opportunities reach the most suitable stakeholders through a transparent, fair, and continuously learning AIpowered system.
+- FD-031 · `39_AI_Lead_Assist_Spec.md` · `10_AI_Lead_Assist.md`
+- `14_Business_Rules.md` · `36_Commercial_Constants.md`
+- `.cursor/rules/07_AI_Rules.mdc`

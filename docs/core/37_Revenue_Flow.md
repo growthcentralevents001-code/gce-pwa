@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Highest authority for revenue recognition / commercial classification:** FD-028 · **Commission Engine / entitlement / BDP finance recovery:** FD-029 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 (finance amended by FD-029) · **GCE Enterprise:** FD-026 · **Circle workshops / fee-collection controls:** FD-030
+**Highest authority for revenue recognition / commercial classification:** FD-028 · **Commission Engine / entitlement / BDP finance recovery:** FD-029 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 (finance amended by FD-029) · **GCE Enterprise:** FD-026 · **Circle workshops / fee-collection controls:** FD-030 · **Lead Assist / Lead Intelligence monetisation principles:** FD-031
 
-Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle workshop commercial controls **FD-030**.
+Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle workshop commercial controls **FD-030**; for Lead Assist monetisation architecture **FD-031**.
 
 **Rule:** Payment receipt ≠ automatic settlement eligibility. Vertical-specific settlement triggers apply (FD-021). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate (FD-028). Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029). Pipeline/proposal values are not recognised revenue.
 
@@ -190,26 +190,26 @@ Marketplace BDP Franchise Unit: FD-029.
 Enterprise BDP Franchise Pack commercial rules: FD-026.
 Payments applicability: `21_Payments.md`.
 
-### E. AI Lead Assist validation fee
+### E. AI Lead Assist / Lead Intelligence (FD-031)
 
 ```text
-User submits requirement (free)
+Lead submitted (Core Lead Rights — ordinary referral not gated by premium)
   ↓
-Identity verification
+Consent / quality verification (Unverified → Preliminarily Verified → Qualified / Rejected)
   ↓
-PRM validation
+AI classification + eligibility-first / Circle-first routing
   ↓
-User pays validation fee  (Pending Lead Assist Commercial Revenue — FD-028 does not activate commercial model)
+Human review where required (Opportunity Desk)
   ↓
-Lead becomes active → AI matching → Rainmaker → Pass Lead
+Offered → Accept / Decline / Clarify / Duplicate / Invalid / Collaborate
   ↓
-Ground verification
-  ├─ Genuine → receiving member gets subscription credit
-  └─ Non-genuine → fee forfeited; user flagged / possible block after repeats
+Follow-up → Dual-Confirmed Closed Business where applicable
+  ↓
+Optional paid layers (prices Unresolved): Lead Assist Pro · Expert-Assisted Lead Selection · Managed Opportunity
 ```
 
-Amounts and workflow narrative remain under Lead Assist docs; commercial activation remains unresolved under FD-028.
-Full rules: `39_AI_Lead_Assist_Spec.md`.
+Historical ₹500 validation fee / Rainmaker-only / subscription-credit / forfeiture narrative is **not** active Stage-1 commercial. Success fee = Stage 4 / separate approval. Connect BDP does not automatically earn Lead Assist commission.
+Full rules: FD-031 / `39_AI_Lead_Assist_Spec.md`.
 
 ---
 

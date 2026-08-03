@@ -2,268 +2,93 @@
 
 ## Canonical references
 
-- **Complete AI Lead Assist specification (rules, lifecycle, fairness):** `39_AI_Lead_Assist_Spec.md`
-- **Fees and subscription credit amounts:** `36_Commercial_Constants.md` (Lead Assist commercial constants — **Pending Lead Assist Commercial Revenue**; not activated under FD-028 / not approved under FD-027 membership constitution)
-- **Membership commercial authority (separate):** FD-027 / `05_Memberships.md`
-- **Revenue recognition (separate):** FD-028
-- **Circle context:** `38_Circle_Architecture.md`
+- **Highest Founder authority:** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md`
+- **Complete living specification:** `39_AI_Lead_Assist_Spec.md`
+- **Commercial constants:** `36_Commercial_Constants.md` (Lead Assist prices/fees remain **Unresolved** under FD-031 — do not treat historical ₹500 narrative as active)
+- **Membership commercial (separate):** FD-027 / `05_Memberships.md`
+- **Revenue recognition:** FD-028 · **Commission:** FD-029
+- **Circle referrals / Dual-Confirmed Closed Business:** FD-030 / `38_Circle_Architecture.md`
+- **Enterprise project treatment:** FD-026
 - **Roles:** `35_Role_Taxonomy.md`
 
-This file retains explanatory narrative. **Authoritative rules live in `39_AI_Lead_Assist_Spec.md`.** Lead Assist remains a separate service from base GCE Connect Circle Membership (FD-027 / FD-028).
+This file retains explanatory narrative. **Authoritative rules live in FD-031 and `39_AI_Lead_Assist_Spec.md`.**
 
- Overview
+---
 
-AI Lead Assist is GCE's intelligent lead distribution engine.
+## Overview
 
-Unlike traditional lead generation platforms where leads are manually assigned or sold to multiple businesses, GCE uses Artificial Intelligence to validate, verify, rank, and intelligently distribute business opportunities to the most suitable members inside the ecosystem.
+GCE operates **one central GCE Lead Intelligence Engine** with vertical-specific rules. **GCE Connect AI Lead Assist** helps classify, verify, match, route, track, and coordinate business opportunities across Connect, Marketplace, Enterprise, and approved future sub-verticals — with human oversight from the **GCE Lead Intelligence and Opportunity Desk**.
 
-The objective is to ensure that every qualified business opportunity reaches the right business at the right time while maintaining fairness, transparency, and trust.
+It is **not** a guaranteed lead-selling service, not pay-to-win routing, and not a substitute for Circle relationship-building or human judgment.
 
- Objectives
+---
 
-The AI Lead Assist system is designed to:
+## Objectives
 
- Generate verified business leads
- Eliminate fake enquiries
- Improve lead quality
- Match the right business with the right opportunity
- Reward active business contributors
- Increase business conversion
- Maintain transparency
- Prevent duplicate lead distribution
+- Improve lead quality through verification and qualification states
+- Match opportunities to eligible stakeholders fairly
+- Protect Lead Giver attribution and Lead Receiver rights
+- Support customer consent and privacy
+- Enable Circle-first routing for ordinary local Connect leads
+- Escalate appropriately to Marketplace or Enterprise
+- Offer optional paid intelligence and managed services without buying priority
+- Preserve audit, explainability, and human review
 
- Lead Sources
+---
 
-Business leads can originate from:
+## Core principles (Stage 1)
 
- GCE Public Website
- Mobile Application
- Marketplace
- Enterprise Enquiries
- Referral Network
- QR Campaigns
- Advertisement Campaigns
- Partner Integrations
+1. **Core Lead Rights are protected** — giving/receiving an ordinary eligible referral does not require Lead Assist Pro, advertising, or Expert Selection.
+2. **Quality states** — Unverified → Preliminarily Verified → Qualified → Rejected/Invalid (not every submission is “Verified”).
+3. **Eligibility-first and Circle-first routing** — paid products cannot override Specialization, Protected Tag Scope, geography, compliance, or fair routing.
+4. **Human control** — AI recommends and assists; it does not award projects, transfer money, suspend members, alter Trust Rank, grant Core Tier, or decide serious disputes.
+5. **No automatic success fee** at Stage 1; historical ₹500 validation fee / escrow / forfeiture / subscription-credit narratives are **not active**.
+6. **No guarantee** of sale, contract, conversion, or revenue.
 
- AI Lead Assist Workflow
+---
 
-The complete lead lifecycle consists of five stages.
+## Expert team
 
- Step 1 – Public Requirement Submission
+The **GCE Lead Intelligence and Opportunity Desk** verifies, clarifies, shortlists, reviews low-confidence AI output, coordinates opportunities, and handles disputes. It does not own leads, sell customer data, or take hidden commission from selected members.
 
-A user visits the GCE platform and submits a business requirement.
+Legacy PRM references may describe desk operational support pending role migration.
 
-Examples:
+---
 
- Need a Hotel
- Need a Banquet Hall
- Need an Interior Designer
- Need a CA
- Need a Wedding Planner
- Need a Digital Marketing Agency
+## Simple Lead Receiver actions
 
-The user submits:
+- Accept
+- Decline
+- Ask for Clarification
+- Report Duplicate
+- Report Invalid
+- Request Collaboration
 
- Requirement
- Budget
- Location
- Timeline
- Contact Details
+Recommended urgency deadlines: Urgent 2h · High Priority 6h · Standard 24h · Low Urgency 48h (operating-hour detail Unresolved).
 
-The submission is completely free.
+---
 
- Step 2 – Identity Verification
+## Optional paid levels (prices Unresolved)
 
-Before processing the lead, the user must upload:
+| Level | Product | Role |
+|-------|---------|------|
+| 1 | Core Lead Rights | Included / protected |
+| 2 | **Lead Assist Pro** | Optional productivity and analytics tools |
+| 3 | **GCE Expert-Assisted Lead Selection** / **GCE Managed Opportunity Service** | Optional expert-managed services |
 
- Government ID Proof
+Success-linked fees require Stage 4 / separate Founder approval.
 
-Examples:
+---
 
- Aadhaar
- Passport
- Driving Licence
- PAN (where applicable)
+## Phased launch
 
-Purpose:
+- **Stage 1:** Core rights, basic AI + desk, human review, no hidden paid priority, no automatic success fee
+- **Stage 2:** Lead Assist Pro, enhanced verification, customer-side Expert Selection, advanced analytics
+- **Stage 3:** Managed Opportunity, collaboration coordination, deeper Marketplace/Enterprise conversion
+- **Stage 4:** Success-linked fees, institutional/API products — separate approval
 
- Prevent fake enquiries
- Prevent spam
- Verify genuine users
+---
 
- Step 3 – PRM Validation
+## Cross references
 
-The Platform Relationship Manager (PRM) reviews every submitted requirement.
-
-The PRM verifies:
-
- Requirement authenticity
- Budget
- Timeline
- Business category
- Required specialization
- Location
- Circle availability
-
-Only verified requirements proceed further.
-
- Step 4 – Validation Fee
-
-Once the PRM approves the requirement, the platform sends the user a secure payment link.
-
-Validation Fee: **`36_Commercial_Constants.md`** / `39_AI_Lead_Assist_Spec.md`
-
-Purpose:
-
- Filter nonserious enquiries
- Improve lead quality
- Reduce fake requests
-
-After successful payment, the lead becomes active.
-
- Step 5 – AI Matching Engine
-
-The AI engine analyzes:
-
- Business Category
- Business Tags
- Specialization Tags
- City
- Circle
- Member Activity
- Internal Giving Score
- Referral History
- Performance Score
- Availability
-
-The AI identifies the best eligible member.
-
- Deficit Reward Engine
-
-The AI follows the Deficit Reward Model.
-
-Instead of giving every lead to the highestperforming member, the system identifies members who:
-
- Frequently give referrals
- Actively participate
- Receive comparatively fewer business opportunities
-
-These members receive priority.
-
-This creates a balanced business ecosystem.
-
- Rainmaker Giver
-
-The selected member is known as the Rainmaker Giver.
-
-Responsibilities:
-
- Review the business requirement
- Verify relevance
- Pass the lead to the most suitable noncompeting member within the circle
-
-This process promotes collaboration instead of competition.
-
- Lead Pass Workflow
-
-Rainmaker Giver
-
-↓
-
-PASS LEAD
-
-↓
-
-Eligible Circle Member
-
-↓
-
-Business Discussion
-
-↓
-
-Project Conversion
-
-↓
-
-Business Transaction
-
- Ground Verification
-
-The receiving member must verify whether the lead is genuine.
-
-Possible outcomes:
-
- Genuine Lead
-
- Lead accepted
- Business discussion starts
- Member receives subscription credit per **`36_Commercial_Constants.md`** / `39_AI_Lead_Assist_Spec.md`
-
- NonGenuine Lead
-
-If the enquiry is fake:
-
- Lead rejected
- User account flagged
- Validation Fee forfeited (amount in **`36_Commercial_Constants.md`)
- User ID blocked after repeated violations
-
- AI Decision Parameters
-
-The AI considers multiple factors:
-
- Business Category
- Business Tags
- Specialization Tags
- Circle Membership
- Business Ranking
- Referral Score
- Internal Giving Score
- Attendance
- Business Activity
- Geographic Location
-
- Dashboard Modules
-
-The AI Lead Assist Dashboard includes:
-
- New Leads
- Assigned Leads
- Passed Leads
- Lead Status
- Lead Verification
- Lead History
- AI Recommendations
- Business Matching Score
- Subscription Credit
- Analytics
-
- Business Benefits
-
-For Users
-
- Verified Businesses
- Faster Response
- Better Service Quality
-
-For Members
-
- Qualified Leads
- Fair Lead Distribution
- AI Business Matching
- Increased Revenue
-
-For Platform
-
- Better Lead Quality
- Reduced Spam
- Higher Conversion Rate
- Increased Trust
- Improved Member Satisfaction
-
- LongTerm Vision
-
-The AI Lead Assist engine is designed to become the intelligence layer of the GCE ecosystem.
-
-Its longterm goal is to create India's most trusted AIpowered business opportunity distribution system, where every verified business requirement is intelligently matched with the most suitable professional, ensuring fairness, transparency, and maximum business growth for the entire GCE community.
+Full rules, rights, lifecycle, privacy, fraud, dashboards, and unresolved list: **`39_AI_Lead_Assist_Spec.md`** / **FD-031**.

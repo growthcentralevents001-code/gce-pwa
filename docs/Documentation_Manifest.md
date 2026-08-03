@@ -79,7 +79,7 @@ Location: `docs/core/`
 | 36 | `36_Commercial_Constants.md` | Canonical commercial constants (fees, commissions, limits, targets) |
 | 37 | `37_Revenue_Flow.md` | Canonical revenue flows across GCE Connect / GCE Marketplace / GCE Enterprise |
 | 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance) |
-| 39 | `39_AI_Lead_Assist_Spec.md` | Canonical AI Lead Assist specification |
+| 39 | `39_AI_Lead_Assist_Spec.md` | Canonical AI Lead Assist / Lead Intelligence specification (FD-031) |
 
 ## Numbering note
 
@@ -173,6 +173,7 @@ Location: `docs/founder-decisions/`
 | `FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
 | `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 | `FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
+| `FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` | GCE Connect AI Lead Assist / Lead Intelligence architecture |
 
 ## Development Workflow
 
@@ -209,18 +210,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.8.0 |
+| Documentation Version | v1.9.0 |
 | Last Updated | 2026-08-03 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 12 |
+| Total Founder Decisions | 13 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 55 |
+| Total Documentation Files (`docs/`) | 56 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 12 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 55.
+Total documentation files under `docs/` = 32 core + 8 engineering + 13 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 56.
 
 ## Changelog
+
+### v1.9.0
+
+- Indexed FD-031 (GCE Connect AI Lead Assist Architecture) as highest authority for Lead Intelligence Engine, Opportunity Desk, Core Lead Rights, routing, monetisation principles, and phased launch
+- Synchronised living Markdown with FD-031 (retired active ₹500/Rainmaker-only Stage-1 narrative; quality states; Circle-first; no pay-to-win; human control)
 
 ### v1.8.0
 

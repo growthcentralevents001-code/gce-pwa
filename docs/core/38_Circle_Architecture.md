@@ -561,7 +561,11 @@ From FD-030 and related decisions, including:
 
 ## AI Lead Assist and Circles
 
-AI matching may consider Circle membership, seat/specialization availability, and activity (see `39_AI_Lead_Assist_Spec.md`). Rainmaker Pass Lead is to suitable **non-competing** members within the Circle context.
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md` (with Dual-Confirmed Closed Business under **FD-030**).
+
+Ordinary local Connect leads use **Circle-first** routing within eligibility, Business Specialization, Protected Tag Scope, and non-competing rules. AI matching may consider Circle membership, seat/specialization availability, and activity. Do **not** describe Rainmaker Pass Lead as the current Circle lead-routing model.
+
+Closed business recognition for Circle referrals remains **Dual-Confirmed Closed Business** (lead giver + receiving member). Lead Assist payment is not required for Core Lead Rights on ordinary eligible Circle referrals.
 
 Membership eligibility and seat rules remain governed by FD-022 / FD-024 / FD-027 / FD-030.
 
@@ -575,7 +579,7 @@ Membership eligibility and seat rules remain governed by FD-022 / FD-024 / FD-02
 - FD-023 RBAC
 - FD-025 / FD-029 Connect BDP commercial and commission
 - FD-027 Membership commercial
-- FD-001 Business model
+- FD-031 AI Lead Assist / Circle-first routing context
 - `05_Memberships.md`
 - `06_CBDP.md` (Connect BDP narrative; legacy filename)
 - `14_Business_Rules.md`

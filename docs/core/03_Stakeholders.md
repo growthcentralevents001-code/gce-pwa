@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles lifecycle:** FD-024 · **Circles internal governance:** FD-030 / `38_Circle_Architecture.md` · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Commercial numbers:** `36_Commercial_Constants.md`
+**Foundational stakeholders:** FD-001 · **Roles/RBAC:** FD-023 / `35_Role_Taxonomy.md` · **Circles lifecycle:** FD-024 · **Circles internal governance:** FD-030 / `38_Circle_Architecture.md` · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026 · **AI Lead Assist / Opportunity Desk:** FD-031 / `39_AI_Lead_Assist_Spec.md` · **Commercial numbers:** `36_Commercial_Constants.md`
 
-Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Enterprise Platform Expert, Circle Member, Enterprise Client, **Governing Body** (legacy: Board of Governance / Circle Board). Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025 / FD-030). Enterprise BDP allocation is client-based; Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data (FD-026). Governing Body supports Circle operations but does not own Circles, approve final membership/taxonomy, or terminate members independently (FD-030).
+Prefer approved names: Connect BDP, Marketplace BDP, Enterprise BDP, Enterprise Platform Expert, Circle Member, Enterprise Client, **Governing Body** (legacy: Board of Governance / Circle Board), **GCE Lead Intelligence and Opportunity Desk**. Circles and platform IP belong to **GCE**. Multi-role via one account is Founder-approved; conflict rules apply (FD-023). Connect BDP does not own territory, Circles, members, or data (FD-025 / FD-030). Enterprise BDP allocation is client-based; Enterprise BDP and Enterprise Platform Expert do not own clients, projects, or data (FD-026). Governing Body supports Circle operations but does not own Circles, approve final membership/taxonomy, or terminate members independently (FD-030). Opportunity Desk supports lead verification/coordination but does **not** own leads and must not receive hidden personal commission (FD-031). Legacy **PRM** language may map to desk operational support pending role migration.
 
 Overview
 
@@ -22,6 +22,7 @@ Platform Admin
         ├──────── Relationship Managers (RM)
         │
         ├──────── Platform Relationship Managers (PRM)
+        │         (legacy ops mapping toward GCE Lead Intelligence and Opportunity Desk — FD-031)
         │
         ├──────── GCE Connect Business Development Partners (Connect BDP)
         │
@@ -80,7 +81,7 @@ Each member belongs to a business circle with category exclusivity.
  Benefits
 
  Qualified Referrals
- AI Lead Distribution
+ AI Lead Assist / Lead Intelligence (FD-031)
  Business Growth
  Business Visibility
  Professional Networking
@@ -217,17 +218,22 @@ Enterprise Platform Experts are internal GCE employees or directly controlled sp
 
  Access is project-scoped under FD-023. Exact compensation amounts remain unresolved.
 
- 7\. Platform Relationship Manager (PRM)
+ 7\. Platform Relationship Manager (PRM) / Opportunity Desk
 
-PRMs are salaried employees responsible for validating and qualifying business requirements before they enter the platform.
+**GCE Lead Intelligence and Opportunity Desk** is the approved Lead Assist expert team (FD-031). Legacy **PRM** language may map to desk operational support pending role migration. Desk operators are retained/controlled by GCE; they do **not** own leads and must not receive hidden personal commission from selected members.
 
  Responsibilities
 
- Verify Business Requirements
- Validate User Information
- Match Business Categories
- Verify Specialization Tags
- Approve Qualified Leads
+ Verify / clarify business requirements
+ Support quality-state transitions and human review
+ Prepare briefs and match recommendations
+ Coordinate sensitive / high-value cases
+ Review duplicate, invalid, privacy, and attribution disputes
+ Support Managed Opportunities when activated
+
+ Must not
+
+ Secretly favour members; sell customer data; accept contracts for members; set member pricing; guarantee provider performance; override taxonomy without authority; own leads
 
  Benefits
 
@@ -326,7 +332,7 @@ Marketplace BDPs grow the marketplace.
 
 Enterprise BDPs acquire corporate business.
 
-PRMs validate business opportunities.
+PRMs / Opportunity Desk operators validate and coordinate business opportunities (do not own leads — FD-031).
 
 RMs support the ecosystem.
 

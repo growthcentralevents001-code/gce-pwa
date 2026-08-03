@@ -2,7 +2,7 @@
 
 ## Authority
 
-Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Circle attendance, Dual-Confirmed Closed Business, Governing Body, and verification analytics follow **FD-030** / `38_Circle_Architecture.md` (expected ≥75% physical attendance; visitor does not reserve a seat; no automatic membership termination from attendance alone). Connect BDP commercial analytics must follow **FD-025** / **FD-029**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Revenue recognition follows **FD-028**. Commission Engine states and Marketplace 80/10/10 follow **FD-029**. Reports should separately show Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Estimated/Provisional/Earned/On-Hold/Settlement-Eligible/Paid/Reversed Commission, Recoverable Balance, stakeholder entitlement, refunds, reversals, chargebacks, taxes, TDS, finance recovery, pending/paid settlement, net retained platform amount, and original vs reporting currency. Do not invent workshop commission shares. Exact dashboard report designs remain Pending Technical Design.
+Pending commission and settlement metrics must not treat pending commission as guaranteed payable (FD-021). Circle Health Score may appear as a concept (FD-024); exact formulas/thresholds are **not approved**. Circle attendance, Dual-Confirmed Closed Business, Governing Body, and verification analytics follow **FD-030** / `38_Circle_Architecture.md` (expected ≥75% physical attendance; visitor does not reserve a seat; no automatic membership termination from attendance alone). Connect BDP commercial analytics must follow **FD-025** / **FD-029**. GCE Enterprise analytics must follow **FD-026** (Franchise Pack targets on eligible collected revenue; platform commission vs Enterprise BDP 25% of platform commission; proposal value does not count as achieved revenue; Vendor Opportunity Fee % unresolved). Revenue recognition follows **FD-028**. Commission Engine states and Marketplace 80/10/10 follow **FD-029**. Lead Assist analytics follow **FD-031** / `39_AI_Lead_Assist_Spec.md` — use quality states and Core Lead Rights metrics; do not treat Validation Fee / Rainmaker Pass Lead language as current. Reports should separately show Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Estimated/Provisional/Earned/On-Hold/Settlement-Eligible/Paid/Reversed Commission, Recoverable Balance, stakeholder entitlement, refunds, reversals, chargebacks, taxes, TDS, finance recovery, pending/paid settlement, net retained platform amount, and original vs reporting currency. Do not invent workshop commission shares. Exact dashboard report designs remain Pending Technical Design.
 
 Analytics & Reports
 
@@ -143,16 +143,22 @@ Enterprise dashboards include:
 
  AI Lead Assist Analytics
 
-AI reports include:
+Authority: **FD-031** / `39_AI_Lead_Assist_Spec.md`.
 
- Total Leads
- Verified Leads
- Rejected Leads
- Genuine Leads
- Fake Leads
- Lead Conversion Rate
- Average Processing Time
- Rainmaker Performance
+Lead Assist reports include (exact designs Pending Technical Design):
+
+ Total Leads Submitted
+ Quality-State Counts (Unverified / Preliminarily Verified / Qualified / Rejected-Invalid)
+ Human-Review Queue Volume
+ Acceptance / Decline / Clarify / Duplicate / Invalid / Collaborate Rates
+ Routing and Response Times
+ Reassignment Rate
+ Conversion / Dual-Confirmed Closed Business Signals
+ Consent / Privacy Incident Flags
+ Fraud Flags
+ Optional Paid-Product Adoption (Pro / verification / Expert / Managed — when activated)
+
+Do not use “Verified Leads / Rainmaker Performance / Validation Fee Revenue” as the primary Lead Assist metric language.
 
  Revenue Analytics
 
@@ -162,7 +168,7 @@ Platformwide revenue reports include:
  Marketplace Revenue
  Enterprise Revenue
  Franchise Revenue
- Validation Fee Revenue
+ Optional Lead Assist Paid-Product Revenue (Unresolved / Pending activation — FD-031 / FD-028)
  Event Revenue
  Total Revenue
 

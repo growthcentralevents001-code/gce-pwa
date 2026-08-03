@@ -4,7 +4,7 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
@@ -23,11 +23,12 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - GCE Connect Circle Membership launch product is **Associate Tier** at ₹6,000/quarter (FD-027); Core Tier is future/achievement-based and not directly purchasable; membership ≠ automatic Circle seat.
 - User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020). Wallet credits are not automatically revenue (FD-028).
 - Payment collection does **not** automatically mean settlement eligibility or earned Platform Revenue (FD-021 / FD-028). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate.
-- Active Marketplace model: **80% Venue Partner / 20% GCE** of Eligible Marketplace Revenue; Affiliate is future-only; ZBP is removed (FD-028).
+- Active Marketplace model after standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029); Affiliate is future-only; ZBP is removed.
+- Connect BDP / Marketplace BDP Commission-Recovery Finance Options are active under FD-029 (Connect finance supersedes FD-025 finance-inactive only).
 - Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.
-- Financial architecture must be **multi-currency-capable**; INR may be initial domestic/reporting currency — not permanently INR-only (FD-028).
+- Financial architecture must be **multi-currency-capable**; INR may be initial domestic/reporting currency — not permanently INR-only (FD-028 / FD-029).
 
-Do not invent missing commercial percentages, tax rates, Marketplace BDP fee details, advertising prices, Lead Assist commercial activation, or future Affiliate products. Category existence under FD-028 does not automatically activate products or prices.
+Do not invent missing commercial percentages, tax rates, advertising prices, Lead Assist commercial activation, max MBDP units, split-commission rates, or future Affiliate products. Category existence does not automatically make revenue commissionable (FD-029).
 
 ---
 

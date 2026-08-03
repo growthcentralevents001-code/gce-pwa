@@ -77,6 +77,7 @@ These documents define **what** the platform must do.
 | `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 | `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 | `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
+| `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 
 #### Canonical core living documents
 

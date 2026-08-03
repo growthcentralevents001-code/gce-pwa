@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028.
+**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**. GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**.
 
 Overview
 
@@ -200,31 +200,33 @@ Minimum campaign value: **`36_Commercial_Constants.md`** (Offer / campaign const
 
  Revenue Sharing Rules
 
-**GCE Marketplace** active model (FD-028): **80% Venue Partner entitlement / 20% GCE Marketplace Platform Commission** of Eligible Marketplace Revenue. Numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
+**GCE Marketplace** after standard MBDP commission (FD-029): **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (MBDP 10% paid from GCE’s Gross 20%). Numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
-No active Marketplace Affiliate commission. Keep Gross Transaction Value / Collected Amount / Eligible Revenue / Platform Revenue / Settlement-Eligible Amount separate. Pipeline and proposal values are not recognised revenue. GST is not Platform Revenue. Refunds reverse commission proportionally; chargebacks create hold/recovery. ZBP is not part of the current model.
+No active Marketplace Affiliate commission. Keep Gross Transaction Value / Collected Amount / Eligible Revenue / Platform Revenue / Settlement-Eligible Amount separate. Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance. Pipeline and proposal values are not recognised revenue. GST is not Platform Revenue. Refunds reverse commission proportionally; chargebacks create hold/recovery. Recovery only from earned and approved commission (never estimated/provisional/held). ZBP is not part of the current model. Revenue categories are not commissionable merely because they exist.
 
-Revenue distribution is calculated automatically.
+Revenue distribution is calculated automatically by the platform Commission Engine (FD-029).
 
  Connect BDP Rules
 
-Commercial and operating authority: **FD-025**. Recognition / commission scope also **FD-028**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
+Commercial and operating authority: **FD-025**. Commission Engine / finance recovery: **FD-029**. Numeric summary: **`36_Commercial_Constants.md`** (Connect BDP). Narrative: `06_CBDP.md`. Circle lifecycle: FD-024 / `38_Circle_Architecture.md`.
 
-Key rules (do not invent beyond FD-025 / FD-028):
+Key rules (do not invent beyond FD-025 / FD-029):
 
-- Operating unit: **Connect BDP Franchise Unit**; fee **₹50,000 per unit**; deferred finance **not active**
+- Operating unit: **Connect BDP Franchise Unit**; direct fee **₹50,000 per unit**; Commission-Recovery Finance Option **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0) — FD-029 supersedes FD-025 finance-inactive only
 - Capacity: up to **5** Circles per Franchise Unit; target **5 platform-activated Circles in 10 months** (~one every two months)
 - Commission: **20%** of eligible GCE Connect subscription revenue (Associate/Core/Tag 3/4 when collected, activated, attributed, settlement-eligible), including eligible renewals while responsible
-- Not automatically commissionable: GST/taxes, refunds/reversals, transfer/admin fees, event/training/advertising/sponsorship/Lead Assist, uncollected amounts
+- Not automatically commissionable: GST/taxes, refunds/reversals, transfer/admin fees, event/training/advertising/sponsorship/Lead Assist/Marketplace/Enterprise, uncollected amounts
+- Recovery: lower of ₹5,000 or available earned/approved commission per cycle; no cash shortfall; no auto bank debit; no recovery from estimated/provisional/held commission
 - Territory: **Performance-Protected Assigned Territory** (not permanently owned); Tier maxima 10 / 5 / 2
 - Expansion: not automatic; separate fee; standard max **two** active Franchise Units
+- Reassignment: normally future earning events only; historical earned commission not automatically transferred
 - Performance: missing two consecutive milestone reviews → formal review + sixty-day corrective process (**not** automatic cancellation)
 - Circles, members, and data remain with GCE; Connect BDP cannot independently activate Circles
 - Serious misconduct may trigger immediate suspension or termination
 
  Marketplace BDP Rules
 
-**FD-028:** Marketplace BDP Franchise or Partner Fee is a recognised revenue category in principle; exact fee, financing, renewal, capacity, commission, recovery, and tax treatment remain **Pending Founder Approval**. Do not invent final Marketplace BDP commercial details. Narrative: `07_MBDP.md`. Constants status: **`36_Commercial_Constants.md`** (Marketplace BDP).
+**FD-029:** Marketplace BDP commission **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%); direct fee **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per Franchise Unit. Narrative: `07_MBDP.md`. Constants: **`36_Commercial_Constants.md`**. Max units per MBDP and exact revenue targets remain **Pending Founder Approval**.
 
  Enterprise BDP Rules
 

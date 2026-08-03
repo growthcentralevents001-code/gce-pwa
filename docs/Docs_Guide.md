@@ -43,6 +43,7 @@ FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
 FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md
 FD-027_Membership_Commercial_and_Operating_Architecture.md
 FD-028_Revenue_Recognition_and_Commercial_Architecture.md
+FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 ```
 
 Then living canonical cores (summaries that defer to Founder Decisions):
@@ -59,15 +60,17 @@ Then living canonical cores (summaries that defer to Founder Decisions):
 Always write vertical names as **GCE Connect**, **GCE Marketplace**, and **GCE Enterprise**.
 Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**.
 
-For Connect BDP commercial and operating rules (Franchise Unit, fee, territory, Circle targets, commission, performance, expansion, reassignment), **FD-025** is the most specific Founder authority. Living summaries: `06_CBDP.md`, `36_Commercial_Constants.md`.
+For Connect BDP commercial and operating rules (Franchise Unit, fee, territory, Circle targets, commission, performance, expansion, reassignment), **FD-025** is the most specific Founder authority for operating rules. Living summaries: `06_CBDP.md`, `36_Commercial_Constants.md`. **FD-029** supersedes only FD-025’s prior “deferred finance inactive” position and defines the Connect BDP Commission-Recovery Finance Option.
 
 For GCE Enterprise commercial and operating rules (Franchise Pack, client-based allocation, platform commission, Enterprise BDP commission, Platform Expert, fulfilment, multi-city, Vendor Opportunity Fee concept), **FD-026** is the most specific Founder authority. Living summaries: `08_Enterprise_BDP.md`, `36_Commercial_Constants.md`.
 
 For GCE Connect Circle Membership commercial and operating rules (Associate/Core tiers, Tags, seats, Core eligibility, renewal, freeze, transfer, refund, rejoining), **FD-027** is the most specific Founder authority. Living summaries: `05_Memberships.md`, `36_Commercial_Constants.md`. Lifecycle timing concepts also remain in FD-022.
 
-For revenue recognition, commercial classification, Marketplace/Enterprise/Connect revenue treatment, advertising, promotional visibility, sponsorships, franchise fees, refunds/reversals/taxes/commissions, reporting, audit, and multi-currency architecture, **FD-028** is the most specific Founder authority. Living summaries: `04_Revenue_Model.md`, `37_Revenue_Flow.md`, `21_Payments.md`, `36_Commercial_Constants.md`.
+For revenue recognition, commercial classification, Marketplace/Enterprise/Connect revenue treatment, advertising, promotional visibility, sponsorships, franchise fees, refunds/reversals/taxes, reporting, audit, and multi-currency architecture, **FD-028** is the most specific Founder authority. Living summaries: `04_Revenue_Model.md`, `37_Revenue_Flow.md`, `21_Payments.md`, `36_Commercial_Constants.md`.
 
-Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings. Under FD-028, **ZBP is removed** from the current commercial model; **Affiliate is future-only** (no active commission).
+For commission calculation, stakeholder entitlement, BDP finance recovery, Marketplace revenue sharing (80/10/10), Venue Partner entitlement, attribution, Recoverable Balances, multi-currency commission, dashboards/statements, and audit, **FD-029** is the most specific Founder authority. Living summaries: `36_Commercial_Constants.md`, `37_Revenue_Flow.md`, `04_Revenue_Model.md`, `06_CBDP.md`, `07_MBDP.md`, `21_Payments.md`. FD-029 finalises Marketplace BDP commission and finance that were previously unresolved under FD-028.
+
+Legacy role labels (ZBP, BDM, CBDP, MBDP, Affiliate, Franchisee, etc.) require explicit migration mapping in `35_Role_Taxonomy.md` — do not invent mappings. Under FD-028 / FD-029, **ZBP is removed** from the current commercial model; **Affiliate is future-only** (no active commission).
 
 # Documentation Categories
 

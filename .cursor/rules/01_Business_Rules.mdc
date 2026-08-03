@@ -29,6 +29,7 @@ Highest business authority — Founder Decisions:
 \- \`docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md\`
 \- `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 \- `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
+\- `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
 Then living cores:
 
@@ -141,6 +142,7 @@ Read:
 
 \`\`\`
 docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 06\_CBDP.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
@@ -149,7 +151,7 @@ docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.
 18\_User\_Flows.md
 \`\`\`
 
-Connect BDP commercial and operating rules defer to FD-025. Do not invent deferred finance, automatic cancellation, guaranteed income, or permanent territory ownership.
+Connect BDP commercial and operating rules defer to FD-025. Commission-Recovery Finance Option and commission-engine states defer to FD-029 (which supersedes only FD-025’s prior finance-inactive position). Do not invent automatic cancellation, guaranteed income, permanent territory ownership, or recovery from estimated/held commission.
 
 \---
 
@@ -166,6 +168,7 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 07\_MBDP.md
 09\_Venue\_Partner.md
@@ -176,7 +179,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 14\_Business\_Rules.md
 \`\`\`
 
-Marketplace transaction share is 80% Venue Partner / 20% GCE of Eligible Marketplace Revenue. Affiliate is future-only. Marketplace BDP fee details remain Pending Founder Approval. Do not invent Affiliate 5% or final Marketplace BDP fee/finance terms.
+After standard Marketplace BDP commission: 80% Venue Partner / 10% Marketplace BDP / 10% GCE net. Marketplace BDP commission is 10% of Eligible Marketplace Event Revenue (from GCE’s 20%). Affiliate is future-only. Do not invent Affiliate 5%, retain GCE at 20% after MBDP, or invent max MBDP units / target schedules.
 
 \---
 
@@ -266,6 +269,7 @@ Whenever working on:
 Read:
 
 \`\`\`
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 21\_Payments.md
 36\_Commercial\_Constants.md
@@ -274,7 +278,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 14\_Business\_Rules.md
 \`\`\`
 
-Payment collection does not automatically create earned Platform Revenue or settlement eligibility. Keep FD-028 financial concepts separate.
+Payment collection does not automatically create earned Platform Revenue, commission, or settlement eligibility. Keep FD-028 financial concepts and FD-029 commission states separate. Recovery only from earned and approved commission (Month 0).
 
 \---
 
@@ -337,6 +341,7 @@ Never calculate commissions manually.
 Always follow:
 
 \`\`\`
+docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -344,7 +349,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 21\_Payments.md
 \`\`\`
 
-Revenue calculations must match the documented business model and FD-028 terminology (Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, Settlement-Eligible Amount). Do not treat Affiliate as active, invent Marketplace BDP fee details, treat ZBP as current, classify GST as Platform Revenue, treat proposal value as revenue, or treat payment as automatic settlement.
+Revenue and commission calculations must match FD-028 terminology and FD-029 Commission Engine states (Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance). Do not treat Affiliate as active, invent Marketplace BDP rates beyond FD-029, treat ZBP as current, classify GST as Platform Revenue, treat proposal value as revenue, recover from estimated/held commission, require cash shortfall, auto-debit personal banks, or treat payment as automatic settlement.
 
 \---
 

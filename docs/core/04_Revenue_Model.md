@@ -4,9 +4,11 @@
 
 **Highest authority for revenue recognition and commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 
-**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP) · FD-026 (Enterprise) · FD-027 (Membership commercial) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+**Highest authority for Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace 80/10/10:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent unresolved Marketplace BDP fee, advertising prices, Lead Assist commercial rules, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, or FX policy. Tax and formal accounting remain Pending Tax / CA / audit review — FD-028 is an operating commercial constitution, not final statutory accounting policy.
+**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md`
+
+Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent advertising prices, Lead Assist commission, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, FX policy, max MBDP units, or split-commission percentages. Tax and formal accounting remain Pending Tax / CA / audit review.
 
 ## Core financial concepts (FD-028)
 
@@ -89,21 +91,25 @@ Billing: quarterly only at launch. Monthly/annual plans are not active. Numbers:
 
 **GCE Marketplace** allows verified businesses to promote events, products, services, and customer offers.
 
-**Active Marketplace model (FD-028):**
+**Active Marketplace model (FD-029):**
 
 ```text
-Eligible Marketplace Revenue
-→ 80% Venue Partner entitlement
-→ 20% GCE platform commission (GCE Marketplace Platform Commission)
+Eligible Marketplace Event Revenue
+→ 80% Venue Partner Entitlement
+→ 20% GCE Gross Marketplace Platform Commission
+   → 10% Marketplace BDP commission (from GCE’s 20%)
+   → 10% GCE Net Retained Share
 ```
 
-There is **no active Marketplace Affiliate** commission, rate, entitlement, attribution, or settlement. Any Affiliate model is **future-only** and requires a separate Founder Decision.
+After standard Marketplace BDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net**. Marketplace BDP earns **10%** of Eligible Marketplace Event Revenue (equivalent to 50% of GCE’s standard 20%). Do **not** state MBDP commission is unresolved. Do **not** retain GCE at 20% after paying MBDP.
 
-Marketplace recognition requires verified Venue Partner, valid event/offer/campaign, collected payment, genuine transaction, fulfilment/redemption where required, refund/reversal adjustment, and no unresolved hold. Self-listing does not remove verification or financial controls.
+There is **no active Marketplace Affiliate** commission. Any Affiliate model is **future-only**.
 
-Minimum campaign commercial value: **₹50,000** — a minimum approved campaign value, **not** guaranteed revenue and **not** automatically recognised revenue. Only actual valid collected transactions may become Eligible Revenue.
+Marketplace recognition requires verified Venue Partner, valid event/offer/campaign, collected payment, genuine transaction, fulfilment/redemption where required, refund/reversal adjustment, and no unresolved hold (FD-028). Marketplace BDP earning also requires valid MBDP attribution and accepted evidence (FD-029). Self-listing does not remove verification or financial controls.
 
-Marketplace BDP Franchise or Partner Fee is a **potential** Franchise and Partner-Pack Fee Revenue category; exact fee, financing, renewal, territory/capacity, commission, recovery, and tax treatment remain **Pending Founder Approval** (FD-028). Do not invent final Marketplace BDP fee details.
+Minimum campaign commercial value: **₹50,000** — not guaranteed or automatically recognised revenue (FD-028).
+
+**Marketplace BDP Franchise Unit (FD-029):** direct **₹50,000** or financed **₹60,000** (₹5,000 activation + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per unit.
 
 Canonical numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
@@ -138,19 +144,19 @@ Franchise, unit, and partner-pack fees are **Franchise and Partner-Pack Fee Reve
 
 Revenue is generated through:
 
- GCE Connect Business Development Partner (Connect BDP) — Franchise Activation Fee **₹50,000 per Franchise Unit** (FD-025); deferred finance not active under FD-025; non-refundable after activation
- GCE Marketplace Business Development Partner (Marketplace BDP) — fee category recognised; **exact model Pending Founder Approval** (FD-028)
+ GCE Connect Business Development Partner (Connect BDP) — Direct Franchise Unit **₹50,000** or Commission-Recovery Finance Option **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0) (FD-029; supersedes FD-025 finance-inactive only)
+ GCE Marketplace Business Development Partner (Marketplace BDP) — Direct **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); **20** active Venue Partners per unit (FD-029)
  Enterprise Business Development Partner (Enterprise BDP) — Franchise Pack **₹30,000** direct or financed **₹36,000** (₹5,000 initial + ₹31,000 recoverable from earned/approved Enterprise BDP commission only) (FD-026); financed recoverable balance is **not** event revenue
 
-Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core subscription and Tag 3 / Tag 4 revenue when collected, activated, attributed, and settlement-eligible (FD-025 / FD-027 / FD-028). Event fees, training, administrative fees, advertising, premium listings, sponsorships, technology services, and Lead Assist revenue do **not** automatically use this subscription-commission rule. Transfer fees are Administrative Fee Revenue and not automatically commissionable.
+Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core subscription and Tag 3 / Tag 4 revenue when collected, activated, attributed, and settlement-eligible (FD-025 / FD-027 / FD-029). Event fees, training, administrative fees, advertising, premium listings, sponsorships, technology services, Lead Assist, Marketplace, and Enterprise revenue do **not** automatically use this subscription-commission rule. Transfer fees are Administrative Fee Revenue and not automatically commissionable.
 
-Enterprise BDP earns flat **25%** of eligible GCE platform commission on attributed Enterprise projects (FD-026). Commission is not guaranteed income.
+Enterprise BDP earns flat **25%** of eligible GCE platform commission on attributed Enterprise projects (FD-026 / FD-029). Commission is not guaranteed income.
 
-**ZBP:** No ZBP role, commission, security deposit, wallet, settlement, or attribution is active (FD-028). Refundable deposits are **liabilities**, not revenue when received.
+**ZBP:** No ZBP role, commission, security deposit, wallet, settlement, or attribution is active (FD-028 / FD-029). Refundable deposits are **liabilities**, not revenue when received.
 
  6\. Venue Partner Revenue
 
-Venue Partners generate Marketplace activity; the active share remains **80% Venue Partner / 20% GCE** of Eligible Marketplace Revenue (FD-028).
+Venue Partners generate Marketplace activity. Active share after standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029). GCE Gross Marketplace Platform Commission remains 20% before MBDP share.
 
  7\. Event Revenue
 
@@ -200,16 +206,18 @@ Revenue generated within the ecosystem is distributed according to predefined bu
 Typical distribution includes:
 
  Platform Revenue
- Stakeholder Commissions (distinguish Estimated / Pending / Provisionally calculated / Earned / On hold / Reversed / Settlement eligible / Paid / Recoverable — FD-028)
+ Stakeholder Commissions — distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029); do not collapse into one generic “earnings” figure
  Business Incentives
  Referral Rewards
  Franchise Earnings
 
-Distribution percentages vary depending on the business module. Recommended calculation sequence: Gross Transaction Value → excluded taxes → discounts/credits → refunds/reversals → Eligible Revenue → Platform commission → Stakeholder commission → holds/deductions → Settlement-Eligible Amount → Net payout.
+Distribution percentages vary depending on the business module. Recommended calculation sequence (FD-029): Gross Transaction Value → excluded taxes → discounts/credits → refunds/reversals → Eligible Revenue → Platform commission / Stakeholder Entitlement → Stakeholder commission → holds/deductions → Settlement-Eligible Amount → Net payout.
 
-GST and statutory taxes are separately recorded and excluded from Platform Revenue and commission bases unless legally required or separately approved. TDS: gross entitlement first; TDS recorded separately at payout; show gross, TDS, and net separately. Exact rates Pending Tax Review.
+GST and statutory taxes are separately recorded and excluded from Platform Revenue and commission bases unless legally required or separately approved. TDS: gross entitlement first; TDS recorded separately at payout; show gross, TDS, and net separately. Exact rates Pending Tax Review. Exact order between TDS and finance recovery remains unresolved.
 
-Discounts/coupons/credits must identify funding source. Wallet credits are not automatically revenue. Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates Recoverable Balance. Chargebacks remove settlement eligibility and may create recovery. No hard-delete of financial records; attribution corrections use new correction entries with rule-version linkage (FD-028).
+Discounts/coupons/credits must identify funding source. Wallet credits are not automatically revenue; a wallet may show a negative Recoverable Balance offset only against future eligible earnings — no automatic personal-bank debit (FD-029). Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates Recoverable Balance. Chargebacks remove settlement eligibility and may create recovery. No hard-delete of financial/commission records; attribution corrections use new correction entries with rule-version linkage; reassignment normally affects future earning events only (FD-028 / FD-029).
+
+A revenue category is **not** commissionable merely because it exists (FD-029 non-commissionable-by-default).
 
  Multi-currency (FD-028)
 

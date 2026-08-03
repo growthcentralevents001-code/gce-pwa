@@ -171,6 +171,7 @@ Location: `docs/founder-decisions/`
 | `FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md` | GCE Enterprise business and operating architecture |
 | `FD-027_Membership_Commercial_and_Operating_Architecture.md` | GCE Connect Circle Membership commercial and operating architecture |
 | `FD-028_Revenue_Recognition_and_Commercial_Architecture.md` | Revenue recognition and commercial architecture |
+| `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 
 ## Development Workflow
 
@@ -207,18 +208,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.6.0 |
-| Last Updated | 2026-08-02 |
+| Documentation Version | v1.7.0 |
+| Last Updated | 2026-08-03 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 10 |
+| Total Founder Decisions | 11 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 53 |
+| Total Documentation Files (`docs/`) | 54 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 10 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 53.
+Total documentation files under `docs/` = 32 core + 8 engineering + 11 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 54.
 
 ## Changelog
+
+### v1.7.0
+
+- Indexed FD-029 (Commission Engine and Stakeholder Entitlement Architecture) as highest authority for commission, entitlement, BDP finance recovery, and Marketplace 80/10/10 sharing
+- Synchronised living Markdown with FD-029 (Connect BDP financed package active; Marketplace BDP 10% + fee/finance finalised; Month 0 recovery; commission states)
 
 ### v1.6.0
 

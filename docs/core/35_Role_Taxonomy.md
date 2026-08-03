@@ -163,9 +163,9 @@ Permissions
 | Enterprise / enterprise_client (type labels) | Enterprise BDP *(when acting as partner)* / Enterprise client *(when buyer)* | `enterprise` | Documented: Enterprise BDP Dashboard. App route (inventory): `/dashboard/enterprise` | `19_Permissions_Roles.md` → Enterprise BDP *(partner)*; client flows in `08` / `18` |
 | CBDP (legacy label) | **Connect BDP** (approved) | **Pending explicit DB enum migration mapping** | Documented: Connect BDP / CBDP Dashboard | `19_Permissions_Roles.md` / FD-023 |
 | MBDP (legacy label) | **Marketplace BDP** (approved) | **Pending explicit DB enum migration mapping** | Documented: Marketplace BDP / MBDP Dashboard | `19_Permissions_Roles.md` / FD-023 |
-| ZBP | **Obsolete / removed from current commercial model** (FD-028) — legacy/code label only | `zbp` | App routes (inventory): `/dashboard/zbp`, `/zbp`, `/zbp/apply`; admin `/admin/zbp*` | Do not invent current ZBP commission or deposit rules |
+| ZBP | **Obsolete / removed from current commercial model** (FD-028 / FD-029) — legacy/code label only | `zbp` | App routes (inventory): `/dashboard/zbp`, `/zbp`, `/zbp/apply`; admin `/admin/zbp*` | Do not invent current ZBP commission or deposit rules |
 | BDM | **Pending business confirmation** (legacy/code label) | `bdm` | App routes (inventory): `/dashboard/bdm`, legacy `/bdm-dashboard` | Pending — do not invent |
-| Affiliate | **Future-only** under FD-028 (no active Marketplace Affiliate commission); legacy/code label | `affiliate` | App routes (inventory): `/dashboard/affiliate`, `/affiliate/**` | Do not invent active Affiliate rate/settlement |
+| Affiliate | **Future-only** under FD-028 / FD-029 (no active Marketplace Affiliate commission); legacy/code label | `affiliate` | App routes (inventory): `/dashboard/affiliate`, `/affiliate/**` | Do not invent active Affiliate rate/settlement |
 | Franchisee | **Pending business confirmation** (legacy/code label) | `franchisee` | App route (inventory): `/dashboard/franchisee` | Pending — do not invent |
 | Board of Governance | Board of Governance | **Not present** in generated `user_role` enum inventory | Documented: Board of Governance Dashboard | `19_Permissions_Roles.md` → BOG |
 | RM | Relationship Manager (RM) | **Not present** in generated `user_role` enum inventory | Documented: RM Dashboard | `19_Permissions_Roles.md` → RM |

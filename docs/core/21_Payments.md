@@ -8,31 +8,31 @@
 **GCE Enterprise Franchise Pack / commission / payment commercial rules:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 **Membership commercial (tiers, Tags, transfers, refunds):** `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 **Revenue recognition / commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
+**Commission Engine / stakeholder entitlement / BDP finance recovery:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, or FD-028, the Founder Decision wins — for recognition and commercial classification, **FD-028**.
+Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, or FD-029, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**.
 
 ### Founder-aligned payment/settlement principles (summary)
 
 - Keep **Gross Transaction Value**, **Collected Amount**, **Eligible Revenue**, **Platform Revenue**, and **Settlement-Eligible Amount** separate (FD-028).
-- User-facing **GCE Wallet** may be unified; internal accounting uses **separate ledgers** (Customer, Escrow, Settlement, Commission, Rewards, Refund, Franchise Recovery, Tax). A wallet credit is **not** automatically revenue.
-- A visible Wallet balance is **not** one undifferentiated accounting ledger.
-- **Payment collection does not automatically mean settlement eligibility** or earned Platform Revenue.
+- Commission states: Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029) — not interchangeable; no generic “earnings” collapse.
+- User-facing **GCE Wallet** may be unified; internal accounting uses **separate ledgers**. A wallet credit is **not** automatically revenue; wallets may show negative Recoverable Balance without automatic personal-bank debit.
+- **Payment collection does not automatically mean settlement eligibility** or earned Platform Revenue / commission.
 - Membership / Tag recognition requires successful payment **and** activation (FD-021 / FD-022 / FD-028). Collected but unactivated remains collected-but-unearned and non-commissionable.
-- Marketplace event settlement follows successful completion **and** the approved post-event hold (**48 hours** per FD-021). Active Marketplace split: **80% Venue Partner / 20% GCE** of Eligible Marketplace Revenue. Affiliate commission is **not active** (FD-028).
-- Enterprise may use the approved standard milestone model: **30% confirmation / 40% readiness-or-execution / 30% completion** (unless a separately approved contract specifies otherwise) (FD-021 / FD-026). Proposal value is not revenue.
-- Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates **Recoverable Balance**. Chargebacks place amount on hold/reversal and may create recovery (FD-028).
-- BDP commissions are separately calculated, recorded, and audited; distinguish Estimated / Earned / Settlement eligible / Paid / Recoverable — **pending commission is not guaranteed payable**.
-- Enterprise BDP commission is flat **25%** of eligible GCE platform commission (FD-026); Enterprise financed-pack recovery deducts from earned and approved Enterprise BDP commission only (recoverable balance ≠ event revenue).
+- Marketplace event settlement follows successful completion **and** the approved post-event hold (**48 hours** per FD-021). After standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** (FD-029). Affiliate commission is **not active**.
+- Enterprise may use the approved standard milestone model: **30% confirmation / 40% readiness-or-execution / 30% completion** (unless a separately approved contract specifies otherwise) (FD-021 / FD-026). Proposal value is not revenue. Enterprise BDP = **25% of eligible GCE Platform Commission** (not project value).
+- Connect BDP / Marketplace BDP Commission-Recovery Finance Options: recovery only from earned and approved commission from **Month 0**; max ₹5,000/cycle; no cash shortfall; no auto bank debit (FD-029). Connect finance supersedes FD-025 finance-inactive only.
+- Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates **Recoverable Balance**. Chargebacks place amount on hold/reversal and may create recovery (FD-029).
+- BDP commissions are platform-calculated; no stakeholder may approve their own commission-affecting exception. Historical earned commission is not automatically transferred on reassignment.
 - GST/TDS recorded separately and excluded from Platform Revenue / commission bases unless separately approved; exact rates Pending Tax Review.
 - Revenue normally via approved platform-connected channels; no personal-account collection; cash is not a standard launch workflow (FD-028).
-- Financial entries must not be silently edited or hard-deleted; corrections use reversal/adjustment entries with rule-version linkage (FD-020 / FD-028).
-- Multi-currency-capable architecture required; INR may be initial domestic/reporting currency — not permanently INR-only (FD-028).
+- Financial/commission entries must not be silently edited or hard-deleted; corrections use reversal/adjustment entries with rule-version linkage (FD-020 / FD-028 / FD-029).
+- Multi-currency-capable architecture required; preserve original-currency and FX history for commission records (FD-028 / FD-029).
 - RM and PRM do not automatically have financial movement authority.
-- Exact tax rates, GST/TDS treatment, gateway provider, refund matrix, FX, rounding: **Pending Legal/Accounting/Tax Review** or **Pending Technical Design** — do not invent.
-- Marketplace BDP fee model and Lead Assist commercial activation remain unresolved under FD-028.
-- **ZBP** security deposit / commission examples are obsolete (FD-028). Refundable deposits are liabilities, not revenue.
+- Exact tax rates, GST/TDS treatment, gateway provider, refund matrix, FX, rounding, hold periods: **Pending Legal/Accounting/Tax Review** or **Pending Technical Design** — do not invent.
+- Lead Assist commercial activation remains unresolved. **ZBP** is obsolete (FD-028 / FD-029). Refundable deposits are liabilities, not revenue.
 
 
 Overview
@@ -218,7 +218,7 @@ Lead Distribution
 
 Applicable for:
 
- Connect BDP Franchise Unit (₹50,000 per Franchise Unit — FD-025; deferred finance not active under FD-025)
+ Connect BDP Franchise Unit (₹50,000 direct or financed ₹60,000 — FD-029; supersedes FD-025 finance-inactive only)
  Marketplace BDP Franchise
  Enterprise BDP Franchise Pack (₹30,000 direct per pack, or financed ₹36,000 with ₹5,000 initial + ₹31,000 recoverable from approved commission only — FD-026; no launch discount)
 

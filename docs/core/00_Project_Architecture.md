@@ -2,7 +2,7 @@
 
 ## Authority
 
-Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-028). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025. GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution). Membership commercial: FD-027. Revenue recognition / commercial classification: FD-028 (multi-currency-capable; Marketplace 80/20; Affiliate future-only; ZBP removed).
+Founder Decisions in `docs/founder-decisions/` are the highest business authority (FD-001, FD-020–FD-029). This architecture overview must not contradict them. Official domain per FD-001: **growthcentralevents.com**. Prefer Connect BDP / Marketplace BDP / Enterprise BDP terminology. Connect BDP commercial rules: FD-025 (finance recovery amended by FD-029). GCE Enterprise commercial and operating rules: FD-026 (platform/IT workflow — not direct physical execution). Membership commercial: FD-027. Revenue recognition / commercial classification: FD-028. Commission Engine / Marketplace 80/10/10 / BDP finance recovery: FD-029 (Affiliate future-only; ZBP removed).
 
 
 

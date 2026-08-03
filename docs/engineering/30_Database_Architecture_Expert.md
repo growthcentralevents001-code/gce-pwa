@@ -29,11 +29,12 @@ Business meaning of roles, membership, Circles, and financial ledgers is governe
 \- FD-025 — Connect BDP Franchise Unit commercial concepts (fee, capacity, commission attribution, territory, performance)
 \- FD-026 — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, multi-city Master/City Unit, Vendor Opportunity Fee tracking concepts
 \- FD-027 — Membership commercial concepts (Associate/Core tiers, Tags, Core Progress, transfer fees)
-\- FD-028 — Revenue recognition / commercial classification (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, Marketplace 80/20, Affiliate future-only, ZBP removed, multi-currency, refunds/attribution/audit)
+\- FD-028 — Revenue recognition / commercial classification (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, multi-currency, refunds/attribution/audit)
+\- FD-029 — Commission Engine / stakeholder entitlement (Marketplace 80/10/10, Connect & Marketplace BDP finance recovery Month 0, commission states, Recoverable Balances; Affiliate future-only; ZBP removed)
 
-Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages, Marketplace BDP fee details, Affiliate rates, or FX/rounding policy.
+Exact database enums, RLS policy SQL, Franchise Unit / Franchise Pack schemas, commission-attribution tables, Platform Expert access models, and permission matrices are \*\*Pending Technical Design\*\*. Do not invent them. Do not treat Super Admin as a current Founder-approved role unless a Founder Decision activates it. Do not invent Vendor Opportunity Fee percentages, Affiliate rates, max MBDP units, split-commission percentages, or FX/rounding policy.
 
-Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\* / \*\*Enterprise BDP\*\* / \*\*Enterprise Platform Expert\*\*. Connect BDP commercial numbers defer to FD-025 / \`36_Commercial_Constants.md\`. Enterprise commercial numbers defer to FD-026 / \`36_Commercial_Constants.md\`. Revenue recognition defers to FD-028.
+Living role names: \`docs/core/35_Role_Taxonomy.md\`. Prefer \*\*Connect BDP\*\* / \*\*Marketplace BDP\*\* / \*\*Enterprise BDP\*\* / \*\*Enterprise Platform Expert\*\*. Connect BDP commercial numbers defer to FD-025 / FD-029 / \`36_Commercial_Constants.md\`. Enterprise commercial numbers defer to FD-026 / \`36_Commercial_Constants.md\`. Revenue recognition defers to FD-028. Commission Engine defers to FD-029.
 
 \# Project Context
 

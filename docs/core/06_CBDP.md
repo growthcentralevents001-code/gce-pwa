@@ -5,13 +5,16 @@
 **Highest authority for Connect BDP commercial and operating rules:**
 `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 
+**Commission Engine / finance recovery (supersedes FD-025 finance-inactive only):**
+`docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
+
 **Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
 Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-This living document summarises Connect BDP operations. On conflict, **FD-025 wins**. Do not invent unresolved FD-025 items (exact performance score, retention/attendance/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, deferred-finance package, exact DB/API/RLS designs).
+This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position). Do not invent unresolved items (exact performance score, retention/attendance/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs).
 
 ---
 
@@ -37,11 +40,20 @@ Numeric constants: `36_Commercial_Constants.md` (defers to FD-025).
 
 ## Franchise Activation Fee
 
-Approved fee: **₹50,000 per Franchise Unit** (FD-025).
+**Direct path:** **₹50,000 per Franchise Unit** (FD-025 / FD-029) — upfront, one-time, non-refundable after activation, not a security deposit. Every additional Franchise Unit requires a separate fee.
 
-The fee is one-time, non-refundable after activation, not a security deposit, and does not purchase permanent territory or ownership of Circles or members. Every additional Franchise Unit requires a separate ₹50,000 fee.
+**Commission-Recovery Finance Option (FD-029)** — supersedes FD-025’s prior “deferred finance inactive” position only:
 
-**Deferred finance is not active under FD-025.** Any future deferred package requires separate Founder approval plus legal/accounting review.
+| Item | Value |
+|------|-------|
+| Total financed package | **₹60,000** |
+| Initial activation payment | **₹5,000** |
+| Recoverable Balance | **₹55,000** |
+| Max recovery per commission cycle | Lower of **₹5,000** or available earned and approved Connect BDP commission |
+| Recovery start | **Month 0** — first cycle with valid earned, approved, settlement-eligible Connect BDP commission after activation |
+| Recovery source | Earned and approved Connect BDP commission only |
+
+No compulsory cash shortfall; no automatic personal-bank debit; no recovery from Estimated, Provisional, or On-Hold commission; no additional interest after activation; unrecovered balance carries forward; exit/suspension does not automatically erase Recoverable Balance. Numbers: `36_Commercial_Constants.md`.
 
 Package inclusions (summary): Business Partner certification, platform licence, Connect BDP dashboard access, Connect operations / community-building / business-development training, Circle-formation tools, initial operational support, and ongoing platform support under GCE policy. Full list: FD-025.
 

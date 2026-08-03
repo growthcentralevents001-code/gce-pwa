@@ -2,11 +2,11 @@
 
 ## Authority
 
-**Highest authority for revenue recognition / commercial classification:** FD-028 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 · **GCE Enterprise:** FD-026
+**Highest authority for revenue recognition / commercial classification:** FD-028 · **Commission Engine / entitlement / BDP finance recovery:** FD-029 · **Foundational model:** FD-001 · **Ledgers:** FD-020 · **Settlement triggers:** FD-021 · **Membership activation:** FD-022 · **Membership commercial:** FD-027 · **Connect BDP commercial:** FD-025 (finance amended by FD-029) · **GCE Enterprise:** FD-026
 
-Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition and commercial classification, **FD-028 wins**.
+Numeric commercial constants: `36_Commercial_Constants.md`. This document describes **flow relationships**. Where conflicts exist, Founder Decisions win — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**.
 
-**Rule:** Payment receipt ≠ automatic settlement eligibility. Vertical-specific settlement triggers apply (FD-021). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate (FD-028). Pipeline/proposal values are not recognised revenue.
+**Rule:** Payment receipt ≠ automatic settlement eligibility. Vertical-specific settlement triggers apply (FD-021). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate (FD-028). Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029). Pipeline/proposal values are not recognised revenue.
 
 ## Purpose
 
@@ -27,16 +27,16 @@ GCE generates revenue through multiple channels so the platform is not dependent
 1. GCE Connect Membership Subscription Revenue
 2. GCE Connect Tag Subscription Revenue
 3. GCE Connect Event Revenue
-4. GCE Marketplace Platform Commission (80% Venue Partner / 20% GCE of Eligible Marketplace Revenue)
+4. GCE Marketplace Platform Commission — after standard MBDP: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** (FD-029)
 5. GCE Enterprise Platform Commission
-6. Advertising Revenue (products/prices unresolved)
-7. Promotional Visibility Revenue (prices unresolved)
-8. Sponsorship Revenue (cash vs In-Kind Sponsorship Value)
-9. Administrative Fee Revenue
-10. Franchise and Partner-Pack Fee Revenue (Connect BDP / Enterprise BDP approved; Marketplace BDP fee unresolved)
+6. Advertising Revenue (products/prices unresolved; non-commissionable by default — FD-029)
+7. Promotional Visibility Revenue (prices unresolved; non-commissionable by default)
+8. Sponsorship Revenue (cash vs In-Kind Sponsorship Value; non-commissionable by default)
+9. Administrative Fee Revenue (non-commissionable by default)
+10. Franchise and Partner-Pack Fee Revenue (Connect / Marketplace / Enterprise per FD-025/026/029)
 11. Vendor Opportunity Fee Revenue (concept only — non-active)
-12. Pending Lead Assist Commercial Revenue (not activated under FD-028)
-13. Ticketing / Booking, Technology / Digital-Service, Training / Workshop / Masterclass, Other Founder-Approved Revenue (details unresolved where not approved)
+12. Pending Lead Assist Commercial Revenue (not activated; non-commissionable by default)
+13. Ticketing / Booking, Technology / Digital-Service, Training / Workshop / Masterclass, Other Founder-Approved Revenue (details unresolved where not approved; non-commissionable by default)
 
 **Affiliate:** future-only — no active Marketplace Affiliate commission. **ZBP:** removed completely from current commercial model.
 
@@ -95,9 +95,9 @@ Future Core upgrade path only after eligibility + network readiness (not direct 
 ```
 
 **Platform income:** Associate Tier subscription, Tag 3/4 subscriptions (Tag Subscription Revenue), future Core upgrade/renewal when applicable — only after payment + activation.
-**Partner income:** Connect BDP commission = **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core and Tag 3/4 revenue when collected, attributed, activated, and settlement-eligible (FD-025 / FD-027 / FD-028). Transfer fees (Administrative Fee Revenue), event/training/advertising/sponsorship/Lead Assist amounts are not automatically commissionable. Commission is not guaranteed income.
-**Lead Assist** remains Pending Lead Assist Commercial Revenue (not FD-028-activated).
-**Detail docs:** `05_Memberships.md`, `06_CBDP.md`, FD-027, FD-025, FD-028.
+**Partner income:** Connect BDP commission = **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core and Tag 3/4 revenue when collected, attributed, activated, and settlement-eligible (FD-025 / FD-027 / FD-029). Transfer fees (Administrative Fee Revenue), event/training/advertising/sponsorship/Lead Assist/Marketplace/Enterprise amounts are not automatically commissionable. Commission is not guaranteed income. Finance recovery (if financed): up to ₹5,000 per cycle from earned/approved commission only from **Month 0** (FD-029).
+**Lead Assist** remains Pending Lead Assist Commercial Revenue (not FD-028/FD-029-activated).
+**Detail docs:** `05_Memberships.md`, `06_CBDP.md`, FD-027, FD-025, FD-028, FD-029.
 
 ### B. GCE Marketplace — venue / offer / event revenue
 
@@ -112,16 +112,20 @@ Customer booking or campaign conversion
   ↓
 Gross Transaction Value (not automatically GCE revenue)
   ↓
-Collected Amount → Eligible Marketplace Revenue (after taxes/refunds/exclusions)
+Collected Amount → Eligible Marketplace Event Revenue (after taxes/refunds/exclusions)
   ↓
-Revenue share: 80% Venue Partner / 20% GCE Marketplace Platform Commission (FD-028)
+Revenue share (FD-029):
+  80% Venue Partner Entitlement
+  20% GCE Gross Marketplace Platform Commission
+     → 10% Marketplace BDP (from GCE’s 20%)
+     → 10% GCE Net Retained Share
   ↓
-Settlement-Eligible Amount only after fulfilment/hold rules (FD-021)
+Settlement-Eligible Amount only after fulfilment/hold rules (FD-021 / FD-029)
 ```
 
 **Campaign floor:** minimum campaign commercial value **₹50,000** — not guaranteed or automatically recognised revenue (FD-028).
 **Affiliate:** not active.
-**Marketplace BDP fee:** category only; exact fee Pending Founder Approval (FD-028). Older narrative numbers in `07_MBDP.md` are not Founder-final under FD-028.
+**Marketplace BDP:** commission **10%**; direct fee **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); **20** active Venue Partners per unit (FD-029).
 **Detail docs:** `07_MBDP.md`, `09_Venue_Partner.md`, `36_Commercial_Constants.md`.
 
 ### C. GCE Enterprise — project revenue
@@ -166,21 +170,23 @@ Partner application (Connect BDP / Marketplace BDP / Enterprise BDP)
 Approval
   ↓
 Franchise / Partner-Pack fee
-  (Connect BDP: ₹50,000 per Franchise Unit — FD-025)
+  (Connect BDP: ₹50,000 direct per Franchise Unit, or financed ₹60,000 — FD-029)
   (Enterprise BDP: ₹30,000 direct per Franchise Pack, or financed ₹36,000 — FD-026)
-  (Marketplace BDP: fee category recognised; exact model Pending Founder Approval — FD-028)
+  (Marketplace BDP: ₹50,000 direct, or financed ₹60,000 — FD-029)
   ↓
 Training / package inclusions where documented and Founder-approved for that vertical
   ↓
 Optional finance path only where documented and Founder-approved for that vertical
-  (Connect BDP deferred finance: not active under FD-025)
+  (Connect BDP Commission-Recovery Finance Option: ₹5,000 + ₹55,000 Recoverable Balance from Month 0 — FD-029)
+  (Marketplace BDP Commission-Recovery Finance Option: ₹5,000 + ₹55,000 Recoverable Balance from Month 0 — FD-029)
   (Enterprise BDP financed pack: recovery from approved commission only — FD-026; recoverable balance ≠ event revenue)
   ↓
 Franchise / Franchise Unit / Franchise Pack active → capacity limits apply
 ```
 
 Fees and finance math: `36_Commercial_Constants.md`.
-Connect BDP Franchise Unit commercial rules: FD-025.
+Connect BDP Franchise Unit commercial rules: FD-025 (operating) / FD-029 (finance recovery).
+Marketplace BDP Franchise Unit: FD-029.
 Enterprise BDP Franchise Pack commercial rules: FD-026.
 Payments applicability: `21_Payments.md`.
 
@@ -209,17 +215,17 @@ Full rules: `39_AI_Lead_Assist_Spec.md`.
 
 ## Revenue distribution buckets
 
-From `04_Revenue_Model.md` / FD-028, amounts may be distributed as:
+From `04_Revenue_Model.md` / FD-028 / FD-029, amounts may be distributed as:
 
 - Platform Revenue
-- Stakeholder commissions (Estimated → … → Earned → Settlement eligible → Paid / Recoverable)
+- Stakeholder commissions (Estimated → Provisional → Earned → Settlement eligible → Paid / Recoverable)
 - Business incentives
 - Referral rewards
 - Franchise earnings
 
 **Documented constraint:** distribution percentages vary by business module. Module-specific rates that *are* documented live in `36_Commercial_Constants.md`. Undocumented percentages must not be invented.
 
-Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally. Chargebacks remove settlement eligibility and may create Recoverable Balance. GST/TDS excluded from Platform Revenue / commission bases unless separately approved (FD-028).
+Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally. Chargebacks remove settlement eligibility and may create Recoverable Balance. GST/TDS excluded from Platform Revenue / commission bases unless separately approved. Recovery only from earned and approved commission — never from estimated, provisional, or held commission (FD-029).
 
 ---
 
@@ -244,7 +250,7 @@ Statuses documented: Pending, Processing, Successful, Failed, Refunded, Cancelle
 
 ---
 
-## GCE Wallet and internal ledgers (FD-020 / FD-028)
+## GCE Wallet and internal ledgers (FD-020 / FD-028 / FD-029)
 
 `21_Payments.md` describes a future wallet that may hold:
 
@@ -255,18 +261,19 @@ Statuses documented: Pending, Processing, Successful, Failed, Refunded, Cancelle
 - Subscription credits
 - Refund balance
 
-A wallet credit is **not** automatically revenue — it may be refund liability, promotional liability, earned stakeholder balance, pending commission, settlement payable, membership credit, Lead Assist credit, recovery balance, or manual adjustment (FD-028). User-facing Wallet may be unified. Internal ledgers (Customer, Escrow, Settlement, Commission, Rewards, Refund, Franchise Recovery, Tax) are Founder-approved categories (FD-020). Settlement timing: FD-021. Refundable security deposits are **liabilities**, not revenue when received. Exact reward products / payout providers remain unresolved where not approved.
+A wallet credit is **not** automatically revenue — it may be refund liability, promotional liability, earned stakeholder balance, pending commission, settlement payable, membership credit, Lead Assist credit, recovery balance, or manual adjustment (FD-028). A stakeholder wallet may show a **negative Recoverable Balance**, offset only against future eligible earnings — no automatic personal-bank debit (FD-029). User-facing Wallet may be unified. Internal ledgers (Customer, Escrow, Settlement, Commission, Rewards, Refund, Franchise Recovery, Tax) are Founder-approved categories (FD-020). Settlement timing: FD-021. Refundable security deposits are **liabilities**, not revenue when received. Exact reward products / payout providers remain unresolved where not approved.
 
 ---
 
-## Multi-currency (FD-028)
+## Multi-currency (FD-028 / FD-029)
 
-Financial architecture must be multi-currency-capable. INR may be initial domestic transaction / reporting currency — not a permanently INR-only architecture. Activate currencies country-by-country after Founder and operational approvals. Preserve original currency, FX rate/source/timestamp, and do not silently recalculate historical FX. Distinguish Transaction / Settlement / Reporting / Stakeholder Payout currencies.
+Financial architecture must be multi-currency-capable. INR may be initial domestic transaction / reporting currency — not a permanently INR-only architecture. Activate currencies country-by-country after Founder and operational approvals. Commission records must preserve original currency, FX rate/source/timestamp, calculation/settlement/payout amounts — do not silently recalculate historical FX. Distinguish Transaction / Settlement / Reporting / Stakeholder Payout currencies.
 
 ---
 
 ## Cross References
 
+- Commission Engine authority: FD-029
 - Revenue recognition authority: FD-028
 - Constants: `36_Commercial_Constants.md`
 - Business model: `02_Business_Model.md`

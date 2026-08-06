@@ -8,6 +8,11 @@
 **Highest authority for Circle internal structure and governance** (capacity constitution thresholds, GC Power Sectors, Specializations, Protected Tag Scope, Tags, business verification, Governing Body, meetings, attendance, referrals, workshops, conduct, discipline, seat operations, digital governance, voting limits):
 `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md`
 
+**Highest authority for dual Circle status mapping, Connect BDP activation-credit logic, and current Governing Body tenure/role supersession clarification:**
+`docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md`
+
+**Corporate ownership / operator principles:** `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md`
+
 **Related Founder Decisions:**
 
 - Membership vs Circle seat, reservation, waitlist, grace: `FD-022_Membership_Lifecycle.md`
@@ -18,7 +23,7 @@
 - Commission Engine / entitlements: `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 - Revenue recognition: `FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 
-This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024 on **lifecycle**, **FD-024 wins**. Where this file conflicts with FD-030 on **internal structure and governance**, **FD-030 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Where membership commercial Tag/seat-scope rules conflict with FD-027, **FD-027 wins**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, merger/split voting rules, workshop prices/commission, substitute limits, voting quorum, or other Unresolved items.
+This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024 on **lifecycle**, **FD-024 wins**. Where this file conflicts with FD-030 on **internal structure and governance**, **FD-030 wins**. Where this file conflicts with FD-032 on **status mapping / activation credit / current GB term and Circle Finance Coordinator**, **FD-032 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Where membership commercial Tag/seat-scope rules conflict with FD-027, **FD-027 wins**. Corporate identity: **FD-034**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, merger/split voting rules, workshop prices/commission, substitute limits, voting quorum, or other Unresolved items. Do **not** collapse lifecycle and constitutional status into a single enum without retaining the approved FD-032 mapping.
 
 ---
 
@@ -55,16 +60,16 @@ Membership does **not** guarantee referrals, leads, sales, revenue, contracts, o
 
 ---
 
-## Ownership (Founder Approved — FD-001 / FD-024 / FD-030)
+## Ownership (Founder Approved — FD-001 / FD-024 / FD-030 / FD-034)
 
 | Party | Role |
 |-------|------|
-| **GCE** | Owns and controls every Circle (identity, records, taxonomy, Specializations, Protected Tag Scope, Tags, referral/closed-business records, Governing Body permissions, activation/suspension/merger/closure, financial/commercial/audit records) |
+| **Logixia Solutions Private Limited** (legal company) / **GCE** (platform and master brand) | Owns and controls every Circle at the platform layer (identity, records, taxonomy, Specializations, Protected Tag Scope, Tags, referral/closed-business records, Governing Body permissions, activation/suspension/merger/closure, financial/commercial/audit records). GCE is **not** currently a separate legal company (FD-034). Exact legal wording Pending Legal Review. |
 | **Connect BDP** | Manages and supports — **does not own** the Circle |
 | **Governing Body** (legacy: Board of Governance / Circle Board) | Supports internal operations — **does not own** the Circle |
 | **Circle Members** | Participate and occupy seats — **do not own** the Circle |
 
-Ownership remains with GCE if a Connect BDP resigns, is suspended, or is terminated; if Governing Body or members change; if territory changes; or if the Circle is merged or closed/archived.
+Platform ownership remains with Logixia / GCE if a Connect BDP resigns, is suspended, or is terminated; if Governing Body or members change; if territory changes; or if the Circle is merged or closed/archived. BDPs and members do not become owners of Circles or the GCE vertical.
 
 ---
 
@@ -88,60 +93,57 @@ Identify opportunity
   → Approved Circles enter Formation
 ```
 
-### Formation vs activation (lifecycle)
+### Dual Circle status architecture (Founder Approved — FD-032)
 
-| Stage | Meaning |
-|-------|---------|
-| **Formation** | Platform-approved creation; recruiting and preparation; **not** officially operational |
-| **Pending Activation** | Formation substantially complete; final platform approval pending |
-| **Active** | Only after **GCE Platform** grants final activation approval |
+Phase 2 and living docs must preserve **two linked status families**. Do **not** collapse them into one status without retaining this mapping.
 
-**Formation and activation are separate.** Provisionally formed ≠ Active.
+**Circle Lifecycle Status (FD-024, as mapped by FD-032):** Formation · Active Growth · Full Capacity
 
-A Circle **may activate with 15 founding members** under FD-024 lifecycle rules. Activation still requires verification, payment, seat eligibility, and platform approval (FD-024 / FD-030).
+**Circle Constitutional Status (FD-030):** Formation Circle · Provisionally Active Circle · Fully Constituted Circle
 
----
+| Approved and Paid Active Members | Lifecycle Status | Constitutional Status |
+|---:|---|---|
+| **0–14** | Formation | Formation Circle |
+| **15–19** | Active Growth | Formation Circle |
+| **20–39** | Active Growth | Provisionally Active Circle |
+| **40** | Full Capacity | Fully Constituted Circle |
 
-## Constitution thresholds (Founder Approved — FD-030)
+Critical clarity:
 
-Separate from FD-024 lifecycle activation (15 founding members):
-
-| Approved and paid members | Constitution status (FD-030) |
-|---------------------------|-------------------------------|
-| Fewer than **20** | Formation Circle |
-| **20–39** | **Provisionally Active Circle** |
-| **40** | **Fully Constituted Circle** |
-
+- **15–19 members are Active Growth lifecycle, not constitutionally Provisionally Active.**
+- Constitutional **Provisionally Active** begins at **20** approved and paid members.
+- **Full Capacity** (lifecycle) and **Fully Constituted** (constitution) both require **40**.
 - Do **not** describe 20 members as a full Circle.
-- Do **not** describe a Circle as Fully Constituted before **40** approved and paid members.
 - **Maximum capacity: 40 active physical members** (Primary Physical Circle Seats).
+
+### Platform activation and Connect BDP target credit (FD-032)
+
+A Circle may become **platform-activated** at **15** approved and paid founding members only after:
+
+- Business verification
+- Seat allocation
+- Required onboarding
+- Platform confirmation
+- No blocking compliance issue
+- Audit recording
+
+Member count alone does not create platform activation.
+
+**Connect BDP target credit** for a Circle is earned **once** at formal **15-member platform activation**.
+
+- Reaching **20** members changes constitutional status to Provisionally Active but does **not** create a second target credit.
+- Reaching **40** members does **not** create another activation credit.
+
+Broader FD-024 operational statuses (`Draft`, `Pending Activation`, `Mature`, `Under Review`, `Suspended`, `Merged`, `Archived`, etc.) and FD-030 operating stages (Performance Review, Suspended, Merged, Closed) remain valid for non-capacity workflow. Do not invent Mature criteria or Under Review SLAs.
+
+Closure must result in Suspended, Merged, Archived, or Closed — **never silent deletion**. Circle history must be preserved.
+
+Seat notes:
+
 - One active membership normally equals one primary physical Circle seat.
 - A member may not hold two primary seats in the same Circle; a member normally belongs to one primary Circle.
 - Tags, digital access, and cross-city opportunities do **not** create additional physical seats.
 - Pending, suspended, expired, frozen, and waitlisted users do not count as active seats except where an approved seat-protection rule applies.
-
----
-
-## Lifecycle / operating stages
-
-**FD-024 lifecycle statuses** (every Circle must have one defined status):
-
-`Draft` · `Formation` · `Pending Activation` · `Active` · `Growth` · `Full Capacity` · `Mature` · `Under Review` · `Suspended` · `Merged` · `Archived`
-
-**FD-030 operating stages** (internal architecture):
-
-1. Proposed Circle
-2. Formation Circle
-3. Provisionally Active Circle
-4. Fully Constituted Circle
-5. Performance Review
-6. Suspended Circle
-7. Merged Circle
-8. Closed Circle
-
-Map living implementations carefully: FD-024 remains primary for lifecycle transitions; FD-030 names constitution and operating stages. Do not invent Mature criteria or Under Review SLAs.
-
-Closure must result in Suspended, Merged, Archived, or Closed — **never silent deletion**. Circle history must be preserved.
 
 ---
 
@@ -277,20 +279,22 @@ Connect BDP **must not**: own the Circle; override Founder Decisions; change fee
 
 Each **Connect BDP Franchise Unit** may develop up to **five** GCE Connect Circles, with a target of five **platform-activated** Circles within ten months (FD-025). Only platform-activated Circles count toward the completed target.
 
-Circle **lifecycle** activation minimum (15 founding members) and maximum capacity (40) remain governed by FD-024. Constitution thresholds (20 Provisional / 40 Fully Constituted) are governed by **FD-030**. Partner commercial pack rules: **FD-025** / **FD-029** finance recovery.
+Under **FD-032**, target credit is earned **once** when a Circle is formally **platform-activated at 15** approved and paid founding members (after verification, seat allocation, onboarding, platform confirmation, no blocking compliance issue, and audit recording). Reaching **20** (Provisionally Active constitutionally) or **40** (Full Capacity / Fully Constituted) does **not** create additional activation credits for the same Circle. Preserve both lifecycle and constitutional status families (`38` dual-status table).
+
+Partner commercial pack rules: **FD-025** / **FD-029** finance recovery. Circle internal ops: **FD-030**. Status mapping: **FD-032**.
 
 ---
 
-## Governing Body (FD-030)
+## Governing Body (FD-030 / FD-032)
 
-Approved term for Circle internal governance: **Governing Body** (legacy labels Board of Governance / Circle Board may appear pending migration).
+Approved term for Circle internal governance: **Governing Body** (legacy labels Board of Governance / Circle Board may appear pending migration — dual-use/legacy per FD-032).
 
 ### Core roles
 
 1. Circle President
 2. Circle Vice President
 3. Secretary
-4. **Circle Finance Coordinator** (platform-controlled finance-support role — prefer this over “Treasurer” for Circle finance support)
+4. **Circle Finance Coordinator** — current finance-support role under FD-030 / FD-032. Supersedes **Treasurer** as the *current* Circle governance title. Historical Treasurer records remain auditable and must be mapped on migration.
 5. Sergeant at Arms
 6. Membership and Growth Coordinator
 7. Referral and Performance Coordinator
@@ -299,7 +303,8 @@ Formation Circles may temporarily combine compatible roles with platform approva
 
 ### Term and appointment
 
-- Standard term: **six months**; reappointment requires performance and platform approval.
+- Standard term: **six months** (FD-030 / FD-032). Earlier **one-year** Board tenure references in FD-024 are superseded **only for current Governing Body tenure** (FD-032). Historical one-year records remain auditable.
+- Reappointment requires performance and platform approval.
 - Exact minimum tenure for eligibility: **Unresolved**.
 - Hybrid appointment: eligible members may nominate or vote → Connect BDP verifies eligibility → **platform confirms** appointment; platform may reject or remove for compliance, conflict, misconduct, or governance risk.
 
@@ -322,7 +327,7 @@ No Circle officer may unilaterally terminate a member.
 
 Conflict of interest: disclose and recuse from affected decisions.
 
-Detailed historical election/no-confidence math in FD-024 remains lifecycle/governance history — living GB structure/term/limits defer to **FD-030**.
+Detailed historical election/no-confidence math in FD-024 remains lifecycle/governance history. Living GB structure, six-month term, role names (including Circle Finance Coordinator), and limits defer to **FD-030**; **FD-032** confirms that FD-030 governs current internal Governing Body structure and that Treasurer / one-year are not current governance rules.
 
 ---
 

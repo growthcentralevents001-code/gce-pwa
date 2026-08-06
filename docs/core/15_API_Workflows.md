@@ -8,7 +8,7 @@
 **FD-022** — membership activation ≠ automatic Circle seat.
 **FD-027** — membership commercial rules (Associate-only launch purchase, Tag add-ons, Core upgrade path, platform-only activation; do not invent API routes or Core thresholds).
 **FD-028** — revenue recognition / commercial classification (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, multi-currency; do not invent schemas, FX policy, or Affiliate rates).
-**FD-029** — Commission Engine / stakeholder entitlement (Marketplace 80/10/10, Connect & Marketplace BDP finance recovery Month 0, commission states; do not invent max MBDP units, split rates, or hold periods).
+**FD-029** — Commission Engine / stakeholder entitlement (Marketplace 80/10/10, Connect & Marketplace BDP finance recovery Month 0, commission states; do not invent split rates or hold periods). **FD-033** — Marketplace BDP operating (max 2 units / 40 venues, venue attribution). **FD-032** — dual Circle status mapping. **FD-034** — Logixia/GCE legal-entity principles (do not hardcode unsupported tax/CIN details).
 **FD-024** — Connect BDP initiates Circles; platform activates.
 **FD-030** — Circle verification, Governing Body, meetings, attendance, Dual-Confirmed Closed Business, workshops; do not invent workshop commission, voting %, or substitute limits. Exact API routes remain Pending Technical Design.
 **FD-025** — Connect BDP Franchise Unit fee, commission attribution, territory, performance, and expansion commercial rules (do not invent API routes from FD-025 alone).

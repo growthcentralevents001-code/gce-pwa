@@ -32,13 +32,16 @@ Highest business authority — Founder Decisions:
 \- `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 \- `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md`
 \- `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md`
+\- `docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md`
+\- `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md`
+\- `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md`
 
 Then living cores:
 
 \- Roles / legacy mapping: \`35\_Role\_Taxonomy.md\`
 \- Commercial numbers: \`36\_Commercial\_Constants.md\`
 \- Revenue flows: \`37\_Revenue\_Flow.md\`
-\- Circles: \`38\_Circle\_Architecture.md\` (lifecycle → FD-024; internal structure/governance → FD-030)
+\- Circles: \`38\_Circle\_Architecture.md\` (lifecycle → FD-024; internal structure/governance → FD-030; dual status mapping → FD-032)
 \- AI Lead Assist: \`39\_AI\_Lead\_Assist\_Spec.md\` (defers to FD-031)
 
 Always use full vertical names: GCE Connect, GCE Marketplace, GCE Enterprise.
@@ -67,6 +70,9 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
 docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
+docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md
+docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -185,7 +191,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 14\_Business\_Rules.md
 \`\`\`
 
-After standard Marketplace BDP commission: 80% Venue Partner / 10% Marketplace BDP / 10% GCE net. Marketplace BDP commission is 10% of Eligible Marketplace Event Revenue (from GCE’s 20%). Affiliate is future-only. Do not invent Affiliate 5%, retain GCE at 20% after MBDP, or invent max MBDP units / target schedules.
+After standard Marketplace BDP commission: 80% Venue Partner / 10% Marketplace BDP / 10% GCE net. Marketplace BDP commission is 10% of Eligible Marketplace Event Revenue (from GCE’s 20%). Affiliate is future-only/inactive. Marketplace BDP operating architecture (max 2 units / 40 venues, venue-attribution, no permanent city ownership, RM duties, reassignment/exit) follows FD-033. Do not invent Affiliate 5%, retain GCE at 20% after MBDP, or invent unresolved ₹ Month-1 schedules / notice/SLA timelines.
 
 \---
 
@@ -254,6 +260,9 @@ Read:
 
 \`\`\`
 docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
+docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md
+docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md
 39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
 22\_AI\_Rules.md
@@ -358,7 +367,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 21\_Payments.md
 \`\`\`
 
-Revenue and commission calculations must match FD-028 terminology and FD-029 Commission Engine states (Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance). Do not treat Affiliate as active, invent Marketplace BDP rates beyond FD-029, treat ZBP as current, classify GST as Platform Revenue, treat proposal value as revenue, recover from estimated/held commission, require cash shortfall, auto-debit personal banks, or treat payment as automatic settlement.
+Subject to FD-034, distinguish legal entity (Logixia Solutions Private Limited) from GCE platform brand; collected funds are not automatically company revenue. Revenue and commission calculations must match FD-028 terminology and FD-029 Commission Engine states (Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance). Do not treat Affiliate as active, invent Marketplace BDP rates beyond FD-029, treat ZBP as current, classify GST as Platform Revenue, treat proposal value as revenue, recover from estimated/held commission, require cash shortfall, auto-debit personal banks, or treat payment as automatic settlement.
 
 \---
 
@@ -430,12 +439,16 @@ docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.m
 docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md
 docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md
+docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md
+docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md
+docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md
+docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md
 \`\`\`
 
-Circles: lifecycle → FD-024; internal structure, Governing Body, verification, meetings, attendance, workshops → FD-030. Governing Body cannot independently approve/terminate membership or change taxonomy/fees.
+Circles: lifecycle → FD-024; internal structure, Governing Body, verification, meetings, attendance, workshops → FD-030; dual status mapping / activation credit / GB six-month term / Circle Finance Coordinator → FD-032. Governing Body cannot independently approve/terminate membership or change taxonomy/fees. Do not collapse lifecycle and constitutional status into one enum without the FD-032 mapping.
 Ensure each stakeholder only has access to documented responsibilities.
 
 \---

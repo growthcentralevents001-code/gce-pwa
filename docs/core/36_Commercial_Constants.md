@@ -14,7 +14,7 @@ Commercial **numeric** constants historically documented in partner narratives.
 
 **GCE Connect Circle Membership commercial numbers:** FD-027.
 
-Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, max MBDP units per person, and MBDP target schedules remain **Pending** where not Founder-approved — do not invent.
+Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Marketplace BDP **operating** architecture (units, venues, attribution, RM, exit) is **FD-033**. Dual Circle status mapping and activation-credit logic: **FD-032**. Corporate / contracting / payment-receiving principles: **FD-034**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, and some MBDP SLA/notice details remain **Pending** where not Founder-approved — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
 
@@ -75,7 +75,7 @@ Equivalent interpretation: Marketplace BDP receives **50% of GCE’s standard 20
 
 **Operating authority:** FD-025. **Commission / finance recovery:** FD-029 (supersedes FD-025 “deferred finance inactive” only). Narrative: `06_CBDP.md`.
 
-Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, territory, and data remain with **GCE**. Territory model: **Performance-Protected Assigned Territory** (not permanently owned).
+Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, territory, and data remain platform assets under **Logixia Solutions Private Limited** / **GCE** brand (FD-034) — Connect BDP does not own them. Territory model: **Performance-Protected Assigned Territory** (not permanently owned).
 
 | Constant | Value | Source |
 |----------|-------|--------|
@@ -109,7 +109,7 @@ Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, ter
 | Standard person / controlled-entity limit | Maximum **2** active Franchise Units (higher count requires special platform approval) | FD-025 |
 | Illustrative full-capacity commission example | 40 × ₹2,000 → ₹80,000/Circle; × 5 Circles → ₹4,00,000; × 20% → ₹80,000 monthly commission — **illustrative only, not guaranteed income** | FD-025 |
 
-Circle lifecycle capacity (members per Circle): minimum activation **15** founding members; maximum **40** members — FD-024. Constitution thresholds (FD-030): **Provisionally Active** at **20–39** approved and paid members; **Fully Constituted** at **40** (do not describe 20 as a full Circle). Seat distribution across four GC Power Sectors is **flexible** (not rigid 10/10/10/10).
+Circle dual status (FD-032): preserve **lifecycle** (Formation / Active Growth / Full Capacity) and **constitutional** (Formation Circle / Provisionally Active Circle / Fully Constituted Circle) families. Mapping by approved and paid active members: **0–14** Formation + Formation Circle; **15–19** Active Growth + Formation Circle; **20–39** Active Growth + Provisionally Active Circle; **40** Full Capacity + Fully Constituted Circle. Platform activation may occur at **15** after verification, seat allocation, onboarding, platform confirmation, no blocking compliance issue, and audit recording. Connect BDP target credit is earned **once** at formal 15-member platform activation — **not** again at 20 or 40. Do not describe 20 as a full Circle. Seat distribution across four GC Power Sectors is **flexible** (not rigid 10/10/10/10). Governing Body term: **six months**; finance-support role: **Circle Finance Coordinator** (Treasurer is legacy for current governance — FD-030 / FD-032).
 
 **GCE Circle Business Growth Workshops** (FD-030): normally optional; payments via approved platform channels; Connect BDP does **not** automatically earn 20% of workshop revenue; Governing Body does not automatically receive a share; workshop pricing/fee/refund/platform fee/commission remain Unresolved — do not infer from membership or BDP commission.
 
@@ -121,29 +121,37 @@ Circle lifecycle capacity (members per Circle): minimum activation **15** foundi
 
 ## GCE Marketplace — Marketplace BDP constants (legacy label: MBDP)
 
-**Authority:** FD-029 (finalises commission and finance previously unresolved under FD-028). Narrative: `07_MBDP.md`.
+**Operating authority:** FD-033. **Commission / fee / finance:** FD-029. Narrative: `07_MBDP.md`.
 
 | Constant | Value | Source |
 |----------|-------|--------|
-| Direct Marketplace BDP Franchise Unit fee | **₹50,000** (upfront; one-time; non-refundable after activation) | FD-029 |
-| Active Venue Partners per Franchise Unit | Maximum **20** | FD-029 |
-| Additional capacity | More than 20 active Venue Partners requires another approved Franchise Unit | FD-029 |
-| Maximum units per Marketplace BDP | **Pending Founder Approval** | FD-029 |
-| Commission | **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%) | FD-029 |
-| Commission-Recovery Finance Option — total package | **₹60,000** | FD-029 |
-| Financed initial activation payment | **₹5,000** | FD-029 |
-| Financed Recoverable Balance | **₹55,000** | FD-029 |
-| Maximum recovery per commission cycle | Lower of **₹5,000** or available earned and approved Marketplace BDP commission | FD-029 |
+| Direct Marketplace BDP Franchise Unit fee | **₹50,000** (upfront; one-time; non-refundable after activation) | FD-029 / FD-033 |
+| Active Venue Partners per Franchise Unit | Maximum **20** | FD-029 / FD-033 |
+| Maximum active units per Marketplace BDP | **2** (second unit not automatic; requires platform approval and utilisation conditions) | FD-033 |
+| Standard maximum active Venue Partners | **40** (2 × 20) | FD-033 |
+| Territory model | **Venue-attribution based**; no permanent city/zone/district/market/category ownership; multiple Marketplace BDPs may operate in the same city | FD-033 |
+| Additional capacity beyond 20 | Requires another approved Franchise Unit | FD-029 / FD-033 |
+| Commission | **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%) | FD-029 / FD-033 |
+| After-MBDP split | **80%** Venue Partner · **10%** Marketplace BDP · **10%** GCE net | FD-029 / FD-033 |
+| Commission-Recovery Finance Option — total package | **₹60,000** | FD-029 / FD-033 |
+| Financed initial activation payment | **₹5,000** | FD-029 / FD-033 |
+| Financed Recoverable Balance | **₹55,000** | FD-029 / FD-033 |
+| Maximum recovery per commission cycle | Lower of **₹5,000** or available earned and approved Marketplace BDP commission | FD-029 / FD-033 |
 | Recovery start | **Month 0** — first cycle with valid earned, approved, settlement-eligible Marketplace BDP commission | FD-029 |
 | Recovery source | Earned and approved Marketplace BDP commission only | FD-029 |
 | Compulsory cash shortfall / automatic bank debit | **No** | FD-029 |
 | Additional interest after activation | **No** | FD-029 |
 | Unrecovered balance | Carries forward; exit/suspension does not automatically erase Recoverable Balance | FD-029 |
-| Exact Month 1 / Month 2+ revenue targets | **Pending Founder Approval** | FD-029 |
+| Portfolio operating objective | Up to **20 active Venue Partners within ten months per unit** (operating objective, not guaranteed income) | FD-033 |
+| Exact Month 1 / Month 2+ ₹ revenue targets | **Pending Founder Approval** | FD-029 / FD-033 |
+| Marketplace Affiliate | **Inactive / future-only** | FD-029 / FD-032 / FD-033 |
+| Guaranteed Marketplace BDP income | **No** | FD-033 |
 
-**Not commission-creating alone (FD-029):** venue onboarding, event/offer listing, expected campaign value, proposal value, booking enquiry, unpaid/failed/reversed payment, uncompleted event, invalid/fraudulent transaction.
+**Not commission-creating alone (FD-029 / FD-033):** venue onboarding, event/offer listing, expected campaign value, proposal value, booking enquiry, unpaid/failed/reversed payment, uncompleted event, invalid/fraudulent transaction, finding a venue, draft profile, KYC submission, meeting, non-revenue assistance.
 
-**Historical narrative superseded:** older text that treated MBDP fee/commission as unresolved, used ₹10,000 initial, ₹50,000 recoverable, Month 2 recovery start, first-month recovery holiday, or 50% recovery cap must not be treated as current. FD-029 figures above are Founder-final for fee, commission, finance, and capacity.
+**Not automatically commissionable to Marketplace BDP:** Connect, Enterprise, Lead Assist, sponsorship, advertising, training, workshops, tax, deposits, refundable amounts, cancelled/refunded value.
+
+**Historical narrative superseded:** older text that treated MBDP fee/commission as unresolved, max units Pending, used ₹10,000 initial, ₹50,000 recoverable, Month 2 recovery start, first-month recovery holiday, or 50% recovery cap must not be treated as current. FD-029 figures above are Founder-final for fee, commission, and finance; FD-033 is Founder-final for operating unit caps and venue-attribution model.
 
 ---
 

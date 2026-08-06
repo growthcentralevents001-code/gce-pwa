@@ -8,13 +8,13 @@
 **Commission Engine / finance recovery (supersedes FD-025 finance-inactive only):**
 `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-032 (dual Circle status mapping; target credit at formal 15-member platform activation; GB six-month term / Circle Finance Coordinator) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · FD-034 (Logixia legal company; GCE platform brand; no BDP ownership of vertical; no bind-by-default) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
 Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position). On Circle internal governance, meetings, attendance, verification, and Governing Body boundaries, **FD-030 wins**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
+This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position — confirmed by FD-032). On Circle internal governance, meetings, attendance, verification, and Governing Body structure, **FD-030 wins**. On dual status mapping and activation-credit logic, **FD-032 wins**. Corporate boundaries: **FD-034**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
 
 ---
 
@@ -22,7 +22,7 @@ This living document summarises Connect BDP operations. On operating conflict, *
 
 A Connect BDP is an independent GCE business partner authorised to operate an approved **Connect BDP Franchise Unit** within a platform-assigned territory.
 
-A Connect BDP is **not** automatically a GCE employee and does **not** own GCE, territory, Circles, members, data, or platform assets.
+A Connect BDP is **not** automatically a Logixia / GCE employee and does **not** own GCE, territory, Circles, members, data, or platform assets (FD-025 / FD-034). A Connect BDP may not bind Logixia without written/recorded authority (FD-034).
 
 ---
 
@@ -87,9 +87,11 @@ Approved target: **five platform-activated Circles within ten months**.
 
 Average pace: approximately **one activated Circle every two months**. It must **not** be written as one Circle per month.
 
-Only **platform-activated** Circles count toward the completed target. Draft, Formation, or Pending Activation Circles do not count as completed.
+Only **platform-activated** Circles count toward the completed target. Draft, Formation (pre-activation), or pending Circles do not count as completed target credits.
 
-Each activated Circle must comply with FD-024 lifecycle rules (minimum activation remains 15 founding members; maximum Circle capacity remains 40 members) and FD-030 constitution thresholds (**Provisionally Active** at 20–39 approved and paid members; **Fully Constituted** at 40 — do not call 20 a full Circle). Connect BDP may initiate and support Circle development but **cannot independently activate**, change lifecycle status, suspend, merge, archive, or delete Circle history. Connect BDP does **not** own the Circle and does **not** automatically receive 20% of workshop revenue (FD-030).
+Under **FD-032**, each Circle earns Connect BDP target credit **once** at formal **15-member platform activation** (approved and paid founding members plus verification, seat allocation, required onboarding, platform confirmation, no blocking compliance issue, and audit recording). Reaching **20** (constitutional Provisionally Active) or **40** (Full Capacity / Fully Constituted) does **not** create a second or third activation credit for the same Circle.
+
+Preserve **two status families** (lifecycle + constitutional). Official mapping: `38_Circle_Architecture.md` / FD-032. **15–19** = Active Growth + Formation Circle (not Provisionally Active). Connect BDP may initiate and support Circle development but **cannot independently activate**, change lifecycle status, suspend, merge, archive, or delete Circle history. Connect BDP does **not** own the Circle and does **not** automatically receive 20% of workshop revenue (FD-030). Governing Body term is **six months**; finance-support role is **Circle Finance Coordinator** (Treasurer is legacy for current governance — FD-032).
 
 ### Milestone reviews (cumulative activated Circles)
 

@@ -68,7 +68,7 @@ Location: `docs/core/`
 | 35_Role_Taxonomy.md | Canonical role taxonomy + legacy↔enum↔dashboard mapping |
 | 36_Commercial_Constants.md | Canonical commercial fees, commissions, limits, targets |
 | 37_Revenue_Flow.md | Canonical money-flow by vertical |
-| 38_Circle_Architecture.md | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance) |
+| 38_Circle_Architecture.md | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance + FD-032 dual status mapping) |
 | 39_AI_Lead_Assist_Spec.md | Canonical AI Lead Assist / Lead Intelligence specification (FD-031) |
 
 ---
@@ -92,6 +92,9 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 | `docs/founder-decisions/FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
 | `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` | GCE Connect AI Lead Assist / Lead Intelligence architecture |
+| `docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md` | Authority hierarchy, dual Circle status mapping, narrow supersessions |
+| `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md` | Marketplace BDP commercial and operating architecture |
+| `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md` | Logixia Solutions Private Limited and GCE corporate/platform constitution |
 
 ## Canonical core living documents
 
@@ -103,7 +106,7 @@ These living docs summarise and point to Founder Decisions. Narrative partner do
 | `35_Role_Taxonomy.md` | Official role names + legacy migration mapping |
 | `36_Commercial_Constants.md` | Documented commercial numbers |
 | `37_Revenue_Flow.md` | Money-flow narrative |
-| `38_Circle_Architecture.md` | Living Circle architecture (lifecycle → FD-024; internal structure/governance → FD-030) |
+| `38_Circle_Architecture.md` | Living Circle architecture (lifecycle → FD-024; constitution/GB → FD-030; dual status mapping → FD-032) |
 | `39_AI_Lead_Assist_Spec.md` | AI Lead Assist / Lead Intelligence (defers to FD-031) |
 
 Vertical naming: always **GCE Connect**, **GCE Marketplace**, **GCE Enterprise**.

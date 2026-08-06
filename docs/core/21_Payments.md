@@ -9,11 +9,14 @@
 **Membership commercial (tiers, Tags, transfers, refunds):** `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
 **Revenue recognition / commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 **Commission Engine / stakeholder entitlement / BDP finance recovery:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
+**Marketplace BDP operating architecture:** `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md`
+**Narrow supersession / status mapping:** `docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md`
+**Corporate / payment-receiving entity principles:** `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md`
 **AI Lead Assist / Lead Intelligence commercial boundaries:** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` / `39_AI_Lead_Assist_Spec.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, or FD-031, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**; for Lead Assist payment gates and Core Lead Rights **FD-031**.
+Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, FD-031, FD-032, FD-033, or FD-034, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Marketplace BDP ops **FD-033**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**; for Lead Assist payment gates and Core Lead Rights **FD-031**; for legal-entity / payment-receiving principles **FD-034** (exact banking/merchant-of-record detail remains Pending Legal / Tax / Corporate Review).
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -33,7 +36,9 @@ Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, F
 - Multi-currency-capable architecture required; preserve original-currency and FX history for commission records (FD-028 / FD-029).
 - RM and PRM do not automatically have financial movement authority.
 - Exact tax rates, GST/TDS treatment, gateway provider, refund matrix, FX, rounding, hold periods: **Pending Legal/Accounting/Tax Review** or **Pending Technical Design** — do not invent.
-- Lead Assist: ordinary referral give/receive is **not** Stage-1 payment-gated; optional Pro / verification / Expert Selection / Managed Opportunity fees and any success-fee model remain **Unresolved** (FD-031). No automatic success fee in Stage 1. **ZBP** is obsolete (FD-028 / FD-029). Refundable deposits are liabilities, not revenue.
+- Subject to Legal / Tax / Banking / provider approval, platform payments should ordinarily be received by **Logixia Solutions Private Limited**; GCE may appear as the platform brand on customer-facing surfaces; invoices where Logixia is supplier should ordinarily identify Logixia as legal issuer (FD-034). Collected funds are **not** automatically Logixia revenue (Venue share, BDP entitlement, tax, deposits, advances remain distinct).
+- No BDP, member, Venue Partner, or Governing Body member may personally collect platform money unless expressly authorised (FD-033 / FD-034).
+- Lead Assist: ordinary referral give/receive is **not** Stage-1 payment-gated; optional Pro / verification / Expert Selection / Managed Opportunity fees and any success-fee model remain **Unresolved** (FD-031 / FD-032). No automatic success fee in Stage 1. **ZBP** is obsolete (FD-028 / FD-029 / FD-032). Refundable deposits are liabilities, not revenue.
 
 
 Overview
@@ -229,7 +234,7 @@ Dashboard Activation
 
 Certain franchise models (for example Marketplace BDP) include a mandatory training fee under their documented finance package.
 
-Connect BDP Franchise Activation Fee package inclusions (training and platform support) are defined in FD-025. Connect BDP deferred finance is **not active** under FD-025. Do not treat Marketplace/Enterprise finance-option language as applying to Connect BDP launch terms.
+Connect BDP Franchise Activation Fee package inclusions (training and platform support) are defined in FD-025. The Connect BDP **Commission-Recovery Finance Option is active under FD-029** (₹60,000 total; ₹5,000 initial; ₹55,000 Recoverable Balance; max ₹5,000 per eligible commission cycle from Month 0) — FD-029 supersedes only FD-025’s prior “deferred finance inactive” position (confirmed by FD-032). Do not invent Marketplace/Enterprise finance terms for Connect beyond FD-029.
 
 Enterprise BDP may use the Founder-approved financed Franchise Pack (₹36,000 total; ₹5,000 initial; ₹31,000 recoverable from earned and approved Enterprise BDP commission only, up to ₹5,000 per month). Recovery does not create an automatic monthly cash-shortfall demand. Exit does not automatically erase the balance (FD-026).
 

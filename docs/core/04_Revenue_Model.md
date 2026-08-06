@@ -6,9 +6,9 @@
 
 **Highest authority for Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace 80/10/10:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · FD-031 (Lead Assist commercial boundaries) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md` · **Lead Assist living:** `39_AI_Lead_Assist_Spec.md`
+**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · FD-031 (Lead Assist commercial boundaries) · FD-032 (supersession register; Connect finance active) · FD-033 (Marketplace BDP ops) · FD-034 (Logixia payment/invoice principles; collected funds ≠ automatic company revenue) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md` · **Lead Assist living:** `39_AI_Lead_Assist_Spec.md`
 
-Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent advertising prices, Lead Assist commission, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, FX policy, max MBDP units, or split-commission percentages. Tax and formal accounting remain Pending Tax / CA / audit review.
+Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent advertising prices, Lead Assist commission, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, FX policy, or split-commission percentages. Tax and formal accounting remain Pending Tax / CA / audit review. Subject to Legal / Tax / Banking approval, platform payments ordinarily receivable by **Logixia Solutions Private Limited** (FD-034).
 
 ## Core financial concepts (FD-028)
 
@@ -109,7 +109,7 @@ Marketplace recognition requires verified Venue Partner, valid event/offer/campa
 
 Minimum campaign commercial value: **₹50,000** — not guaranteed or automatically recognised revenue (FD-028).
 
-**Marketplace BDP Franchise Unit (FD-029):** direct **₹50,000** or financed **₹60,000** (₹5,000 activation + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per unit.
+**Marketplace BDP Franchise Unit (FD-029 / FD-033):** direct **₹50,000** or financed **₹60,000** (₹5,000 activation + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per unit; maximum **2** units / **40** venues; venue-attribution model (no permanent city ownership).
 
 Canonical numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
@@ -145,7 +145,7 @@ Franchise, unit, and partner-pack fees are **Franchise and Partner-Pack Fee Reve
 Revenue is generated through:
 
  GCE Connect Business Development Partner (Connect BDP) — Direct Franchise Unit **₹50,000** or Commission-Recovery Finance Option **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0) (FD-029; supersedes FD-025 finance-inactive only)
- GCE Marketplace Business Development Partner (Marketplace BDP) — Direct **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); **20** active Venue Partners per unit (FD-029)
+ GCE Marketplace Business Development Partner (Marketplace BDP) — Direct **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); **20** active Venue Partners per unit; max **2** units (FD-029 / FD-033)
  Enterprise Business Development Partner (Enterprise BDP) — Franchise Pack **₹30,000** direct or financed **₹36,000** (₹5,000 initial + ₹31,000 recoverable from earned/approved Enterprise BDP commission only) (FD-026); financed recoverable balance is **not** event revenue
 
 Connect BDP also earns **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit, including eligible Associate/Core subscription and Tag 3 / Tag 4 revenue when collected, activated, attributed, and settlement-eligible (FD-025 / FD-027 / FD-029). Event fees, training, administrative fees, advertising, premium listings, sponsorships, technology services, Lead Assist, Marketplace, and Enterprise revenue do **not** automatically use this subscription-commission rule. Transfer fees are Administrative Fee Revenue and not automatically commissionable.

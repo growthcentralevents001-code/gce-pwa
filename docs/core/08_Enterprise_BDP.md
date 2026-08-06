@@ -5,7 +5,7 @@
 **Highest authority for GCE Enterprise business and operating rules:**
 `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · FD-028 (revenue recognition — milestone recognition; proposal value not revenue; VOF non-active) · FD-029 (Commission Engine — Enterprise BDP 25% of eligible GCE Platform Commission; FD-026 finance preserved) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · FD-028 (revenue recognition — milestone recognition; proposal value not revenue; VOF non-active) · FD-029 (Commission Engine — Enterprise BDP 25% of eligible GCE Platform Commission; FD-026 finance preserved) · FD-034 (Logixia ordinarily contracts; GCE not ordinarily physical executor; exact Enterprise legal role may vary by contract; BDPs do not bind Logixia by default) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Enterprise Business Development Partner**. Approved short name: **Enterprise BDP**.
 
@@ -21,7 +21,7 @@ Do not invent unresolved FD-026 items (Vendor Opportunity Fee percentage/distrib
 
 GCE Enterprise is a technology-enabled, stakeholder-fulfilled corporate event procurement, matching, coordination, workflow, and financial-control platform.
 
-GCE is an IT platform. GCE does **not** directly execute physical events and does not itself become the venue operator, caterer, production vendor, decorator, AV provider, transport provider, security provider, hospitality provider, manpower provider, or physical event-management contractor.
+GCE is an IT platform under **Logixia Solutions Private Limited** (FD-034). GCE does **not** ordinarily directly execute physical events and does not itself become the venue operator, caterer, production vendor, decorator, AV provider, transport provider, security provider, hospitality provider, manpower provider, or physical event-management contractor unless Logixia expressly contracts to provide that service. Exact Enterprise legal role (intermediary / coordinator / agent / principal / managed services) may vary by approved contract — do not assume one role for every project (FD-034).
 
 Physical fulfilment is performed by approved stakeholders and vendors.
 

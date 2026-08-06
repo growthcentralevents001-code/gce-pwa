@@ -8,16 +8,16 @@
 **Highest authority for membership lifecycle timing/state concepts:**
 `docs/founder-decisions/FD-022_Membership_Lifecycle.md`
 
-**Related:** FD-024 (Circle seats / lifecycle) · FD-030 (Circle verification, Protected Tag Scope, Governing Body, attendance, seat ops) · FD-021 (membership settlement) · FD-023 (access during grace/suspension) · FD-025 (Connect BDP 20% on eligible subscription/Tag revenue) · FD-028 (revenue recognition — payment + activation required; Tag Subscription Revenue; transfer fee is Administrative Fee Revenue) · FD-029 (Connect BDP commission states and finance recovery) · FD-031 (Lead Assist separate from membership; Core Lead Rights) · FD-001 (platform model)
+**Related:** FD-024 (Circle seats / lifecycle) · FD-030 (Circle verification, Protected Tag Scope, Governing Body, attendance, seat ops) · FD-032 (dual Circle status mapping; Tag +25%/+25%; GB six-month / Circle Finance Coordinator) · FD-021 (membership settlement) · FD-023 (access during grace/suspension) · FD-025 (Connect BDP 20% on eligible subscription/Tag revenue) · FD-028 (revenue recognition — payment + activation required; Tag Subscription Revenue; transfer fee is Administrative Fee Revenue) · FD-029 (Connect BDP commission states and finance recovery) · FD-031 (Lead Assist separate from membership; Core Lead Rights) · FD-001 (platform model) · FD-034 (members are not employees/shareholders/owners of GCE)
 
-This living document summarises membership commercial and operating rules for **GCE Connect**. On commercial/operating conflict, **FD-027 wins**. On pure lifecycle-state conflict, **FD-022 wins**. On recognition / commercial classification of membership and Tag money, **FD-028 wins**. On Circle internal verification/governance/seat-ops conflict, **FD-030 wins**. Do not invent unresolved FD-027 items (exact Core thresholds, weighted scores, daily proration formula, refund matrix, waitlist tie-breaks, Lead Assist commercial rules).
+This living document summarises membership commercial and operating rules for **GCE Connect**. On commercial/operating conflict, **FD-027 wins**. On pure lifecycle-state conflict, **FD-022 wins**. On recognition / commercial classification of membership and Tag money, **FD-028 wins**. On Circle internal verification/governance/seat-ops conflict, **FD-030 wins**. On dual status mapping, **FD-032 wins**. Do not invent unresolved FD-027 items (exact Core thresholds, weighted scores, daily proration formula, refund matrix, waitlist tie-breaks, Lead Assist commercial rules).
 
 ## Canonical references
 
 - **Membership commercial (Founder):** FD-027
 - **Revenue recognition (Founder):** FD-028
 - **Membership lifecycle (Founder):** FD-022
-- **Circle seats / architecture:** `38_Circle_Architecture.md` / FD-024 (lifecycle) / FD-030 (internal structure, verification, governance)
+- **Circle seats / architecture:** `38_Circle_Architecture.md` / FD-024 (lifecycle) / FD-030 (internal structure, verification, governance) / FD-032 (dual status mapping)
 - **Commercial numbers:** `36_Commercial_Constants.md` (defers to FD-027 for membership; FD-028 for recognition)
 - **AI Lead Assist (separate service):** FD-031 / `39_AI_Lead_Assist_Spec.md` — separate from base membership; **Core Lead Rights** protected; commercial prices/success fee **Unresolved**; not approved under FD-027
 - **Roles:** `35_Role_Taxonomy.md`
@@ -133,7 +133,7 @@ Use **Protected Tag Scope**. Do not use “business monopoly” as a constitutio
 
 Use: **GC Power Sector** · Business Specialization · Protected Tag Scope · Business Tags · Digital Member Profile · Intelligent Referral Routing.
 
-Four fixed GC Power Sectors (FD-030): Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle. Seat distribution is flexible (not rigid 10/10/10/10). Circle capacity: max **40**; Provisionally Active at **20–39**; Fully Constituted at **40**.
+Four fixed GC Power Sectors (FD-030): Real Estate, Infrastructure & Construction; Industrial, Manufacturing & Logistics; Professional, Financial & Business Services; Consumer, Hospitality, Health & Lifestyle. Seat distribution is flexible (not rigid 10/10/10/10). Circle capacity: max **40**. Dual status (FD-032): platform activation at **15**; constitutional Provisionally Active at **20–39**; Full Capacity / Fully Constituted at **40**; **15–19** remain Formation Circle constitutionally while lifecycle Active Growth.
 
 Do not use the outdated term **Power Circle** as current taxonomy.
 

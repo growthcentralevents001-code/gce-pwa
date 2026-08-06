@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020, FD-021, FD-022, FD-023, FD-024, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, FD-031.
+**Founder Decisions are highest authority:** FD-001, FD-020–FD-034.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only). GCE Enterprise commercial and operating rules defer to **FD-026**. GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Do **not** reconcile Founder Decision ambiguity by assumption (FD-032). Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only; confirmed FD-032). GCE Enterprise commercial and operating rules defer to **FD-026**; exact legal role may vary by contract (**FD-034**). GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Marketplace BDP operating architecture defers to **FD-033**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**; dual status mapping and activation credit **FD-032**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`. Corporate / Logixia–GCE constitution defer to **FD-034**.
 
 Overview
 
@@ -105,9 +105,9 @@ These tags are mandatory because they are used by:
 
  Circle Rules
 
-Every GCE Connect Circle must (FD-030 / `38_Circle_Architecture.md`):
+Every GCE Connect Circle must (FD-030 / FD-032 / `38_Circle_Architecture.md`):
 
- Maximum **40** active physical members; Provisionally Active at **20–39**; Fully Constituted at **40** (do not call 20 a full Circle)
+ Maximum **40** active physical members; preserve dual status: lifecycle Formation / Active Growth / Full Capacity and constitutional Formation Circle / Provisionally Active (20–39) / Fully Constituted (40); **15–19 is Active Growth + Formation Circle** (not Provisionally Active); platform activation and Connect BDP target credit at formal **15** (once per Circle — not again at 20 or 40)
  Follow **GCE Phygital Circle Meeting Framework** — physical meetings every **15 days**; digital supports prep/follow-up and must not replace physical meetings
  Expected attendance at least **75%** physical; two consecutive unexplained absences → warning; three → formal review; below **60%** over rolling three months → Corrective Action Plan; attendance alone does not auto-terminate
  Maintain professional conduct; progressive discipline; no Circle officer unilaterally terminates a member
@@ -118,7 +118,7 @@ Every GCE Connect Circle must (FD-030 / `38_Circle_Architecture.md`):
  Voting advisory/nomination only — cannot decide membership, fees, taxonomy, suspension, or closure
  Membership does not guarantee referrals or revenue
 
-The **Governing Body** supports circle discipline and escalates issues; final membership, taxonomy, finance, and termination authority remains with the **platform** (FD-030).
+The **Governing Body** supports circle discipline and escalates issues; term **six months**; finance-support role **Circle Finance Coordinator** (Treasurer legacy for current governance — FD-032). Final membership, taxonomy, finance, and termination authority remains with the **platform** (FD-030). Circles are platform assets under Logixia / GCE brand — not BDP-owned (FD-034).
 
  Referral Rules
 
@@ -199,12 +199,26 @@ Key rules (do not invent beyond FD-025 / FD-029):
 - Expansion: not automatic; separate fee; standard max **two** active Franchise Units
 - Reassignment: normally future earning events only; historical earned commission not automatically transferred
 - Performance: missing two consecutive milestone reviews → formal review + sixty-day corrective process (**not** automatic cancellation)
-- Circles, members, and data remain with GCE; Connect BDP cannot independently activate Circles
+- Circles, members, and data remain platform assets under Logixia / GCE; Connect BDP cannot independently activate Circles; target credit once at formal 15-member platform activation (FD-032)
 - Serious misconduct may trigger immediate suspension or termination
 
  Marketplace BDP Rules
 
-**FD-029:** Marketplace BDP commission **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%); direct fee **₹50,000** or financed **₹60,000** (₹5,000 + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per Franchise Unit. Narrative: `07_MBDP.md`. Constants: **`36_Commercial_Constants.md`**. Max units per MBDP and exact revenue targets remain **Pending Founder Approval**.
+**Operating authority: FD-033.** Commission / fee / finance: **FD-029.** Narrative: `07_MBDP.md`. Constants: **`36_Commercial_Constants.md`**.
+
+Key rules (do not invent beyond FD-033 / FD-029):
+
+- Appointment by GCE only; package payment alone does not appoint; KYC, agreement, training, approval, finance activation, compliance clearance required
+- Unit: up to **20** active Venue Partners; maximum **2** units; standard max **40** venues; second unit not automatic
+- Model: **venue-attribution based** — no permanent city/zone ownership; multiple Marketplace BDPs may operate in the same city
+- Primary Relationship Manager for onboarded assigned venues; no automatic extra RM commission layer
+- Commission **10%** of Eligible Marketplace Event Revenue; after split **80/10/10**; financed package ₹60,000 / ₹5,000 / ₹55,000 Month 0
+- No commission on unpaid/cancelled/refunded/tax/deposit amounts; no automatic Connect/Enterprise/Lead Assist entitlement
+- Portfolio objective: up to **20 active Venue Partners within 10 months per unit** (not guaranteed income)
+- May not approve refunds, release settlement, collect platform money personally, sell data, or privately transfer attribution
+- Reassignment preserves history; does not erase earned approved commission; future revenue after cut-off not automatic
+- Marketplace Affiliate **inactive**
+- Exact ₹ Monthly revenue targets, notice/appeal/SLA details: **Pending** where not Founder-approved
 
  Enterprise BDP Rules
 

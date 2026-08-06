@@ -78,7 +78,7 @@ Location: `docs/core/`
 | 35 | `35_Role_Taxonomy.md` | Canonical role taxonomy + Role Mapping (legacy → current → DB enum → dashboard → permissions) |
 | 36 | `36_Commercial_Constants.md` | Canonical commercial constants (fees, commissions, limits, targets) |
 | 37 | `37_Revenue_Flow.md` | Canonical revenue flows across GCE Connect / GCE Marketplace / GCE Enterprise |
-| 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance) |
+| 38 | `38_Circle_Architecture.md` | Canonical GCE Connect circle architecture (FD-024 lifecycle + FD-030 governance + FD-032 dual status mapping) |
 | 39 | `39_AI_Lead_Assist_Spec.md` | Canonical AI Lead Assist / Lead Intelligence specification (FD-031) |
 
 ## Numbering note
@@ -174,6 +174,9 @@ Location: `docs/founder-decisions/`
 | `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md` | Commission Engine and stakeholder entitlement architecture |
 | `FD-030_GCE_Connect_Circle_Architecture_and_Governance.md` | GCE Connect Circle internal architecture and governance |
 | `FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` | GCE Connect AI Lead Assist / Lead Intelligence architecture |
+| `FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md` | Authority hierarchy, dual Circle status mapping, narrow supersessions, Phase 2 bounds |
+| `FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md` | Marketplace BDP commercial and operating architecture |
+| `FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md` | Logixia Solutions Private Limited and GCE corporate/platform constitution |
 
 ## Development Workflow
 
@@ -210,18 +213,24 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.9.0 |
-| Last Updated | 2026-08-03 |
+| Documentation Version | v1.10.0 |
+| Last Updated | 2026-08-07 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 13 |
+| Total Founder Decisions | 16 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 56 |
+| Total Documentation Files (`docs/`) | 59 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 13 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 56.
+Total documentation files under `docs/` = 32 core + 8 engineering + 16 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 59.
 
 ## Changelog
+
+### v1.10.0
+
+- Indexed FD-032 (Phase 1 Authority, Status Mapping, and Supersession Clarification), FD-033 (Marketplace BDP Commercial and Operating Architecture), and FD-034 (Logixia and GCE Corporate Platform Constitution)
+- Synchronised living Markdown and Cursor business rules with dual Circle status mapping, Marketplace BDP operating constitution, and Logixia–GCE corporate constitution
+- Corrected stale Connect BDP deferred-finance-inactive wording in payments narrative
 
 ### v1.9.0
 

@@ -2,9 +2,11 @@
 
 ## Authority
 
-**Settlement / hold:** FD-021 · **Ledgers:** FD-020 · **RBAC:** FD-023 · **Revenue recognition:** FD-028 · **Commission / Marketplace share:** FD-029 · **Commercial share:** `36_Commercial_Constants.md`
+**Settlement / hold:** FD-021 · **Ledgers:** FD-020 · **RBAC:** FD-023 · **Revenue recognition:** FD-028 · **Commission / Marketplace share:** FD-029 · **Marketplace BDP onboarding / attribution / RM:** FD-033 · **Corporate boundaries:** FD-034 · **Commercial share:** `36_Commercial_Constants.md`
 
-Venue Partner accesses **own** business data only. Settlement for Marketplace events follows successful completion and the approved **48-hour** post-event hold (FD-021), not payment alone. After standard Marketplace BDP commission: **80% Venue Partner Entitlement / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029). GCE Gross Marketplace Platform Commission is 20% before MBDP share. Affiliate commission is not active. Minimum campaign commercial value ₹50,000 is not guaranteed collected or recognised revenue. Event-category variants remain not enumerated.
+Venue Partner accesses **own** business data only. Settlement for Marketplace events follows successful completion and the approved **48-hour** post-event hold (FD-021), not payment alone. After standard Marketplace BDP commission: **80% Venue Partner Entitlement / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029 / FD-033). GCE Gross Marketplace Platform Commission is 20% before MBDP share. Affiliate commission is not active. Minimum campaign commercial value ₹50,000 is not guaranteed collected or recognised revenue. Event-category variants remain not enumerated.
+
+New Venue Partners should ordinarily be onboarded through an approved Marketplace BDP; GCE retains final approval. The validly onboarding Marketplace BDP becomes primary Relationship Manager for that venue under a **venue-attribution** model — Marketplace BDP does not permanently own the venue, city, or attribution rights, and may not release settlement or approve refunds (FD-033). Venue Partners are independent businesses — not Logixia subsidiaries or employees (FD-034).
 
 ## Canonical references
 

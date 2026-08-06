@@ -29,9 +29,15 @@ When documentation conflicts with a Founder Decision, follow the Founder Decisio
 
 Never invent Unresolved or Pending Founder Approval rules.
 
-For GCE Connect Circle **lifecycle**, prefer FD-024. For Circle **internal structure and governance** (capacity constitution, GC Power Sectors, Governing Body, verification, meetings, attendance, workshops, discipline), prefer FD-030. Living summary: \`docs/core/38_Circle_Architecture.md\`.
+For GCE Connect Circle **lifecycle**, prefer FD-024. For Circle **internal structure and governance** (capacity constitution, GC Power Sectors, Governing Body, verification, meetings, attendance, workshops, discipline), prefer FD-030. For **dual Circle status mapping**, Connect BDP activation credit at formal 15-member platform activation, and current Governing Body six-month term / Circle Finance Coordinator (Treasurer legacy), prefer FD-032. Living summary: \`docs/core/38_Circle_Architecture.md\`.
+
+For Marketplace BDP operating architecture (units, venue attribution, RM, reassignment, exit), prefer FD-033. Living summary: \`docs/core/07_MBDP.md\`.
+
+For Logixia Solutions Private Limited / GCE corporate and platform constitution (legal company, brand hierarchy, contracting/payment/invoice/IP/data principles), prefer FD-034. Exact legal/tax/privacy classifications remain Pending professional review.
 
 For AI Lead Assist / Lead Intelligence, prefer FD-031. Living summary: \`docs/core/39_AI_Lead_Assist_Spec.md\`.
+
+Do not reconcile Founder Decision ambiguity by assumption (FD-032).
 
 \# Development Philosophy
 

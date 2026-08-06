@@ -4,11 +4,29 @@
 
 **Highest authority for foundational business model:** `docs/founder-decisions/FD-001_Business_Model.md`
 
-**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement), FD-030 (GCE Connect Circle architecture and governance), FD-031 (GCE Connect AI Lead Assist / Lead Intelligence architecture).
+**Related Founder Decisions:** FD-020 (Wallet/ledgers), FD-021 (Settlement), FD-022 (Membership), FD-023 (RBAC), FD-024 (Circle lifecycle), FD-025 (Connect BDP commercial and operating architecture), FD-026 (GCE Enterprise business and operating architecture), FD-027 (Membership commercial and operating architecture), FD-028 (Revenue recognition and commercial architecture), FD-029 (Commission Engine and stakeholder entitlement), FD-030 (GCE Connect Circle architecture and governance), FD-031 (GCE Connect AI Lead Assist / Lead Intelligence architecture), FD-032 (Phase 1 authority / dual Circle status mapping / narrow supersessions), FD-033 (Marketplace BDP commercial and operating architecture), FD-034 (Logixia and GCE corporate/platform constitution).
 
 This file is the living high-level **GCE business model** summary. Where it conflicts with FD-001 or a more specific later Founder Decision, the Founder Decision wins.
 
 Official platform domain (FD-001): **growthcentralevents.com**.
+
+## Corporate constitution (Founder Approved — FD-034)
+
+```text
+Logixia Solutions Private Limited
+└── Growth Central Events — GCE Platform and Master Brand
+    ├── GCE Connect
+    ├── GCE Marketplace
+    └── GCE Enterprise
+```
+
+- **Logixia Solutions Private Limited** is the intended legal company that owns, operates, manages, commercialises, and develops the GCE platform (subject to corporate documentation and Legal Review).
+- **GCE** is the platform and master brand — currently a product/operating division under Logixia, **not** a separate legal company.
+- Subject to Legal Review, Logixia should ordinarily be the contracting entity, payment-receiving entity, and invoice-issuing entity (GCE may appear as brand).
+- Collected funds are not automatically Logixia revenue (stakeholder entitlements, tax, deposits, advances remain distinct).
+- Logixia is the intended primary platform operator for data; exact data-fiduciary / controller / processor classification remains **Pending Legal and Privacy Review**. Personal data is not unrestricted company property.
+- BDPs, members, Venue Partners, vendors, and Governing Body members do not automatically become employees, shareholders, directors, legal partners, owners of GCE/verticals, or persons able to bind Logixia.
+- Exact CIN, registered office, shareholding, directors, GST/TDS, merchant-of-record detail, and contract wording remain Pending Legal / Corporate / Tax Review — do not invent.
 
 ## Founder-approved platform principles (summary)
 
@@ -17,19 +35,21 @@ Official platform domain (FD-001): **growthcentralevents.com**.
 - **One GCE account**; multiple compatible roles; **role-based workspaces** (a workspace is not a separate account).
 - BDP roles are **vertical-specific**; one BDP role does not automatically control another vertical.
 - Membership and Circle seat are **separate** concepts; membership does not automatically guarantee a Circle seat.
-- Circles are **GCE platform assets**; Connect BDP and Governing Body (legacy Circle Board) do **not** own Circles (FD-024 / FD-030).
-- Circle internal structure uses four fixed **GC Power Sectors**, one primary Business Specialization, Protected Tag Scope, and max four Tags; seats are flexible across sectors (not rigid 10/10/10/10) — FD-030.
+- Circles are **platform assets** under Logixia / GCE; Connect BDP and Governing Body (legacy Circle Board) do **not** own Circles (FD-024 / FD-030 / FD-034).
+- Circle dual status families (FD-032): lifecycle Formation / Active Growth / Full Capacity and constitutional Formation / Provisionally Active / Fully Constituted — official mapping in `38_Circle_Architecture.md`. Platform activation and Connect BDP target credit at formal **15**; Provisionally Active at **20**; Full Capacity/Fully Constituted at **40**.
+- Circle internal structure uses four fixed **GC Power Sectors**, one primary Business Specialization, Protected Tag Scope, and max four Tags; seats are flexible across sectors (not rigid 10/10/10/10) — FD-030. Governing Body term **six months**; **Circle Finance Coordinator** is current finance-support role (Treasurer legacy — FD-032).
 - Connect BDP commercial unit is the **Connect BDP Franchise Unit** (FD-025): assigned Performance-Protected territory, separate fee per unit, up to five Circles per unit — not ownership of territory, Circles, members, or data.
-- GCE Enterprise is a technology-enabled, stakeholder-fulfilled procurement / workflow / financial-control platform (FD-026). GCE does **not** directly execute physical events. Enterprise BDP allocation is **client-based** (Franchise Pack); Enterprise Platform Expert is internal/controlled.
+- Marketplace BDP commercial unit (FD-033): up to **20** venues/unit, max **2** units / **40** venues; venue-attribution model; no permanent city ownership; primary RM for assigned venues.
+- GCE Enterprise is a technology-enabled, stakeholder-fulfilled procurement / workflow / financial-control platform (FD-026 / FD-034). GCE does **not** ordinarily become the physical venue/caterer/decorator/production/security executor unless Logixia expressly contracts that service. Exact Enterprise legal role may vary by contract.
 - GCE Connect Circle Membership launch product is **Associate Tier** at ₹6,000/quarter (FD-027); Core Tier is future/achievement-based and not directly purchasable; membership ≠ automatic Circle seat.
 - User-facing Wallet may be unified; internal accounting uses **separate ledgers** (FD-020). Wallet credits are not automatically revenue (FD-028).
 - Payment collection does **not** automatically mean settlement eligibility or earned Platform Revenue (FD-021 / FD-028). Keep Gross Transaction Value, Collected Amount, Eligible Revenue, Platform Revenue, and Settlement-Eligible Amount separate.
-- Active Marketplace model after standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029); Affiliate is future-only; ZBP is removed.
-- Connect BDP / Marketplace BDP Commission-Recovery Finance Options are active under FD-029 (Connect finance supersedes FD-025 finance-inactive only).
+- Active Marketplace model after standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (FD-029 / FD-033); Affiliate is future-only; ZBP is removed.
+- Connect BDP / Marketplace BDP Commission-Recovery Finance Options are active under FD-029 (Connect finance supersedes FD-025 finance-inactive only — FD-032).
 - Commercial rules are separated by vertical and transaction type — do not assume one universal commission or settlement rule.
 - Financial architecture must be **multi-currency-capable**; INR may be initial domestic/reporting currency — not permanently INR-only (FD-028 / FD-029).
 
-Do not invent missing commercial percentages, tax rates, advertising prices, Lead Assist commercial activation, max MBDP units, split-commission rates, or future Affiliate products. Category existence does not automatically make revenue commissionable (FD-029).
+Do not invent missing commercial percentages, tax rates, advertising prices, Lead Assist commercial activation, split-commission rates, future Affiliate products, or final legal/tax/privacy classifications. Category existence does not automatically make revenue commissionable (FD-029). Do not reconcile Founder Decision conflicts by assumption (FD-032).
 
 ---
 

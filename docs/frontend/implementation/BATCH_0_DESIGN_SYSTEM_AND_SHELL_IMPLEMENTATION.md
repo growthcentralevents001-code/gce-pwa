@@ -161,6 +161,10 @@ Workspace switcher: `components/workspace/WorkspaceSwitcher.tsx` — allowed key
 - Batch 1 public marketing pages
 - Replacing dirty Header entirely (currently unused by AppChrome)
 
+### Follow-up cleanup (Checkpoint A)
+
+- Duplicate success-path dashboard `WorkspaceSwitcher` removed; canonical switcher remains in `PartnerShell` (access-denied path may still offer switcher for recovery).
+
 ---
 
 ## Checkpoint A review items

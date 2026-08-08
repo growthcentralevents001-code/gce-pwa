@@ -286,7 +286,7 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
         Entitlement authority is <code>role_assignments</code> (FD-035). Membership
         activation is separate from Circle allocation (FD-036).
       </p>
-      <WorkspaceSwitcher current={key} allowed={identity.workspaces} />
+      {/* Workspace switcher lives in PartnerShell (Batch 0). */}
       <section className="mt-6 rounded-lg border border-neutral-200 p-4">
         <h2 className="text-sm font-medium">Access</h2>
         <p className="mt-1 text-sm">

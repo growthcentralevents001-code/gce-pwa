@@ -257,6 +257,10 @@ There is no permanent “closed” exit. **Go-live readiness** for money movemen
 
 Phase 12 implemented platform hooks for notifications consent categories, privacy request workflow, retention policy metadata (`pending_validation`), compliance holds, and sensitive-access logging. **Exact legal retention periods and production SMS/DLT / email provider compliance remain PENDING PROFESSIONAL VALIDATION** (OD-008/009). Destructive retention enforcement remains feature-flagged OFF.
 
+### Phase 13 technical hooks (non-legal conclusion)
+
+Phase 13 adds operator case management, approval/exception queues, privacy/retention **review UX**, and incident actions over Phase 12 foundations. It does **not** invent refund economics, contractual support SLAs, or retention purge authority. Support/ops notes must not store KYC/bank document bodies. Production money and live messaging remain gated OFF.
+
 ---
 
 ## Document control

@@ -256,6 +256,8 @@ Additional mandatory behaviors:
 | Phase 11 implementation notes | `docs/phase-11/PHASE_11_IMPLEMENTATION_NOTES.md` | Phase 11 customer CX delivery notes |
 | Phase 12 ops governance plan | `docs/phase-12/PHASE_12_NOTIFICATIONS_ANALYTICS_AUDIT_SECURITY.md` | Notifications / analytics / audit / security plan |
 | Phase 12 implementation notes | `docs/phase-12/PHASE_12_IMPLEMENTATION_NOTES.md` | Phase 12 ops governance delivery notes |
+| Phase 13 Admin Ops plan | `docs/phase-13/PHASE_13_ADMIN_OPERATIONS_SUPPORT.md` | Admin / operations / support plan |
+| Phase 13 implementation notes | `docs/phase-13/PHASE_13_IMPLEMENTATION_NOTES.md` | Phase 13 ops control-plane delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

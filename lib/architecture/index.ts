@@ -26,5 +26,6 @@ export * from "./marketplace";
 export * from "./lead-assist";
 export * from "./customer-cx";
 export * from "./ops-governance";
+export * from "./ops-admin";
 export * from "./jobs/queue";
 export * from "./observability/sentry";

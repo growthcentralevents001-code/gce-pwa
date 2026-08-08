@@ -56,6 +56,7 @@ Locked commercial / operating rules reflected across these machines:
 | [SM_Lead_Assist.md](./SM_Lead_Assist.md) | AI Lead Assist Stage 1 (unpaid) |
 | [SM_Role_Assignment.md](./SM_Role_Assignment.md) | Scoped role assignment lifecycle |
 | [SM_KYC_Verification.md](./SM_KYC_Verification.md) | Identity / KYC verification |
+| [SM_Ops_Case.md](./SM_Ops_Case.md) | Phase 13 shared ops case lifecycle |
 
 ---
 

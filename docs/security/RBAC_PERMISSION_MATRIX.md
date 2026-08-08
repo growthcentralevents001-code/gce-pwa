@@ -197,6 +197,14 @@ Customers act on own records; Venue Rep scoped check-in/redeem; no customer self
 `security.read`, `risk.review`, `alerts.manage`, `compliance.hold`, `privacy.review`, `retention.review`,
 `sensitive_access.log`. Ordinary BDP/Venue/Member roles have no unrestricted security-queue access.
 
+**Phase 13 implementation (gce-dev):** permission codes in `lib/architecture/ops-admin/permissions.ts` —
+`ops.dashboard`, `ops.search`, `ops.approvals.review`, `ops.exceptions.resolve`, `ops.cases.manage`,
+`ops.cases.internal_notes`, `ops.moderation`, `ops.overrides.request`, `ops.overrides.approve`,
+`ops.suspend.scoped`, `ops.incident.manage`, `ops.refund.review`, `ops.connect`, `ops.marketplace`,
+`ops.enterprise`, `ops.finance`, `ops.compliance`, `ops.support`, `ops.rm`, `ops.prm`.
+Self-approval denied via `assertOpsNotSelfApproval`. No Super Admin product role. Finance console cannot mutate ledgers.
+RM/PRM have relationship/support scope without commission entitlement.
+
 ---
 
 ## Self-approval & conflict (SoD)

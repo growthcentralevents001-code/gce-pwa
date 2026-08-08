@@ -1,7 +1,3 @@
-/**
- * Generated Database types from gce-dev (Phase 12).
- * Do not hand-edit; regenerate via Supabase MCP generate_typescript_types.
- */
 export type Json =
   | string
   | number
@@ -3906,6 +3902,7 @@ export type Database = {
           id: string
           message: string
           metadata: Json
+          ops_case_id: string | null
           status: string
           user_id: string
         }
@@ -3917,6 +3914,7 @@ export type Database = {
           id?: string
           message: string
           metadata?: Json
+          ops_case_id?: string | null
           status?: string
           user_id: string
         }
@@ -3928,6 +3926,7 @@ export type Database = {
           id?: string
           message?: string
           metadata?: Json
+          ops_case_id?: string | null
           status?: string
           user_id?: string
         }
@@ -3951,6 +3950,13 @@ export type Database = {
             columns: ["event_id"]
             isOneToOne: false
             referencedRelation: "marketplace_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_support_signals_ops_case_id_fkey"
+            columns: ["ops_case_id"]
+            isOneToOne: false
+            referencedRelation: "ops_cases"
             referencedColumns: ["id"]
           },
           {
@@ -8787,6 +8793,463 @@ export type Database = {
         }
         Relationships: []
       }
+      ops_approval_queue: {
+        Row: {
+          assignee_user_id: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_reason: string | null
+          domain_action: string | null
+          id: string
+          idempotency_key: string
+          metadata: Json
+          policy_version: string | null
+          queue_key: string
+          reason: string | null
+          requester_user_id: string | null
+          status: string
+          subject_id: string
+          subject_type: string
+          title: string
+          updated_at: string
+          vertical: string
+        }
+        Insert: {
+          assignee_user_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          domain_action?: string | null
+          id?: string
+          idempotency_key: string
+          metadata?: Json
+          policy_version?: string | null
+          queue_key: string
+          reason?: string | null
+          requester_user_id?: string | null
+          status?: string
+          subject_id: string
+          subject_type: string
+          title: string
+          updated_at?: string
+          vertical?: string
+        }
+        Update: {
+          assignee_user_id?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_reason?: string | null
+          domain_action?: string | null
+          id?: string
+          idempotency_key?: string
+          metadata?: Json
+          policy_version?: string | null
+          queue_key?: string
+          reason?: string | null
+          requester_user_id?: string | null
+          status?: string
+          subject_id?: string
+          subject_type?: string
+          title?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Relationships: []
+      }
+      ops_case_events: {
+        Row: {
+          actor_user_id: string | null
+          case_id: string
+          created_at: string
+          details: Json
+          event_type: string
+          from_status: string | null
+          id: string
+          to_status: string | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          case_id: string
+          created_at?: string
+          details?: Json
+          event_type: string
+          from_status?: string | null
+          id?: string
+          to_status?: string | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          case_id?: string
+          created_at?: string
+          details?: Json
+          event_type?: string
+          from_status?: string | null
+          id?: string
+          to_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_case_events_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "ops_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ops_case_links: {
+        Row: {
+          case_id: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          label: string | null
+        }
+        Insert: {
+          case_id: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          label?: string | null
+        }
+        Update: {
+          case_id?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          label?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_case_links_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "ops_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ops_case_notes: {
+        Row: {
+          author_user_id: string
+          body: string
+          case_id: string
+          created_at: string
+          id: string
+          visibility: string
+        }
+        Insert: {
+          author_user_id: string
+          body: string
+          case_id: string
+          created_at?: string
+          id?: string
+          visibility?: string
+        }
+        Update: {
+          author_user_id?: string
+          body?: string
+          case_id?: string
+          created_at?: string
+          id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_case_notes_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "ops_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ops_cases: {
+        Row: {
+          assigned_team: string | null
+          case_number: string
+          case_type: string
+          closed_at: string | null
+          created_at: string
+          escalation_level: number
+          id: string
+          linked_domain_id: string | null
+          linked_domain_table: string | null
+          metadata: Json
+          organisation_id: string | null
+          owner_user_id: string | null
+          priority: string
+          requester_user_id: string | null
+          resolution_summary: string | null
+          resolved_at: string | null
+          severity: string
+          sla_label: string
+          sla_target_hours: number | null
+          status: string
+          subject_user_id: string | null
+          summary: string
+          updated_at: string
+          vertical: string
+        }
+        Insert: {
+          assigned_team?: string | null
+          case_number: string
+          case_type: string
+          closed_at?: string | null
+          created_at?: string
+          escalation_level?: number
+          id?: string
+          linked_domain_id?: string | null
+          linked_domain_table?: string | null
+          metadata?: Json
+          organisation_id?: string | null
+          owner_user_id?: string | null
+          priority?: string
+          requester_user_id?: string | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          severity?: string
+          sla_label?: string
+          sla_target_hours?: number | null
+          status?: string
+          subject_user_id?: string | null
+          summary: string
+          updated_at?: string
+          vertical?: string
+        }
+        Update: {
+          assigned_team?: string | null
+          case_number?: string
+          case_type?: string
+          closed_at?: string | null
+          created_at?: string
+          escalation_level?: number
+          id?: string
+          linked_domain_id?: string | null
+          linked_domain_table?: string | null
+          metadata?: Json
+          organisation_id?: string | null
+          owner_user_id?: string | null
+          priority?: string
+          requester_user_id?: string | null
+          resolution_summary?: string | null
+          resolved_at?: string | null
+          severity?: string
+          sla_label?: string
+          sla_target_hours?: number | null
+          status?: string
+          subject_user_id?: string | null
+          summary?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Relationships: []
+      }
+      ops_exception_queue: {
+        Row: {
+          case_id: string | null
+          created_at: string
+          exception_key: string
+          id: string
+          idempotency_key: string
+          metadata: Json
+          owner_user_id: string | null
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          source: string
+          status: string
+          subject_id: string | null
+          subject_type: string | null
+          summary: string
+          title: string
+          updated_at: string
+          vertical: string
+        }
+        Insert: {
+          case_id?: string | null
+          created_at?: string
+          exception_key: string
+          id?: string
+          idempotency_key: string
+          metadata?: Json
+          owner_user_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source: string
+          status?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          summary: string
+          title: string
+          updated_at?: string
+          vertical?: string
+        }
+        Update: {
+          case_id?: string | null
+          created_at?: string
+          exception_key?: string
+          id?: string
+          idempotency_key?: string
+          metadata?: Json
+          owner_user_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source?: string
+          status?: string
+          subject_id?: string | null
+          subject_type?: string | null
+          summary?: string
+          title?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_exception_queue_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "ops_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ops_incident_actions: {
+        Row: {
+          action: string
+          actor_user_id: string
+          created_at: string
+          id: string
+          incident_id: string
+          metadata: Json
+          note: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          created_at?: string
+          id?: string
+          incident_id: string
+          metadata?: Json
+          note?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          created_at?: string
+          id?: string
+          incident_id?: string
+          metadata?: Json
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_incident_actions_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incident_signals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ops_moderation_actions: {
+        Row: {
+          action: string
+          actor_user_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          reason: string
+          subject_id: string
+          subject_type: string
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason: string
+          subject_id: string
+          subject_type: string
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string
+          subject_id?: string
+          subject_type?: string
+        }
+        Relationships: []
+      }
+      ops_overrides: {
+        Row: {
+          applied_by: string | null
+          approver_user_id: string | null
+          created_at: string
+          finance_immutable: boolean
+          id: string
+          intended_state: Json
+          override_category: string
+          previous_state: Json
+          reason: string
+          requester_user_id: string
+          requires_second_approver: boolean
+          status: string
+          subject_id: string
+          subject_type: string
+          updated_at: string
+        }
+        Insert: {
+          applied_by?: string | null
+          approver_user_id?: string | null
+          created_at?: string
+          finance_immutable?: boolean
+          id?: string
+          intended_state?: Json
+          override_category: string
+          previous_state?: Json
+          reason: string
+          requester_user_id: string
+          requires_second_approver?: boolean
+          status?: string
+          subject_id: string
+          subject_type: string
+          updated_at?: string
+        }
+        Update: {
+          applied_by?: string | null
+          approver_user_id?: string | null
+          created_at?: string
+          finance_immutable?: boolean
+          id?: string
+          intended_state?: Json
+          override_category?: string
+          previous_state?: Json
+          reason?: string
+          requester_user_id?: string
+          requires_second_approver?: boolean
+          status?: string
+          subject_id?: string
+          subject_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       organisation_memberships: {
         Row: {
           created_at: string
@@ -11510,6 +11973,7 @@ export type Database = {
       }
       gce_is_mbdp_unit_owner: { Args: { p_unit_id: string }; Returns: boolean }
       gce_is_opportunity_desk: { Args: never; Returns: boolean }
+      gce_is_ops_operator: { Args: never; Returns: boolean }
       gce_is_org_member: {
         Args: { p_organisation_id: string }
         Returns: boolean
@@ -11517,6 +11981,7 @@ export type Database = {
       gce_is_platform_admin: { Args: never; Returns: boolean }
       gce_is_security_ops: { Args: never; Returns: boolean }
       gce_is_support_or_platform_admin: { Args: never; Returns: boolean }
+      gce_is_vertical_ops: { Args: { p_vertical: string }; Returns: boolean }
       gce_marketplace_claim_offer: {
         Args: {
           p_claimant: string
@@ -11708,6 +12173,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      gce_next_ops_case_number: { Args: never; Returns: string }
       gce_refresh_circle_capacity: {
         Args: { p_actor?: string; p_circle_id: string }
         Returns: {

@@ -149,11 +149,23 @@ export const OPS_GOVERNANCE_FLAGS = [
   "retention_enforcement",
 ] as const;
 
+/** Phase 13 Admin / Operations / Support flags. */
+export const OPS_ADMIN_FLAGS = [
+  "ops_approval_queues",
+  "ops_exception_queues",
+  "ops_case_management",
+  "ops_moderation",
+  "ops_manual_overrides",
+  "ops_support_console",
+  "ops_incident_console",
+] as const;
+
 export const FEATURE_FLAG_KEYS = [
   ...INACTIVE_FEATURE_FLAGS,
   ...LEAD_ASSIST_STAGE1_FLAGS,
   ...CUSTOMER_CX_FLAGS,
   ...OPS_GOVERNANCE_FLAGS,
+  ...OPS_ADMIN_FLAGS,
 ] as const;
 
 export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];

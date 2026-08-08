@@ -4,9 +4,10 @@
 |-------|-------|
 | **Phase** | 13 |
 | **Document** | `PHASE_13_ADMIN_OPERATIONS_SUPPORT.md` |
-| **Type** | Phase planning / living architecture summary (documentation only) |
-| **Status** | Draft |
+| **Type** | Phase planning / living architecture summary |
+| **Status** | **Implementation Complete on gce-dev** — see `PHASE_13_IMPLEMENTATION_NOTES.md` |
 | **Date** | 2026-08-08 |
+| **Migration** | `supabase/migrations/20260808240000_phase13_admin_operations_support.sql` |
 
 ---
 

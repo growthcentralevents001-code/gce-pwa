@@ -8,6 +8,7 @@ import {
   LEAD_ASSIST_STAGE1_FLAGS,
   CUSTOMER_CX_FLAGS,
   OPS_GOVERNANCE_FLAGS,
+  OPS_ADMIN_FLAGS,
 } from "../types";
 
 const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = {
@@ -37,6 +38,10 @@ const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = {
         : true,
     ])
   ) as Record<(typeof OPS_GOVERNANCE_FLAGS)[number], boolean>),
+  ...(Object.fromEntries(OPS_ADMIN_FLAGS.map((k) => [k, true])) as Record<
+    (typeof OPS_ADMIN_FLAGS)[number],
+    boolean
+  >),
 };
 
 export function isKnownFeatureFlag(key: string): key is FeatureFlagKey {

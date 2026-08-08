@@ -131,6 +131,8 @@ Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remain
 
 **Phase 12 ops tables (gce-dev / `20260808230000`):** `notification_*`, `in_app_notifications`, `push_subscriptions`, `analytics_events`, `security_events`, `risk_signals`, `operational_alerts`, `incident_signals`, `compliance_holds`, `privacy_requests`, `retention_*`, `sensitive_access_events` — deny-by-default; users own notifications/prefs/privacy requests; security/risk/alerts/holds restricted to platform/compliance/support (and finance where scoped). Audit remains append-only `audit_events`.
 
+**Phase 13 ops admin tables (gce-dev / `20260808240000`):** `ops_cases`, `ops_case_events`, `ops_case_notes`, `ops_case_links`, `ops_approval_queue`, `ops_exception_queue`, `ops_overrides`, `ops_moderation_actions`, `ops_incident_actions` — deny-by-default; operators via `gce_is_ops_operator` / vertical helpers; internal notes not customer-visible; security/compliance-typed cases stricter; finance cases Finance/Admin scope. Approval queue is projection (domain services remain SoT).
+
 ---
 
 ## Matrix — Enterprise

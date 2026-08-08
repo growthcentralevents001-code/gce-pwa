@@ -4,17 +4,17 @@
 
 Commercial **numeric** constants historically documented in partner narratives.
 
-**Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace 80/10/10:** highest authority is `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`. On Connect BDP finance and Marketplace BDP commission/fee/finance conflict, **FD-029 wins**. FD-029 supersedes only FD-025’s prior “deferred finance inactive” position and finalises Marketplace BDP rules previously unresolved under FD-028.
+**Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace attributed 80/10/10:** highest authority is `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`. On Connect BDP finance and Marketplace BDP commission/fee/finance conflict, **FD-029 wins**. FD-029 supersedes only FD-025’s prior “deferred finance inactive” position and finalises Marketplace BDP rules previously unresolved under FD-028.
 
 **Revenue recognition / commercial classification:** highest authority is `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md` (except where FD-029 finalises commission/finance numbers).
 
 **Connect BDP commercial and operating numbers (other than finance activation):** FD-025, as amended by FD-029 for Commission-Recovery Finance Option.
 
-**GCE Enterprise commercial and operating numbers:** FD-026 (FD-029 does not alter Enterprise BDP finance).
+**GCE Enterprise commercial and operating numbers:** FD-026 (FD-029 does not alter Enterprise BDP finance). Cross-vertical Enterprise approval, Finance co-sign, milestones, and no-double-commission: **FD-038**.
 
-**GCE Connect Circle Membership commercial numbers:** FD-027.
+**GCE Connect Circle Membership commercial numbers:** FD-027. Membership approval, activation vs Circle allocation, attribution, waitlist, transfer, geographic routing: **FD-036**.
 
-Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Marketplace BDP **operating** architecture (units, venues, attribution, RM, exit) is **FD-033**. Dual Circle status mapping and activation-credit logic: **FD-032**. Corporate / contracting / payment-receiving principles: **FD-034**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, and some MBDP SLA/notice details remain **Pending** where not Founder-approved — do not invent.
+Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Marketplace BDP **operating** architecture (units, venues, attribution, RM, exit) is **FD-033**. Marketplace **transaction families, approval, unattributed 80/0/20, redemption, payout direction:** **FD-037**. Dual Circle status mapping and activation-credit logic: **FD-032**. Corporate / contracting / payment-receiving principles: **FD-034**. Identity / role / workspace: **FD-035**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, and some MBDP SLA/notice details remain **Pending** where not Founder-approved — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
 
@@ -53,21 +53,34 @@ Always use:
 
 ---
 
-## GCE Marketplace revenue share (FD-029)
+## GCE Marketplace revenue share (FD-029 / FD-037)
+
+### Attributed (valid Marketplace BDP attribution)
 
 | Constant | Value | Source |
 |----------|-------|--------|
-| Venue Partner Entitlement | **80%** of Eligible Marketplace Event Revenue | FD-029 |
+| Venue Partner Entitlement | **80%** of Eligible Marketplace Event Revenue | FD-029 / FD-037 |
 | GCE Gross Marketplace Platform Commission | **20%** of Eligible Marketplace Event Revenue | FD-029 |
-| Marketplace BDP commission | **10%** of Eligible Marketplace Event Revenue (paid from GCE’s 20%) | FD-029 |
-| GCE Net Retained Share (after standard MBDP commission) | **10%** of Eligible Marketplace Event Revenue | FD-029 |
-| After-MBDP split summary | 80% Venue Partner · 10% Marketplace BDP · 10% GCE net | FD-029 |
+| Marketplace BDP commission | **10%** of Eligible Marketplace Event Revenue (paid from GCE’s 20%) | FD-029 / FD-037 |
+| GCE Net Retained Share (after standard MBDP commission) | **10%** of Eligible Marketplace Event Revenue | FD-029 / FD-037 |
+| After-MBDP split summary | 80% Venue Partner · 10% Marketplace BDP · 10% GCE net | FD-029 / FD-037 |
 | Documented example | ₹1,00,000 Eligible → Venue ₹80,000 / MBDP ₹10,000 / GCE net ₹10,000 | FD-029 |
 | Marketplace Affiliate commission | **Not active** (future-only) | FD-029 / FD-028 |
 
-Equivalent interpretation: Marketplace BDP receives **50% of GCE’s standard 20%** Marketplace Platform Commission. Do **not** state MBDP commission is unresolved. Do **not** add MBDP 10% on top of a retained GCE 20%.
+Equivalent interpretation: Marketplace BDP receives **50% of GCE’s standard 20%** Marketplace Platform Commission when valid attribution exists. Do **not** state MBDP commission is unresolved. Do **not** add MBDP 10% on top of a retained GCE 20%.
 
-**Scope note:** Applies to Eligible Marketplace Event Revenue after recognition conditions. Event-category-specific variants remain **not enumerated** — do not invent.
+### Unattributed (no valid Marketplace BDP attribution — FD-037)
+
+| Constant | Value | Source |
+|----------|-------|--------|
+| Venue Partner Entitlement | **80%** of Eligible Marketplace Event Revenue | FD-037 |
+| Marketplace BDP commission | **0%** | FD-037 |
+| GCE Net Retained Share | **20%** of Eligible Marketplace Event Revenue | FD-037 |
+| Unattributed split summary | 80% Venue Partner · 0% Marketplace BDP · 20% GCE | FD-037 |
+
+Where no valid Marketplace BDP attribution exists at the earning event, **no Marketplace BDP commission entitlement arises**. Do **not** describe the missing 10% as unpaid or “pending” Marketplace BDP commission — GCE retains that share. Later Marketplace BDP assignment does **not** automatically create retroactive commission on historical unattributed revenue (FD-037).
+
+**Scope note:** Applies to Eligible Marketplace Event Revenue after recognition conditions. Event-category-specific share variants are **not** active at launch unless a later Founder Decision expressly creates them (FD-037). Do not invent.
 
 ---
 
@@ -96,10 +109,11 @@ Commercial operating unit: **Connect BDP Franchise Unit**. Circles, members, ter
 | Milestone reviews (cumulative activated Circles) | Month 2: 1 · Month 4: 2 · Month 6: 3 · Month 8: 4 · Month 10: 5 | FD-025 |
 | Commission | **20%** of eligible GCE Connect subscription revenue attributed to the Franchise Unit | FD-025 / FD-029 |
 | Renewal commission | Continues at **20%** on eligible renewals while the Franchise Unit remains active, the Connect BDP remains responsible, required retention/operating duties continue, and revenue remains eligible | FD-025 |
-| Commission calculation base | Eligible successfully collected, linked, activated, settlement-eligible, correctly attributed subscription revenue | FD-025 / FD-029 |
+| Commission calculation base | Eligible successfully collected, linked, activated, settlement-eligible, **validly attributed** subscription revenue | FD-025 / FD-029 / FD-036 |
 | Commissionable items (when eligible) | Associate subscription/renewal, Core upgrade/renewal, Tag 3, Tag 4 | FD-025 / FD-027 / FD-029 |
-| Not automatically commissionable | GST/taxes, transfer/admin fees, event/training/advertising/sponsorship/technology fees, Lead Assist, Marketplace/Enterprise revenue, penalties, complimentary/promotional credits, uncollected amounts | FD-025 / FD-029 |
-| Renewal / reassignment attribution | Commission belongs to validly attributed Franchise Unit on the earning date; later reassignment does not automatically transfer historical earned commission | FD-029 |
+| Not automatically commissionable | GST/taxes, transfer/admin fees, event/training/advertising/sponsorship/technology fees, Lead Assist, Marketplace/Enterprise revenue, penalties, complimentary/promotional credits, uncollected amounts, **organic/unattributed membership revenue** (no Connect BDP entitlement without valid attribution — FD-036) | FD-025 / FD-029 / FD-036 |
+| Unattributed / organic membership | Allowed; absence of Connect BDP attribution does not block legitimate membership activation; amount that would otherwise have been Connect BDP share remains with GCE — **not** “pending CBDP commission”; later attribution is prospective by default | FD-036 |
+| Renewal / reassignment attribution | Commission belongs to validly attributed Franchise Unit on the earning date; later reassignment does not automatically transfer historical earned commission; Circle transfer does not automatically transfer Connect BDP attribution | FD-029 / FD-036 |
 | Commission payout cadence | Calculated monthly; normally processed on the first day of the following month (exact banking-day adjustment: Pending Technical Design) | FD-025 |
 | Tier 1 maximum Franchise Units | **10** (5 zones × up to 2 units; maxima, not guaranteed appointments) | FD-025 |
 | Tier 2 maximum Franchise Units | **5** (5 zones × up to 1 unit) | FD-025 |
@@ -131,8 +145,9 @@ Circle dual status (FD-032): preserve **lifecycle** (Formation / Active Growth /
 | Standard maximum active Venue Partners | **40** (2 × 20) | FD-033 |
 | Territory model | **Venue-attribution based**; no permanent city/zone/district/market/category ownership; multiple Marketplace BDPs may operate in the same city | FD-033 |
 | Additional capacity beyond 20 | Requires another approved Franchise Unit | FD-029 / FD-033 |
-| Commission | **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%) | FD-029 / FD-033 |
-| After-MBDP split | **80%** Venue Partner · **10%** Marketplace BDP · **10%** GCE net | FD-029 / FD-033 |
+| Commission | **10%** of Eligible Marketplace Event Revenue (from GCE’s 20%) — **only where valid Marketplace BDP attribution exists** | FD-029 / FD-033 / FD-037 |
+| After-MBDP split (attributed) | **80%** Venue Partner · **10%** Marketplace BDP · **10%** GCE net | FD-029 / FD-033 / FD-037 |
+| Unattributed split (no valid MBDP attribution) | **80%** Venue Partner · **0%** Marketplace BDP · **20%** GCE | FD-037 |
 | Commission-Recovery Finance Option — total package | **₹60,000** | FD-029 / FD-033 |
 | Financed initial activation payment | **₹5,000** | FD-029 / FD-033 |
 | Financed Recoverable Balance | **₹55,000** | FD-029 / FD-033 |
@@ -157,9 +172,9 @@ Circle dual status (FD-032): preserve **lifecycle** (Formation / Active Growth /
 
 ## GCE Enterprise — Enterprise BDP constants
 
-**Authority:** FD-026. Recognition: FD-028. Commission Engine interaction: FD-029 (does **not** alter Enterprise finance structure).
+**Authority:** FD-026. Recognition: FD-028. Commission Engine interaction: FD-029 (does **not** alter Enterprise finance structure). Cross-vertical commercial / approval / no-double-commission: **FD-038**.
 
-Commercial operating unit: **Enterprise BDP Franchise Pack**. Allocation is **client-based**, not territory-based. Enterprise Clients, projects, and data remain with **GCE**. Physical fulfilment is vendor/stakeholder-led — GCE does not directly execute events (FD-026).
+Commercial operating unit: **Enterprise BDP Franchise Pack**. Allocation is **client-based**, not territory-based (no permanent territorial exclusivity — FD-038). Enterprise Clients are organisation-level entities; **Enterprise Client Representative** is a distinct natural-person role from Enterprise BDP (FD-038). Enterprise Clients, projects, and data remain with **GCE**. Physical fulfilment is vendor/stakeholder-led — GCE does not ordinarily become the physical executor unless Logixia expressly contracts that role (FD-026 / FD-034 / FD-038).
 
 | Constant | Value | Source |
 |----------|-------|--------|
@@ -175,9 +190,13 @@ Commercial operating unit: **Enterprise BDP Franchise Pack**. Allocation is **cl
 | Rolling three-month target per Franchise Pack | **₹9,00,000** eligible Enterprise event revenue | FD-026 |
 | Standard GCE platform commission | **20%** of eligible Enterprise event revenue | FD-026 / FD-028 |
 | Reduced platform commission range | **15%–19%** for qualifying strategic projects (not automatic); **below 15%** requires special Founder or senior-authority approval | FD-026 / FD-028 |
-| Enterprise BDP commission | Flat **25%** of eligible GCE platform commission actually earned (not 25% of total project value) | FD-026 / FD-029 |
+| Enterprise BDP commission | Flat **25%** of eligible GCE platform commission actually earned (not 25% of total project value) | FD-026 / FD-029 / FD-038 |
 | Enterprise Vendor Opportunity Fee | Success-based concept approved; **non-active**; **exact % and distribution unresolved** — do not invent | FD-026 / FD-028 |
-| Standard client payment structure | **30% / 40% / 30%** (confirmation / readiness-or-execution milestone / completion) — standard model, not inflexible; payment ≠ settlement eligibility | FD-026 / FD-021 / FD-028 |
+| Milestone structure | **Project-specific and negotiated** — no universal mandatory advance / mid / final percentages for all projects; store approved milestone schedule per project (FD-038). Illustrative historical pattern 30% / 40% / 30% may appear in older FD-026 narrative but is **not** a fixed universal rule | FD-038 / FD-026 |
+| Finance co-sign threshold (launch) | Quotations with total proposed project value above **₹5,00,000** require Finance co-sign before final issue — approval threshold only; not a commission, tax, minimum-project, or guaranteed-value threshold | FD-038 |
+| Quotation authority | Enterprise Platform Expert prepares → authorised commercial/platform authority reviews → Finance co-sign where threshold triggered → official quotation issued. Enterprise BDP alone may not issue binding quotations | FD-038 |
+| Vendors at launch | Managed vendor records **without mandatory vendor login**; architecture must allow future Vendor workspaces | FD-038 |
+| No double commission | Same eligible revenue component must not generate duplicate Enterprise and Marketplace BDP commission unless a later Founder Decision expressly authorises it | FD-037 / FD-038 |
 | Recommended Enterprise Platform Expert capacity | Maximum **10** active standard Enterprise projects (weighted major/multi-city capacity unresolved) | FD-026 |
 
 Illustrative commission examples at ₹10,00,000 eligible event revenue (not guaranteed income):
@@ -195,8 +214,12 @@ Illustrative commission examples at ₹10,00,000 eligible event revenue (not gua
 
 | Constant | Value | Source |
 |----------|-------|--------|
-| Minimum Marketplace campaign commercial value | **₹50,000** | FD-028 |
-| Treatment | Minimum approved campaign value — **not** guaranteed collected revenue and **not** automatically recognised revenue | FD-028 |
+| Minimum Marketplace Offer Event planned commercial value | **₹50,000** | FD-028 / FD-037 |
+| Treatment | Minimum **planned commercial value** / campaign qualification threshold — **not** a GCE fee, **not** guaranteed sales/GMV, **not** a mandatory cash deposit, **not** guaranteed Venue Partner revenue, and **not** automatically recognised revenue | FD-037 |
+| Customer claim validity | **72 hours** after claim (where applicable) | FD-037 |
+| Campaign maximum duration | **15 days** | FD-037 |
+| Maximum customers per campaign | **100** | FD-037 |
+| Offer Claim | **Not revenue** by itself — recognition requires approved conversion / payment event | FD-037 |
 
 ---
 

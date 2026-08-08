@@ -13,6 +13,8 @@
 
 **Corporate ownership / operator principles:** `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md`
 
+**Membership allocation / activation-vs-allocation / geographic routing / transfer attribution:** `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md`
+
 **Related Founder Decisions:**
 
 - Membership vs Circle seat, reservation, waitlist, grace: `FD-022_Membership_Lifecycle.md`
@@ -23,7 +25,7 @@
 - Commission Engine / entitlements: `FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 - Revenue recognition: `FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 
-This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024 on **lifecycle**, **FD-024 wins**. Where this file conflicts with FD-030 on **internal structure and governance**, **FD-030 wins**. Where this file conflicts with FD-032 on **status mapping / activation credit / current GB term and Circle Finance Coordinator**, **FD-032 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Where membership commercial Tag/seat-scope rules conflict with FD-027, **FD-027 wins**. Corporate identity: **FD-034**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, merger/split voting rules, workshop prices/commission, substitute limits, voting quorum, or other Unresolved items. Do **not** collapse lifecycle and constitutional status into a single enum without retaining the approved FD-032 mapping.
+This document is the living **canonical core** summary of Circle architecture. Where this file conflicts with FD-024 on **lifecycle**, **FD-024 wins**. Where this file conflicts with FD-030 on **internal structure and governance**, **FD-030 wins**. Where this file conflicts with FD-032 on **status mapping / activation credit / current GB term and Circle Finance Coordinator**, **FD-032 wins**. Where this file conflicts with FD-036 on **membership activation vs Circle allocation, allocation authority, waitlist/geo routing, transfer attribution**, **FD-036 wins**. Where partner commercial capacity conflicts with FD-025, **FD-025 wins**. Where membership commercial Tag/seat-scope rules conflict with FD-027, **FD-027 wins**. Corporate identity: **FD-034**. Do not invent Health Score formulas, Annual Circle Certification, Mature-status criteria, merger/split voting rules, workshop prices/commission, substitute limits, voting quorum, or other Unresolved items. Do **not** collapse lifecycle and constitutional status into a single enum without retaining the approved FD-032 mapping.
 
 ---
 
@@ -31,7 +33,7 @@ This document is the living **canonical core** summary of Circle architecture. W
 
 Owns detailed GCE Connect Circle architecture for the repository: formation, activation, capacity, seats, taxonomy, verification, Governing Body, meetings, attendance, referrals, workshops, discipline, expansion, merger/closure, and archival.
 
-Membership plan benefits: `05_Memberships.md` (defers to **FD-027** for commercial rules; **FD-030** for Circle seat/verification/governance ops).
+Membership plan benefits: `05_Memberships.md` (defers to **FD-027** for commercial rules; **FD-036** for approval/attribution/allocation; **FD-030** for Circle seat/verification/governance ops).
 Connect BDP narrative: `06_CBDP.md` (legacy filename; approved term **Connect BDP**).
 Commercial partner numbers: `36_Commercial_Constants.md`.
 Roles: `35_Role_Taxonomy.md`.
@@ -213,16 +215,24 @@ GC Power Sector
 
 Final authority remains with the **platform**. An existing member, Governing Body, or Connect BDP does not independently approve or reject the final taxonomy outcome.
 
-### Membership vs Circle seat (FD-022 / FD-024 / FD-030)
+### Membership vs Circle seat (FD-022 / FD-024 / FD-030 / FD-036)
 
 | Concept | Belongs to |
 |---------|------------|
-| **Membership** | Approved member account |
+| **Membership** | Approved member account (may be Active pending allocation — FD-036) |
 | **Primary Physical Circle Seat** | Specific Business Specialization inside a specific Circle |
 
-- Active membership does **not** automatically guarantee immediate Circle placement.
+- Membership activation and Circle allocation are **separate business states** (FD-036).
+- Active membership does **not** automatically guarantee immediate Circle placement or a specific Circle seat.
+- Circle-specific rights begin only after formal allocation (FD-036).
+- Allocation model: **System proposes → Connect BDP assists → Platform confirms** (FD-036).
+- Operating target: normally aim to resolve standard Circle allocation within **up to seven business days** — operating target, not contractual SLA (FD-036).
+- Geographic routing: Locality / practical proximity → City → District → State (City primary); does not create permanent Connect BDP territorial ownership (FD-036).
+- Category-full alternatives: other same-city Circle → nearby Circle → waitlist → new Circle formation where justified → manual Platform review; do **not** force Core Tier (FD-036).
 - Seat reservation period: **7 days** after preliminary approval (not activation); payment/onboarding within seven days or reservation may be released (FD-022 / FD-030).
 - Waitlist is Circle- and Specialization-specific; position does not guarantee admission; verification and platform approval remain required.
+- Circle transfer preserves history; does not automatically transfer Connect BDP attribution (FD-036).
+- Controlled taxonomy for rule-critical fields; Platform retains final taxonomy authority (FD-036).
 
 ---
 

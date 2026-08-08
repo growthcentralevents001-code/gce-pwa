@@ -15,7 +15,10 @@ Schema narratives in this file are **illustrative** until migrations and generat
 - **FD-026** — GCE Enterprise Franchise Pack, client attribution, platform/BDP commission, Platform Expert, Master Project / City Unit, Vendor Opportunity Fee tracking concepts. Exact schemas/enums remain **Pending Technical Design**
 - **FD-027** — membership commercial concepts (Associate/Core tiers, Tag pricing, transfer fees, Core Progress). Exact schemas/enums remain **Pending Technical Design**
 - **FD-028** — Revenue recognition / commercial classification concepts (Eligible Revenue, Platform Revenue, Settlement-Eligible Amount, refunds/recoveries, multi-currency). Exact schemas/enums remain **Pending Technical Design**
-- **FD-029** — Commission Engine / stakeholder entitlement concepts (commission states, Marketplace 80/10/10, Connect/Marketplace BDP finance recovery, Recoverable Balances, attribution). Exact schemas/enums remain **Pending Technical Design**
+- **FD-029** — Commission Engine / stakeholder entitlement concepts (commission states, Marketplace attributed 80/10/10, Connect/Marketplace BDP finance recovery, Recoverable Balances, attribution). Exact schemas/enums remain **Pending Technical Design**
+- **FD-036** — Membership activation vs Circle allocation / Connect BDP attribution / unattributed membership / waitlist / transfer — preserve distinct states. Exact schemas **Pending Technical Design**
+- **FD-037** — Marketplace Event vs Offer Event / Offer Claim vs Redemption / unattributed 80/0/20 / reassignment effective date. Exact schemas **Pending Technical Design**
+- **FD-038** — Enterprise Client organisation vs Enterprise Client Representative vs Enterprise BDP; managed vendor-without-login; componentised project commercial records. Exact schemas **Pending Technical Design**
 - **FD-030** — Circle internal architecture / governance concepts (verification outcomes, Governing Body roles, attendance states, Dual-Confirmed Closed Business, workshop records, Protected Tag Scope). Exact schemas/enums remain **Pending Technical Design**
 - **FD-031** — AI Lead Assist / Lead Intelligence concepts (quality states, consent, assignment history, AI confidence/override, Opportunity Desk, Core Lead Rights). Exact schemas/enums remain **Pending Technical Design**
 
@@ -266,7 +269,9 @@ Supported Roles
  Enterprise Platform Expert (internal/controlled — FD-026; exact enum Pending Technical Design)
  Venue Partner
  Circle Member / GCE Connect Member
- Enterprise Client (distinct from Enterprise BDP)
+ Enterprise Client organisation (distinct from Enterprise BDP)
+ Enterprise Client Representative (natural person; distinct from Enterprise BDP — FD-038)
+ Managed vendor records (no mandatory login at launch — FD-038)
  Registered User
 
 Exact `user_role` enum values and RLS policies: **Pending Technical Design**. Legacy labels (ZBP, BDM, Affiliate, Franchisee, CBDP, MBDP) require explicit migration mapping — see `35_Role_Taxonomy.md`.

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020–FD-034.
+**Founder Decisions are highest authority:** FD-001, FD-020–FD-038.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Do **not** reconcile Founder Decision ambiguity by assumption (FD-032). Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat (FD-022 / FD-027 / FD-030). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only; confirmed FD-032). GCE Enterprise commercial and operating rules defer to **FD-026**; exact legal role may vary by contract (**FD-034**). GCE Connect Circle Membership commercial and operating rules defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace 80/10/10, and BDP finance recovery defer to **FD-029**. Marketplace BDP operating architecture defers to **FD-033**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**; dual status mapping and activation credit **FD-032**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`. Corporate / Logixia–GCE constitution defer to **FD-034**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Do **not** reconcile Founder Decision ambiguity by assumption (FD-032). Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat; activation ≠ allocation (FD-022 / FD-027 / FD-030 / FD-036). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only; confirmed FD-032). Membership approval / attribution / waitlist / transfer / geo routing defer to **FD-036**. GCE Enterprise commercial and operating rules defer to **FD-026**; cross-vertical / quotation / Finance co-sign / no-double-commission defer to **FD-038**; exact legal role may vary by contract (**FD-034**). GCE Connect Circle Membership commercial numbers/tiers defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace attributed 80/10/10, and BDP finance recovery defer to **FD-029**. Marketplace transaction families, unattributed 80/0/20, offer/event approval, payout direction defer to **FD-037**. Marketplace BDP operating architecture defers to **FD-033**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**; dual status mapping and activation credit **FD-032**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`. Identity / role / workspace defer to **FD-035**. Corporate / Logixia–GCE constitution defer to **FD-034**.
 
 Overview
 
@@ -178,7 +178,7 @@ Minimum campaign value: **`36_Commercial_Constants.md`** (Offer / campaign const
 
  Revenue Sharing Rules
 
-**GCE Marketplace** after standard MBDP commission (FD-029): **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue (MBDP 10% paid from GCE’s Gross 20%). Numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
+**GCE Marketplace** (FD-029 / FD-037): with valid Marketplace BDP attribution — **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** of Eligible Marketplace Event Revenue; without valid attribution — **80% Venue Partner / 0% Marketplace BDP / 20% GCE** (do not call missing 10% pending MBDP commission). Numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
 No active Marketplace Affiliate commission. Keep Gross Transaction Value / Collected Amount / Eligible Revenue / Platform Revenue / Settlement-Eligible Amount separate. Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance. Pipeline and proposal values are not recognised revenue. GST is not Platform Revenue. Refunds reverse commission proportionally; chargebacks create hold/recovery. Recovery only from earned and approved commission (never estimated/provisional/held). ZBP is not part of the current model. Revenue categories are not commissionable merely because they exist.
 
@@ -204,38 +204,45 @@ Key rules (do not invent beyond FD-025 / FD-029):
 
  Marketplace BDP Rules
 
-**Operating authority: FD-033.** Commission / fee / finance: **FD-029.** Narrative: `07_MBDP.md`. Constants: **`36_Commercial_Constants.md`**.
+**Operating authority: FD-033.** Commission / fee / finance: **FD-029.** Transaction / unattributed / approval / payout: **FD-037.** Narrative: `07_MBDP.md`. Constants: **`36_Commercial_Constants.md`**.
 
-Key rules (do not invent beyond FD-033 / FD-029):
+Key rules (do not invent beyond FD-033 / FD-029 / FD-037):
 
 - Appointment by GCE only; package payment alone does not appoint; KYC, agreement, training, approval, finance activation, compliance clearance required
 - Unit: up to **20** active Venue Partners; maximum **2** units; standard max **40** venues; second unit not automatic
 - Model: **venue-attribution based** — no permanent city/zone ownership; multiple Marketplace BDPs may operate in the same city
 - Primary Relationship Manager for onboarded assigned venues; no automatic extra RM commission layer
-- Commission **10%** of Eligible Marketplace Event Revenue; after split **80/10/10**; financed package ₹60,000 / ₹5,000 / ₹55,000 Month 0
-- No commission on unpaid/cancelled/refunded/tax/deposit amounts; no automatic Connect/Enterprise/Lead Assist entitlement
+- With valid attribution: commission **10%** of Eligible Marketplace Event Revenue; after split **80/10/10**. Without valid attribution: **80/0/20** (Venue / MBDP / GCE) — missing 10% is not pending MBDP commission (FD-037)
+- Marketplace BDP recommends offer/event; Platform Marketplace Operations final-approves (FD-037)
+- No commission on unpaid/cancelled/refunded/tax/deposit amounts; Offer Claim is not revenue; no automatic Connect/Enterprise/Lead Assist entitlement
 - Portfolio objective: up to **20 active Venue Partners within 10 months per unit** (not guaranteed income)
 - May not approve refunds, release settlement, collect platform money personally, sell data, or privately transfer attribution
-- Reassignment preserves history; does not erase earned approved commission; future revenue after cut-off not automatic
+- Temporary inactivity does not automatically end attribution; prolonged inactivity must be reviewed; reassignment cut-off = platform-recorded effective attribution date; preserves history (FD-037)
+- Launch Venue Partner payout: monthly Platform-initiated batch; architecture must remain configurable (FD-037)
 - Marketplace Affiliate **inactive**
-- Exact ₹ Monthly revenue targets, notice/appeal/SLA details: **Pending** where not Founder-approved
+- Exact ₹ Monthly revenue targets, notice/appeal/SLA details, inactivity duration: **Pending** where not Founder-approved
 
  Enterprise BDP Rules
 
-Commercial and operating authority: **FD-026**. Recognition principles: **FD-028**. Numeric summary: **`36_Commercial_Constants.md`** (Enterprise BDP). Narrative: `08_Enterprise_BDP.md`.
+Commercial and operating authority: **FD-026**. Cross-vertical / quotation / Finance co-sign / milestones / no-double-commission: **FD-038**. Recognition principles: **FD-028**. Numeric summary: **`36_Commercial_Constants.md`** (Enterprise BDP). Narrative: `08_Enterprise_BDP.md`.
 
-Key rules (do not invent beyond FD-026 / FD-028):
+Key rules (do not invent beyond FD-026 / FD-028 / FD-038):
 
-- GCE Enterprise is a technology / workflow / financial-control platform — **not** a direct physical event executor; fulfilment is vendor/stakeholder-led
+- GCE Enterprise is a technology / workflow / financial-control platform — **not** ordinarily a direct physical event executor; fulfilment is vendor/stakeholder-led; project legal role must be explicit (FD-034 / FD-038)
+- Enterprise Client = organisation; Enterprise Client Representative = natural person; distinct from Enterprise BDP (FD-038)
 - Operating unit: **Enterprise BDP Franchise Pack**; up to **30** active clients per pack; standard max **two** packs / **60** clients
 - Direct fee **₹30,000** / financed **₹36,000** (₹5,000 + ₹31,000 recoverable from approved commission only, max ₹5,000/month); recoverable balance is **not** event revenue
-- Allocation is **client-based**, not territory-based; BDP does not own clients
+- Allocation is **client-based**, not territory-based; no permanent territorial exclusivity; BDP does not own clients
 - Minimum project value **₹1,00,000** (excludes GST/taxes)
 - Targets per pack: **₹3,00,000** monthly · **₹9,00,000** rolling three months (eligible collected revenue only; proposal value does not count)
+- Enterprise BDP = **25% of eligible GCE platform commission** (not 25% of project value)
+- Quotation: Expert prepares → commercial/platform review → Finance co-sign above **₹5,00,000** where triggered → official issue; Enterprise BDP alone may not issue binding quotations (FD-038)
+- Milestones are **project-specific and negotiated** — no universal mandatory 30/40/30 for all projects (FD-038)
+- Vendors at launch: managed records without mandatory login (FD-038)
+- Marketplace venues inside Enterprise: componentise; **no double commission** on the same revenue component (FD-037 / FD-038)
 - Platform commission **20%** standard (authorised reduced **15%–19%**; below 15% special approval)
-- Enterprise BDP commission: flat **25%** of eligible platform commission (not tiered; not 25% of total project value; not guaranteed income)
 - Enterprise Platform Expert is internal/controlled — not a franchisee; recommends vendors; does not physically execute
-- Standard payment **30% / 40% / 30%**; payment ≠ settlement eligibility; milestone recognition required
+- Payment ≠ settlement eligibility; milestone recognition required
 - Vendor Opportunity Fee is an approved success-based concept; **non-active**; **% and distribution unresolved**
 - Performance: progressive sixty-day process — **not** automatic cancellation after one or two weak months
 - Serious misconduct may trigger immediate suspension or termination
@@ -250,20 +257,22 @@ Venue Partners must:
  Honor published campaigns.
  Follow customer service standards.
 
- Event Rules
+ Event and Offer Rules
 
-Every event must include:
+Distinguish Marketplace Event vs Marketplace Offer Event (FD-037). Every event/offer must include applicable details:
 
- Event Details
+ Event / Offer Details
  Venue
- Date & Time
- Capacity
- Pricing
- Booking Information
+ Date & Time / Validity
+ Capacity / Customer cap
+ Pricing / Planned commercial value
+ Booking / Claim Information
 
-Bookings generate QR tickets.
+Ticketed Marketplace Event bookings generate QR tickets for admission/validation.
 
- QR Ticket Rules
+Marketplace Offer Events use redemption code/token/equivalent at launch — not the same ticket QR model. Offer Claim is not revenue (FD-037).
+
+ QR Ticket Rules (Marketplace Events)
 
 Every booked ticket receives a unique QR code.
 

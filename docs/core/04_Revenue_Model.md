@@ -4,9 +4,11 @@
 
 **Highest authority for revenue recognition and commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 
-**Highest authority for Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace 80/10/10:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
+**Highest authority for Commission Engine / stakeholder entitlement / BDP finance recovery / Marketplace attributed 80/10/10:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · FD-031 (Lead Assist commercial boundaries) · FD-032 (supersession register; Connect finance active) · FD-033 (Marketplace BDP ops) · FD-034 (Logixia payment/invoice principles; collected funds ≠ automatic company revenue) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md` · **Lead Assist living:** `39_AI_Lead_Assist_Spec.md`
+**Highest authority for Marketplace transaction families, approval, unattributed 80/0/20, redemption, payout direction:** `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
+
+**Related:** FD-001 · FD-020 (wallets/ledgers) · FD-021 (settlement) · FD-025 (Connect BDP operations) · FD-026 (Enterprise) · FD-027 (Membership commercial) · FD-031 (Lead Assist commercial boundaries) · FD-032 (supersession register; Connect finance active) · FD-033 (Marketplace BDP ops) · FD-034 (Logixia payment/invoice principles; collected funds ≠ automatic company revenue) · FD-036 (membership attribution) · FD-038 (Enterprise cross-vertical / Finance co-sign / no-double-commission) · **Constants:** `36_Commercial_Constants.md` · **Flows:** `37_Revenue_Flow.md` · **Lead Assist living:** `39_AI_Lead_Assist_Spec.md`
 
 Do not assume one universal commission or settlement rule across verticals. Payment ≠ settlement eligibility. Do not invent advertising prices, Lead Assist commission, Vendor Opportunity Fee %, GST/TDS rates, Affiliate model, FX policy, or split-commission percentages. Tax and formal accounting remain Pending Tax / CA / audit review. Subject to Legal / Tax / Banking approval, platform payments ordinarily receivable by **Logixia Solutions Private Limited** (FD-034).
 
@@ -91,7 +93,9 @@ Billing: quarterly only at launch. Monthly/annual plans are not active. Numbers:
 
 **GCE Marketplace** allows verified businesses to promote events, products, services, and customer offers.
 
-**Active Marketplace model (FD-029):**
+**Active Marketplace model (FD-029 / FD-037):**
+
+With **valid Marketplace BDP attribution**:
 
 ```text
 Eligible Marketplace Event Revenue
@@ -101,27 +105,46 @@ Eligible Marketplace Event Revenue
    → 10% GCE Net Retained Share
 ```
 
-After standard Marketplace BDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net**. Marketplace BDP earns **10%** of Eligible Marketplace Event Revenue (equivalent to 50% of GCE’s standard 20%). Do **not** state MBDP commission is unresolved. Do **not** retain GCE at 20% after paying MBDP.
+After standard Marketplace BDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net**. Marketplace BDP earns **10%** of Eligible Marketplace Event Revenue only where valid attribution exists (equivalent to 50% of GCE’s standard 20%). Do **not** state MBDP commission is unresolved. Do **not** retain GCE at 20% after paying MBDP when attribution is valid.
 
-There is **no active Marketplace Affiliate** commission. Any Affiliate model is **future-only**.
+Without **valid Marketplace BDP attribution** (FD-037):
 
-Marketplace recognition requires verified Venue Partner, valid event/offer/campaign, collected payment, genuine transaction, fulfilment/redemption where required, refund/reversal adjustment, and no unresolved hold (FD-028). Marketplace BDP earning also requires valid MBDP attribution and accepted evidence (FD-029). Self-listing does not remove verification or financial controls.
+```text
+Eligible Marketplace Event Revenue
+→ 80% Venue Partner Entitlement
+→ 0% Marketplace BDP
+→ 20% GCE
+```
 
-Minimum campaign commercial value: **₹50,000** — not guaranteed or automatically recognised revenue (FD-028).
+Do **not** describe the missing 10% as unpaid or pending Marketplace BDP commission. Later MBDP assignment does not automatically create retroactive entitlement.
 
-**Marketplace BDP Franchise Unit (FD-029 / FD-033):** direct **₹50,000** or financed **₹60,000** (₹5,000 activation + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per unit; maximum **2** units / **40** venues; venue-attribution model (no permanent city ownership).
+There is **no active Marketplace Affiliate** commission. Any Affiliate model is **future-only**. Do not use **“Marketplace Order”** as an undefined umbrella — distinguish Marketplace Event, Marketplace Offer Event, Event Booking / Event Transaction, Offer Claim, Offer Redemption / Conversion, and Settlement / Payout (FD-037).
+
+Marketplace recognition requires verified Venue Partner, valid event/offer/campaign, collected payment, genuine transaction, fulfilment/redemption where required, refund/reversal adjustment, and no unresolved hold (FD-028). Marketplace BDP earning also requires valid MBDP attribution and accepted evidence (FD-029 / FD-037). Self-listing does not remove verification or financial controls. Offer Claim itself is **not** revenue.
+
+**Approval:** Marketplace BDP recommends → Platform Marketplace Operations final-approves (FD-037).
+
+Minimum Marketplace Offer Event **planned commercial value**: **₹50,000** — campaign qualification threshold; not a GCE fee, guaranteed sales/GMV, mandatory deposit, or automatically recognised revenue (FD-037).
+
+**QR / redemption at launch (FD-037):** QR for ticketed Marketplace Event admission/validation; Offer Events use redemption code/token/equivalent — do not treat offer claim token as proof of revenue. Launch Venue Partner payout direction: **monthly Platform-initiated payout batch**; architecture must remain configurable for future cycles; Venue Partner / Marketplace BDP cannot directly release settlement.
+
+**Marketplace BDP Franchise Unit (FD-029 / FD-033):** direct **₹50,000** or financed **₹60,000** (₹5,000 activation + ₹55,000 Recoverable Balance from Month 0); max **20** active Venue Partners per unit; maximum **2** units / **40** venues; venue-attribution model (no permanent city ownership). Temporary inactivity does not automatically terminate attribution; prolonged inactivity must be reviewed so dead venues do not consume capacity indefinitely (FD-037).
 
 Canonical numbers: **`36_Commercial_Constants.md`**. Flow: **`37_Revenue_Flow.md`**.
 
  3\. Enterprise Revenue
 
-**GCE Enterprise** generates **GCE Enterprise Platform Commission** on eligible corporate event procurement projects coordinated through the platform (FD-026 / FD-028).
+**GCE Enterprise** generates **GCE Enterprise Platform Commission** on eligible corporate event procurement projects coordinated through the platform (FD-026 / FD-028 / FD-038).
 
-GCE does **not** directly execute physical events. Physical fulfilment is performed by approved stakeholders and vendors.
+GCE does **not** ordinarily directly execute physical events. Physical fulfilment is performed by approved stakeholders and vendors. Exact legal role may vary by contract (FD-034 / FD-038).
 
 Standard GCE platform commission: **20%** of eligible Enterprise event revenue (authorised reduced range **15%–19%**; below 15% requires special approval). Enterprise BDP earns flat **25%** of eligible platform commission actually earned by GCE — **not** 25% of total project value. Minimum project value: **₹1,00,000** (excludes GST/taxes). Vendor Opportunity Fee remains an approved concept but **non-active**; % and distribution unresolved — keep separate from platform and Enterprise BDP commission.
 
-Enterprise recognition should occur by approved milestone. The standard 30% / 40% / 30% structure is not inflexible. Each instalment requires collection, milestone approval, valid attribution, determinable platform commission, and no unresolved hold.
+Enterprise recognition should occur by approved milestone. **Milestones are project-specific and negotiated** — no universal mandatory advance/mid/final percentages for all projects (FD-038). An illustrative 30% / 40% / 30% pattern may appear in older narrative but is not a fixed universal rule. Each instalment requires collection, milestone approval, valid attribution, determinable platform commission, and no unresolved hold.
+
+Quotations above **₹5,00,000** total proposed project value require Finance co-sign before final issue (approval threshold only — FD-038). Enterprise BDP alone may not issue binding quotations.
+
+Enterprise may use Marketplace Venue Partners; this does **not** convert the whole project into a Marketplace transaction. Use componentised settlement. **No double commission** on the same eligible revenue component across Enterprise and Marketplace unless a later Founder Decision expressly authorises it (FD-037 / FD-038). Marketplace BDP does not automatically earn merely because its venue appears in an Enterprise project; Enterprise BDP does not automatically earn ordinary Marketplace revenue.
 
 Numbers: `36_Commercial_Constants.md`.
 

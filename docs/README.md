@@ -95,6 +95,10 @@ Location: `docs/core/`
 | `docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md` | Authority hierarchy, dual Circle status mapping, narrow supersessions |
 | `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md` | Marketplace BDP commercial and operating architecture |
 | `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md` | Logixia Solutions Private Limited and GCE corporate/platform constitution |
+| `docs/founder-decisions/FD-035_GCE_Identity_Role_Assignment_and_Workspace_Architecture.md` | GCE identity, role assignment, and workspace architecture |
+| `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md` | Membership approval, activation vs Circle allocation, Connect BDP attribution, RM, waitlist, transfer, geographic routing |
+| `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md` | Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, cross-vertical boundaries |
+| `docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md` | Enterprise Client architecture, quotation/Finance co-sign, vendors, milestones, componentised settlement, no-double-commission |
 
 ## Canonical core living documents
 

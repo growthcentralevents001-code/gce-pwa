@@ -33,6 +33,14 @@ For GCE Connect Circle **lifecycle**, prefer FD-024. For Circle **internal struc
 
 For Marketplace BDP operating architecture (units, venue attribution, RM, reassignment, exit), prefer FD-033. Living summary: \`docs/core/07_MBDP.md\`.
 
+For Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, and payout direction, prefer FD-037.
+
+For membership approval, activation vs Circle allocation, Connect BDP attribution, waitlist, transfer, and geographic routing, prefer FD-036. Living summary: \`docs/core/05_Memberships.md\`.
+
+For Enterprise Client Representative separation, quotation/Finance co-sign, managed vendors, project-specific milestones, and no-double-commission, prefer FD-038. Living summary: \`docs/core/08_Enterprise_BDP.md\`.
+
+For identity, role assignment, and workspace architecture, prefer FD-035. Living summary: \`docs/core/35_Role_Taxonomy.md\`.
+
 For Logixia Solutions Private Limited / GCE corporate and platform constitution (legal company, brand hierarchy, contracting/payment/invoice/IP/data principles), prefer FD-034. Exact legal/tax/privacy classifications remain Pending professional review.
 
 For AI Lead Assist / Lead Intelligence, prefer FD-031. Living summary: \`docs/core/39_AI_Lead_Assist_Spec.md\`.

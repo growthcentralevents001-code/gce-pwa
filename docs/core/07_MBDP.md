@@ -5,12 +5,15 @@
 **Operating architecture (appointment, units, venues, attribution, RM, performance, reassignment, suspension, exit, handover, data access):**
 `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md`
 
-**Commission / fee / finance / Marketplace 80/10/10 share:**
+**Commission / fee / finance / Marketplace attributed 80/10/10 share:**
 `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-028 (revenue recognition) · FD-001 (platform model) · FD-023 (RBAC) · FD-021 (settlement) · FD-020 (ledgers) · FD-032 (supersession / Affiliate inactive / Phase 2 bounds) · FD-034 (Logixia contracting / payment / IP / no BDP bind-by-default) · Commercial numbers: `36_Commercial_Constants.md`
+**Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, inactivity/reassignment cut-off, cross-vertical boundaries:**
+`docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
 
-On Marketplace BDP **operating** conflict, **FD-033 wins**. On fee / commission / finance / Recoverable Balance numbers, **FD-029 wins**. Marketplace Affiliate remains **future-only / inactive** (FD-028 / FD-029 / FD-032 / FD-033). Do not invent exact notice periods, appeal timelines, inactivity durations, utilisation thresholds, SLAs, tax treatment, refund matrices, or insurance requirements (Pending Founder / Legal / Tax / Operational / Technical Design).
+**Related:** FD-028 (revenue recognition) · FD-001 (platform model) · FD-023 (RBAC) · FD-021 (settlement) · FD-020 (ledgers) · FD-032 (supersession / Affiliate inactive / Phase 2 bounds) · FD-034 (Logixia contracting / payment / IP / no BDP bind-by-default) · FD-035 (Venue Representative / Venue Manager distinct from Marketplace BDP) · Commercial numbers: `36_Commercial_Constants.md`
+
+On Marketplace BDP **operating** conflict, **FD-033 wins**. On fee / commission / finance / Recoverable Balance numbers, **FD-029 wins**. On transaction classification, approval authority, unattributed 80/0/20, QR vs offer redemption, launch payout cadence, and cross-vertical no-double-commission, **FD-037 wins**. Marketplace Affiliate remains **future-only / inactive** (FD-028 / FD-029 / FD-032 / FD-033). Do not invent exact notice periods, appeal timelines, inactivity durations, utilisation thresholds, SLAs, tax treatment, refund matrices, or insurance requirements (Pending Founder / Legal / Tax / Operational / Technical Design).
 
 Approved role name: **GCE Marketplace Business Development Partner**. Short form: **Marketplace BDP**. Legacy abbreviation: **MBDP**.
 
@@ -18,10 +21,11 @@ Approved role name: **GCE Marketplace Business Development Partner**. Short form
 
 ## Role summary
 
-The Marketplace BDP expands **GCE Marketplace** by identifying eligible Venue Partners, coordinating verification and onboarding, acting as **primary Relationship Manager** for assigned venues, supporting Marketplace Event and Marketplace Offer Event readiness, maintaining venue information, supporting platform adoption, coordinating issue resolution, and supporting legitimate Marketplace revenue (FD-033).
+The Marketplace BDP expands **GCE Marketplace** by identifying eligible Venue Partners, coordinating verification and onboarding, acting as **primary Relationship Manager** for assigned venues, supporting Marketplace Event and Marketplace Offer Event readiness, recommending campaigns for platform approval, maintaining venue information, supporting platform adoption, coordinating issue resolution, and supporting legitimate Marketplace revenue (FD-033 / FD-037).
 
 Marketplace BDP authority is **vertical-specific**. Marketplace BDP must **not**:
 
+- Final-approve Marketplace Events or Offer Events (recommends only — Platform Marketplace Operations final-approves — FD-037)
 - Approve refunds or release settlement
 - Alter commission, taxes, or customer rank
 - Approve its own exception
@@ -31,8 +35,19 @@ Marketplace BDP authority is **vertical-specific**. Marketplace BDP must **not**
 - Permanently own a city, zone, district, market, or venue category
 - Bind **Logixia Solutions Private Limited** without written/recorded authority (FD-034)
 - Earn automatically from Connect, Enterprise, Lead Assist, sponsorship, advertising, training, workshops, or other unapproved streams
+- Earn Marketplace commission without valid Venue Partner attribution (FD-037)
 
 Settlement eligibility for Marketplace events follows completion + approved hold (FD-021), not payment alone. Distinguish Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029). Pending commission is not guaranteed payable. **No Marketplace BDP income is guaranteed** (FD-033).
+
+**Revenue share (FD-029 / FD-037):** with valid attribution → 80% Venue / 10% Marketplace BDP / 10% GCE; without valid attribution → 80% Venue / 0% Marketplace BDP / 20% GCE. Do not call the unattributed GCE share “pending MBDP commission.” Later attribution is prospective by default.
+
+**Transaction families (FD-037):** Marketplace Event; Marketplace Offer Event; Event Booking / Event Transaction; Offer Claim; Offer Redemption / Conversion; Settlement / Payout. Do not use “Marketplace Order” as an undefined umbrella.
+
+**Venue Partner model (FD-037):** one canonical Venue Partner role family; business types are attributes/categories, not separate permission roles. Venue Representative / Venue Manager is distinct from Marketplace BDP.
+
+**Inactivity / reassignment (FD-037):** temporary inactivity does not automatically terminate Marketplace BDP attribution; prolonged inactivity must be reviewed; dead/inactive venues must not consume capacity indefinitely; exact inactivity duration remains Operational Design. Reassignment cut-off = platform-recorded effective attribution date; historical entitlement preserved; future entitlement follows new valid attribution; no silent history rewrite.
+
+**Payout (FD-037):** launch direction is monthly Platform-initiated payout batch; technical architecture must remain configurable for future cycles.
 
 ---
 
@@ -197,7 +212,7 @@ No compulsory cash shortfall; no automatic bank debit; no recovery from estimate
 
 Every Venue Partner can create promotional campaigns through the GCE Marketplace.
 
-Minimum Campaign commercial value: **₹50,000** (`36_Commercial_Constants.md` / FD-028) — minimum approved campaign value, **not** guaranteed collected or recognised revenue.
+Minimum Campaign commercial value: **₹50,000** (`36_Commercial_Constants.md` / FD-037) — minimum **planned commercial value**, **not** a GCE fee, guaranteed sales/GMV, mandatory deposit, or automatically recognised revenue.
 
 ---
 

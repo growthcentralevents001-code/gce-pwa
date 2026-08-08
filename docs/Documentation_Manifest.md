@@ -177,6 +177,10 @@ Location: `docs/founder-decisions/`
 | `FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md` | Authority hierarchy, dual Circle status mapping, narrow supersessions, Phase 2 bounds |
 | `FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md` | Marketplace BDP commercial and operating architecture |
 | `FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md` | Logixia Solutions Private Limited and GCE corporate/platform constitution |
+| `FD-035_GCE_Identity_Role_Assignment_and_Workspace_Architecture.md` | GCE identity, role assignment, and workspace architecture |
+| `FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md` | Membership approval, activation vs Circle allocation, Connect BDP attribution, RM, waitlist, transfer, geographic routing |
+| `FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md` | Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, cross-vertical boundaries |
+| `FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md` | Enterprise Client architecture, quotation/Finance co-sign, vendors, milestones, componentised settlement, no-double-commission |
 
 ## Development Workflow
 
@@ -213,18 +217,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.10.0 |
-| Last Updated | 2026-08-07 |
+| Documentation Version | v1.11.0 |
+| Last Updated | 2026-08-08 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 16 |
+| Total Founder Decisions | 20 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 59 |
+| Total Documentation Files (`docs/`) | 63 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 16 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 59.
+Total documentation files under `docs/` = 32 core + 8 engineering + 20 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 63.
 
 ## Changelog
+
+### v1.11.0
+
+- Indexed FD-035 (Identity, Role Assignment, and Workspace Architecture), FD-036 (Membership Attribution, Approval, and Allocation Authority), FD-037 (Marketplace Transaction, Approval, and Unattributed Revenue Rules), and FD-038 (Enterprise Cross-Vertical Commercial and Approval Rules)
+- Synchronised living Markdown and Cursor business rules with membership activation vs Circle allocation, organic/unattributed Connect membership, Marketplace 80/0/20 unattributed split, offer/event approval, Enterprise Client Representative separation, ₹5,00,000 Finance co-sign, project-specific milestones, managed vendors without mandatory login, and no-double-commission componentisation
 
 ### v1.10.0
 

@@ -358,7 +358,7 @@ Commissions
 
 Lead Assist
 
-(Lead Assist data: preserve assignment history; no hard-delete of leads except approved legal privacy workflow — FD-031 / `39_AI_Lead_Assist_Spec.md`. Circle status: preserve dual lifecycle + constitutional families per FD-032 / `38_Circle_Architecture.md`. Marketplace venue attribution history per FD-033. Exact enums/schemas Pending Technical Design.)
+(Lead Assist data: preserve assignment history; no hard-delete of leads except approved legal privacy workflow — FD-031 / `39_AI_Lead_Assist_Spec.md`. Circle status: preserve dual lifecycle + constitutional families per FD-032 / `38_Circle_Architecture.md`. Marketplace venue attribution history per FD-033 / FD-037 (preserve attributed vs unattributed; reassignment effective date). Membership activation vs Circle allocation vs Connect BDP attribution as distinct states per FD-036. Enterprise Client / Client Representative / Enterprise BDP / managed vendor-without-login separation per FD-038. Exact enums/schemas Pending Technical Design.)
 
 Venue Operations
 

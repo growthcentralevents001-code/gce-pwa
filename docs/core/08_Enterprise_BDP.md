@@ -5,15 +5,18 @@
 **Highest authority for GCE Enterprise business and operating rules:**
 `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · FD-028 (revenue recognition — milestone recognition; proposal value not revenue; VOF non-active) · FD-029 (Commission Engine — Enterprise BDP 25% of eligible GCE Platform Commission; FD-026 finance preserved) · FD-034 (Logixia ordinarily contracts; GCE not ordinarily physical executor; exact Enterprise legal role may vary by contract; BDPs do not bind Logixia by default) · Commercial number summary: `36_Commercial_Constants.md`
+**Highest authority for Enterprise Client architecture, quotation/Finance co-sign, vendors, milestones, componentised settlement, no-double-commission:**
+`docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md`
+
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-023 (RBAC) · FD-025 (Connect BDP — separate vertical) · FD-028 (revenue recognition — milestone recognition; proposal value not revenue; VOF non-active) · FD-029 (Commission Engine — Enterprise BDP 25% of eligible GCE Platform Commission; FD-026 finance preserved) · FD-033 / FD-037 (Marketplace venues used in Enterprise; no double commission) · FD-034 (Logixia ordinarily contracts; GCE not ordinarily physical executor; exact Enterprise legal role may vary by contract; BDPs do not bind Logixia by default) · FD-035 (identity / role separation) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Enterprise Business Development Partner**. Approved short name: **Enterprise BDP**.
 
-**Enterprise Client** is a distinct role from Enterprise BDP.
+**Enterprise Client** is an organisation-level entity. **Enterprise Client Representative** is the authorised natural person acting for the client. Both are distinct from Enterprise BDP — do not overload one `enterprise` business role to mean both (FD-038).
 
-GCE Enterprise is **project-driven**, not a Circle-membership product (FD-001). This living document summarises Enterprise operations. On conflict, **FD-026 wins**.
+GCE Enterprise is **project-driven**, not a Circle-membership product (FD-001). This living document summarises Enterprise operations. On base Enterprise commercial/operating conflict, **FD-026 wins**. On Client Representative separation, quotation/Finance co-sign, managed vendors, project-specific milestones, Marketplace venues inside Enterprise, componentised settlement, and no-double-commission, **FD-038 wins**.
 
-Do not invent unresolved FD-026 items (Vendor Opportunity Fee percentage/distribution, Expert salary/incentive, weighted Expert capacity, exact KYB lists, approval matrices, schemas, APIs, RLS, dashboard workflows, notification schedules, GST/TDS, performance-score formula, legal franchise classification).
+Do not invent unresolved FD-026 / FD-038 items (Vendor Opportunity Fee percentage/distribution, Expert salary/incentive, weighted Expert capacity, exact KYB lists, full approval matrices, schemas, APIs, RLS, dashboard workflows, notification schedules, GST/TDS, performance-score formula, legal franchise classification).
 
 ---
 
@@ -21,11 +24,19 @@ Do not invent unresolved FD-026 items (Vendor Opportunity Fee percentage/distrib
 
 GCE Enterprise is a technology-enabled, stakeholder-fulfilled corporate event procurement, matching, coordination, workflow, and financial-control platform.
 
-GCE is an IT platform under **Logixia Solutions Private Limited** (FD-034). GCE does **not** ordinarily directly execute physical events and does not itself become the venue operator, caterer, production vendor, decorator, AV provider, transport provider, security provider, hospitality provider, manpower provider, or physical event-management contractor unless Logixia expressly contracts to provide that service. Exact Enterprise legal role (intermediary / coordinator / agent / principal / managed services) may vary by approved contract — do not assume one role for every project (FD-034).
+GCE is an IT platform under **Logixia Solutions Private Limited** (FD-034). GCE does **not** ordinarily directly execute physical events and does not itself become the venue operator, caterer, production vendor, decorator, AV provider, transport provider, security provider, hospitality provider, manpower provider, or physical event-management contractor unless Logixia expressly contracts to provide that service. Exact Enterprise legal role (intermediary / coordinator / agent / principal / managed services) may vary by approved contract — do not assume one role for every project (FD-034 / FD-038). Project legal role must be explicit and remains contract-specific.
 
-Physical fulfilment is performed by approved stakeholders and vendors.
+Physical fulfilment is performed by approved stakeholders and vendors. At launch, vendors may be managed as **non-login records**; architecture should allow future Vendor workspaces — do not force Vendor login into MVP documentation (FD-038).
 
-GCE’s platform role includes client onboarding, requirement capture, project creation, Enterprise BDP attribution, Enterprise Platform Expert assignment, service-requirement breakdown, vendor discovery/verification/shortlisting, quotation collection and comparison, client approvals, work-order workflows, payment tracking, settlement controls, commission calculation, Vendor Opportunity Fee tracking, readiness tracking, completion evidence, ratings, dispute escalation, audit trails, notifications, dashboards, and platform records (FD-026).
+GCE’s platform role includes client onboarding, requirement capture, project creation, Enterprise BDP attribution, Enterprise Platform Expert assignment, service-requirement breakdown, vendor discovery/verification/shortlisting, quotation preparation and comparison, client approvals, work-order workflows, payment tracking, settlement controls, commission calculation, Vendor Opportunity Fee tracking, readiness tracking, completion evidence, ratings, dispute escalation, audit trails, notifications, dashboards, and platform records (FD-026).
+
+**Quotation authority (FD-038):** Enterprise Platform Expert prepares → authorised commercial/platform authority reviews → Finance co-sign where threshold is triggered → official quotation issued. Enterprise BDP alone does **not** have unrestricted authority to issue binding quotations. Launch Finance co-sign threshold: quotations above **₹5,00,000** total proposed project value — this is an approval threshold, not a commission, tax, minimum-project, or guaranteed-value threshold.
+
+**Milestones (FD-038):** project-specific and negotiated; no universal advance/mid/final percentages; store the approved milestone schedule per project.
+
+**Attribution (FD-038):** Enterprise BDP attribution is client-based; no permanent territorial exclusivity; multiple Enterprise BDPs may operate the same geography subject to attribution. Enterprise BDP commission remains **25% of eligible GCE platform commission**, not 25% of total project value.
+
+**Cross-vertical (FD-037 / FD-038):** Enterprise may use Marketplace Venue Partners without converting the whole project into a Marketplace transaction. Componentise revenue (platform/service, venue, vendor, other). Same eligible revenue component must not generate duplicate Enterprise and Marketplace BDP commission unless a later Founder Decision expressly authorises it. Marketplace BDP does not automatically earn merely because its venue is used; Enterprise BDP does not automatically earn ordinary Marketplace revenue. Material scope/price/vendor/venue/milestone/timeline changes should be versioned and approved (change orders).
 
 ---
 
@@ -246,11 +257,11 @@ Numeric summary: `36_Commercial_Constants.md`. Settlement principles: FD-020 / F
 
 ## Payment and settlement
 
-Standard Enterprise payment structure: **30%** at project confirmation · **40%** at approved readiness or execution milestone · **30%** after completion. This is a standard model, not an inflexible rule. Alternative schedules may be approved based on project size, vendor commitments, duration, client credit profile, procurement rules, and risk (FD-021 / FD-026).
+**Milestones are project-specific and negotiated** (FD-038). There is no universal mandatory advance / mid / final percentage structure for all Enterprise projects. The project record must store the approved milestone schedule. An illustrative historical pattern of **30%** at confirmation · **40%** at readiness/execution · **30%** after completion may appear in older FD-026 narrative as a common example, but it is **not** a fixed universal rule (FD-038 / FD-021 / FD-026).
 
 Client payment does **not** automatically mean vendor settlement is payable, Enterprise BDP commission is payable, Vendor Opportunity Fee is earned, refund risk has ended, or the milestone is approved.
 
-Vendor settlement requires valid work order, deliverable verification, completion evidence, applicable approval, invoice and compliance verification, dispute/deduction review, and settlement eligibility.
+Vendor settlement requires valid work order, deliverable verification, completion evidence, applicable approval, invoice and compliance verification, dispute/deduction review, and settlement eligibility. At launch, vendors may be managed as non-login records (FD-038).
 
 ---
 

@@ -7,16 +7,19 @@
 **Connect BDP Franchise Unit fee / commission commercial rules:** `docs/founder-decisions/FD-025_Connect_BDP_Commercial_and_Operating_Architecture.md`
 **GCE Enterprise Franchise Pack / commission / payment commercial rules:** `docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture.md`
 **Membership commercial (tiers, Tags, transfers, refunds):** `docs/founder-decisions/FD-027_Membership_Commercial_and_Operating_Architecture.md`
+**Membership approval / attribution / allocation:** `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md`
 **Revenue recognition / commercial classification:** `docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md`
 **Commission Engine / stakeholder entitlement / BDP finance recovery:** `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 **Marketplace BDP operating architecture:** `docs/founder-decisions/FD-033_GCE_Marketplace_BDP_Commercial_and_Operating_Architecture.md`
+**Marketplace transaction / unattributed revenue / payout direction:** `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
+**Enterprise cross-vertical / quotation / Finance co-sign / milestones:** `docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md`
 **Narrow supersession / status mapping:** `docs/founder-decisions/FD-032_Phase_1_Authority_Status_Mapping_and_Supersession_Clarification.md`
 **Corporate / payment-receiving entity principles:** `docs/founder-decisions/FD-034_Logixia_and_GCE_Corporate_Platform_Constitution.md`
 **AI Lead Assist / Lead Intelligence commercial boundaries:** `docs/founder-decisions/FD-031_GCE_Connect_AI_Lead_Assist_Architecture.md` / `39_AI_Lead_Assist_Spec.md`
 **Commercial amounts:** `36_Commercial_Constants.md`
 **Revenue narrative:** `37_Revenue_Flow.md`
 
-Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, FD-029, FD-030, FD-031, FD-032, FD-033, or FD-034, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace 80/10/10 **FD-029**; for Marketplace BDP ops **FD-033**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**; for Lead Assist payment gates and Core Lead Rights **FD-031**; for legal-entity / payment-receiving principles **FD-034** (exact banking/merchant-of-record detail remains Pending Legal / Tax / Corporate Review).
+Where this file conflicts with FD-020 through FD-038, the Founder Decision wins — for recognition **FD-028**; for commission/entitlement/recovery/Marketplace attributed 80/10/10 **FD-029**; for unattributed Marketplace 80/0/20 and payout direction **FD-037**; for Marketplace BDP ops **FD-033**; for membership attribution **FD-036**; for Enterprise Finance co-sign / project-specific milestones / no-double-commission **FD-038**; for Circle fee collection / unauthorised Circle bank accounts / workshop payment channels **FD-030**; for Lead Assist payment gates and Core Lead Rights **FD-031**; for legal-entity / payment-receiving principles **FD-034** (exact banking/merchant-of-record detail remains Pending Legal / Tax / Corporate Review).
 
 ### Founder-aligned payment/settlement principles (summary)
 
@@ -24,9 +27,9 @@ Where this file conflicts with FD-020, FD-021, FD-025, FD-026, FD-027, FD-028, F
 - Commission states: Estimated / Provisional / Earned / On Hold / Settlement-Eligible / Paid / Reversed / Recoverable Balance (FD-029) — not interchangeable; no generic “earnings” collapse.
 - User-facing **GCE Wallet** may be unified; internal accounting uses **separate ledgers**. A wallet credit is **not** automatically revenue; wallets may show negative Recoverable Balance without automatic personal-bank debit.
 - **Payment collection does not automatically mean settlement eligibility** or earned Platform Revenue / commission.
-- Membership / Tag recognition requires successful payment **and** activation (FD-021 / FD-022 / FD-028). Collected but unactivated remains collected-but-unearned and non-commissionable.
-- Marketplace event settlement follows successful completion **and** the approved post-event hold (**48 hours** per FD-021). After standard MBDP commission: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net** (FD-029). Affiliate commission is **not active**.
-- Enterprise may use the approved standard milestone model: **30% confirmation / 40% readiness-or-execution / 30% completion** (unless a separately approved contract specifies otherwise) (FD-021 / FD-026). Proposal value is not revenue. Enterprise BDP = **25% of eligible GCE Platform Commission** (not project value).
+- Membership / Tag recognition requires successful payment **and** activation (FD-021 / FD-022 / FD-028). Collected but unactivated remains collected-but-unearned and non-commissionable. Payment does not guarantee a specific Circle seat; activation and Circle allocation are separate (FD-036). Organic/unattributed memberships create no Connect BDP commission entitlement.
+- Marketplace event settlement follows successful completion **and** the approved post-event hold (**48 hours** per FD-021). With valid MBDP attribution: **80% Venue Partner / 10% Marketplace BDP / 10% GCE net**; without: **80% / 0% / 20%** (FD-029 / FD-037). Affiliate commission is **not active**. Launch Venue Partner payout: monthly Platform-initiated batch; architecture must remain configurable (FD-037). Offer Claim is not revenue.
+- Enterprise milestones are **project-specific and negotiated** (FD-038). An illustrative 30/40/30 pattern may appear in older narrative but is not a fixed universal rule. Proposal value is not revenue. Enterprise BDP = **25% of eligible GCE Platform Commission** (not project value). Quotations above **₹5,00,000** require Finance co-sign (approval threshold only — FD-038).
 - Connect BDP / Marketplace BDP Commission-Recovery Finance Options: recovery only from earned and approved commission from **Month 0**; max ₹5,000/cycle; no cash shortfall; no auto bank debit (FD-029). Connect finance supersedes FD-025 finance-inactive only.
 - Refunds reverse Eligible Revenue, Platform Revenue, and stakeholder commission proportionally; paid commission creates **Recoverable Balance**. Chargebacks place amount on hold/reversal and may create recovery (FD-029).
 - BDP commissions are platform-calculated; no stakeholder may approve their own commission-affecting exception. Historical earned commission is not automatically transferred on reassignment.
@@ -66,13 +69,15 @@ The payment system is designed to:
 The platform supports payments for:
 
  Membership Fees
- Event Bookings
- Marketplace Orders
+ Event Bookings / Event Transactions
+ Marketplace Offer Claims / Redemptions (claim ≠ revenue — FD-037)
  Optional Lead Assist paid products (Pro / verification / Expert / Managed — Unresolved; not a gate on ordinary referrals — FD-031)
  Franchise Fees
  Training Fees
  Enterprise Projects
  Future Subscription Services
+
+(Do not use “Marketplace Orders” as an undefined umbrella for unlike Marketplace flows — FD-037.)
 
  Payment Workflow
 
@@ -114,25 +119,29 @@ User
 
 ↓
 
-Choose Associate Tier (launch) / optional Tag 3–4 (FD-027)
+Choose Associate Tier (launch) / optional Tag 3–4 (after category/Tag/geo/seat check — FD-027 / FD-036)
 
 ↓
 
-Online Payment (platform only)
+Online Payment (platform only — does not guarantee a specific Circle seat)
 
 ↓
 
-Membership Activation (when conditions met)
+Membership Activation (when platform conditions met; may be Active pending allocation)
 
 ↓
 
-Separate Circle Seat Reservation / Allocation
+Separate Circle Allocation (System proposes → Connect BDP assists → Platform confirms)
+
+↓
+
+Connect BDP attribution confirmation (organic/unattributed allowed)
 
 ↓
 
 Dashboard Update
 
-Membership payments may also include Tag 3 / Tag 4 add-ons and, when Core is offered after eligibility, Core upgrade/renewal payments. Transfer administrative fees (₹1,000 + tax after the first free transfer in 12 months) are separate and not automatically commissionable to Connect BDP (FD-027).
+Membership payments may also include Tag 3 / Tag 4 add-ons and, when Core is offered after eligibility, Core upgrade/renewal payments. Transfer administrative fees (₹1,000 + tax after the first free transfer in 12 months) are separate and not automatically commissionable to Connect BDP (FD-027). Circle transfer does not automatically transfer Connect BDP attribution (FD-036).
 
 Membership Activated
 
@@ -258,13 +267,11 @@ Business Activation
 
 Enterprise projects follow milestone-based payments.
 
-**Founder-approved standard milestone model (FD-021 / FD-026)** unless a separately approved contract specifies otherwise:
+**Milestones are project-specific and negotiated** (FD-038). There is no universal mandatory advance/mid/final percentage structure for all Enterprise projects. Store the approved milestone schedule per project. An illustrative historical pattern of **30%** confirmation / **40%** readiness-or-execution / **30%** completion may appear in older FD-021 / FD-026 narrative but is **not** a fixed universal rule.
 
-- **30%** Project confirmation
-- **40%** Approved readiness or execution milestone
-- **30%** Completion
+Quotations above **₹5,00,000** total proposed project value require Finance co-sign before final issue (approval threshold only — FD-038). Enterprise BDP alone may not issue binding quotations.
 
-Client payment to GCE does **not** by itself settle vendors, earn Enterprise BDP commission, or earn Vendor Opportunity Fee. Settlement eligibility follows milestone completion conditions (FD-021 / FD-026).
+Client payment to GCE does **not** by itself settle vendors, earn Enterprise BDP commission, or earn Vendor Opportunity Fee. Settlement eligibility follows milestone completion conditions (FD-021 / FD-026 / FD-038). Componentise cross-vertical venue/vendor amounts — no double commission on the same revenue component (FD-037 / FD-038).
 
 Typical Flow
 

@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Circles lifecycle:** FD-024 · **Circles internal ops / verification:** FD-030 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026 · **AI Lead Assist / Lead Intelligence:** FD-031 / `39_AI_Lead_Assist_Spec.md`
+**Membership lifecycle:** FD-022 · **Membership commercial:** FD-027 · **Membership approval / attribution / allocation:** FD-036 · **Circles lifecycle:** FD-024 · **Circles internal ops / verification:** FD-030 · **Settlement:** FD-021 · **RBAC:** FD-023 · **Connect BDP Franchise Unit commercial:** FD-025 · **GCE Enterprise:** FD-026 · **Enterprise cross-vertical / quotation:** FD-038 · **Marketplace transactions / unattributed:** FD-037 · **AI Lead Assist / Lead Intelligence:** FD-031 / `39_AI_Lead_Assist_Spec.md`
 
-Membership activation and Circle allocation are separate. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally. Circle seat activation requires platform-recorded business verification (outcomes: Verified / Conditionally Verified / On Hold / Rejected — FD-030). Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, and vendor-led fulfilment (FD-026).
+Membership activation and Circle allocation are separate (FD-036). An Active member may temporarily exist without final Circle allocation; Circle-specific rights begin only after formal allocation. Seat reservation is 7 days; grace is 30 days; renewal notices begin 30 days before expiry. Payment success without activation is not completed membership revenue without approved exception process. Payment does **not** guarantee a specific Circle seat. At launch only **Associate Tier** is directly purchasable (₹6,000/quarter — FD-027). Core Tier is future/achievement-based and not directly purchasable. Connect BDP may assist/verify/recommend but cannot manually activate membership or collect payment personally; Platform Operations has final activation/allocation authority (FD-036). Circle seat activation requires platform-recorded business verification (outcomes: Verified / Conditionally Verified / On Hold / Rejected — FD-030). Allocation model: System proposes → Connect BDP assists → Platform confirms. Organic/unattributed members are allowed. Enterprise flows use Event Requirement Brief, Enterprise Platform Expert assignment, quotation with Finance co-sign above ₹5,00,000 where triggered, and vendor-led fulfilment (FD-026 / FD-038).
 
 Overview
 
@@ -71,29 +71,65 @@ View Launch Membership (GCE Connect Circle Membership — Associate Tier only �
 
 ↓
 
+Complete / confirm profile and business details
+
+↓
+
+Initial city / geographic preference
+
+↓
+
+Initial category / specialisation selection
+
+↓
+
+Initial Tag selection (before purchase confirmation — FD-036)
+
+↓
+
+Seat-availability check (not a seat guarantee)
+
+↓
+
 Select Associate Tier (+ optional Tag 3 / Tag 4)
 
 ↓
 
-Platform Verification / KYC / Terms
+Terms acceptance
 
 ↓
 
-Online Payment (platform only — Connect BDP cannot collect personally)
+Platform Verification / KYC / business verification
 
 ↓
 
-Membership Activated (when conditions met — payment alone insufficient)
+Online Payment (platform only — Connect BDP cannot collect personally; payment does not guarantee a specific Circle seat)
 
 ↓
 
-Separate Circle Seat Reservation / Allocation (7 days)
+Membership Activated (when platform conditions met — payment alone insufficient; may be Active pending allocation)
 
 ↓
 
-Access GCE Connect Features (subject to seat and policy)
+Circle Allocation (System proposes → Connect BDP assists → Platform confirms — FD-036)
 
-(Core Tier upgrade is a future achievement-based path — not a direct launch purchase)
+↓
+
+Final seat confirmation
+
+↓
+
+Connect BDP attribution confirmation (organic / unattributed members allowed)
+
+↓
+
+Workspace activation / Member onboarding completion
+
+↓
+
+Access GCE Connect Features (Circle-specific rights subject to allocation)
+
+(Core Tier upgrade is a future achievement-based path — not a direct launch purchase; category-full members are not forced into Core Tier)
 
  3\. Circle Member Flow
 

@@ -8,13 +8,13 @@
 **Commission Engine / finance recovery (supersedes FD-025 finance-inactive only):**
 `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-032 (dual Circle status mapping; target credit at formal 15-member platform activation; GB six-month term / Circle Finance Coordinator) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · FD-034 (Logixia legal company; GCE platform brand; no BDP ownership of vertical; no bind-by-default) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-032 (dual Circle status mapping; target credit at formal 15-member platform activation; GB six-month term / Circle Finance Coordinator) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-036 (membership approval / attribution / allocation — organic members allowed; no commission without valid attribution; System proposes → Connect BDP assists → Platform confirms) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · FD-034 (Logixia legal company; GCE platform brand; no BDP ownership of vertical; no bind-by-default) · FD-035 (User / membership / role separation) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
 Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position — confirmed by FD-032). On Circle internal governance, meetings, attendance, verification, and Governing Body structure, **FD-030 wins**. On dual status mapping and activation-credit logic, **FD-032 wins**. Corporate boundaries: **FD-034**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
+This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position — confirmed by FD-032). On membership approval / attribution / allocation authority, **FD-036 wins**. On Circle internal governance, meetings, attendance, verification, and Governing Body structure, **FD-030 wins**. On dual status mapping and activation-credit logic, **FD-032 wins**. Corporate boundaries: **FD-034**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
 
 ---
 
@@ -109,13 +109,17 @@ Missing milestones does **not** automatically cause immediate cancellation (FD-0
 
 ## Commission model
 
-Connect BDP earns **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit (FD-025).
+Connect BDP earns **20%** of eligible GCE Connect subscription revenue attributed to the relevant Franchise Unit (FD-025 / FD-029) — **only where valid Connect BDP attribution exists** at the relevant earning event (FD-036).
 
-Commission applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, correctly attributed, and not under material dispute or hold.
+**Organic / unattributed memberships are allowed.** Where no valid attribution exists, no Connect BDP commission entitlement arises; do **not** describe that amount as “pending CBDP commission” — it remains with GCE (FD-036). Later attribution is prospective by default; retroactive correction only for documented platform error or authorised dispute outcome.
 
-Eligible commissionable items may include Associate Tier subscription/renewal, Core upgrade/renewal when applicable, and Tag 3 / Tag 4 subscriptions (FD-027). Not automatically commissionable: GST/taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees (FD-031 — no automatic Lead Assist commission), complimentary/promotional credits, uncollected amounts.
+Commission applies only to eligible revenue that is successfully collected, linked to an eligible membership, activated, eligible for settlement, **validly attributed**, and not under material dispute or hold.
+
+Eligible commissionable items may include Associate Tier subscription/renewal, Core upgrade/renewal when applicable, and Tag 3 / Tag 4 subscriptions (FD-027). Not automatically commissionable: GST/taxes, refunds/reversals/chargebacks, transfer fees, penalties, Lead Assist fees (FD-031 — no automatic Lead Assist commission), complimentary/promotional credits, uncollected amounts, unattributed organic membership revenue (FD-036).
 
 Exclusions from commission base include GST and other statutory taxes, refunds, reversals, chargebacks, failed payments, complimentary memberships, free trials, promotional credits, unauthorised collections, amounts not received, fraudulent / suspended / invalidly attributed transactions (full list: FD-025).
+
+Connect BDP may assist membership onboarding and recommend allocation but does **not** unilaterally activate membership or final-approve Circle seats — allocation model: **System proposes → Connect BDP assists → Platform confirms** (FD-036). RM assignment is operational and does not automatically create commission. Geographic routing does not create permanent territorial ownership.
 
 Formula:
 

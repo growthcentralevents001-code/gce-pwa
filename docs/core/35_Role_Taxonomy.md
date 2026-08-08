@@ -4,7 +4,7 @@
 
 **Highest authority for RBAC / permissions principles:** `docs/founder-decisions/FD-023_RBAC_and_Permissions.md`
 
-**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle lifecycle ownership boundaries), FD-030 (Governing Body roles and Circle governance limits), FD-032 (current GB term/role supersession; legacy role migration principles), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels), FD-033 (Marketplace BDP operating — primary Relationship Manager for assigned venues; no settlement/refund authority), FD-034 (stakeholders do not bind Logixia by default; not automatic employees/shareholders/partners), FD-031 (AI Lead Assist — Opportunity Desk, Lead Giver / Lead Receiver functional parties; not a hidden commission layer).
+**Related:** FD-001 (roles & multi-role platform), FD-024 (Circle lifecycle ownership boundaries), FD-030 (Governing Body roles and Circle governance limits), FD-032 (current GB term/role supersession; legacy role migration principles), FD-022 (membership vs seat), FD-025 (Connect BDP commercial — Franchise Unit is a commercial construct, not a separate RBAC role enum unless later designed), FD-026 (GCE Enterprise commercial and operating architecture — Franchise Pack and Enterprise Platform Expert), FD-027 (Membership commercial — member title **GCE Connect Circle Member**; Associate/Core are tier labels), FD-033 (Marketplace BDP operating — primary Relationship Manager for assigned venues; no settlement/refund authority), FD-034 (stakeholders do not bind Logixia by default; not automatic employees/shareholders/partners), FD-035 (identity, role assignment, workspace architecture — User as permanent base identity), FD-036 (membership attribution / RM assignment operational / no automatic RM commission), FD-037 (Venue Representative / Venue Manager distinct from Marketplace BDP; one Venue Partner role family), FD-038 (Enterprise Client organisation vs Enterprise Client Representative vs Enterprise BDP), FD-031 (AI Lead Assist — Opportunity Desk, Lead Giver / Lead Receiver functional parties; not a hidden commission layer).
 
 This document owns official **role names**, role families, high-level responsibilities, and legacy migration mapping. Detailed permission matrices in `19_Permissions_Roles.md` must defer here for identity and to **FD-023** for access-control principles. Exact permission codes, enums, and RLS policies are **not finalised** in Founder Decisions — do not invent them.
 
@@ -31,11 +31,13 @@ Do **not** redefine commercial fees or Circle capacity here. Commercial: `36_Com
 | GCE Enterprise Business Development Partner | Enterprise BDP | |
 | GCE Connect Member | — | Membership holder; may not yet hold a Circle seat |
 | GCE Connect Circle Member / Circle Member | Circle Member | Seat holder in a specific Circle |
-| Venue Partner | — | |
-| Enterprise Client | — | Distinct from Enterprise BDP |
+| Venue Partner | — | One canonical Venue Partner role family; business types are attributes/categories (FD-037) |
+| Venue Representative / Venue Manager | — | Venue-side natural person; distinct from Marketplace BDP (FD-035 / FD-037) |
+| Enterprise Client | — | Organisation-level entity; distinct from Enterprise BDP (FD-038) |
+| Enterprise Client Representative | — | Authorised natural person for Enterprise Client; distinct from Enterprise BDP (FD-038) |
 | Board of Governance / Circle Board / **Governing Body** | BOG / Circle Board / Governing Body | Does **not** own Circles; does not independently activate/terminate membership or change taxonomy/fees (FD-030). Prefer **Governing Body**. BOG/Circle Board = legacy/dual-use (FD-032) |
 | Circle Finance Coordinator | Circle finance-support role within Governing Body | Current title under FD-030 / FD-032. Must not collect fees personally, hold Circle funds, or operate unauthorised Circle bank accounts. Supersedes **Treasurer** as current governance title; historical Treasurer records remain auditable |
-| Relationship Manager | RM | Platform operations term where approved; Marketplace BDP acts as primary RM for assigned venues (FD-033) — no automatic separate RM commission layer; no automatic financial authority |
+| Relationship Manager | RM | Platform operations term where approved; Marketplace BDP acts as primary RM for assigned venues (FD-033); Connect RM assignment is operational under Platform Operations (FD-036) — no automatic separate RM commission layer; no automatic financial authority |
 | Platform Relationship Manager | PRM | No automatic financial authority; legacy ops mapping toward Opportunity Desk (FD-031) — not Lead Owner; not an automatic commission stakeholder (FD-032) |
 | Platform Taxonomy Team | — | Final taxonomy publishing authority |
 | Finance Administrator | — | Permission-controlled; segregation of duties (FD-023) |
@@ -83,18 +85,20 @@ Aligned with FD role families and existing product documentation:
 | 4 | Platform Relationship Manager (PRM) | Ops / escalations | Escalation & verification duties — no automatic finance authority; may map toward Opportunity Desk ops (FD-031) without owning leads |
 | 5 | Connect BDP | GCE Connect | Initiate/grow Circles & memberships within assigned Franchise Unit scope (FD-025); does not bind Logixia by default (FD-034) |
 | 6 | Marketplace BDP | GCE Marketplace | Onboard/support Venue Partners within attributed scope; max 2 units / 40 venues; venue-attribution model (FD-033) |
-| 7 | Enterprise BDP | GCE Enterprise | Enterprise Client acquisition & BD under client-based Franchise Pack attribution (FD-026) |
-| 8 | Venue Partner | GCE Marketplace | Own events, offers, bookings |
+| 7 | Enterprise BDP | GCE Enterprise | Enterprise Client acquisition & BD under client-based Franchise Pack attribution (FD-026 / FD-038) |
+| 8 | Venue Partner | GCE Marketplace | Own events, offers, bookings — one role family (FD-037) |
 | 9 | GCE Connect Circle Member | GCE Connect | Active Circle Membership holder (Associate/Core are tier labels — FD-027); Circle seat is separate |
 | 10 | Registered User / Visitor | Demand | Public/authenticated general access |
-| — | Enterprise Client | GCE Enterprise | Client/project functions (not a BDP) |
+| — | Venue Representative / Venue Manager | GCE Marketplace | Venue-side users; not Marketplace BDP (FD-035 / FD-037) |
+| — | Enterprise Client | GCE Enterprise | Organisation / client-project functions (not a BDP) |
+| — | Enterprise Client Representative | GCE Enterprise | Authorised natural person for the client org (FD-038) |
 | — | Enterprise Platform Expert | GCE Enterprise | Internal/controlled specialist for requirement breakdown, vendor matching, and digital project coordination (FD-026) — not a franchisee |
 | — | Platform Taxonomy Team | Platform | Taxonomy publish authority |
 | — | Finance / Compliance / Support / Security Administrators | Platform | Department-scoped admin families (FD-023) |
 
 ### Documented dashboards
 
-Product dashboards remain described in `12_Dashboards.md`. Prefer approved names (Connect BDP Dashboard, Marketplace BDP Dashboard, etc.). Venue Admin console remains platform-ops capability unless a dedicated role is Founder-approved.
+Product dashboards remain described in `12_Dashboards.md`. Prefer approved names (Connect BDP Dashboard, Marketplace BDP Dashboard, etc.). **Venue Admin** console in `12_Dashboards.md` is a **platform-ops** capability for managing venues — do not conflate with Venue Representative / Venue Manager (venue-side) unless a dedicated role is Founder-approved (FD-037).
 
 ### Future / not current by default
 
@@ -209,7 +213,8 @@ The following alignments are **not** defined in business documentation and requi
 3. What documented role maps to `affiliate`?
 4. What documented role maps to `franchisee`?
 5. How will Board of Governance, RM, PRM, Platform Taxonomy Team, and department-scoped administrators be represented?
-6. How is **Enterprise Client** distinguished from **Enterprise BDP** in `enterprise` (or related) storage?
+6. How is **Enterprise Client** (organisation) distinguished from **Enterprise Client Representative** and **Enterprise BDP** in storage (FD-038)?
+7. How are managed vendor records without login represented at launch while allowing future Vendor workspaces (FD-038)?
 
 Exact database role enums remain **Pending Technical Design / Pending Founder Confirmation**. Until confirmed, engineers must not silently equate legacy labels with approved roles in business logic without an approved mapping update here.
 

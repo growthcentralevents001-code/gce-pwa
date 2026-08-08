@@ -1,83 +1,158 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { CalendarDays, Tag, Ticket } from "lucide-react";
+import { AnimatedSection } from "@/components/marketing/AnimatedSection";
+import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { ActiveClaimCard } from "@/components/customer/ActiveClaimCard";
+import { CxPageHeader } from "@/components/customer/CxPageHeader";
+import { EventCard } from "@/components/customer/EventCard";
+import { TicketPassCard } from "@/components/customer/TicketPassCard";
+import { EmptyState } from "@/components/states/EmptyState";
+import { FeatureGated } from "@/components/states/FeatureGated";
+import { StatusBadge } from "@/components/states/StatusBadge";
+import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
-import { getCustomerDashboard } from "@/lib/architecture/customer-cx";
+import {
+  discoverEvents,
+  getCustomerDashboard,
+} from "@/lib/architecture/customer-cx";
+import { bookingStatusTone } from "@/lib/frontend/customer/format";
 
-/**
- * Canonical customer CX dashboard (Phase 11).
- * Isolated from dirty /dashboard/venue and home WIP.
- */
-export default async function CustomerCxPage() {
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Customer home · GCE",
+};
+
+export default async function CustomerHomePage() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) {
-    redirect("/login?next=/customer");
-  }
+  if (!user) redirect("/login?next=/customer");
 
   const admin = createPrivilegedSupabaseClient();
-  let dashboard: Awaited<ReturnType<typeof getCustomerDashboard>> | null = null;
+  let dashboard: Awaited<ReturnType<typeof getCustomerDashboard>> | null =
+    null;
+  let featured: Awaited<ReturnType<typeof discoverEvents>>["items"] = [];
   try {
     dashboard = await getCustomerDashboard(admin, user.id);
   } catch {
     dashboard = null;
   }
+  try {
+    featured = (await discoverEvents(admin, { limit: 4 })).items;
+  } catch {
+    featured = [];
+  }
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">My bookings</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Marketplace customer experience · payment capture gated OFF · API{" "}
-        <code>/api/customer</code>
-      </p>
-      <nav className="mt-4 flex flex-wrap gap-3 text-sm">
-        <Link className="underline" href="/customer/events">
-          Discover events
-        </Link>
-        <Link className="underline" href="/customer/offers">
-          Discover offers
-        </Link>
-        <Link className="underline" href="/customer/tickets">
-          Tickets
-        </Link>
-      </nav>
+    <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
+      <CxPageHeader
+        title="Your Marketplace"
+        description="Bookings, tickets, and offers — powered by canonical customer APIs."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button asChild size="sm" className="min-h-11">
+              <Link href="/customer/events">Browse events</Link>
+            </Button>
+            <Button asChild size="sm" variant="outline" className="min-h-11">
+              <Link href="/customer/offers">Offers</Link>
+            </Button>
+          </div>
+        }
+      />
 
       {!dashboard ? (
-        <p className="mt-6 text-sm text-neutral-600">
-          Dashboard unavailable. Retry after sign-in refresh.
-        </p>
+        <EmptyState
+          title="Dashboard unavailable"
+          description="Try refreshing after signing in again."
+          primaryAction={{ label: "Retry home", href: "/customer" }}
+        />
       ) : (
-        <div className="mt-6 space-y-6">
-          <section className="rounded-lg border border-neutral-200 p-4">
-            <h2 className="text-sm font-medium">Trust Rank</h2>
-            <p className="mt-1 text-xs text-neutral-500">
-              Formula unresolved — display foundation only
-            </p>
-            <p className="mt-2 text-sm">
-              Score {dashboard.trustRank.score} · level{" "}
-              {dashboard.trustRank.levelLabel}
-            </p>
-          </section>
+        <div className="space-y-8">
+          <AnimatedSection>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <QuickTile
+                href="/customer/bookings"
+                icon={CalendarDays}
+                label="Bookings"
+                value={String(dashboard.upcomingBookings.length)}
+              />
+              <QuickTile
+                href="/customer/tickets"
+                icon={Ticket}
+                label="Tickets"
+                value={String(dashboard.tickets.length)}
+              />
+              <QuickTile
+                href="/customer/claims"
+                icon={Tag}
+                label="Claims"
+                value={String(dashboard.activeClaims.length)}
+              />
+            </div>
+          </AnimatedSection>
 
-          <section className="rounded-lg border border-neutral-200 p-4">
-            <h2 className="text-sm font-medium">Upcoming bookings</h2>
+          <AnimatedSection delay={0.05}>
+            <GlassPanel className="p-4">
+              <h2 className="text-sm font-semibold">Trust Rank</h2>
+              {dashboard.trustRank.enabled ? (
+                <>
+                  <p className="mt-2 text-2xl font-semibold tabular-nums">
+                    {dashboard.trustRank.score}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Level label from server: {dashboard.trustRank.levelLabel}
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {dashboard.trustRank.note}
+                  </p>
+                </>
+              ) : (
+                <FeatureGated
+                  className="mt-3"
+                  mode="disabled_in_environment"
+                  title="Trust Rank display gated"
+                  description="Rank formula remains unresolved. No client-side score inventing."
+                />
+              )}
+            </GlassPanel>
+          </AnimatedSection>
+
+          <section>
+            <SectionHead title="Upcoming bookings" href="/customer/bookings" />
             {dashboard.upcomingBookings.length === 0 ? (
-              <p className="mt-2 text-sm text-neutral-600">None yet.</p>
+              <EmptyState
+                title="No upcoming bookings"
+                description="Discover Marketplace events to book."
+                primaryAction={{ label: "Find events", href: "/customer/events" }}
+              />
             ) : (
-              <ul className="mt-2 space-y-2 text-sm">
+              <ul className="space-y-2">
                 {dashboard.upcomingBookings.map((b) => {
                   const ev = Array.isArray(b.marketplace_events)
                     ? b.marketplace_events[0]
                     : b.marketplace_events;
                   return (
-                    <li key={b.id} className="border-t border-neutral-100 pt-2">
-                      <span className="font-medium">{ev?.title ?? "Event"}</span>
-                      {" · "}
-                      {b.status}
-                      {" · qty "}
-                      {b.quantity}
+                    <li key={b.id}>
+                      <Link
+                        href={`/customer/bookings/${b.id}`}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:bg-muted/40"
+                      >
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium">
+                            {ev?.title ?? "Event"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            qty {b.quantity}
+                          </p>
+                        </div>
+                        <StatusBadge
+                          label={b.status}
+                          tone={bookingStatusTone(b.status)}
+                        />
+                      </Link>
                     </li>
                   );
                 })}
@@ -85,53 +160,147 @@ export default async function CustomerCxPage() {
             )}
           </section>
 
-          <section className="rounded-lg border border-neutral-200 p-4">
-            <h2 className="text-sm font-medium">Active offer claims</h2>
-            <p className="mt-1 text-xs text-neutral-500">
-              Claims are not purchases / not revenue
-            </p>
+          <section>
+            <SectionHead title="Active tickets" href="/customer/tickets" />
+            {dashboard.tickets.length === 0 ? (
+              <EmptyState
+                title="No tickets yet"
+                description="Tickets appear after a confirmed booking."
+              />
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {dashboard.tickets.slice(0, 4).map((t) => {
+                  const ev = Array.isArray(t.marketplace_events)
+                    ? t.marketplace_events[0]
+                    : t.marketplace_events;
+                  return (
+                    <TicketPassCard
+                      key={t.id}
+                      ticket={{
+                        id: t.id,
+                        ticketRef: t.ticket_ref,
+                        status: t.status,
+                        eventTitle: ev?.title,
+                        startsAt: ev?.starts_at,
+                        issuedAt: t.issued_at,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </section>
+
+          <section>
+            <SectionHead title="Active offer claims" href="/customer/claims" />
             {dashboard.activeClaims.length === 0 ? (
-              <p className="mt-2 text-sm text-neutral-600">No active claims.</p>
+              <EmptyState
+                title="No active claims"
+                description="Claims are not purchases and are not revenue."
+                primaryAction={{ label: "Browse offers", href: "/customer/offers" }}
+              />
             ) : (
-              <ul className="mt-2 space-y-2 text-sm">
-                {dashboard.activeClaims.map((c) => (
-                  <li key={c.id} className="border-t border-neutral-100 pt-2">
-                    {c.id.slice(0, 8)}… · expires{" "}
-                    {c.expires_at
-                      ? new Date(c.expires_at).toLocaleString("en-IN")
-                      : "—"}
-                  </li>
-                ))}
-              </ul>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {dashboard.activeClaims.map((c) => {
+                  const offer = Array.isArray(c.marketplace_offer_events)
+                    ? c.marketplace_offer_events[0]
+                    : c.marketplace_offer_events;
+                  return (
+                    <ActiveClaimCard
+                      key={c.id}
+                      claim={{
+                        id: c.id,
+                        status: c.status,
+                        expiresAt: c.expires_at,
+                        offerTitle: offer?.title,
+                        expired: c.expired,
+                      }}
+                    />
+                  );
+                })}
+              </div>
             )}
           </section>
 
-          <section className="rounded-lg border border-neutral-200 p-4">
-            <h2 className="text-sm font-medium">Refund requests</h2>
-            <p className="mt-1 text-xs text-neutral-500">
-              Economics pending OD-006 — manual review required
-            </p>
-            {(dashboard.refundRequests ?? []).length === 0 ? (
-              <p className="mt-2 text-sm text-neutral-600">None.</p>
-            ) : (
-              <ul className="mt-2 space-y-2 text-sm">
+          {(dashboard.refundRequests ?? []).length > 0 ? (
+            <section>
+              <h2 className="mb-3 text-sm font-semibold">Refund requests</h2>
+              <ul className="space-y-2 text-sm">
                 {dashboard.refundRequests.map((r) => (
-                  <li key={r.id} className="border-t border-neutral-100 pt-2">
-                    {r.status} · {r.amount_determination}
+                  <li
+                    key={r.id}
+                    className="rounded-xl border border-border p-3"
+                  >
+                    <StatusBadge label={r.status} tone="pending" />
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Under review · amount determination:{" "}
+                      {r.amount_determination ?? "pending"} (not calculated in UI)
+                    </p>
                   </li>
                 ))}
               </ul>
+            </section>
+          ) : null}
+
+          <section>
+            <SectionHead title="Featured events" href="/customer/events" />
+            {featured.length === 0 ? (
+              <EmptyState title="No published events right now" />
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {featured.map((e) => (
+                  <EventCard
+                    key={e.id}
+                    event={{
+                      id: e.id,
+                      title: e.title,
+                      category: e.category,
+                      startsAt: e.startsAt,
+                      priceMinor: e.priceMinor,
+                      currency: e.currency,
+                      venue: e.venue,
+                    }}
+                  />
+                ))}
+              </div>
             )}
           </section>
-
-          <p className="text-xs text-neutral-500">
-            Money flags OFF:{" "}
-            {Object.entries(dashboard.moneyFlags)
-              .map(([k, v]) => `${k}=${String(v)}`)
-              .join(" · ")}
-          </p>
         </div>
       )}
     </main>
+  );
+}
+
+function SectionHead({ title, href }: { title: string; href: string }) {
+  return (
+    <div className="mb-3 flex items-center justify-between gap-2">
+      <h2 className="text-sm font-semibold">{title}</h2>
+      <Link href={href} className="text-xs font-medium text-primary">
+        See all
+      </Link>
+    </div>
+  );
+}
+
+function QuickTile({
+  href,
+  icon: Icon,
+  label,
+  value,
+}: {
+  href: string;
+  icon: typeof CalendarDays;
+  label: string;
+  value: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-2xl border border-border bg-card p-4 shadow-sm transition-transform active:scale-[0.99] touch-manipulation"
+    >
+      <Icon className="h-4 w-4 text-primary" aria-hidden />
+      <p className="mt-2 text-2xl font-semibold tabular-nums">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
+    </Link>
   );
 }

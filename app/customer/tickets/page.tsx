@@ -1,8 +1,15 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { CxPageHeader } from "@/components/customer/CxPageHeader";
+import { TicketPassCard } from "@/components/customer/TicketPassCard";
+import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getMyTickets } from "@/lib/architecture/customer-cx";
+
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Tickets · GCE Customer",
+};
 
 export default async function CustomerTicketsPage() {
   const supabase = await createServerSupabaseClient();
@@ -20,40 +27,42 @@ export default async function CustomerTicketsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/customer" className="text-sm underline">
-        ← My bookings
-      </Link>
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight">My tickets</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        QR secrets are not stored client-side after issue · venue validates
-        server-side
-      </p>
-      <ul className="mt-6 space-y-3">
-        {tickets.length === 0 ? (
-          <li className="text-sm text-neutral-600">No tickets yet.</li>
-        ) : (
-          tickets.map((t) => {
+    <main className="mx-auto max-w-3xl px-4 pb-28 pt-6 sm:pb-10">
+      <CxPageHeader
+        title="My tickets"
+        description="QR secrets are issued once at confirmation · venue validates server-side."
+        backHref="/customer"
+        backLabel="Home"
+      />
+
+      {tickets.length === 0 ? (
+        <EmptyState
+          title="No tickets yet"
+          description="Book an event to receive tickets after sandbox confirmation."
+          primaryAction={{ label: "Browse events", href: "/customer/events" }}
+        />
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {tickets.map((t) => {
             const ev = Array.isArray(t.marketplace_events)
               ? t.marketplace_events[0]
               : t.marketplace_events;
             return (
-              <li
+              <TicketPassCard
                 key={t.id}
-                className="rounded-lg border border-neutral-200 p-4 text-sm"
-              >
-                <div className="font-medium">{t.ticket_ref}</div>
-                <div className="mt-1 text-xs text-neutral-600">
-                  {ev?.title ?? "Event"} · {t.status}
-                  {t.issued_at
-                    ? ` · issued ${new Date(t.issued_at).toLocaleString("en-IN")}`
-                    : ""}
-                </div>
-              </li>
+                ticket={{
+                  id: t.id,
+                  ticketRef: t.ticket_ref,
+                  status: t.status,
+                  eventTitle: ev?.title,
+                  startsAt: ev?.starts_at,
+                  issuedAt: t.issued_at,
+                }}
+              />
             );
-          })
-        )}
-      </ul>
+          })}
+        </div>
+      )}
     </main>
   );
 }

@@ -1,6 +1,19 @@
+import { Suspense } from "react";
+import { CxPageHeader } from "@/components/customer/CxPageHeader";
+import { DiscoveryFilters } from "@/components/customer/DiscoveryFilters";
+import { EventCard } from "@/components/customer/EventCard";
+import { EmptyState } from "@/components/states/EmptyState";
+import { ErrorState } from "@/components/states/ErrorState";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { discoverEvents } from "@/lib/architecture/customer-cx";
+
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Events · GCE Customer",
+};
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -13,87 +26,95 @@ export default async function CustomerEventsPage({
   const city = typeof sp.city === "string" ? sp.city : null;
   const q = typeof sp.q === "string" ? sp.q : null;
   const category = typeof sp.category === "string" ? sp.category : null;
+  const offset =
+    typeof sp.offset === "string" ? Math.max(0, Number(sp.offset) || 0) : 0;
+  const limit = 12;
 
   const admin = createPrivilegedSupabaseClient();
-  let result: Awaited<ReturnType<typeof discoverEvents>> = {
-    items: [],
-    total: 0,
-    limit: 20,
-    offset: 0,
-  };
+  let result: Awaited<ReturnType<typeof discoverEvents>> | null = null;
+  let failed = false;
   try {
-    result = await discoverEvents(admin, { city, q, category, limit: 30 });
+    result = await discoverEvents(admin, {
+      city,
+      q,
+      category,
+      limit,
+      offset,
+    });
   } catch {
-    // empty
+    failed = true;
   }
 
+  const items = result?.items ?? [];
+  const total = result?.total ?? 0;
+  const nextOffset = offset + limit;
+  const hasMore = nextOffset < total;
+
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/customer" className="text-sm underline">
-        ← My bookings
-      </Link>
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight">
-        Marketplace events
-      </h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        Published inventory only · city/category/search filters
-      </p>
-      <form className="mt-4 grid gap-2 sm:grid-cols-3" method="get">
-        <input
-          name="city"
-          defaultValue={city ?? ""}
-          placeholder="City"
-          className="rounded border border-neutral-300 px-3 py-2 text-sm"
+    <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
+      <CxPageHeader
+        title="Events"
+        description="Published Marketplace inventory · filters use server discovery."
+        backHref="/customer"
+        backLabel="Home"
+      />
+
+      <Suspense
+        fallback={<Skeleton className="mb-6 h-11 w-full rounded-lg" />}
+      >
+        <DiscoveryFilters basePath="/customer/events" showCategory />
+      </Suspense>
+
+      {failed ? (
+        <ErrorState
+          title="Could not load events"
+          description="Please try again shortly."
         />
-        <input
-          name="category"
-          defaultValue={category ?? ""}
-          placeholder="Category"
-          className="rounded border border-neutral-300 px-3 py-2 text-sm"
+      ) : items.length === 0 ? (
+        <EmptyState
+          title="No events match"
+          description="Try clearing filters or browsing another city."
+          primaryAction={{ label: "Clear filters", href: "/customer/events" }}
         />
-        <input
-          name="q"
-          defaultValue={q ?? ""}
-          placeholder="Search"
-          className="rounded border border-neutral-300 px-3 py-2 text-sm"
-        />
-        <button
-          type="submit"
-          className="rounded bg-neutral-900 px-3 py-2 text-sm text-white sm:col-span-3"
-        >
-          Filter
-        </button>
-      </form>
-      <ul className="mt-6 space-y-3">
-        {result.items.length === 0 ? (
-          <li className="text-sm text-neutral-600">No published events.</li>
-        ) : (
-          result.items.map((e) => (
-            <li
-              key={e.id}
-              className="rounded-lg border border-neutral-200 p-4 text-sm"
-            >
-              <Link
-                href={`/customer/events/${e.id}`}
-                className="font-medium underline"
-              >
-                {e.title}
-              </Link>
-              <div className="mt-1 text-xs text-neutral-600">
-                {e.venue && typeof e.venue === "object" && "city" in e.venue
-                  ? String((e.venue as { city?: string }).city ?? "")
-                  : ""}
-                {" · "}
-                {e.startsAt
-                  ? new Date(e.startsAt).toLocaleString("en-IN")
-                  : ""}
-                {" · ₹"}
-                {(Number(e.priceMinor) / 100).toLocaleString("en-IN")}
-              </div>
-            </li>
-          ))
-        )}
-      </ul>
+      ) : (
+        <>
+          <p className="mb-4 text-xs text-muted-foreground">
+            Showing {items.length} of {total}
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((e) => (
+              <EventCard
+                key={e.id}
+                event={{
+                  id: e.id,
+                  title: e.title,
+                  category: e.category,
+                  startsAt: e.startsAt,
+                  priceMinor: e.priceMinor,
+                  currency: e.currency,
+                  venue: e.venue,
+                }}
+              />
+            ))}
+          </div>
+          {hasMore ? (
+            <div className="mt-8 flex justify-center">
+              <Button asChild variant="outline" className="min-h-11">
+                <Link
+                  href={`/customer/events?${new URLSearchParams({
+                    ...(q ? { q } : {}),
+                    ...(city ? { city } : {}),
+                    ...(category ? { category } : {}),
+                    offset: String(nextOffset),
+                  }).toString()}`}
+                >
+                  Load more
+                </Link>
+              </Button>
+            </div>
+          ) : null}
+        </>
+      )}
     </main>
   );
 }

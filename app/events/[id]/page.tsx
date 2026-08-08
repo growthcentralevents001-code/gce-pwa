@@ -1,517 +1,88 @@
-"use client";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { MarketingHero } from "@/components/marketing/MarketingHero";
+import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { Button } from "@/components/ui/button";
+import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { getEventDetail } from "@/lib/architecture/customer-cx";
+import {
+  formatInrMinor,
+  formatWhen,
+  venueDisplayName,
+} from "@/lib/frontend/customer/format";
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
-import { 
-  Heart, Share2, Calendar, MapPin, Users, ArrowLeft, 
-  Bookmark, BookmarkCheck, User, Tag, ExternalLink, 
-  Clock, MessageCircle, CheckCircle, AlertCircle 
-} from "lucide-react";
+type Params = Promise<{ id: string }>;
 
-interface Event {
-  id: string;
-  title: string;
-  description?: string;
-  date: string;
-  time: string;
-  venue?: string;
-  venue_address?: string;
-  city?: string;
-  price: number;
-  capacity: number;
-  registered: number;
-  vertical: "connect" | "marketplace" | "enterprise";
-  category?: string;
-  genre?: string;
-  image_url?: string;
-  agenda?: string;
-  speakers?: string;
-  organizer?: string;
-  organizer_contact?: string;
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const event = await getEventDetail(createPrivilegedSupabaseClient(), id);
+    return {
+      title: `${event.title} · GCE Events`,
+      description: event.description?.slice(0, 160) ?? "GCE Marketplace event",
+      alternates: { canonical: `/events/${id}` },
+    };
+  } catch {
+    return { title: "Event · GCE" };
+  }
 }
 
-interface NetworkUser {
-  id: string;
-  name: string;
-  avatar_url?: string;
-  interests?: string[];
-}
-
-export default function EventDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const eventId = params.id as string;
-
-  const [event, setEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isSaved, setIsSaved] = useState(false);
-  const [isReminded, setIsReminded] = useState(false);
-  const [attendingCount, setAttendingCount] = useState(0);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [networkUsers, setNetworkUsers] = useState<NetworkUser[]>([]);
-  const [isBooked, setIsBooked] = useState(false);
-
-  useEffect(() => {
-    if (!eventId) return;
-
-    const fetchEvent = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("id", eventId)
-        .single();
-
-      if (error) {
-        console.error("Error fetching event:", error);
-        setLoading(false);
-        return;
-      }
-
-      setEvent(data);
-      setAttendingCount(data?.registered || 0);
-      setLoading(false);
-    };
-
-    const getUserAndSavedStatus = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
-        // Check if event is saved
-        const { data } = await supabase
-          .from("saved_events")
-          .select("id")
-          .eq("user_id", user.id)
-          .eq("event_id", eventId)
-          .single();
-        if (data) setIsSaved(true);
-
-        // Check if user has booked this event
-        const { data: bookingData } = await supabase
-          .from("bookings")
-          .select("id")
-          .eq("user_id", user.id)
-          .eq("event_id", eventId)
-          .single();
-        if (bookingData) setIsBooked(true);
-      }
-    };
-
-    const fetchNetworkUsers = async () => {
-      // Fetch users who are attending or have similar interests
-      const { data: attendees } = await supabase
-        .from("bookings")
-        .select("user_id, users!inner(name, avatar_url, interests, city)")
-        .eq("event_id", eventId)
-        .limit(6);
-
-      if (attendees && attendees.length > 0) {
-        const users = attendees.map((b: any) => ({
-          id: b.user_id,
-          name: b.users.name,
-          avatar_url: b.users.avatar_url,
-          interests: b.users.interests || [],
-        }));
-        setNetworkUsers(users);
-      } else {
-        // Fallback: show users from same city with similar interests
-        const { data: cityUsers } = await supabase
-          .from("users")
-          .select("id, name, avatar_url, interests, city")
-          .eq("city", event?.city || "")
-          .limit(4);
-        if (cityUsers) {
-          setNetworkUsers(cityUsers.map((u: any) => ({
-            id: u.id,
-            name: u.name,
-            avatar_url: u.avatar_url,
-            interests: u.interests || [],
-          })));
-        }
-      }
-    };
-
-    fetchEvent();
-    getUserAndSavedStatus();
-    fetchNetworkUsers();
-  }, [eventId]);
-
-  const handleSave = async () => {
-    if (!userId) {
-      alert("Please login to save events");
-      return;
-    }
-    try {
-      if (isSaved) {
-        const { error } = await supabase
-          .from("saved_events")
-          .delete()
-          .eq("user_id", userId)
-          .eq("event_id", eventId);
-        if (error) throw error;
-        setIsSaved(false);
-      } else {
-        const { error } = await supabase
-          .from("saved_events")
-          .insert({ user_id: userId, event_id: eventId });
-        if (error) throw error;
-        setIsSaved(true);
-      }
-    } catch (error) {
-      console.error("Error toggling save:", error);
-      alert("Failed to update wishlist. Please try again.");
-    }
-  };
-
-  const handleBook = () => {
-    if (!userId) {
-      alert("Please login to book events");
-      return;
-    }
-    router.push(`/checkout?event_id=${eventId}`);
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: event?.title,
-        text: `Check out this event: ${event?.title}`,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  };
-
-  const handleWhatsAppShare = () => {
-    const text = `Check out this event: ${event?.title} - ${window.location.href}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-  };
-
-  const handleAddToCalendar = () => {
-    if (!event) return;
-    const start = new Date(`${event.date}T${event.time}`).toISOString().replace(/-|:|\.\d+/g, '');
-    const end = new Date(new Date(`${event.date}T${event.time}`).getTime() + 2*60*60*1000).toISOString().replace(/-|:|\.\d+/g, '');
-    const title = encodeURIComponent(event.title);
-    const details = encodeURIComponent(event.description || '');
-    const location = encodeURIComponent(event.venue || '');
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
-    window.open(url, "_blank");
-  };
-
-  const toggleRemind = async () => {
-    if (!userId) {
-      alert("Please login to set reminders");
-      return;
-    }
-    try {
-      if (isReminded) {
-        const { error } = await supabase
-          .from("reminders")
-          .delete()
-          .eq("user_id", userId)
-          .eq("event_id", eventId);
-        if (error) throw error;
-        setIsReminded(false);
-      } else {
-        const { error } = await supabase
-          .from("reminders")
-          .insert({ user_id: userId, event_id: eventId });
-        if (error) throw error;
-        setIsReminded(true);
-      }
-    } catch (error) {
-      console.error("Error toggling reminder:", error);
-      alert("Failed to set reminder. Please try again.");
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-10 max-w-6xl">
-        <div className="text-center py-20">Loading event details...</div>
-      </div>
-    );
+/**
+ * PUB Event detail SEO wrapper — transactional booking lives under /customer.
+ */
+export default async function PublicEventDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
+  let event: Awaited<ReturnType<typeof getEventDetail>> | null = null;
+  try {
+    event = await getEventDetail(createPrivilegedSupabaseClient(), id);
+  } catch {
+    notFound();
   }
+  if (!event) notFound();
 
-  if (!event) {
-    return (
-      <div className="container mx-auto px-4 py-10 max-w-6xl">
-        <div className="text-center py-20 text-red-500">Event not found</div>
-      </div>
-    );
-  }
-
-  const getVerticalStyle = (vertical: string) => {
-    switch (vertical) {
-      case "connect":
-        return { bg: "bg-blue-100", color: "text-blue-700", label: "GCE Connect" };
-      case "marketplace":
-        return { bg: "bg-green-100", color: "text-green-700", label: "GCE Marketplace" };
-      case "enterprise":
-        return { bg: "bg-purple-100", color: "text-purple-700", label: "GCE Enterprise" };
-      default:
-        return { bg: "bg-gray-100", color: "text-gray-700", label: vertical };
-    }
-  };
-
-  const verticalStyle = getVerticalStyle(event.vertical);
-  const filledPercentage = event.capacity > 0 ? Math.min((attendingCount / event.capacity) * 100, 100) : 0;
+  const venue = venueDisplayName(event.venue);
 
   return (
-    <div className="container mx-auto px-4 py-4 max-w-6xl">
-      {/* Back button */}
-      <button
-        onClick={() => router.back()}
-        className="flex items-center text-orange-600 hover:text-orange-800 mb-4 transition text-sm"
-      >
-        <ArrowLeft size={18} className="mr-1" /> Back
-      </button>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main content - 2/3 width */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Event Image with overlay */}
-          <div className="relative h-48 md:h-64 bg-gradient-to-r from-orange-400 to-orange-600 rounded-xl overflow-hidden">
-            {event.image_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={event.image_url}
-                alt={event.title}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <span className="text-7xl md:text-8xl">🎉</span>
-              </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={`${verticalStyle.bg} ${verticalStyle.color} text-xs font-semibold px-2.5 py-1 rounded-full shadow`}
-                >
-                  {verticalStyle.label}
-                </span>
-                {event.genre && (
-                  <span className="text-xs bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full shadow">
-                    🎭 {event.genre}
-                  </span>
-                )}
-                {event.category && (
-                  <span className="text-xs bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full shadow">
-                    📂 {event.category}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="absolute top-3 right-3 flex gap-1.5">
-              <button
-                onClick={handleSave}
-                className={`p-1.5 rounded-full transition ${
-                  isSaved ? "bg-red-500 text-white" : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
-                }`}
-              >
-                {isSaved ? <BookmarkCheck size={18} /> : <Bookmark size={18} />}
-              </button>
-              <button
-                onClick={handleShare}
-                className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition"
-              >
-                <Share2 size={18} />
-              </button>
-              <button
-                onClick={handleWhatsAppShare}
-                className="p-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition"
-              >
-                <MessageCircle size={18} />
-              </button>
-            </div>
-          </div>
-
-          {/* Title & metadata */}
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{event.title}</h1>
-            {event.organizer && (
-              <p className="text-sm text-gray-500 mt-0.5">Hosted by {event.organizer}</p>
-            )}
-          </div>
-
-          {/* Event details grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-            <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-orange-500 flex-shrink-0" />
-              <span>{event.date} at {event.time}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-orange-500 flex-shrink-0" />
-              <span>{event.venue || "Venue TBD"}{event.city ? `, ${event.city}` : ""}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users size={16} className="text-orange-500 flex-shrink-0" />
-              <span><span className="font-semibold">{attendingCount}</span> / {event.capacity} attending</span>
-            </div>
-            {event.venue_address && (
-              <div className="col-span-full flex items-center gap-2 text-gray-400 text-xs">
-                <MapPin size={14} className="flex-shrink-0" />
-                <span>{event.venue_address}</span>
-                <a
-                  href={`https://maps.google.com/maps?q=${encodeURIComponent(event.venue_address)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:underline ml-1"
-                >
-                  <ExternalLink size={14} />
-                </a>
-              </div>
-            )}
-          </div>
-
-          {/* Progress bar for attendance */}
-          <div className="bg-gray-100 rounded-full h-1.5 overflow-hidden">
-            <div
-              className="bg-orange-500 h-full transition-all duration-500"
-              style={{ width: `${filledPercentage}%` }}
-            ></div>
-          </div>
-          <div className="flex justify-between text-xs text-gray-400">
-            <span>{Math.round(filledPercentage)}% filled</span>
-            <span>{event.capacity - attendingCount} spots left</span>
-          </div>
-
-          {/* Description */}
-          <div>
-            <h2 className="text-md font-semibold text-gray-700 mb-1">About this event</h2>
-            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-              {event.description || "No description provided."}
-            </p>
-          </div>
-
-          {/* Agenda */}
-          {event.agenda && (
-            <div>
-              <h2 className="text-md font-semibold text-gray-700 mb-1">Agenda</h2>
-              <div className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{event.agenda}</div>
-            </div>
-          )}
-
-          {/* Speakers */}
-          {event.speakers && (
-            <div>
-              <h2 className="text-md font-semibold text-gray-700 mb-1">Speakers</h2>
-              <div className="text-sm text-gray-600">{event.speakers}</div>
-            </div>
-          )}
-
-          {/* Your Network Attending */}
-          <div className="border-t pt-3">
-            <h3 className="text-md font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <Users size={18} className="text-orange-500" />
-              Your Network Attending
-            </h3>
-            {networkUsers.length > 0 ? (
-              <div className="flex flex-wrap gap-3">
-                {networkUsers.map((user) => (
-                  <div key={user.id} className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full shadow-sm">
-                    <div className="w-7 h-7 rounded-full bg-orange-200 flex items-center justify-center text-xs font-bold text-orange-700">
-                      {user.name?.charAt(0) || "U"}
-                    </div>
-                    <span className="text-xs font-medium">{user.name}</span>
-                    {user.interests && user.interests.length > 0 && (
-                      <span className="text-[10px] text-gray-400">
-                        {user.interests.slice(0, 2).join(", ")}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-400">No one from your network attending yet</p>
-            )}
-          </div>
-
-          {/* Action buttons - Add to Calendar, Remind */}
-          <div className="flex flex-wrap gap-2 pt-2">
-            <button
-              onClick={handleAddToCalendar}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full text-xs transition"
-            >
-              <Calendar size={14} /> Add to Calendar
-            </button>
-            <button
-              onClick={toggleRemind}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs transition ${
-                isReminded
-                  ? "bg-orange-100 text-orange-700"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              <Clock size={14} />
-              {isReminded ? "Reminder Set" : "Remind Me"}
-            </button>
-          </div>
-        </div>
-
-        {/* Sidebar - Price & Book Now (Corner card) */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-4 bg-white rounded-xl shadow-lg p-5 border border-gray-100">
-            <div className="text-center mb-4">
-              <span className="text-3xl font-bold text-orange-600">₹{event.price}</span>
-              <span className="text-sm text-gray-400 block mt-0.5">per person</span>
-            </div>
-
-            <button
-              onClick={handleBook}
-              disabled={isBooked}
-              className={`w-full py-3 rounded-full font-semibold text-sm transition ${
-                isBooked
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-orange-600 text-white hover:bg-orange-700 shadow-md"
-              }`}
-            >
-              {isBooked ? "Already Booked" : "Book Now"}
-            </button>
-
-            {event.capacity - attendingCount < 10 && (
-              <p className="text-xs text-red-500 text-center mt-2">
-                ⚡ Only {event.capacity - attendingCount} spots left!
-              </p>
-            )}
-
-            <div className="mt-4 pt-4 border-t space-y-1.5 text-xs text-gray-500">
-              <div className="flex justify-between">
-                <span>Capacity</span>
-                <span className="font-medium">{event.capacity}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Registered</span>
-                <span className="font-medium">{attendingCount}</span>
-              </div>
-              {event.organizer && (
-                <div className="flex justify-between">
-                  <span>Organizer</span>
-                  <span className="font-medium text-gray-700">{event.organizer}</span>
-                </div>
-              )}
-              {event.venue && (
-                <div className="flex justify-between">
-                  <span>Venue</span>
-                  <span className="font-medium text-gray-700 truncate max-w-[120px]">{event.venue}</span>
-                </div>
-              )}
-            </div>
-
-            {event.capacity - attendingCount <= 0 && (
-              <div className="mt-3 p-2 bg-red-50 rounded-lg flex items-center gap-2 text-xs text-red-600">
-                <AlertCircle size={14} />
-                <span>Sold out!</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <MarketingHero
+        eyebrow={event.category ?? "Marketplace"}
+        headline={event.title}
+        description={`${formatWhen(event.starts_at)}${venue ? ` · ${venue}` : ""}`}
+        primaryCta={{
+          label: event.soldOut ? "View in customer CX" : "Book in customer CX",
+          href: event.soldOut
+            ? `/customer/events/${event.id}`
+            : `/customer/events/${event.id}/book`,
+        }}
+        secondaryCta={{ label: "All events", href: "/customer/events" }}
+        compact
+      />
+      <section className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <GlassPanel className="p-6">
+          <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+            {event.description ?? "No description."}
+          </p>
+          <p className="mt-4 text-sm font-medium">
+            From {formatInrMinor(event.price_minor, event.currency ?? "INR")}
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Booking, tickets, and payments use the canonical customer experience.
+            Live ticket payments remain gated OFF.
+          </p>
+          <Button asChild className="mt-6 min-h-11">
+            <Link href={`/customer/events/${event.id}`}>Open customer detail</Link>
+          </Button>
+        </GlassPanel>
+      </section>
+    </>
   );
 }

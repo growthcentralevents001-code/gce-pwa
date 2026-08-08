@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete — Public/Auth review ready** · Batches 2–10 not started |
+| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete** · **Batch 2 complete — Customer Mobile Checkpoint B ready for review** · Batches 3–10 not started |
 | **Date** | 2026-08-09 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
@@ -19,7 +19,14 @@
 |-------|-------|
 | **Status** | **COMPLETE — Public/Auth product review ready** |
 | **Evidence** | `docs/frontend/implementation/BATCH_1_PUBLIC_AUTH_ONBOARDING_IMPLEMENTATION.md` |
-| **Batch 2** | Not started |
+
+### Batch 2 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Customer Mobile Checkpoint B ready for review** |
+| **Evidence** | `docs/frontend/implementation/BATCH_2_CUSTOMER_EVENTS_OFFERS_BOOKING_TICKETS_IMPLEMENTATION.md` |
+| **Batch 3** | Not started |
 
 ---
 

@@ -14,7 +14,7 @@ import type { NavItem } from "./types";
 export const CUSTOMER_PRIMARY_NAV: NavItem[] = [
   {
     id: "discover",
-    label: "Discover",
+    label: "Home",
     href: "/customer",
     icon: Compass,
     mobileVisible: true,

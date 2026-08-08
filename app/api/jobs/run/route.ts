@@ -1,37 +1,45 @@
 import { NextRequest } from "next/server";
-import { withApiArchitecture } from "@/lib/architecture/api/http";
-import { createServiceRoleSupabaseClient } from "@/lib/supabase/clients";
-import { runJobOnce } from "@/lib/architecture/jobs/queue";
-import { AppError } from "@/lib/architecture/errors";
+import { withApiHandler, jsonSuccess } from "@/lib/api";
+import {
+  assertJobRunnerAuthorized,
+  claimAndRunJob,
+  createJobWorkerClient,
+} from "@/lib/jobs";
+import { logger } from "@/lib/logging";
 
 /**
- * ADR-014 MVP worker endpoint — VPS cron / PM2 can hit this route.
+ * ADR-014 / Phase 3 job runner.
  * Protected by CRON_SECRET. Does not execute settlement.
  */
 export async function POST(request: NextRequest) {
-  return withApiArchitecture(request, async ({ correlationId }) => {
-    const secret = process.env.CRON_SECRET;
-    const provided = request.headers.get("x-cron-secret");
-    if (!secret || provided !== secret) {
-      throw new AppError("UNAUTHORIZED", "Invalid cron secret", { status: 401 });
-    }
+  return withApiHandler(
+    request,
+    async (ctx) => {
+      assertJobRunnerAuthorized(request.headers.get("x-cron-secret"));
+      const client = createJobWorkerClient();
 
-    const client = createServiceRoleSupabaseClient();
-    const result = await runJobOnce(client, {
-      leaseOwner: `cron:${correlationId}`,
-      handler: async (job) => {
-        // Skeleton: later phases register typed handlers by job_type.
-        return { acknowledged: true, jobType: job.job_type };
-      },
-    });
+      const result = await claimAndRunJob(client, {
+        leaseOwner: `cron:${ctx.correlationId}`,
+        handler: async (job) => {
+          logger.info("job_handler_skeleton", {
+            correlationId: ctx.correlationId,
+            eventType: "background_job.run",
+            meta: { jobType: job.job_type, jobId: job.id },
+          });
+          return { acknowledged: true, jobType: job.job_type };
+        },
+      });
 
-    return {
-      status: 200,
-      body: {
-        ok: true,
-        correlationId,
-        ...result,
-      },
-    };
-  });
+      return jsonSuccess(
+        {
+          ok: true,
+          phase: 3,
+          correlationId: ctx.correlationId,
+          ...result,
+        },
+        ctx
+      );
+    },
+    { rateLimitKey: "jobs-run", rateLimitMax: 30, rateLimitWindowMs: 60_000 }
+  );
 }

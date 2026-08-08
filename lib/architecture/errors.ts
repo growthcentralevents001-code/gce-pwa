@@ -9,6 +9,10 @@ export type ErrorCode =
   | "INVALID_TRANSITION"
   | "FEATURE_DISABLED"
   | "IDEMPOTENCY_CONFLICT"
+  | "RATE_LIMITED"
+  | "EXTERNAL_SERVICE_ERROR"
+  | "DATABASE_ERROR"
+  | "CONFIGURATION_ERROR"
   | "INTERNAL_ERROR";
 
 export class AppError extends Error {
@@ -53,6 +57,12 @@ function statusForCode(code: ErrorCode): number {
     case "IDEMPOTENCY_CONFLICT":
     case "INVALID_TRANSITION":
       return 409;
+    case "RATE_LIMITED":
+      return 429;
+    case "EXTERNAL_SERVICE_ERROR":
+      return 502;
+    case "DATABASE_ERROR":
+    case "CONFIGURATION_ERROR":
     default:
       return 500;
   }

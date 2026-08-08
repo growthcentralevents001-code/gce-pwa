@@ -11,20 +11,40 @@ docs/
 ├── README.md
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
+├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
+├── IMPLEMENTATION_BACKLOG.md
+├── founder-decisions/
 ├── core/
-└── engineering/
+├── engineering/
+├── phase-2/ … phase-18/
+├── state-machines/
+├── data/
+├── security/
+└── compliance/
 ```
 
 - Master inventory: `docs/Documentation_Manifest.md`
+- Program roadmap / open decisions / backlog: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`, `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`, `docs/IMPLEMENTATION_BACKLOG.md`
 - Core / business docs: `docs/core/`
 - Engineering / expert docs: `docs/engineering/`
+- Phase 2–18 implementation-readiness: `docs/phase-*` (technical blueprint + vertical plans)
+- ADRs: `docs/phase-2/adrs/` (technical defaults — not Founder business law)
+- State machines / data / security / compliance: supporting architecture packs
 - Cursor Rules: `.cursor/rules/`
 
-The GCE project contains complete business documentation and AI expert documentation.
+The GCE project contains complete business documentation, Phase 2–18 implementation-readiness documentation, and AI expert documentation.
 
 Before writing any code, always identify the type of task and read the relevant documentation first.
 
 Never make assumptions if documentation already exists.
+
+For implementation work after Founder Decisions:
+
+1. Read governing FDs and canonical cores.
+2. Read the relevant `docs/phase-N/` plan and linked ADRs / state machines.
+3. Check `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` — do not invent validation-gated legal/tax/privacy conclusions.
+4. Prefer technical ADRs for stack defaults (Supabase Auth, Razorpay candidate, `/dashboard/{workspaceKey}`, migrations SoT, etc.).
 
 ---
 

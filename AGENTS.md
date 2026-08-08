@@ -35,15 +35,19 @@ Before generating or modifying code, always follow this order:
 1. `docs/founder-decisions/` (Founder Decisions — highest business authority)
 2. Founder Approved Business Specification (if present)
 3. `docs/core/` (canonical living documentation)
-4. `.cursor/rules/*.mdc`
-5. `docs/engineering/`
-6. `design-system/MASTER.md`
-7. `.cursor/skills/`
-8. Official Next.js documentation (`node_modules/next/dist/docs/`)
+4. `docs/phase-*/` and `docs/phase-2/adrs/` (implementation-readiness plans and technical ADRs)
+5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
+6. `.cursor/rules/*.mdc`
+7. `docs/engineering/`
+8. `design-system/MASTER.md`
+9. `.cursor/skills/`
+10. Official Next.js documentation (`node_modules/next/dist/docs/`)
 
 If documents overlap, higher-priority sources win. **Never change a Founder Decision to match older documentation.** When a lower-level document conflicts with a Founder Decision, update the lower-level document.
 
-Anything marked Unresolved, Proposed, Future, Pending Founder Approval, Pending Technical Design, or Pending Legal/Accounting Review must remain unresolved — do not invent final rules.
+Anything marked Unresolved, Proposed, Future, Pending Founder Approval, Pending Technical Design, or Pending Legal/Accounting Review must remain unresolved — do not invent final rules. Technical ADRs are implementation defaults, not Founder business law (FD-039).
+
+Program status: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`. Non-routine open items: `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`. Engineering backlog: `docs/IMPLEMENTATION_BACKLOG.md`.
 
 ---
 
@@ -56,6 +60,12 @@ Project documentation root and index.
 - `docs/README.md` — documentation index
 - `docs/Docs_Guide.md` — how agents should read and apply docs
 - `docs/Documentation_Manifest.md` — master inventory of the documentation system
+- `docs/MASTER_IMPLEMENTATION_ROADMAP.md` — Phase 1–18 program status
+- `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` — Founder/Legal/Tax/Privacy open items
+- `docs/IMPLEMENTATION_BACKLOG.md` — engineering backlog (P0–Future)
+- `docs/phase-2/` … `docs/phase-18/` — implementation-readiness plans
+- `docs/phase-2/adrs/` — technical ADRs
+- `docs/state-machines/` · `docs/data/` · `docs/security/` · `docs/compliance/` — architecture support packs
 
 ### `docs/core/`
 

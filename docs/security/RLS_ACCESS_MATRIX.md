@@ -1,0 +1,186 @@
+# RLS_ACCESS_MATRIX — Logical Policy Intent
+
+| Field | Value |
+|-------|-------|
+| **Status** | Living documentation (Phase 2) |
+| **Classification** | Logical RLS **policy intent** only — **not** final SQL |
+| **Authority** | [ADR-005](../phase-2/adrs/ADR-005_RLS_Strategy.md) (technical); FD-023 / FD-035 (permission rules); ADR-004 (policies live in migrations) |
+| **Related** | [`RBAC_PERMISSION_MATRIX.md`](./RBAC_PERMISSION_MATRIX.md), [`../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md`](../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md) |
+
+---
+
+## Authority
+
+1. **Deny-by-default RLS** for tenant-, assignment-, person-, and finance-scoped tables accessible via Supabase client keys (ADR-005).
+2. **Service role** may bypass RLS and is **server-only** — never browser / PWA / client env (ADR-005).
+3. RLS does **not** replace workflow SoD (e.g. self-approval bans) — domain services still enforce FD-023 / FD-035.
+4. Exact policy SQL is authored only in `supabase/migrations/` (ADR-004). This file must not invent final `CREATE POLICY` text.
+
+---
+
+## Purpose
+
+Map **resource × role × policy intent** so migrations and API design share one deny-by-default mental model before SQL is written.
+
+---
+
+## Not in scope
+
+- Final `CREATE POLICY` / helper-function SQL
+- Performance benchmarks or index prescriptions
+- Column-level encryption product choice
+- Inventing table names as schema SoT
+
+---
+
+## Policy intent vocabulary
+
+| Intent | Meaning |
+|--------|---------|
+| **Deny** | No client-key access (default) |
+| **Own rows** | `auth.uid()` maps to row subject / owner user id |
+| **Assigned scope** | Active RoleAssignment grants access to rows in that assignment’s scope |
+| **Org scope** | User is authorised rep of Organisation that owns the row |
+| **Circle scope** | Active Circle Member or limited GB appointment for that Circle |
+| **Platform admin** | Department-scoped admin assignment explicitly covers the resource class |
+| **Finance scoped** | Finance Admin (or narrower finance permission) + optional assignment filter |
+| **Server only** | No authenticated client policy; service role / trusted backend only |
+
+All intents assume: **RLS enabled; no policy ⇒ no access** (deny-by-default).
+
+---
+
+## Cross-cutting defaults
+
+| Topic | Intent |
+|-------|--------|
+| Anon key | Public read only for explicitly published surfaces; else Deny |
+| Authenticated with no assignment | Own User profile / own consumer records only |
+| Soft-deleted rows | Still Deny to ordinary roles unless admin recovery intent + audit |
+| Service role | Server only; bypasses RLS; every use audited operationally (TR) |
+| Break-glass | Temporary Platform admin path; must audit; must not disable RLS globally (ADR-005) |
+
+---
+
+## Matrix — Identity & RBAC resources
+
+| Resource (logical) | User | Circle Member | GB (limited) | BDP families | Venue Rep | Ent. Client Rep | Platform Ops | Finance Admin | Compliance Admin | Support Admin | RM / PRM |
+|--------------------|------|---------------|--------------|--------------|-----------|-----------------|--------------|---------------|------------------|---------------|----------|
+| User profile (own) | Own rows | Own rows | Own rows | Own rows | Own rows | Own rows | Own + Assigned (TR) | Own + case (TR) | Own + case (TR) | Own + case (TR) | Own + Assigned case (TR) |
+| User profile (others) | Deny | Deny | Circle limited (TR) | Assigned limited (TR) | Org peers limited (TR) | Org peers limited (TR) | Platform admin | Finance scoped if needed (TR) | Platform admin | Case (TR) | Assigned case (TR) |
+| RoleAssignment | Own read | Own read | Own read | Own read | Own read | Own read | Platform admin | Limited read (TR) | Platform admin | Case (TR) | Assigned read (TR) |
+| KYC / ID documents | Own rows | Own rows | Deny | Deny (unless Assigned verify TR) | Deny | Deny | Assigned / Platform Ops (TR) | Finance if payout KYC (TR) | Platform admin | Deny full | Assigned limited (TR) |
+
+**KYC fields restricted:** client policies must not expose identity-document payloads broadly. Masked status may be wider than raw document bytes (FD-023 sensitive data; FD-039 Aadhaar minimisation). Exact column split: **Pending Technical Design**.
+
+---
+
+## Matrix — Membership & Circle
+
+| Resource (logical) | User | Circle Member | GB (limited) | Connect BDP | Other BDPs | Platform Ops | Finance Admin | Compliance | RM |
+|--------------------|------|---------------|--------------|-------------|------------|--------------|---------------|------------|-----|
+| Membership (own) | Own rows | Own rows | — | Assigned | Deny | Platform admin | Finance scoped | Platform admin | Assigned |
+| Membership (others) | Deny | Deny | Circle limited (TR) | Assigned | Deny | Platform admin | Finance scoped | Platform admin | Assigned |
+| Circle header | Public limited (TR) / Deny private | Circle scope | Circle scope | Assigned | Deny | Platform admin | Read finance fields Finance scoped | Platform admin | Assigned |
+| Seat | Deny | Circle / own seat | Circle | Assigned | Deny | Platform admin | Deny mutate | Platform admin | Assigned |
+| GB appointments | Deny | Circle read (TR) | Circle scope | Assigned read (TR) | Deny | Platform admin | Deny | Platform admin | Assigned |
+| Dual status fields | Read per Circle visibility | Circle scope | Circle scope | Assigned | Deny | Platform admin | Read (TR) | Platform admin | Assigned |
+
+Lifecycle vs constitution status are separate attributes — policies may read both but must not collapse authorization on a single invented enum (FD-032).
+
+---
+
+## Matrix — Marketplace
+
+| Resource (logical) | Venue Partner / Rep | Marketplace BDP | Customer User | Platform Ops | Finance Admin | RM |
+|--------------------|---------------------|-----------------|---------------|--------------|---------------|-----|
+| VenuePartner org | Org scope | Assigned attribution | Public listing only (TR) | Platform admin | Finance scoped | Assigned |
+| Event / OfferEvent | Org scope | Assigned support read/write limited (TR) | Published read | Platform admin | Read | Assigned |
+| OfferClaim / Booking | Org scope | Assigned read (TR) | Own rows | Platform admin | Finance scoped | Assigned |
+| Redemption | Org scope | Assigned read (TR) | Own rows | Platform admin | Finance scoped | Assigned |
+| VenueAttribution | Deny mutate | Assigned read; mutate Platform / controlled workflow (TR) | Deny | Platform admin | Read | Assigned read |
+
+Marketplace BDP must not receive blanket “all venues in city” policies — attribution/assignment scoped (FD-033).
+
+---
+
+## Matrix — Enterprise
+
+| Resource (logical) | Ent. Client Rep | Enterprise BDP | Platform Ops | Finance Admin | Compliance |
+|--------------------|-----------------|----------------|--------------|---------------|------------|
+| EnterpriseClient | Org scope | Assigned | Platform admin | Finance scoped | Platform admin |
+| Quote | Org scope | Assigned | Platform admin | Finance scoped + co-sign path (TR) | Platform admin |
+| Project / Milestone | Org scope | Assigned | Platform admin | Finance scoped | Platform admin |
+| VendorRecord | Org / Project limited (TR) | Assigned limited (TR) | Platform admin | Finance scoped | Platform admin |
+
+---
+
+## Matrix — Finance tables (restricted)
+
+| Resource (logical) | BDP / Member / Venue / Client | RM / PRM / Support | Platform Ops | Finance Admin | Compliance Admin | Service role |
+|--------------------|-------------------------------|--------------------|--------------|---------------|------------------|--------------|
+| Payment | Own / Org related read (TR) | Case limited read (TR) | Limited read (TR) | **Finance scoped** | Read audit (TR) | Server only jobs |
+| LedgerEntry | Own summary read (TR); Deny raw mutate | Deny mutate; limited read (TR) | Deny mutate | **Finance scoped** | Read | Server only |
+| CommissionEntitlement | Own rows read; Deny approve | Deny | Deny approve | **Finance scoped** (+ SoD checks in app) | Read | Server only |
+| SettlementBatch | Own payout status read (TR) | Deny release | Deny release | **Finance scoped** | Read | Server only |
+| Wallet / Recoverable Balance | Own read | Deny | Deny | **Finance scoped** | Read | Server only |
+| Tax / bank payout details | Deny / Own masked (TR) | Deny | Deny | **Finance scoped** | Need-to-know (TR) | Server only |
+
+**Finance tables → Finance Admin + scoped** (ADR-005 / FD-020 / FD-023). Operational roles do not get broad `SELECT` on ledger/commission tables by default.
+
+Application layer still blocks self-approval even if a buggy policy were too wide — defence in depth (ADR-005).
+
+---
+
+## Matrix — Lead Assist, notification, audit
+
+| Resource (logical) | Lead parties | Desk / Platform Ops (TR) | Circle Member receiver | PRM | Compliance | Finance |
+|--------------------|--------------|--------------------------|------------------------|-----|------------|---------|
+| Lead | Own / Assigned party | Desk scope | Assigned receive | Escalation Assigned | Platform admin | Deny unless commercial link (TR) |
+| AssignmentHistory | Read own chain (TR) | Desk scope | Limited (TR) | Assigned | Platform admin | Deny |
+| OpportunityDeskItem | Deny (unless party) | Desk scope | Deny | Assigned | Platform admin | Deny |
+| Notification | Own rows | Platform admin | Own rows | Own / case (TR) | Platform admin | Own |
+| AuditEvent | Deny | Limited (TR) | Deny | Limited (TR) | **Platform admin** | Finance-related read |
+
+Lead history: prefer soft status; hard-delete only legal workflow — policies should not offer casual DELETE to clients (FD-031).
+
+---
+
+## Service role (server-only)
+
+| Allowed | Forbidden |
+|---------|-----------|
+| Route Handlers, trusted jobs, controlled admin backends | Browser, PWA bundle, `NEXT_PUBLIC_*`, mobile client embeds |
+| Migrations / privileged maintenance with audit | Using service role to “skip” SoD in product UX |
+| Webhook ingestion after signature verify (TR) | Broad ad-hoc scripts without access control |
+
+Compromise of service role is a critical incident class (ADR-005).
+
+---
+
+## Mapping from RBAC to RLS
+
+| RBAC concept (FD-023 / FD-035) | RLS intent |
+|--------------------------------|------------|
+| Own record | Own rows |
+| Assigned Circle / venue / client / territory / department | Assigned scope |
+| Organisation representative | Org scope |
+| Platform-wide only where explicitly approved | Platform admin (narrow resource class) |
+| Financial permission separate | Finance scoped tables |
+| No role ⇒ no access | Deny-by-default |
+
+Permission matrices may allow an action that RLS still denies if assignment status is inactive — both layers must agree.
+
+---
+
+## Unresolved
+
+| Item | Status |
+|------|--------|
+| Final policy SQL per table | Pending Technical Design — migrations only |
+| Helper functions (`auth.uid()` → assignment cache) | Pending Technical Design |
+| Column-level KYC restrictions vs separate tables | Pending Technical Design / Privacy |
+| Exact public listing surfaces for Event | Pending Product / Security review |
+| Performance of multi-scope OR policies | Pending engineering validation |
+
+Do **not** copy this matrix into SQL verbatim as “final law.” Label implementation PRs as implementing ADR-005 intents under FD-023 / FD-035.

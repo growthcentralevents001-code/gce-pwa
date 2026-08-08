@@ -21,14 +21,44 @@ docs/
 ├── README.md
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
+├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
+├── IMPLEMENTATION_BACKLOG.md
+├── founder-decisions/
 ├── core/
-└── engineering/
+├── engineering/
+├── phase-2/ … phase-18/
+├── state-machines/
+├── data/
+├── security/
+└── compliance/
 ```
 
 1. Core Project Documentation — `docs/core/`
 2. AI Expert Documentation — `docs/engineering/`
+3. Phase 2–18 implementation-readiness — `docs/phase-*`
+4. ADRs — `docs/phase-2/adrs/`
+5. State machines / data / security / compliance — supporting architecture packs
+6. Program masters — roadmap, open decisions, backlog
 
 Cursor Rules live separately in `.cursor/rules/`.
+
+---
+
+# Program / Phase Documentation (Phases 2–18)
+
+| Document | Description |
+|----------|-------------|
+| `MASTER_IMPLEMENTATION_ROADMAP.md` | Phase 1–18 status, dependencies, exit criteria |
+| `OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Founder/Legal/Tax/Privacy validation items only |
+| `IMPLEMENTATION_BACKLOG.md` | P0–Future implementation epics |
+| `phase-2/PHASE_2_TECHNICAL_ARCHITECTURE_MASTER_PLAN.md` | Phase 2 technical blueprint |
+| `phase-2/adrs/` | Technical ADRs (auth, RBAC, RLS, payments, etc.) |
+| `phase-3/` … `phase-18/` | Foundation → scale plans |
+| `state-machines/` | Domain state machines |
+| `data/` | Logical data domain / ER / ownership |
+| `security/` | RBAC + RLS matrices |
+| `compliance/APPLICABLE_LAW_AND_COMPLIANCE_REGISTER.md` | FD-039 compliance register |
 
 ---
 

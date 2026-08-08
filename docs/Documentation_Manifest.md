@@ -22,9 +22,17 @@ docs/
 ├── README.md
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
+├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
+├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
 ├── core/
-└── engineering/
+├── engineering/
+├── phase-2/ … phase-18/
+├── state-machines/
+├── data/
+├── security/
+└── compliance/
 
 .cursor/rules/
 .cursor/skills/
@@ -38,6 +46,15 @@ AGENTS.md
 | `docs/founder-decisions/` | Founder Decisions (highest business authority) |
 | `docs/core/` | Core product / business documentation |
 | `docs/engineering/` | Engineering and AI-expert standards |
+| `docs/phase-2/` … `docs/phase-18/` | Phase implementation-readiness plans (architecture → scale) |
+| `docs/phase-2/adrs/` | Technical Architecture Decision Records |
+| `docs/state-machines/` | Domain state-machine specifications |
+| `docs/data/` | Logical data domain / ER / ownership |
+| `docs/security/` | RBAC permission and RLS access matrices |
+| `docs/compliance/` | Applicable Law & Compliance Register |
+| `docs/MASTER_IMPLEMENTATION_ROADMAP.md` | Program roadmap Phases 1–18 |
+| `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Founder/Legal/Tax/Privacy validation items |
+| `docs/IMPLEMENTATION_BACKLOG.md` | Implementation epics / features |
 | `.cursor/rules/` | Mandatory Cursor Rules (`.mdc`) |
 | `.cursor/skills/` | Installed Cursor Skills |
 | `design-system/` | Persisted design tokens (`MASTER.md`) |
@@ -146,14 +163,16 @@ Cursor must always follow this order before generating or modifying code:
 
 1. `docs/founder-decisions/` (Founder Decisions — highest business authority)
 2. Founder Approved Business Specification (if present)
-3. `docs/core/`
-4. `.cursor/rules/`
-5. `docs/engineering/`
-6. `design-system/MASTER.md`
-7. `.cursor/skills/`
-8. Official Next.js Documentation (`node_modules/next/dist/docs/`)
+3. `docs/core/` (canonical living documentation)
+4. `docs/phase-*/` and `docs/phase-2/adrs/` (implementation-readiness plans and technical ADRs)
+5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
+6. `.cursor/rules/`
+7. `docs/engineering/`
+8. `design-system/MASTER.md`
+9. `.cursor/skills/`
+10. Official Next.js Documentation (`node_modules/next/dist/docs/`)
 
-If documents overlap, higher-priority sources win. This matches `AGENTS.md`. **Never amend a Founder Decision to match older docs.**
+If documents overlap, higher-priority sources win. This matches `AGENTS.md`. **Never amend a Founder Decision to match older docs.** Technical ADRs are not Founder business law (FD-039).
 
 ## Founder Decisions
 
@@ -214,22 +233,45 @@ Additional mandatory behaviors:
 - For frontend UI, always follow the UI UX Pro Max skill.
 - For animations, always follow Motion documentation (`27_Frontend_Animations.md` + `motion` package).
 
+## Phase / Architecture / Implementation-Readiness Documentation
+
+| Area | Location | Purpose |
+|------|----------|---------|
+| Phase 2 Technical Architecture Master Plan | `docs/phase-2/PHASE_2_TECHNICAL_ARCHITECTURE_MASTER_PLAN.md` | Authoritative Phase 2 technical blueprint |
+| ADRs | `docs/phase-2/adrs/` | Accepted technical decisions (auth, RBAC, RLS, payments, ledgers, deploy, etc.) |
+| Phases 3–18 | `docs/phase-3/` … `docs/phase-18/` | Foundation through scale/future-product plans |
+| State machines | `docs/state-machines/` | Domain transition specs |
+| Data model | `docs/data/` | Conceptual domains, logical ER, ownership/SoT |
+| Security matrices | `docs/security/` | RBAC + RLS logical matrices |
+| Compliance | `docs/compliance/APPLICABLE_LAW_AND_COMPLIANCE_REGISTER.md` | FD-039 Applicable Law & Compliance Register |
+| Program roadmap | `docs/MASTER_IMPLEMENTATION_ROADMAP.md` | Phase status, dependencies, exit criteria |
+| Open decisions | `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Non-routine Founder/Legal/Tax/Privacy items |
+| Implementation backlog | `docs/IMPLEMENTATION_BACKLOG.md` | P0–Future epics for engineering |
+
+Phase docs defer to Founder Decisions for business rules and to ADRs for technical defaults. Legal/tax/privacy items remain **PENDING PROFESSIONAL VALIDATION** where marked. Pilot city remains undecided (FD-039).
+
 ## Version Information
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.12.0 |
+| Documentation Version | v1.13.0 |
 | Last Updated | 2026-08-08 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
 | Total Founder Decisions | 21 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 64 |
+| Total Documentation Files (`docs/`) | 127 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 21 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 64.
+Total documentation files under `docs/` ≈ 32 core + 8 engineering + 21 Founder Decisions + 3 root indexes + 3 program masters + phase plans + ADRs + state machines + data + security + compliance = **127** (recount via `find docs -name '*.md'` if inventory drifts).
 
 ## Changelog
+
+### v1.13.0
+
+- Added Phase 2–18 implementation-readiness documentation, ADR pack (ADR-001–014), state-machine specs, data domain/ER/ownership docs, RBAC/RLS matrices, Applicable Law & Compliance Register, Master Implementation Roadmap, Open Decisions & Validation Register, and Implementation Backlog
+- Business model treated as Founder-settled (FD-001, FD-020–FD-039); technical/operational defaults documented as ADRs / Operational Recommendations
+- Money-movement go-live remains validation-gated; architecture/pilot planning may proceed; pilot city intentionally undecided
 
 ### v1.12.0
 

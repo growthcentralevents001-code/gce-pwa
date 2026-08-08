@@ -181,6 +181,7 @@ Location: `docs/founder-decisions/`
 | `FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md` | Membership approval, activation vs Circle allocation, Connect BDP attribution, RM, waitlist, transfer, geographic routing |
 | `FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md` | Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, cross-vertical boundaries |
 | `FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md` | Enterprise Client architecture, quotation/Finance co-sign, vendors, milestones, componentised settlement, no-double-commission |
+| `FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md` | Phase 2 commercial acceptance: Marketplace ticket MoR direction, BDP legal packaging, 48h cancellation, BDP pack payments, Aadhaar/KYC, AI legal drafting, Applicable Law Register, Phase 2 scope, pilot city, compliance gates |
 
 ## Development Workflow
 
@@ -217,18 +218,23 @@ Additional mandatory behaviors:
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.11.0 |
+| Documentation Version | v1.12.0 |
 | Last Updated | 2026-08-08 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
 | Total Cursor Rules | 9 |
-| Total Founder Decisions | 20 |
+| Total Founder Decisions | 21 |
 | Total Installed Skills | 7 |
-| Total Documentation Files (`docs/`) | 63 |
+| Total Documentation Files (`docs/`) | 64 |
 
-Total documentation files under `docs/` = 32 core + 8 engineering + 20 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 63.
+Total documentation files under `docs/` = 32 core + 8 engineering + 21 Founder Decisions + `README.md` + `Docs_Guide.md` + `Documentation_Manifest.md` = 64.
 
 ## Changelog
+
+### v1.12.0
+
+- Indexed FD-039 (Phase 2 Commercial Acceptance and Compliance Direction)
+- Synchronised living Markdown and Cursor business rules with Logixia intended Marketplace ticket MoR (implementation validation-gated), Commercial Licence / Independent Business Partner BDP packaging, 48-hour event cancellation default, online-default + controlled offline BDP pack payments, Aadhaar minimisation, AI first-draft legal + Applicable Law & Compliance Register, Phase 2 commercial spine (not Connect-only), pilot city undecided (does not block architecture), and future/inactive product boundaries
 
 ### v1.11.0
 

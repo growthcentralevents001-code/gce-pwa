@@ -14,7 +14,7 @@ Commercial **numeric** constants historically documented in partner narratives.
 
 **GCE Connect Circle Membership commercial numbers:** FD-027. Membership approval, activation vs Circle allocation, attribution, waitlist, transfer, geographic routing: **FD-036**.
 
-Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Marketplace BDP **operating** architecture (units, venues, attribution, RM, exit) is **FD-033**. Marketplace **transaction families, approval, unattributed 80/0/20, redemption, payout direction:** **FD-037**. Dual Circle status mapping and activation-credit logic: **FD-032**. Corporate / contracting / payment-receiving principles: **FD-034**. Identity / role / workspace: **FD-035**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, and some MBDP SLA/notice details remain **Pending** where not Founder-approved — do not invent.
+Founder Decisions FD-020/FD-021 govern wallet, ledgers, and settlement **principles**. Marketplace BDP **operating** architecture (units, venues, attribution, RM, exit) is **FD-033**. Marketplace **transaction families, approval, unattributed 80/0/20, redemption, payout direction:** **FD-037**. Dual Circle status mapping and activation-credit logic: **FD-032**. Corporate / contracting / payment-receiving principles: **FD-034**. Identity / role / workspace: **FD-035**. Marketplace ticket MoR direction, 48-hour cancellation default, BDP pack online/offline payment, Aadhaar/KYC posture, Phase 2 scope, pilot city, and compliance gates: **FD-039**. Exact tax rates, GST/TDS, advertising/premium/sponsorship prices, Lead Assist commercial activation, Vendor Opportunity Fee %, FX, rounding, and some MBDP SLA/notice details remain **Pending** where not Founder-approved — do not invent.
 
 Prefer role names **Connect BDP** / **Marketplace BDP** / **Enterprise BDP** in prose; section headers below may retain legacy CBDP/MBDP labels for search continuity with `06_CBDP.md` / `07_MBDP.md`.
 
@@ -317,6 +317,18 @@ Franchise / Franchise Unit / Franchise Pack payments apply to:
 - **Enterprise BDP Franchise Pack** — ₹30,000 direct per pack, or financed ₹36,000 (₹5,000 initial + ₹31,000 recoverable from approved commission only) (FD-026)
 
 Exact payment-route implementation, GST/TDS treatment, and banking-day payout adjustment remain Pending Technical Design / Pending Accounting Review / Pending Legal Review / Pending Tax Review where not stated in Founder Decisions.
+
+**Collection direction (FD-039):** online payment through the approved platform payment architecture is the **default**. Rare offline bank-based payment (NEFT / RTGS / cheque / other approved bank method) may be accepted only via authorised Admin-recorded workflow with full evidence and audit trail. **Cash is not a normal activation method.**
+
+### Marketplace event ticket MoR and cancellation (FD-039)
+
+| Item | Rule | Source |
+|------|------|--------|
+| Intended Merchant of Record (Marketplace event tickets) | **Logixia Solutions Private Limited** — platform collects then settles Venue Partner / Marketplace BDP entitlements | FD-039 |
+| MoR implementation (GST, invoice, gateway config, refund accounting, TDS, settlement compliance, PA applicability) | Validation-gated before production money movement — do not invent rates | FD-039 |
+| Default customer cancellation cutoff | **48 hours before event start** | FD-039 |
+| Event-specific cancellation variation | Allowed if disclosed before purchase, approved, reasonable, and legally permitted | FD-039 |
+| Refund %, timeline, convenience fee, chargeback, no-show | **Not** defined by FD-039 — remain pending applicable policy | FD-039 |
 
 ---
 

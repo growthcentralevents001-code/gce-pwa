@@ -87,6 +87,7 @@ These documents define **what** the platform must do.
 | `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md` | Membership approval, activation vs Circle allocation, Connect BDP attribution, RM, waitlist, transfer, geographic routing |
 | `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md` | Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, cross-vertical boundaries |
 | `docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md` | Enterprise Client architecture, quotation/Finance co-sign, vendors, milestones, componentised settlement, no-double-commission |
+| `docs/founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md` | Phase 2 commercial acceptance: Marketplace ticket MoR direction, BDP legal packaging, 48h cancellation, BDP pack payments, Aadhaar/KYC, AI legal drafting, Applicable Law Register, Phase 2 scope, pilot city, compliance gates |
 
 #### Canonical core living documents
 

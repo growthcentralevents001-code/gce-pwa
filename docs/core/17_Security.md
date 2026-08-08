@@ -204,12 +204,16 @@ Security rules: customer consent or lawful basis before sharing personal data; p
 
 Identity verification is required for selected platform activities.
 
-Supported Documents
+KYC posture (FD-039): minimise identity-document collection. **Aadhaar is not mandatory by default.** Prefer fit-for-purpose lower-risk documents by stakeholder type. Aadhaar may be used only where legally permitted, operationally justified, proportionate, and privacy requirements are satisfied.
 
- Aadhaar
+Supported Documents (examples — not a default-mandatory set)
+
+ PAN
  Passport
  Driving Licence
- PAN (Where Applicable)
+ Business registration / GST / company documents where applicable
+ Bank verification
+ Aadhaar (only where justified under FD-039)
 
 Verification helps prevent:
 

@@ -33,7 +33,7 @@ For GCE Connect Circle **lifecycle**, prefer FD-024. For Circle **internal struc
 
 For Marketplace BDP operating architecture (units, venue attribution, RM, reassignment, exit), prefer FD-033. Living summary: \`docs/core/07_MBDP.md\`.
 
-For Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, and payout direction, prefer FD-037.
+For Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, and payout direction, prefer FD-037. For Marketplace ticket MoR business direction (Logixia intended MoR; implementation validation-gated), 48-hour cancellation default, BDP pack online/offline payments, Aadhaar minimisation, Phase 2 commercial spine, pilot city undecided, and compliance gates, prefer FD-039. Do not treat ticket MoR as fully undecided. Do not treat Franchise Unit as automatic legal franchise. Do not make Aadhaar mandatory by default. Do not treat Razorpay or other technical defaults as immutable Founder business law.
 
 For membership approval, activation vs Circle allocation, Connect BDP attribution, waitlist, transfer, and geographic routing, prefer FD-036. Living summary: \`docs/core/05_Memberships.md\`.
 

@@ -11,9 +11,9 @@
 **Marketplace transaction families, offer/event approval, unattributed revenue (80/0/20), redemption, payout direction, inactivity/reassignment cut-off, cross-vertical boundaries:**
 `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
 
-**Related:** FD-028 (revenue recognition) · FD-001 (platform model) · FD-023 (RBAC) · FD-021 (settlement) · FD-020 (ledgers) · FD-032 (supersession / Affiliate inactive / Phase 2 bounds) · FD-034 (Logixia contracting / payment / IP / no BDP bind-by-default) · FD-035 (Venue Representative / Venue Manager distinct from Marketplace BDP) · Commercial numbers: `36_Commercial_Constants.md`
+**Related:** FD-028 (revenue recognition) · FD-001 (platform model) · FD-023 (RBAC) · FD-021 (settlement) · FD-020 (ledgers) · FD-032 (supersession / Affiliate inactive / Phase 2 bounds) · FD-034 (Logixia contracting / payment / IP / no BDP bind-by-default) · FD-035 (Venue Representative / Venue Manager distinct from Marketplace BDP) · FD-039 (Commercial Licence / Independent Business Partner packaging; Franchise Unit = commercial package not automatic legal franchise; BDP pack online-default + controlled offline Admin bank payment; Marketplace ticket MoR direction; 48h cancellation default) · Commercial numbers: `36_Commercial_Constants.md`
 
-On Marketplace BDP **operating** conflict, **FD-033 wins**. On fee / commission / finance / Recoverable Balance numbers, **FD-029 wins**. On transaction classification, approval authority, unattributed 80/0/20, QR vs offer redemption, launch payout cadence, and cross-vertical no-double-commission, **FD-037 wins**. Marketplace Affiliate remains **future-only / inactive** (FD-028 / FD-029 / FD-032 / FD-033). Do not invent exact notice periods, appeal timelines, inactivity durations, utilisation thresholds, SLAs, tax treatment, refund matrices, or insurance requirements (Pending Founder / Legal / Tax / Operational / Technical Design).
+On Marketplace BDP **operating** conflict, **FD-033 wins**. On fee / commission / finance / Recoverable Balance numbers, **FD-029 wins**. On transaction classification, approval authority, unattributed 80/0/20, QR vs offer redemption, launch payout cadence, and cross-vertical no-double-commission, **FD-037 wins**. On MoR business direction, cancellation default, and BDP pack payment collection, **FD-039 wins**. Marketplace Affiliate remains **future-only / inactive** (FD-028 / FD-029 / FD-032 / FD-033 / FD-039). Working legal packaging is **Commercial Licence / Independent Business Partner** — do not describe Marketplace BDP as an automatic formal legal franchisee, employee, partner, or agent (FD-039). Do not invent exact notice periods, appeal timelines, inactivity durations, utilisation thresholds, SLAs, tax rates, refund matrices, or insurance requirements (Pending Founder / Legal / Tax / Operational / Technical Design).
 
 Approved role name: **GCE Marketplace Business Development Partner**. Short form: **Marketplace BDP**. Legacy abbreviation: **MBDP**.
 
@@ -63,6 +63,8 @@ A Marketplace BDP is an appointed commercial and operating partner — not autom
 
 ## Marketplace BDP Franchise Unit (FD-033 / FD-029)
 
+The commercial operating unit is the **Marketplace BDP Franchise Unit** (commercial package/unit under Commercial Licence / Independent Business Partner packaging — FD-039; not automatic legal franchise).
+
 | Rule | Value |
 |------|-------|
 | Active Venue Partners per unit | Up to **20** |
@@ -70,6 +72,8 @@ A Marketplace BDP is an appointed commercial and operating partner — not autom
 | Standard maximum portfolio | **40** active Venue Partners |
 | Direct package | **₹50,000** |
 | Financed package | **₹60,000** total; **₹5,000** initial; **₹55,000** Recoverable Balance; max **₹5,000** recovery per eligible commission cycle from **Month 0** |
+
+**Pack payment collection (FD-039):** online payment through the approved platform payment architecture is the default. Rare offline bank-based payment (NEFT / RTGS / cheque / other approved bank method) may be accepted only through authorised Admin recording with full evidence and audit trail. Cash is not a normal activation method.
 
 Second unit requires first-unit utilisation, good compliance, support quality, data accuracy, platform demand, operational capacity, platform approval, and applicable package activation. Exact utilisation threshold: **Pending Operational Design** — do not invent.
 

@@ -8,21 +8,21 @@
 **Commission Engine / finance recovery (supersedes FD-025 finance-inactive only):**
 `docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Architecture.md`
 
-**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-032 (dual Circle status mapping; target credit at formal 15-member platform activation; GB six-month term / Circle Finance Coordinator) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-036 (membership approval / attribution / allocation — organic members allowed; no commission without valid attribution; System proposes → Connect BDP assists → Platform confirms) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · FD-034 (Logixia legal company; GCE platform brand; no BDP ownership of vertical; no bind-by-default) · FD-035 (User / membership / role separation) · Commercial number summary: `36_Commercial_Constants.md`
+**Related:** FD-001 (business model) · FD-020 / FD-021 (wallet / settlement) · FD-022 (memberships) · FD-023 (RBAC) · FD-024 (Circle lifecycle) · FD-030 (Circle internal architecture / Governing Body / verification / meetings — Connect BDP supports but does not own) · FD-032 (dual Circle status mapping; target credit at formal 15-member platform activation; GB six-month term / Circle Finance Coordinator) · FD-027 (Membership commercial — Connect BDP may assist onboarding but cannot manually activate membership or collect payment personally) · FD-036 (membership approval / attribution / allocation — organic members allowed; no commission without valid attribution; System proposes → Connect BDP assists → Platform confirms) · FD-028 (revenue recognition — subscription/Tag commission only after collection + activation + settlement eligibility) · FD-034 (Logixia legal company; GCE platform brand; no BDP ownership of vertical; no bind-by-default) · FD-035 (User / membership / role separation) · FD-039 (Commercial Licence / Independent Business Partner packaging; Franchise Unit = commercial package not automatic legal franchise; BDP pack online-default + controlled offline Admin bank payment; Aadhaar not mandatory by default) · Commercial number summary: `36_Commercial_Constants.md`
 
 Approved role name: **GCE Connect Business Development Partner**. Approved short name: **Connect BDP**.
 
 Legacy filename/label **CBDP** is retained for compatibility only; use **Connect BDP** in current documentation. Legacy routes such as `/api/cbdp/**` and historical enum values may remain temporarily for technical compatibility and must be treated as legacy pending migration mapping (do not invent final enums).
 
-This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position — confirmed by FD-032). On membership approval / attribution / allocation authority, **FD-036 wins**. On Circle internal governance, meetings, attendance, verification, and Governing Body structure, **FD-030 wins**. On dual status mapping and activation-credit logic, **FD-032 wins**. Corporate boundaries: **FD-034**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS, legal franchise classification, exact DB/API/RLS designs, workshop commission models).
+This living document summarises Connect BDP operations. On operating conflict, **FD-025 wins**. On Commission-Recovery Finance Option and commission-engine states, **FD-029 wins** (FD-029 supersedes only FD-025’s prior deferred-finance-inactive position — confirmed by FD-032). On membership approval / attribution / allocation authority, **FD-036 wins**. On Circle internal governance, meetings, attendance, verification, and Governing Body structure, **FD-030 wins**. On dual status mapping and activation-credit logic, **FD-032 wins**. Corporate boundaries: **FD-034**. BDP legal packaging and commercial-pack payment collection: **FD-039**. Do not invent unresolved items (exact Connect BDP franchise performance score, franchise retention/complaint thresholds, banking-day payout adjustment, GST/TDS rates, exact DB/API/RLS designs, workshop commission models). Do not describe Connect BDP as an automatic formal legal franchisee, employee, partner, or agent (FD-039).
 
 ---
 
 ## Commercial status
 
-A Connect BDP is an independent GCE business partner authorised to operate an approved **Connect BDP Franchise Unit** within a platform-assigned territory.
+A Connect BDP is an independent GCE business partner authorised to operate an approved **Connect BDP Franchise Unit** within a platform-assigned territory under the working **Commercial Licence / Independent Business Partner** model (FD-039).
 
-A Connect BDP is **not** automatically a Logixia / GCE employee and does **not** own GCE, territory, Circles, members, data, or platform assets (FD-025 / FD-034). A Connect BDP may not bind Logixia without written/recorded authority (FD-034).
+A Connect BDP is **not** automatically a Logixia / GCE employee and does **not** own GCE, territory, Circles, members, data, or platform assets (FD-025 / FD-034). A Connect BDP may not bind Logixia without written/recorded authority (FD-034). “Franchise Unit” describes the commercial unit/package and does **not** automatically establish a formal legal franchise relationship (FD-039).
 
 ---
 
@@ -33,6 +33,8 @@ The commercial operating unit is the **Connect BDP Franchise Unit**.
 Each Franchise Unit is separate and has its own territory, fee, Circle capacity, target period, commission attribution, performance record, and compliance record.
 
 One Franchise Unit does **not** provide unlimited Circle or territory rights. Every additional Franchise Unit requires separate approval, territory, activation, fee, capacity, target, performance review, and commission attribution (FD-025).
+
+**Pack payment collection (FD-039):** online payment through the approved platform payment architecture is the default. Rare offline bank-based payment (NEFT / RTGS / cheque / other approved bank method) may be accepted only through authorised Admin recording with full evidence and audit trail. Cash is not a normal activation method.
 
 Numeric constants: `36_Commercial_Constants.md` (defers to FD-025).
 

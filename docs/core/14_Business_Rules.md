@@ -2,9 +2,9 @@
 
 ## Authority
 
-**Founder Decisions are highest authority:** FD-001, FD-020–FD-038.
+**Founder Decisions are highest authority:** FD-001, FD-020–FD-039.
 
-This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Do **not** reconcile Founder Decision ambiguity by assumption (FD-032). Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat; activation ≠ allocation (FD-022 / FD-027 / FD-030 / FD-036). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only; confirmed FD-032). Membership approval / attribution / waitlist / transfer / geo routing defer to **FD-036**. GCE Enterprise commercial and operating rules defer to **FD-026**; cross-vertical / quotation / Finance co-sign / no-double-commission defer to **FD-038**; exact legal role may vary by contract (**FD-034**). GCE Connect Circle Membership commercial numbers/tiers defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace attributed 80/10/10, and BDP finance recovery defer to **FD-029**. Marketplace transaction families, unattributed 80/0/20, offer/event approval, payout direction defer to **FD-037**. Marketplace BDP operating architecture defers to **FD-033**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**; dual status mapping and activation credit **FD-032**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`. Identity / role / workspace defer to **FD-035**. Corporate / Logixia–GCE constitution defer to **FD-034**.
+This file is a consolidated rules index. Prefer Founder Decisions and canonical cores (`35`, `36`, `37`, `38`, `39`) over duplicated narrative. Do **not** reconcile Founder Decision ambiguity by assumption (FD-032). Specialization exclusivity is **per Circle** (FD-024 / FD-030), not automatically city-wide. Membership ≠ automatic Circle seat; activation ≠ allocation (FD-022 / FD-027 / FD-030 / FD-036). Connect BDP commercial and operating rules defer to **FD-025**, with Commission-Recovery Finance Option under **FD-029** (supersedes FD-025 finance-inactive only; confirmed FD-032). Membership approval / attribution / waitlist / transfer / geo routing defer to **FD-036**. GCE Enterprise commercial and operating rules defer to **FD-026**; cross-vertical / quotation / Finance co-sign / no-double-commission defer to **FD-038**; exact legal role may vary by contract (**FD-034**). GCE Connect Circle Membership commercial numbers/tiers defer to **FD-027**. Revenue recognition and commercial classification defer to **FD-028**. Commission Engine, stakeholder entitlement, Marketplace attributed 80/10/10, and BDP finance recovery defer to **FD-029**. Marketplace transaction families, unattributed 80/0/20, offer/event approval, payout direction defer to **FD-037**. Marketplace BDP operating architecture defers to **FD-033**. Marketplace ticket MoR direction, 48-hour cancellation default, BDP pack payment collection, Aadhaar/KYC posture, Phase 2 scope, pilot city, AI legal drafting / Applicable Law Register, and compliance gates defer to **FD-039**. Circle internal structure, Governing Body, verification, meetings, attendance, referrals, workshops, and seat ops defer to **FD-030** (lifecycle transitions remain **FD-024**; dual status mapping and activation credit **FD-032**). AI Lead Assist / Lead Intelligence defer to **FD-031** / `39_AI_Lead_Assist_Spec.md`. Identity / role / workspace defer to **FD-035**. Corporate / Logixia–GCE constitution defer to **FD-034**. BDP working legal packaging is Commercial Licence / Independent Business Partner — Franchise Unit is not automatic legal franchise (FD-039).
 
 Overview
 
@@ -43,16 +43,26 @@ Users cannot:
 
 Certain platform activities require identity verification. Circle seat activation requires platform-recorded **business verification** covering identity, authority, business existence, operating capability, Specialization eligibility, and compliance (FD-030). Use a risk-based **multi-evidence** approach — GST alone is not the only legitimacy test.
 
-Accepted identity documents may include:
+Approved KYC posture (FD-039): **minimise identity-document collection**. **Aadhaar is not mandatory by default.** Prefer fit-for-purpose lower-risk documents depending on stakeholder type. Aadhaar may be used only where legally permitted, operationally justified, proportionate, and privacy requirements are satisfied — not merely because it is technically convenient.
 
- Aadhaar
+Accepted identity / business documents may include (examples — not an exclusive mandatory list):
+
+ PAN
  Passport
  Driving Licence
- PAN (where applicable)
+ Business registration records
+ GST records where applicable
+ Company documents
+ Bank verification
+ Aadhaar (only where justified under FD-039 — not default-mandatory)
 
 Verification outcomes (FD-030): **Verified** · **Conditionally Verified** · **On Hold** · **Rejected**. Preserve evidence, method, verifier, conditions, and decision reason. Full summary: `38_Circle_Architecture.md`.
 
 Unverified users may have limited platform access.
+
+ Legal / compliance drafting (FD-039)
+
+AI is the primary first-draft assistant for platform legal and compliance instruments. AI drafts are not automatically production-final — final applicable legal/compliance validation is required before publication or binding reliance. Maintain an **Applicable Law & Compliance Register** mapping actual applicability (do not invent a single governing “DPIIT Act and Rules 2023”). Architecture/build may proceed while production money-movement go-live remains compliance-gated.
 
  Membership Rules
 

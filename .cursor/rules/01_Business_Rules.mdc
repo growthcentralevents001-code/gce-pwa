@@ -39,10 +39,7 @@ Highest business authority — Founder Decisions:
 - `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md`
 - `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
 - `docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md`
-\- `docs/founder-decisions/FD-035_GCE_Identity_Role_Assignment_and_Workspace_Architecture.md`
-\- `docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md`
-\- `docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md`
-\- `docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md`
+- `docs/founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md`
 
 Then living cores:
 
@@ -85,6 +82,7 @@ docs/founder-decisions/FD-035_GCE_Identity_Role_Assignment_and_Workspace_Archite
 docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md
 docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md
 docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md
+docs/founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md
 35\_Role\_Taxonomy.md
 36\_Commercial\_Constants.md
 37\_Revenue\_Flow.md
@@ -175,7 +173,7 @@ docs/founder-decisions/FD-029_Commission_Engine_and_Stakeholder_Entitlement_Arch
 18\_User\_Flows.md
 \`\`\`
 
-Connect BDP commercial and operating rules defer to FD-025. Commission-Recovery Finance Option and commission-engine states defer to FD-029 (which supersedes only FD-025’s prior finance-inactive position). Attribution eligibility and organic/unattributed membership defer to FD-036. Do not invent automatic cancellation, guaranteed income, permanent territory ownership, pending CBDP commission on unattributed members, or recovery from estimated/held commission.
+Connect BDP commercial and operating rules defer to FD-025. Commission-Recovery Finance Option and commission-engine states defer to FD-029 (which supersedes only FD-025’s prior finance-inactive position). Attribution eligibility and organic/unattributed membership defer to FD-036. BDP legal packaging is Commercial Licence / Independent Business Partner; Franchise Unit is commercial package not automatic legal franchise; pack payments online-default with rare Admin-recorded offline bank payment; cash not normal (FD-039). Do not invent automatic cancellation, guaranteed income, permanent territory ownership, pending CBDP commission on unattributed members, or recovery from estimated/held commission.
 
 \---
 
@@ -203,7 +201,7 @@ docs/founder-decisions/FD-028_Revenue_Recognition_and_Commercial_Architecture.md
 14\_Business\_Rules.md
 \`\`\`
 
-With valid Marketplace BDP attribution: 80% Venue Partner / 10% Marketplace BDP / 10% GCE net. Without valid attribution: 80% / 0% / 20% (FD-037) — do not call missing 10% pending MBDP commission. Marketplace BDP recommends; Platform Marketplace Operations final-approves. Affiliate is future-only/inactive. Marketplace BDP operating architecture (max 2 units / 40 venues, venue-attribution, no permanent city ownership, RM duties, reassignment/exit) follows FD-033. Transaction families, unattributed revenue, offer claim ≠ revenue, QR vs offer redemption, and launch monthly configurable payout follow FD-037. Do not invent Affiliate 5%, always pay MBDP 10% without attribution, or invent unresolved ₹ Month-1 schedules / notice/SLA timelines.
+With valid Marketplace BDP attribution: 80% Venue Partner / 10% Marketplace BDP / 10% GCE net. Without valid attribution: 80% / 0% / 20% (FD-037) — do not call missing 10% pending MBDP commission. Marketplace BDP recommends; Platform Marketplace Operations final-approves. Affiliate is future-only/inactive. Marketplace BDP operating architecture (max 2 units / 40 venues, venue-attribution, no permanent city ownership, RM duties, reassignment/exit) follows FD-033. Transaction families, unattributed revenue, offer claim ≠ revenue, QR vs offer redemption, and launch monthly configurable payout follow FD-037. Marketplace event ticket MoR: Logixia is the intended MoR (collect then settle); GST/invoice/gateway/refund-accounting/TDS/settlement-compliance remain validation-gated (FD-039) — do not leave MoR as fully undecided and do not reopen MoR business direction merely because validation is pending. Default customer cancellation cutoff: 48 hours before event start (FD-039); refund %/timeline/convenience-fee/chargeback/no-show remain separately pending. BDP pack payments: online default; rare Admin-recorded offline bank payment allowed; cash not normal (FD-039). Working BDP legal packaging: Commercial Licence / Independent Business Partner; Franchise Unit is commercial package not automatic legal franchise (FD-039). Do not invent Affiliate 5%, always pay MBDP 10% without attribution, or invent unresolved ₹ Month-1 schedules / notice/SLA timelines.
 
 \---
 
@@ -233,7 +231,7 @@ docs/founder-decisions/FD-026_GCE_Enterprise_Business_and_Operating_Architecture
 21\_Payments.md
 \`\`\`
 
-GCE Enterprise commercial and operating rules defer to FD-026. Cross-vertical Client Representative separation, ₹5,00,000 Finance co-sign, managed vendors without mandatory login, project-specific milestones, componentised settlement, and no-double-commission defer to FD-038. Do not invent Vendor Opportunity Fee percentages, treat Enterprise Platform Expert as a franchisee, imply GCE physically executes events, treat Enterprise BDP as 25% of total project value, treat Enterprise Client and Enterprise BDP as one role, or treat Enterprise allocation as geographic territory ownership.
+GCE Enterprise commercial and operating rules defer to FD-026. Cross-vertical Client Representative separation, ₹5,00,000 Finance co-sign, managed vendors without mandatory login, project-specific milestones, componentised settlement, and no-double-commission defer to FD-038. BDP legal packaging and Franchise Pack payment collection defer to FD-039 (Commercial Licence / Independent Business Partner; online-default pack payment). Do not invent Vendor Opportunity Fee percentages, treat Enterprise Platform Expert as a franchisee, imply GCE physically executes events, treat Enterprise BDP as 25% of total project value, treat Enterprise Client and Enterprise BDP as one role, or treat Enterprise allocation as geographic territory ownership.
 
 \---
 
@@ -279,6 +277,7 @@ docs/founder-decisions/FD-035_GCE_Identity_Role_Assignment_and_Workspace_Archite
 docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md
 docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md
 docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md
+docs/founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md
 39\_AI\_Lead\_Assist\_Spec.md
 10\_AI\_Lead\_Assist.md
 22\_AI\_Rules.md
@@ -286,7 +285,7 @@ docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Appro
 18\_User\_Flows.md
 \`\`\`
 
-Do not implement mandatory ₹500 validation fee, pay-to-win routing, or automatic Lead Assist commission. Follow FD-031 Core Lead Rights and human-control bans.
+Do not implement mandatory ₹500 validation fee, pay-to-win routing, or automatic Lead Assist commission. Follow FD-031 Core Lead Rights and human-control bans. Paid Lead Assist / legacy ₹500 / escrow / forfeiture / success-fee mechanics remain inactive (FD-031 / FD-032 / FD-039).
 
 \---
 
@@ -463,6 +462,7 @@ docs/founder-decisions/FD-035_GCE_Identity_Role_Assignment_and_Workspace_Archite
 docs/founder-decisions/FD-036_GCE_Membership_Attribution_Approval_and_Allocation_Authority.md
 docs/founder-decisions/FD-037_GCE_Marketplace_Transaction_Approval_and_Unattributed_Revenue_Rules.md
 docs/founder-decisions/FD-038_GCE_Enterprise_Cross_Vertical_Commercial_and_Approval_Rules.md
+docs/founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md
 35\_Role\_Taxonomy.md
 03\_Stakeholders.md
 19\_Permissions\_Roles.md
@@ -511,6 +511,13 @@ Always verify:
 Never:
 
 \- Invent business rules.
+\- Treat Marketplace ticket MoR as fully undecided (Logixia is intended MoR; compliance implementation remains validation-gated — FD-039).
+\- Treat “Franchise Unit” / franchisee wording as automatic legal franchise, employment, agency, partnership, JV, or authority to bind Logixia (FD-039).
+\- Make Aadhaar mandatory by default (FD-039).
+\- Treat Phase 2 as Connect-only (FD-039).
+\- Activate future/inactive products (Affiliate, ZBP commercial model, Core Tier direct purchase, paid Lead Assist, wallet cash-out, native apps, international, dark-mode MVP, Docker/Edge as mandatory) without a later Founder Decision (FD-039).
+\- Treat compliance-pending items (GST/invoice/gateway/refund-accounting/TDS/settlement) as architecture blockers that reopen approved business direction (FD-039).
+\- Promote technical defaults (Supabase Auth, Razorpay, route patterns, migration SoT) into immutable Founder business law (FD-039).
 \- Modify commission calculations.
 \- Skip documented workflows.
 \- Change user journeys.

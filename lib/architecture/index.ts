@@ -21,5 +21,6 @@ export * from "./identity/emergency";
 export * from "./organisations/create";
 export * from "./organisations/memberships";
 export * from "./connect";
+export * from "./connect-bdp";
 export * from "./jobs/queue";
 export * from "./observability/sentry";

@@ -99,6 +99,14 @@ Symbols: `✓` allowed within scope · `—` not by default · `✗` forbidden (
 | Connect BDP | Assigned Circles / prospects | ✓ | ✓ | ✓ | verify (TR) | — | — | Assigned (TR) | — | Assigned / FU |
 | Connect BDP | Activate Circle independently | — | — | — | ✗ | — | — | — | — | None |
 | Connect BDP | Own commission approve | ✓ view | — | — | ✗ | — | ✗ | — | — | Self view only |
+| Connect BDP | Own unit / package / target / portfolio | ✓ | apply | limited | — | — | — | Own | — | Own FU |
+| Connect BDP | Member attribution | ✓ propose | propose | — | ✗ self | — | — | Own proposed | — | Own FU |
+| Connect BDP | City/Circle assignment | ✓ own | — | — | ✗ | — | — | — | — | Own FU |
+| Connect BDP | Package recovery / entitlement mutate | ✓ view | — | — | ✗ | — | ✗ | — | — | Self view |
+| Connect BDP | First-line dispute | ✓ | ✓ | ✓ | escalate (TR) | — | ✗ | Own | — | Own FU |
+| Platform Ops | BDP activate / city / attribution / handover / suspend | ✓ | ✓ | ✓ | ✓ | soft (TR) | — | Assigned | ✓ | Platform |
+| Finance Admin | BDP commission + recovery | ✓ | — | recovery (TR) | reconcile (TR) | — | ✓ | ✓ | ✓ | Platform finance |
+| PRM | Escalated BDP disputes | ✓ assigned | — | limited | resolve (TR) | — | ✗ commission | Assigned | — | Assigned |
 | Platform Ops | Membership workflows | ✓ | ✓ | ✓ | ✓ | soft (TR) | — | Assigned (TR) | ✓ (TR) | Assigned / Platform (TR) |
 | RM | Assigned membership/venue cases | ✓ | — | limited | — | — | ✗ | limited (TR) | limited (TR) | Assigned |
 | Finance Admin | Membership payment records | ✓ | — | — | refund A (TR) | — | ✓ | ✓ (TR) | ✓ | Platform finance |

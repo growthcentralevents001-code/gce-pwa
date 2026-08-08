@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Phase** | 6 |
-| **Status** | Documentation — implementation-ready |
+| **Status** | **Implementation Complete** on gce-dev (see `PHASE_6_IMPLEMENTATION_NOTES.md`) — non-blocking Legal/Tax/OD items remain |
 | **Classification** | Primarily **Business** (FD-025, FD-029, FD-034, FD-036, FD-039) |
 | **Date** | 2026-08-08 |
 

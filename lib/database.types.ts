@@ -7,11 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
-  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -1171,6 +1166,758 @@ export type Database = {
             columns: ["venue_id"]
             isOneToOne: false
             referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_circle_assignments: {
+        Row: {
+          assigned_by: string | null
+          circle_id: string
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          status: string
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          circle_id: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          status?: string
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_by?: string | null
+          circle_id?: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          status?: string
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_circle_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_circle_assignments_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_circle_assignments_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_city_assignments: {
+        Row: {
+          assigned_by: string | null
+          city_config_id: string
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          id: string
+          metadata: Json
+          status: string
+          unit_id: string
+          updated_at: string
+          zone_code: string | null
+        }
+        Insert: {
+          assigned_by?: string | null
+          city_config_id: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          metadata?: Json
+          status?: string
+          unit_id: string
+          updated_at?: string
+          zone_code?: string | null
+        }
+        Update: {
+          assigned_by?: string | null
+          city_config_id?: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          metadata?: Json
+          status?: string
+          unit_id?: string
+          updated_at?: string
+          zone_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_city_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_city_assignments_city_config_id_fkey"
+            columns: ["city_config_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_city_configs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_city_assignments_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_city_configs: {
+        Row: {
+          city: string
+          created_at: string
+          id: string
+          is_active: boolean
+          max_units: number
+          metadata: Json
+          state: string | null
+          tier: Database["public"]["Enums"]["connect_bdp_city_tier"]
+          updated_at: string
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          max_units: number
+          metadata?: Json
+          state?: string | null
+          tier: Database["public"]["Enums"]["connect_bdp_city_tier"]
+          updated_at?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          max_units?: number
+          metadata?: Json
+          state?: string | null
+          tier?: Database["public"]["Enums"]["connect_bdp_city_tier"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      connect_bdp_commission_entitlements: {
+        Row: {
+          attribution_id: string | null
+          commission_bps: number
+          created_at: string
+          earning_at: string
+          earning_event_key: string
+          gross_commission_minor: number
+          gross_eligible_revenue_minor: number
+          id: string
+          membership_id: string | null
+          metadata: Json
+          rule_version: string
+          state: Database["public"]["Enums"]["connect_bdp_entitlement_state"]
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          attribution_id?: string | null
+          commission_bps?: number
+          created_at?: string
+          earning_at?: string
+          earning_event_key: string
+          gross_commission_minor?: number
+          gross_eligible_revenue_minor?: number
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          rule_version?: string
+          state?: Database["public"]["Enums"]["connect_bdp_entitlement_state"]
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          attribution_id?: string | null
+          commission_bps?: number
+          created_at?: string
+          earning_at?: string
+          earning_event_key?: string
+          gross_commission_minor?: number
+          gross_eligible_revenue_minor?: number
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          rule_version?: string
+          state?: Database["public"]["Enums"]["connect_bdp_entitlement_state"]
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_commission_entitlements_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_member_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_commission_entitlements_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_commission_entitlements_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_disputes: {
+        Row: {
+          circle_id: string | null
+          created_at: string
+          details: string | null
+          id: string
+          membership_id: string | null
+          metadata: Json
+          opened_by: string | null
+          prm_user_id: string | null
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["connect_bdp_dispute_status"]
+          subject: string
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          circle_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          opened_by?: string | null
+          prm_user_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["connect_bdp_dispute_status"]
+          subject: string
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          circle_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          opened_by?: string | null
+          prm_user_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["connect_bdp_dispute_status"]
+          subject?: string
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_disputes_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_disputes_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_disputes_opened_by_fkey"
+            columns: ["opened_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_disputes_prm_user_id_fkey"
+            columns: ["prm_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_disputes_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_disputes_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_handovers: {
+        Row: {
+          approved_by: string | null
+          completed_at: string | null
+          created_at: string
+          effective_from: string | null
+          id: string
+          metadata: Json
+          notes: string | null
+          requested_by: string | null
+          source_unit_id: string
+          status: string
+          target_unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_unit_id: string
+          status?: string
+          target_unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_unit_id?: string
+          status?: string
+          target_unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_handovers_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_handovers_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_handovers_source_unit_id_fkey"
+            columns: ["source_unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_handovers_target_unit_id_fkey"
+            columns: ["target_unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_member_attributions: {
+        Row: {
+          approved_by: string | null
+          basis: string | null
+          bdp_user_id: string | null
+          created_at: string
+          created_by: string | null
+          effective_from: string | null
+          effective_to: string | null
+          id: string
+          is_correction: boolean
+          membership_id: string
+          metadata: Json
+          provenance: string
+          reason: string | null
+          status: Database["public"]["Enums"]["connect_attribution_status"]
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          membership_id: string
+          metadata?: Json
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["connect_attribution_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          membership_id?: string
+          metadata?: Json
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["connect_attribution_status"]
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_member_attributions_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_member_attributions_bdp_user_id_fkey"
+            columns: ["bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_member_attributions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_member_attributions_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_member_attributions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_recovery_entries: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          cycle_key: string
+          entitlement_id: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          cycle_key: string
+          entitlement_id?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          cycle_key?: string
+          entitlement_id?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          recovered_minor?: number
+          remaining_after_minor?: number
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_recovery_entries_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_recovery_entries_entitlement_id_fkey"
+            columns: ["entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_commission_entitlements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_recovery_entries_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_target_credits: {
+        Row: {
+          circle_activation_event_id: string
+          circle_id: string
+          created_at: string
+          credited_at: string
+          id: string
+          metadata: Json
+          unit_id: string
+        }
+        Insert: {
+          circle_activation_event_id: string
+          circle_id: string
+          created_at?: string
+          credited_at?: string
+          id?: string
+          metadata?: Json
+          unit_id: string
+        }
+        Update: {
+          circle_activation_event_id?: string
+          circle_id?: string
+          created_at?: string
+          credited_at?: string
+          id?: string
+          metadata?: Json
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_target_credits_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: true
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_target_credits_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "connect_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_bdp_units: {
+        Row: {
+          activated_at: string | null
+          active_portfolio_count: number
+          application_status: Database["public"]["Enums"]["connect_bdp_application_status"]
+          circles_capacity_max: number
+          created_at: string
+          credited_circles_count: number
+          id: string
+          initial_payment_minor: number
+          kyc_case_id: string | null
+          maintenance_compliant: boolean
+          metadata: Json
+          offline_approved_by: string | null
+          offline_payment_ref: string | null
+          offline_recorded_by: string | null
+          package_option: Database["public"]["Enums"]["connect_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          target_achieved_at: string | null
+          target_circles: number
+          target_start_at: string | null
+          target_window_months: number
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          active_portfolio_count?: number
+          application_status?: Database["public"]["Enums"]["connect_bdp_application_status"]
+          circles_capacity_max?: number
+          created_at?: string
+          credited_circles_count?: number
+          id?: string
+          initial_payment_minor?: number
+          kyc_case_id?: string | null
+          maintenance_compliant?: boolean
+          metadata?: Json
+          offline_approved_by?: string | null
+          offline_payment_ref?: string | null
+          offline_recorded_by?: string | null
+          package_option?: Database["public"]["Enums"]["connect_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          target_achieved_at?: string | null
+          target_circles?: number
+          target_start_at?: string | null
+          target_window_months?: number
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          active_portfolio_count?: number
+          application_status?: Database["public"]["Enums"]["connect_bdp_application_status"]
+          circles_capacity_max?: number
+          created_at?: string
+          credited_circles_count?: number
+          id?: string
+          initial_payment_minor?: number
+          kyc_case_id?: string | null
+          maintenance_compliant?: boolean
+          metadata?: Json
+          offline_approved_by?: string | null
+          offline_payment_ref?: string | null
+          offline_recorded_by?: string | null
+          package_option?: Database["public"]["Enums"]["connect_bdp_package_option"]
+          package_total_minor?: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          target_achieved_at?: string | null
+          target_circles?: number
+          target_start_at?: string | null
+          target_window_months?: number
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_bdp_units_kyc_case_id_fkey"
+            columns: ["kyc_case_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_verification_cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_units_offline_approved_by_fkey"
+            columns: ["offline_approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_units_offline_recorded_by_fkey"
+            columns: ["offline_recorded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_units_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_units_role_assignment_id_fkey"
+            columns: ["role_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "role_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_bdp_units_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -2437,6 +3184,40 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      legacy_connect_bdp_migration_map: {
+        Row: {
+          canonical_role_key: Database["public"]["Enums"]["gce_role_key"] | null
+          created_at: string
+          grants_entitlement: boolean
+          id: string
+          legacy_role: string
+          mapping_status: Database["public"]["Enums"]["legacy_connect_bdp_map_status"]
+          notes: string | null
+        }
+        Insert: {
+          canonical_role_key?:
+            | Database["public"]["Enums"]["gce_role_key"]
+            | null
+          created_at?: string
+          grants_entitlement?: boolean
+          id?: string
+          legacy_role: string
+          mapping_status?: Database["public"]["Enums"]["legacy_connect_bdp_map_status"]
+          notes?: string | null
+        }
+        Update: {
+          canonical_role_key?:
+            | Database["public"]["Enums"]["gce_role_key"]
+            | null
+          created_at?: string
+          grants_entitlement?: boolean
+          id?: string
+          legacy_role?: string
+          mapping_status?: Database["public"]["Enums"]["legacy_connect_bdp_map_status"]
+          notes?: string | null
+        }
+        Relationships: []
       }
       legacy_membership_migration_map: {
         Row: {
@@ -4234,6 +5015,92 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      gce_connect_bdp_apply_recovery: {
+        Args: {
+          p_actor?: string
+          p_cycle_key: string
+          p_entitlement_id: string
+          p_unit_id: string
+        }
+        Returns: {
+          actor_user_id: string | null
+          created_at: string
+          cycle_key: string
+          entitlement_id: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "connect_bdp_recovery_entries"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_connect_bdp_credit_circle_activation: {
+        Args: { p_actor?: string; p_circle_id: string }
+        Returns: {
+          circle_activation_event_id: string
+          circle_id: string
+          created_at: string
+          credited_at: string
+          id: string
+          metadata: Json
+          unit_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "connect_bdp_target_credits"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_connect_bdp_refresh_portfolio_counts: {
+        Args: { p_unit_id: string }
+        Returns: {
+          activated_at: string | null
+          active_portfolio_count: number
+          application_status: Database["public"]["Enums"]["connect_bdp_application_status"]
+          circles_capacity_max: number
+          created_at: string
+          credited_circles_count: number
+          id: string
+          initial_payment_minor: number
+          kyc_case_id: string | null
+          maintenance_compliant: boolean
+          metadata: Json
+          offline_approved_by: string | null
+          offline_payment_ref: string | null
+          offline_recorded_by: string | null
+          package_option: Database["public"]["Enums"]["connect_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          target_achieved_at: string | null
+          target_circles: number
+          target_start_at: string | null
+          target_window_months: number
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "connect_bdp_units"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_current_user_id: { Args: never; Returns: string }
       gce_has_active_assignment: {
         Args: {
@@ -4245,6 +5112,10 @@ export type Database = {
       }
       gce_has_active_emergency_access: {
         Args: { p_user_id?: string }
+        Returns: boolean
+      }
+      gce_is_connect_bdp_owner: {
+        Args: { p_unit_id: string }
         Returns: boolean
       }
       gce_is_identity_suspended: {
@@ -4357,6 +5228,43 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      connect_attribution_status:
+        | "unattributed"
+        | "proposed"
+        | "pending_evidence"
+        | "active"
+        | "disputed"
+        | "suspended"
+        | "reassigned_closed"
+        | "voided"
+      connect_bdp_application_status:
+        | "draft"
+        | "submitted"
+        | "pending_verification"
+        | "pending_payment"
+        | "pending_approval"
+        | "active"
+        | "rejected"
+        | "suspended"
+        | "terminated"
+        | "archived"
+      connect_bdp_city_tier: "tier_1" | "tier_2" | "tier_3"
+      connect_bdp_dispute_status:
+        | "open"
+        | "bdp_first_level"
+        | "escalated_prm"
+        | "under_review"
+        | "resolved"
+        | "closed"
+      connect_bdp_entitlement_state:
+        | "estimated"
+        | "provisional"
+        | "earned"
+        | "on_hold"
+        | "settlement_eligible"
+        | "paid"
+        | "reversed"
+      connect_bdp_package_option: "direct_50000" | "finance_recovery_60000"
       emergency_access_status:
         | "requested"
         | "active"
@@ -4406,6 +5314,11 @@ export type Database = {
         | "franchise_recovery"
         | "clearing"
         | "other"
+      legacy_connect_bdp_map_status:
+        | "mapped"
+        | "historical_only"
+        | "ambiguous"
+        | "needs_review"
       legacy_membership_map_status:
         | "mapped"
         | "historical_only"
@@ -4681,6 +5594,47 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      connect_attribution_status: [
+        "unattributed",
+        "proposed",
+        "pending_evidence",
+        "active",
+        "disputed",
+        "suspended",
+        "reassigned_closed",
+        "voided",
+      ],
+      connect_bdp_application_status: [
+        "draft",
+        "submitted",
+        "pending_verification",
+        "pending_payment",
+        "pending_approval",
+        "active",
+        "rejected",
+        "suspended",
+        "terminated",
+        "archived",
+      ],
+      connect_bdp_city_tier: ["tier_1", "tier_2", "tier_3"],
+      connect_bdp_dispute_status: [
+        "open",
+        "bdp_first_level",
+        "escalated_prm",
+        "under_review",
+        "resolved",
+        "closed",
+      ],
+      connect_bdp_entitlement_state: [
+        "estimated",
+        "provisional",
+        "earned",
+        "on_hold",
+        "settlement_eligible",
+        "paid",
+        "reversed",
+      ],
+      connect_bdp_package_option: ["direct_50000", "finance_recovery_60000"],
       emergency_access_status: [
         "requested",
         "active",
@@ -4733,6 +5687,12 @@ export const Constants = {
         "franchise_recovery",
         "clearing",
         "other",
+      ],
+      legacy_connect_bdp_map_status: [
+        "mapped",
+        "historical_only",
+        "ambiguous",
+        "needs_review",
       ],
       legacy_membership_map_status: [
         "mapped",
@@ -4814,3 +5774,4 @@ export const Constants = {
     },
   },
 } as const
+

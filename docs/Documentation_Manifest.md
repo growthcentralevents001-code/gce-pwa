@@ -242,6 +242,8 @@ Additional mandatory behaviors:
 | Phase 3 implementation notes | `docs/phase-3/PHASE_3_IMPLEMENTATION_NOTES.md` | Phase 3 delivery notes |
 | Phase 4 implementation notes | `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` | Phase 4 identity/RBAC/org delivery notes |
 | Phase 5 implementation notes | `docs/phase-5/PHASE_5_IMPLEMENTATION_NOTES.md` | Phase 5 membership/Connect delivery notes |
+| Phase 6 Connect BDP plan | `docs/phase-6/PHASE_6_CONNECT_BDP.md` | Connect BDP implementation-ready plan |
+| Phase 6 implementation notes | `docs/phase-6/PHASE_6_IMPLEMENTATION_NOTES.md` | Phase 6 Connect BDP delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

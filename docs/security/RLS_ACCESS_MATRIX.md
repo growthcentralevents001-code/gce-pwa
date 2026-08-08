@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 5 — membership/Circle policies applied on gce-dev) |
+| **Status** | Living documentation (Phase 6 — Connect BDP policies applied on gce-dev) |
 | **Classification** | Logical RLS **policy intent** — SQL lives in migrations (ADR-004) |
 | **Authority** | [ADR-005](../phase-2/adrs/ADR-005_RLS_Strategy.md) (technical); FD-023 / FD-035 (permission rules); ADR-004 (policies live in migrations) |
 | **Related** | [`RBAC_PERMISSION_MATRIX.md`](./RBAC_PERMISSION_MATRIX.md), [`../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md`](../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -87,6 +87,24 @@ All intents assume: **RLS enabled; no policy ⇒ no access** (deny-by-default).
 | Dual status fields | Read per Circle visibility | Circle scope | Circle scope | Assigned | Deny | Platform admin | Read (TR) | Platform admin | Assigned |
 
 Lifecycle vs constitution status are separate attributes — policies may read both but must not collapse authorization on a single invented enum (FD-032).
+
+---
+
+## Matrix — Connect BDP (Phase 6)
+
+| Resource (logical) | Connect BDP | Platform Ops | Finance Admin | PRM | Other BDPs |
+|--------------------|-------------|--------------|---------------|-----|------------|
+| Franchise Unit / pack | Own rows | Platform admin | Read finance fields | Deny | Deny |
+| City assignment | Own read | Platform admin | Deny | Deny | Deny |
+| Member attribution | Own / member-visible; propose insert | Platform admin write | Deny mutate | Deny | Deny |
+| Circle portfolio | Own read | Platform admin | Deny | Deny | Deny |
+| Target credits | Own read; **no client insert** | Platform admin read | Deny | Deny | Deny |
+| Commission entitlements | Own read | Platform admin | Read/write Finance | Deny | Deny |
+| Recovery ledger | Own read | Platform admin | Read Finance | Deny | Deny |
+| Disputes | Own + PRM assigned | Platform admin | Deny | Assigned | Deny |
+| Handovers | Deny (admin) | Platform admin | Deny | Deny | Deny |
+
+Service-role/RPC only for target credit + recovery apply. Pack payment production collection remains feature-flagged OFF.
 
 ---
 

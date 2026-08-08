@@ -261,6 +261,16 @@ Additional mandatory behaviors:
 | Phase 14 testing plan | `docs/phase-14/PHASE_14_TESTING_MIGRATION_DATA_VALIDATION.md` | Testing / migration / data validation plan |
 | Phase 14A validation report | `docs/phase-14/PHASE_14A_PLATFORM_BACKEND_VALIDATION_REPORT.md` | Backend/platform validation evidence pack |
 | Phase 14A checklist | `docs/phase-14/PHASE_14A_VALIDATION_CHECKLIST.md` | Phase 14A exit checklist |
+| Frontend gap audit | `docs/frontend/FINAL_GCE_FRONTEND_GAP_AUDIT.md` | Final Website/PWA gap audit (planning) |
+| Frontend page inventory | `docs/frontend/FINAL_GCE_PAGE_AND_DASHBOARD_INVENTORY.md` | Master page/dashboard list |
+| Frontend IA | `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` | Product information architecture |
+| Frontend components | `docs/frontend/FRONTEND_COMPONENT_INVENTORY.md` | Component + shadcn matrix |
+| Frontend contract map | `docs/frontend/FINAL_FRONTEND_BACKEND_CONTRACT_MAP.md` | Page→API contracts |
+| Frontend backend gaps | `docs/frontend/FRONTEND_BACKEND_GAP_REGISTER.md` | Backend gaps for UI |
+| Frontend route migration | `docs/frontend/FRONTEND_ROUTE_MIGRATION_PLAN.md` | Redirects/retires |
+| Frontend legacy copy | `docs/frontend/FRONTEND_LEGACY_COPY_REPLACEMENT_REGISTER.md` | Stale copy register |
+| Frontend batch plan | `docs/frontend/FINAL_GCE_REDEVELOPMENT_BATCH_PLAN.md` | Batches 0–10 + tooling |
+| Cursor tooling plan | `docs/frontend/CURSOR_TOOLING_AND_SKILLS_PLAN.md` | Skills/MCP/shadcn/21st plan |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

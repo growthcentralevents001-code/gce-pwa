@@ -640,6 +640,70 @@ export type Database = {
         }
         Relationships: []
       }
+      chargeback_cases: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          id: string
+          metadata: Json
+          outcome: string | null
+          payment_intent_id: string | null
+          provider_dispute_ref: string
+          provisional_hold_id: string | null
+          revenue_component_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome?: string | null
+          payment_intent_id?: string | null
+          provider_dispute_ref: string
+          provisional_hold_id?: string | null
+          revenue_component_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome?: string | null
+          payment_intent_id?: string | null
+          provider_dispute_ref?: string
+          provisional_hold_id?: string | null
+          revenue_component_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chargeback_cases_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chargeback_cases_provisional_hold_id_fkey"
+            columns: ["provisional_hold_id"]
+            isOneToOne: false
+            referencedRelation: "financial_holds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chargeback_cases_revenue_component_id_fkey"
+            columns: ["revenue_component_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_components"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       circle_allocation_proposals: {
         Row: {
           assisted_by_bdp_user_id: string | null
@@ -4192,6 +4256,60 @@ export type Database = {
         }
         Relationships: []
       }
+      entitlement_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          entitlement_id: string
+          from_status:
+            | Database["public"]["Enums"]["stakeholder_entitlement_status"]
+            | null
+          id: string
+          metadata: Json
+          reason: string | null
+          to_status: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          entitlement_id: string
+          from_status?:
+            | Database["public"]["Enums"]["stakeholder_entitlement_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_status: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          entitlement_id?: string
+          from_status?:
+            | Database["public"]["Enums"]["stakeholder_entitlement_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_status?: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entitlement_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entitlement_events_entitlement_id_fkey"
+            columns: ["entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholder_entitlements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_attendance: {
         Row: {
           attended: boolean | null
@@ -4366,6 +4484,268 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      financial_corrections: {
+        Row: {
+          actor_user_id: string | null
+          amount_minor: number
+          approved_by: string | null
+          correction_key: string
+          created_at: string
+          id: string
+          metadata: Json
+          reason: string
+          reversing_transaction_id: string | null
+          status: string
+          subject_id: string
+          subject_type: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          amount_minor?: number
+          approved_by?: string | null
+          correction_key: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason: string
+          reversing_transaction_id?: string | null
+          status?: string
+          subject_id: string
+          subject_type: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          amount_minor?: number
+          approved_by?: string | null
+          correction_key?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string
+          reversing_transaction_id?: string | null
+          status?: string
+          subject_id?: string
+          subject_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_corrections_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_corrections_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_corrections_reversing_transaction_id_fkey"
+            columns: ["reversing_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "financial_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_holds: {
+        Row: {
+          actor_user_id: string | null
+          amount_minor: number | null
+          created_at: string
+          id: string
+          metadata: Json
+          reason: string
+          released_at: string | null
+          released_by: string | null
+          scope_id: string
+          scope_type: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          amount_minor?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason: string
+          released_at?: string | null
+          released_by?: string | null
+          scope_id: string
+          scope_type: string
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          amount_minor?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string
+          released_at?: string | null
+          released_by?: string | null
+          scope_id?: string
+          scope_type?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_holds_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_holds_released_by_fkey"
+            columns: ["released_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_reversals: {
+        Row: {
+          actor_user_id: string | null
+          amount_minor: number
+          chargeback_ref: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          original_entitlement_id: string | null
+          original_financial_transaction_id: string | null
+          original_revenue_component_id: string | null
+          reason: string
+          refund_ref: string | null
+          reversing_transaction_id: string | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          amount_minor: number
+          chargeback_ref?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          original_entitlement_id?: string | null
+          original_financial_transaction_id?: string | null
+          original_revenue_component_id?: string | null
+          reason: string
+          refund_ref?: string | null
+          reversing_transaction_id?: string | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          amount_minor?: number
+          chargeback_ref?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          original_entitlement_id?: string | null
+          original_financial_transaction_id?: string | null
+          original_revenue_component_id?: string | null
+          reason?: string
+          refund_ref?: string | null
+          reversing_transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_reversals_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_reversals_original_entitlement_id_fkey"
+            columns: ["original_entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholder_entitlements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_reversals_original_financial_transaction_id_fkey"
+            columns: ["original_financial_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "financial_transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_reversals_original_revenue_component_id_fkey"
+            columns: ["original_revenue_component_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_components"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "financial_reversals_reversing_transaction_id_fkey"
+            columns: ["reversing_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "financial_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_rule_versions: {
+        Row: {
+          attribution_required: boolean
+          authority_refs: string[]
+          basis: string
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          formula_notes: string | null
+          id: string
+          is_active: boolean
+          metadata: Json
+          rate_bps: number
+          rule_key: string
+          stakeholder_type: string
+          version: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Insert: {
+          attribution_required?: boolean
+          authority_refs?: string[]
+          basis: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          formula_notes?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          rate_bps?: number
+          rule_key: string
+          stakeholder_type: string
+          version: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Update: {
+          attribution_required?: boolean
+          authority_refs?: string[]
+          basis?: string
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          formula_notes?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          rate_bps?: number
+          rule_key?: string
+          stakeholder_type?: string
+          version?: string
+          vertical?: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Relationships: []
       }
       financial_transactions: {
         Row: {
@@ -4801,6 +5181,30 @@ export type Database = {
           id?: string
           legacy_object?: string
           mapping_status?: Database["public"]["Enums"]["legacy_enterprise_map_status"]
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      legacy_finance_migration_map: {
+        Row: {
+          created_at: string
+          id: string
+          legacy_object: string
+          mapping_status: string
+          notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          legacy_object: string
+          mapping_status?: string
+          notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legacy_object?: string
+          mapping_status?: string
           notes?: string | null
         }
         Relationships: []
@@ -6265,6 +6669,98 @@ export type Database = {
         }
         Relationships: []
       }
+      offline_payment_records: {
+        Row: {
+          amount_minor: number
+          bank_reference: string
+          created_at: string
+          currency: string
+          discrepancy_notes: string | null
+          id: string
+          matched_payment_intent_id: string | null
+          metadata: Json
+          method: string
+          payer_user_id: string | null
+          proof_ref: string | null
+          received_on: string
+          reconciliation_status: Database["public"]["Enums"]["reconciliation_status"]
+          recorded_by: string | null
+          source_domain: string
+          source_id: string | null
+          updated_at: string
+          verified_by: string | null
+        }
+        Insert: {
+          amount_minor: number
+          bank_reference: string
+          created_at?: string
+          currency?: string
+          discrepancy_notes?: string | null
+          id?: string
+          matched_payment_intent_id?: string | null
+          metadata?: Json
+          method: string
+          payer_user_id?: string | null
+          proof_ref?: string | null
+          received_on: string
+          reconciliation_status?: Database["public"]["Enums"]["reconciliation_status"]
+          recorded_by?: string | null
+          source_domain: string
+          source_id?: string | null
+          updated_at?: string
+          verified_by?: string | null
+        }
+        Update: {
+          amount_minor?: number
+          bank_reference?: string
+          created_at?: string
+          currency?: string
+          discrepancy_notes?: string | null
+          id?: string
+          matched_payment_intent_id?: string | null
+          metadata?: Json
+          method?: string
+          payer_user_id?: string | null
+          proof_ref?: string | null
+          received_on?: string
+          reconciliation_status?: Database["public"]["Enums"]["reconciliation_status"]
+          recorded_by?: string | null
+          source_domain?: string
+          source_id?: string | null
+          updated_at?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offline_payment_records_matched_payment_intent_id_fkey"
+            columns: ["matched_payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "offline_payment_records_payer_user_id_fkey"
+            columns: ["payer_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "offline_payment_records_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "offline_payment_records_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organisation_memberships: {
         Row: {
           created_at: string
@@ -6551,11 +7047,13 @@ export type Database = {
           id: string
           idempotency_key: string
           payload: Json
+          payload_hash: string | null
           processed_at: string | null
           processing_status: string
           provider: Database["public"]["Enums"]["payment_provider"]
           provider_event_id: string | null
           received_at: string
+          replay_detected: boolean
           signature_valid: boolean | null
         }
         Insert: {
@@ -6564,11 +7062,13 @@ export type Database = {
           id?: string
           idempotency_key: string
           payload: Json
+          payload_hash?: string | null
           processed_at?: string | null
           processing_status?: string
           provider: Database["public"]["Enums"]["payment_provider"]
           provider_event_id?: string | null
           received_at?: string
+          replay_detected?: boolean
           signature_valid?: boolean | null
         }
         Update: {
@@ -6577,11 +7077,13 @@ export type Database = {
           id?: string
           idempotency_key?: string
           payload?: Json
+          payload_hash?: string | null
           processed_at?: string | null
           processing_status?: string
           provider?: Database["public"]["Enums"]["payment_provider"]
           provider_event_id?: string | null
           received_at?: string
+          replay_detected?: boolean
           signature_valid?: boolean | null
         }
         Relationships: []
@@ -6621,6 +7123,99 @@ export type Database = {
           {
             foreignKeyName: "payments_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payout_items: {
+        Row: {
+          batch_id: string | null
+          batch_item_id: string | null
+          created_at: string
+          deductions_minor: number
+          gross_minor: number
+          hold_id: string | null
+          id: string
+          metadata: Json
+          net_minor: number
+          payee_org_id: string | null
+          payee_user_id: string | null
+          payout_destination_ref: string | null
+          recovery_minor: number
+          stakeholder_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          batch_id?: string | null
+          batch_item_id?: string | null
+          created_at?: string
+          deductions_minor?: number
+          gross_minor?: number
+          hold_id?: string | null
+          id?: string
+          metadata?: Json
+          net_minor?: number
+          payee_org_id?: string | null
+          payee_user_id?: string | null
+          payout_destination_ref?: string | null
+          recovery_minor?: number
+          stakeholder_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          batch_id?: string | null
+          batch_item_id?: string | null
+          created_at?: string
+          deductions_minor?: number
+          gross_minor?: number
+          hold_id?: string | null
+          id?: string
+          metadata?: Json
+          net_minor?: number
+          payee_org_id?: string | null
+          payee_user_id?: string | null
+          payout_destination_ref?: string | null
+          recovery_minor?: number
+          stakeholder_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_items_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "settlement_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_items_batch_item_id_fkey"
+            columns: ["batch_item_id"]
+            isOneToOne: false
+            referencedRelation: "settlement_batch_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_items_hold_id_fkey"
+            columns: ["hold_id"]
+            isOneToOne: false
+            referencedRelation: "financial_holds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_items_payee_org_id_fkey"
+            columns: ["payee_org_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payout_items_payee_user_id_fkey"
+            columns: ["payee_user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -6777,6 +7372,125 @@ export type Database = {
           },
         ]
       }
+      reconciliation_records: {
+        Row: {
+          amount_minor: number | null
+          created_at: string
+          domain: string
+          exception_queue: boolean
+          id: string
+          left_ref: string
+          metadata: Json
+          notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          right_ref: string | null
+          status: Database["public"]["Enums"]["reconciliation_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount_minor?: number | null
+          created_at?: string
+          domain: string
+          exception_queue?: boolean
+          id?: string
+          left_ref: string
+          metadata?: Json
+          notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          right_ref?: string | null
+          status?: Database["public"]["Enums"]["reconciliation_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount_minor?: number | null
+          created_at?: string
+          domain?: string
+          exception_queue?: boolean
+          id?: string
+          left_ref?: string
+          metadata?: Json
+          notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          right_ref?: string | null
+          status?: Database["public"]["Enums"]["reconciliation_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reconciliation_records_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recovery_applications: {
+        Row: {
+          applied_minor: number
+          cap_minor: number
+          created_at: string
+          created_by: string | null
+          cycle_key: string
+          entitlement_id: string
+          id: string
+          metadata: Json
+          pack_or_unit_ref: string | null
+          remaining_after_minor: number
+          remaining_before_minor: number
+          rule_version: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Insert: {
+          applied_minor: number
+          cap_minor?: number
+          created_at?: string
+          created_by?: string | null
+          cycle_key: string
+          entitlement_id: string
+          id?: string
+          metadata?: Json
+          pack_or_unit_ref?: string | null
+          remaining_after_minor: number
+          remaining_before_minor: number
+          rule_version?: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Update: {
+          applied_minor?: number
+          cap_minor?: number
+          created_at?: string
+          created_by?: string | null
+          cycle_key?: string
+          entitlement_id?: string
+          id?: string
+          metadata?: Json
+          pack_or_unit_ref?: string | null
+          remaining_after_minor?: number
+          remaining_before_minor?: number
+          rule_version?: string
+          vertical?: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recovery_applications_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recovery_applications_entitlement_id_fkey"
+            columns: ["entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholder_entitlements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       referrals: {
         Row: {
           created_at: string | null
@@ -6803,6 +7517,90 @@ export type Database = {
           status?: string | null
         }
         Relationships: []
+      }
+      revenue_components: {
+        Row: {
+          attribution_snapshot: Json
+          created_at: string
+          currency: string
+          domain_object_id: string | null
+          domain_object_type: string
+          eligible_base_minor: number
+          excluded_amount_minor: number
+          financial_transaction_id: string | null
+          gross_amount_minor: number
+          id: string
+          metadata: Json
+          payment_intent_id: string | null
+          recognised_at: string | null
+          recognition_status: Database["public"]["Enums"]["revenue_recognition_status"]
+          revenue_component_key: string
+          rule_version: string
+          source_ids: Json
+          tax_amount_minor: number
+          updated_at: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Insert: {
+          attribution_snapshot?: Json
+          created_at?: string
+          currency?: string
+          domain_object_id?: string | null
+          domain_object_type: string
+          eligible_base_minor?: number
+          excluded_amount_minor?: number
+          financial_transaction_id?: string | null
+          gross_amount_minor?: number
+          id?: string
+          metadata?: Json
+          payment_intent_id?: string | null
+          recognised_at?: string | null
+          recognition_status?: Database["public"]["Enums"]["revenue_recognition_status"]
+          revenue_component_key: string
+          rule_version?: string
+          source_ids?: Json
+          tax_amount_minor?: number
+          updated_at?: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Update: {
+          attribution_snapshot?: Json
+          created_at?: string
+          currency?: string
+          domain_object_id?: string | null
+          domain_object_type?: string
+          eligible_base_minor?: number
+          excluded_amount_minor?: number
+          financial_transaction_id?: string | null
+          gross_amount_minor?: number
+          id?: string
+          metadata?: Json
+          payment_intent_id?: string | null
+          recognised_at?: string | null
+          recognition_status?: Database["public"]["Enums"]["revenue_recognition_status"]
+          revenue_component_key?: string
+          rule_version?: string
+          source_ids?: Json
+          tax_amount_minor?: number
+          updated_at?: string
+          vertical?: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_components_financial_transaction_id_fkey"
+            columns: ["financial_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "financial_transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "revenue_components_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reviews: {
         Row: {
@@ -7093,6 +7891,263 @@ export type Database = {
         }
         Relationships: []
       }
+      settlement_batch_items: {
+        Row: {
+          batch_id: string
+          created_at: string
+          entitlement_id: string
+          gross_minor: number
+          id: string
+          metadata: Json
+          net_minor: number
+          recovery_minor: number
+          status: string
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string
+          entitlement_id: string
+          gross_minor?: number
+          id?: string
+          metadata?: Json
+          net_minor?: number
+          recovery_minor?: number
+          status?: string
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string
+          entitlement_id?: string
+          gross_minor?: number
+          id?: string
+          metadata?: Json
+          net_minor?: number
+          recovery_minor?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "settlement_batch_items_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "settlement_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "settlement_batch_items_entitlement_id_fkey"
+            columns: ["entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "stakeholder_entitlements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      settlement_batches: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          batch_ref: string
+          created_at: string
+          currency: string
+          executed_at: string | null
+          execution_blocked_reason: string | null
+          generated_at: string | null
+          gross_total_minor: number
+          id: string
+          item_count: number
+          metadata: Json
+          net_total_minor: number
+          period_end: string
+          period_start: string
+          reconciliation_status:
+            | Database["public"]["Enums"]["reconciliation_status"]
+            | null
+          recovery_total_minor: number
+          status: Database["public"]["Enums"]["settlement_batch_status"]
+          updated_at: string
+          vertical: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          batch_ref: string
+          created_at?: string
+          currency?: string
+          executed_at?: string | null
+          execution_blocked_reason?: string | null
+          generated_at?: string | null
+          gross_total_minor?: number
+          id?: string
+          item_count?: number
+          metadata?: Json
+          net_total_minor?: number
+          period_end: string
+          period_start: string
+          reconciliation_status?:
+            | Database["public"]["Enums"]["reconciliation_status"]
+            | null
+          recovery_total_minor?: number
+          status?: Database["public"]["Enums"]["settlement_batch_status"]
+          updated_at?: string
+          vertical?: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          batch_ref?: string
+          created_at?: string
+          currency?: string
+          executed_at?: string | null
+          execution_blocked_reason?: string | null
+          generated_at?: string | null
+          gross_total_minor?: number
+          id?: string
+          item_count?: number
+          metadata?: Json
+          net_total_minor?: number
+          period_end?: string
+          period_start?: string
+          reconciliation_status?:
+            | Database["public"]["Enums"]["reconciliation_status"]
+            | null
+          recovery_total_minor?: number
+          status?: Database["public"]["Enums"]["settlement_batch_status"]
+          updated_at?: string
+          vertical?: Database["public"]["Enums"]["finance_vertical"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "settlement_batches_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stakeholder_entitlements: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          attribution_ref: string | null
+          created_at: string
+          earning_event_key: string
+          gross_eligible_basis_minor: number
+          gross_entitlement_minor: number
+          id: string
+          metadata: Json
+          net_settlement_eligible_minor: number
+          rate_bps: number
+          recognised_at: string | null
+          recovery_deduction_minor: number
+          revenue_component_id: string
+          revenue_component_key: string
+          reversal_amount_minor: number
+          rule_key: string
+          rule_version: string
+          settlement_batch_id: string | null
+          source_vertical: Database["public"]["Enums"]["finance_vertical"]
+          stakeholder_org_id: string | null
+          stakeholder_type: string
+          stakeholder_user_id: string | null
+          status: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+          updated_at: string
+          vertical_source_ref: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_ref?: string | null
+          created_at?: string
+          earning_event_key: string
+          gross_eligible_basis_minor?: number
+          gross_entitlement_minor?: number
+          id?: string
+          metadata?: Json
+          net_settlement_eligible_minor?: number
+          rate_bps?: number
+          recognised_at?: string | null
+          recovery_deduction_minor?: number
+          revenue_component_id: string
+          revenue_component_key: string
+          reversal_amount_minor?: number
+          rule_key: string
+          rule_version: string
+          settlement_batch_id?: string | null
+          source_vertical: Database["public"]["Enums"]["finance_vertical"]
+          stakeholder_org_id?: string | null
+          stakeholder_type: string
+          stakeholder_user_id?: string | null
+          status?: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+          updated_at?: string
+          vertical_source_ref?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_ref?: string | null
+          created_at?: string
+          earning_event_key?: string
+          gross_eligible_basis_minor?: number
+          gross_entitlement_minor?: number
+          id?: string
+          metadata?: Json
+          net_settlement_eligible_minor?: number
+          rate_bps?: number
+          recognised_at?: string | null
+          recovery_deduction_minor?: number
+          revenue_component_id?: string
+          revenue_component_key?: string
+          reversal_amount_minor?: number
+          rule_key?: string
+          rule_version?: string
+          settlement_batch_id?: string | null
+          source_vertical?: Database["public"]["Enums"]["finance_vertical"]
+          stakeholder_org_id?: string | null
+          stakeholder_type?: string
+          stakeholder_user_id?: string | null
+          status?: Database["public"]["Enums"]["stakeholder_entitlement_status"]
+          updated_at?: string
+          vertical_source_ref?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stakeholder_entitlements_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stakeholder_entitlements_revenue_component_id_fkey"
+            columns: ["revenue_component_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_components"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stakeholder_entitlements_settlement_batch_id_fkey"
+            columns: ["settlement_batch_id"]
+            isOneToOne: false
+            referencedRelation: "settlement_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stakeholder_entitlements_stakeholder_org_id_fkey"
+            columns: ["stakeholder_org_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stakeholder_entitlements_stakeholder_user_id_fkey"
+            columns: ["stakeholder_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       system_logs: {
         Row: {
           action: string
@@ -7127,6 +8182,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tax_component_refs: {
+        Row: {
+          account_mapping_key: string | null
+          amount_minor: number | null
+          created_at: string
+          id: string
+          metadata: Json
+          rate_bps: number | null
+          revenue_component_id: string | null
+          tax_kind: string
+          validation_status: string
+        }
+        Insert: {
+          account_mapping_key?: string | null
+          amount_minor?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          rate_bps?: number | null
+          revenue_component_id?: string | null
+          tax_kind: string
+          validation_status?: string
+        }
+        Update: {
+          account_mapping_key?: string | null
+          amount_minor?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          rate_bps?: number | null
+          revenue_component_id?: string | null
+          tax_kind?: string
+          validation_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tax_component_refs_revenue_component_id_fkey"
+            columns: ["revenue_component_id"]
+            isOneToOne: false
+            referencedRelation: "revenue_components"
             referencedColumns: ["id"]
           },
         ]
@@ -7766,6 +8865,7 @@ export type Database = {
         Returns: undefined
       }
       create_venue_for_affiliate: { Args: { email: string }; Returns: Json }
+      gce_assert_txn_balanced: { Args: { p_txn_id: string }; Returns: boolean }
       gce_circle_statuses_for_count: {
         Args: { p_count: number }
         Returns: {
@@ -7939,6 +9039,28 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      gce_finance_claim_stakeholder: {
+        Args: {
+          p_entitlement_ref?: string
+          p_key: string
+          p_stakeholder: string
+          p_vertical: string
+        }
+        Returns: {
+          created_at: string
+          entitlement_ref: string | null
+          metadata: Json
+          revenue_component_key: string
+          source_vertical: string
+          stakeholder_family: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gce_commissioned_revenue_components"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_has_active_assignment: {
         Args: {
           p_role?: Database["public"]["Enums"]["gce_role_key"]
@@ -7961,6 +9083,7 @@ export type Database = {
         Returns: boolean
       }
       gce_is_enterprise_expert: { Args: never; Returns: boolean }
+      gce_is_finance_admin: { Args: never; Returns: boolean }
       gce_is_identity_suspended: {
         Args: { p_user_id?: string }
         Returns: boolean
@@ -8323,6 +9446,13 @@ export type Database = {
         | "expired"
         | "superseded"
         | "cancelled"
+      finance_vertical:
+        | "connect"
+        | "marketplace"
+        | "enterprise"
+        | "platform"
+        | "cross_vertical"
+        | "other"
       gce_role_key:
         | "platform_user"
         | "circle_member"
@@ -8520,6 +9650,46 @@ export type Database = {
         | "refunded"
         | "partially_refunded"
       payment_provider: "razorpay_candidate" | "manual_admin" | "other"
+      reconciliation_status:
+        | "matched"
+        | "unmatched"
+        | "mismatch"
+        | "duplicate"
+        | "under_review"
+        | "resolved"
+      revenue_recognition_status:
+        | "payment_received"
+        | "revenue_eligible"
+        | "recognised"
+        | "held"
+        | "partially_reversed"
+        | "reversed"
+        | "cancelled"
+      settlement_batch_status:
+        | "draft"
+        | "generated"
+        | "under_review"
+        | "approved"
+        | "payout_ready"
+        | "execution_blocked"
+        | "executed"
+        | "partially_failed"
+        | "reconciled"
+        | "cancelled"
+      stakeholder_entitlement_status:
+        | "estimated"
+        | "provisional"
+        | "earned"
+        | "on_hold"
+        | "settlement_eligible"
+        | "approved"
+        | "payable"
+        | "paid"
+        | "reversed"
+        | "partially_reversed"
+        | "cancelled"
+        | "recoverable_balance"
+        | "clawed_back"
       user_role:
         | "admin"
         | "member"
@@ -8874,6 +10044,14 @@ export const Constants = {
         "superseded",
         "cancelled",
       ],
+      finance_vertical: [
+        "connect",
+        "marketplace",
+        "enterprise",
+        "platform",
+        "cross_vertical",
+        "other",
+      ],
       gce_role_key: [
         "platform_user",
         "circle_member",
@@ -9095,6 +10273,50 @@ export const Constants = {
         "partially_refunded",
       ],
       payment_provider: ["razorpay_candidate", "manual_admin", "other"],
+      reconciliation_status: [
+        "matched",
+        "unmatched",
+        "mismatch",
+        "duplicate",
+        "under_review",
+        "resolved",
+      ],
+      revenue_recognition_status: [
+        "payment_received",
+        "revenue_eligible",
+        "recognised",
+        "held",
+        "partially_reversed",
+        "reversed",
+        "cancelled",
+      ],
+      settlement_batch_status: [
+        "draft",
+        "generated",
+        "under_review",
+        "approved",
+        "payout_ready",
+        "execution_blocked",
+        "executed",
+        "partially_failed",
+        "reconciled",
+        "cancelled",
+      ],
+      stakeholder_entitlement_status: [
+        "estimated",
+        "provisional",
+        "earned",
+        "on_hold",
+        "settlement_eligible",
+        "approved",
+        "payable",
+        "paid",
+        "reversed",
+        "partially_reversed",
+        "cancelled",
+        "recoverable_balance",
+        "clawed_back",
+      ],
       user_role: [
         "admin",
         "member",

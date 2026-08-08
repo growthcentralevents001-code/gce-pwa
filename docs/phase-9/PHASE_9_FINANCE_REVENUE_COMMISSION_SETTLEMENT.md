@@ -5,7 +5,7 @@
 | **Phase** | 9 |
 | **Document** | `PHASE_9_FINANCE_REVENUE_COMMISSION_SETTLEMENT.md` |
 | **Type** | Phase planning / living architecture summary (documentation only) |
-| **Status** | Draft for Phase 2 commercial spine implementation planning |
+| **Status** | **Implemented on gce-dev** — see `PHASE_9_IMPLEMENTATION_NOTES.md` |
 | **Date** | 2026-08-08 |
 
 ---

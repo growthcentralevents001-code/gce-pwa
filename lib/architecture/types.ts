@@ -100,6 +100,11 @@ export const INACTIVE_FEATURE_FLAGS = [
   "settlement_execution",
   "bdp_pack_payments",
   "offline_bdp_pack_payments",
+  "enterprise_bdp_pack_payments",
+  "revenue_recognition_live",
+  "commission_posting_live",
+  "settlement_batch_generation",
+  "payout_execution",
 ] as const;
 
 export type FeatureFlagKey = (typeof INACTIVE_FEATURE_FLAGS)[number];

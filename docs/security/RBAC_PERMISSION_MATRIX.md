@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 8 — Enterprise resources implemented on gce-dev) |
+| **Status** | Living documentation (Phase 9 — Finance resources implemented on gce-dev) |
 | **Classification** | Logical permission matrix — **Technical recommendation** where codes not Founder-finalised |
 | **Authority** | FD-023 (RBAC principles), FD-035 (identity / assignment / workspace); role names → `docs/core/35_Role_Taxonomy.md` |
 | **Related** | [`RLS_ACCESS_MATRIX.md`](./RLS_ACCESS_MATRIX.md), `docs/core/19_Permissions_Roles.md` (must defer to FD-023), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -152,6 +152,8 @@ Symbols: `✓` allowed within scope · `—` not by default · `✗` forbidden (
 ---
 
 ## Matrix D — Finance, commission, settlement
+
+**Implementation note (Phase 9 / gce-dev):** Canonical `stakeholder_entitlements`, `settlement_batches`, `payout_items`, holds/reversals/recovery — Finance Admin only for mutate; stakeholders read own summaries. Self-approval of own entitlement/payout banned. Execution flags OFF. See `docs/phase-9/PHASE_9_IMPLEMENTATION_NOTES.md`.
 
 | Role | Resource | R | C | U | A | D | F | P | X | Scope |
 |------|----------|---|---|---|---|---|---|---|---|-------|

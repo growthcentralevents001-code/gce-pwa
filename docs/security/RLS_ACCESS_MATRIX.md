@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 8 — Enterprise policies applied on gce-dev) |
+| **Status** | Living documentation (Phase 9 — Finance policies applied on gce-dev) |
 | **Classification** | Logical RLS **policy intent** — SQL lives in migrations (ADR-004) |
 | **Authority** | [ADR-005](../phase-2/adrs/ADR-005_RLS_Strategy.md) (technical); FD-023 / FD-035 (permission rules); ADR-004 (policies live in migrations) |
 | **Related** | [`RBAC_PERMISSION_MATRIX.md`](./RBAC_PERMISSION_MATRIX.md), [`../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md`](../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -146,6 +146,8 @@ Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remain
 ---
 
 ## Matrix — Finance tables (restricted)
+
+**Implementation note (Phase 9):** Also covers `revenue_components`, `stakeholder_entitlements`, `settlement_batches`, `payout_items`, `recovery_applications`, `financial_holds`, `offline_payment_records`, `reconciliation_records` — Finance Admin write; own-entitlement/payout read for stakeholders; deny self-settlement.
 
 | Resource (logical) | BDP / Member / Venue / Client | RM / PRM / Support | Platform Ops | Finance Admin | Compliance Admin | Service role |
 |--------------------|-------------------------------|--------------------|--------------|---------------|------------------|--------------|

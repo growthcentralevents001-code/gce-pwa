@@ -18,6 +18,7 @@ import {
   buildEnterpriseClientDashboard,
   buildExpertDashboard,
 } from "@/lib/architecture/enterprise";
+import { buildFinanceDashboard } from "@/lib/architecture/finance";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
 import { WorkspaceSwitcher } from "./workspace-switcher";
@@ -182,6 +183,17 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
       expertReport = await buildExpertDashboard(supabase, user.id);
     } catch {
       expertReport = null;
+    }
+  }
+
+  const showFinancePanel = canAccess && key === "finance";
+  let financeReport: Awaited<ReturnType<typeof buildFinanceDashboard>> | null =
+    null;
+  if (showFinancePanel) {
+    try {
+      financeReport = await buildFinanceDashboard(supabase);
+    } catch {
+      financeReport = null;
     }
   }
 
@@ -450,6 +462,63 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
             proposals: {expertReport.draftProposals} · quotes pending Finance
             co-sign: {expertReport.quotesPendingFinanceCosign}
           </div>
+        </section>
+      ) : null}
+      {showFinancePanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Finance / Settlement spine</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            FD-020/021/028/029 — payment ≠ revenue ≠ settlement. Payout execution
+            gated OFF. Use <code>/api/finance</code>.
+          </p>
+          {!financeReport ? (
+            <p className="mt-3 text-sm text-neutral-600">
+              Finance dashboard unavailable for this session.
+            </p>
+          ) : (
+            <div className="mt-3 space-y-1 text-xs text-neutral-700">
+              <div>
+                Recognised components: {financeReport.recognisedRevenueComponents}{" "}
+                · pending entitlements: {financeReport.pendingEntitlements} ·
+                settlement-eligible:{" "}
+                {financeReport.settlementEligibleEntitlements}
+              </div>
+              <div>
+                Holds: {financeReport.activeHolds} · batches:{" "}
+                {financeReport.settlementBatches} · payout-ready:{" "}
+                {financeReport.payoutReadyItems}
+              </div>
+              <div>
+                Offline unmatched: {financeReport.offlineUnmatched} · recon
+                exceptions: {financeReport.reconciliationExceptions} ·
+                reversals: {financeReport.reversals}
+              </div>
+              <div>
+                Vertical gross — Connect ₹
+                {(financeReport.totals.connectGross / 100).toLocaleString(
+                  "en-IN"
+                )}{" "}
+                · Marketplace ₹
+                {(financeReport.totals.marketplaceGross / 100).toLocaleString(
+                  "en-IN"
+                )}{" "}
+                · Enterprise ₹
+                {(financeReport.totals.enterpriseGross / 100).toLocaleString(
+                  "en-IN"
+                )}
+              </div>
+              <div>
+                Money flags: settlement_execution=
+                {String(financeReport.moneyFlags.settlement_execution ?? false)}{" "}
+                · payout_execution=
+                {String(financeReport.moneyFlags.payout_execution ?? false)} ·
+                ticket_payments=
+                {String(
+                  financeReport.moneyFlags.marketplace_ticket_payments ?? false
+                )}
+              </div>
+            </div>
+          )}
         </section>
       ) : null}
     </main>

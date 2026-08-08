@@ -248,6 +248,8 @@ Additional mandatory behaviors:
 | Phase 7 implementation notes | `docs/phase-7/PHASE_7_IMPLEMENTATION_NOTES.md` | Phase 7 Marketplace delivery notes |
 | Phase 8 Enterprise plan | `docs/phase-8/PHASE_8_ENTERPRISE.md` | Enterprise implementation plan |
 | Phase 8 implementation notes | `docs/phase-8/PHASE_8_IMPLEMENTATION_NOTES.md` | Phase 8 Enterprise delivery notes |
+| Phase 9 Finance plan | `docs/phase-9/PHASE_9_FINANCE_REVENUE_COMMISSION_SETTLEMENT.md` | Finance / commission / settlement plan |
+| Phase 9 implementation notes | `docs/phase-9/PHASE_9_IMPLEMENTATION_NOTES.md` | Phase 9 Finance delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

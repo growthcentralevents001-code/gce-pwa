@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createHash } from "node:crypto";
 import { AppError } from "../errors";
 import { logStructured } from "../logging";
 import { assertFeatureEnabled } from "../feature-flags/flags";
@@ -30,12 +31,42 @@ export class RazorpayCandidateAdapter implements PaymentProviderAdapter {
   }
 }
 
+function hashPayload(rawBody: string): string {
+  return createHash("sha256").update(rawBody).digest("hex");
+}
+
 export async function persistWebhookEvent(
   client: SupabaseClient,
   envelope: PaymentWebhookEnvelope,
   signatureValid: boolean,
-  correlationId?: string
+  correlationId?: string,
+  rawBody?: string
 ) {
+  const payloadHash = rawBody ? hashPayload(rawBody) : null;
+
+  // Detect provider_event_id replay
+  if (envelope.providerEventId) {
+    const { data: prior } = await client
+      .from("payment_webhook_events")
+      .select("id, payload_hash")
+      .eq("provider", envelope.provider)
+      .eq("provider_event_id", envelope.providerEventId)
+      .maybeSingle();
+    if (prior) {
+      const replay =
+        Boolean(payloadHash) &&
+        Boolean(prior.payload_hash) &&
+        prior.payload_hash !== payloadHash;
+      throw new AppError("IDEMPOTENCY_CONFLICT", "Webhook already processed", {
+        details: {
+          providerEventId: envelope.providerEventId,
+          replayDetected: replay,
+          priorId: prior.id,
+        },
+      });
+    }
+  }
+
   const { data, error } = await client
     .from("payment_webhook_events")
     .insert({
@@ -44,6 +75,7 @@ export async function persistWebhookEvent(
       idempotency_key: envelope.idempotencyKey,
       signature_valid: signatureValid,
       payload: envelope.payload,
+      payload_hash: payloadHash,
       processing_status: signatureValid ? "received" : "rejected_signature",
       correlation_id: correlationId ?? null,
     })
@@ -98,7 +130,8 @@ export async function handlePaymentWebhook(options: {
     options.client,
     envelope,
     signatureValid,
-    options.correlationId
+    options.correlationId,
+    options.rawBody
   );
 
   if (!signatureValid) {
@@ -112,6 +145,7 @@ export async function handlePaymentWebhook(options: {
   }
 
   // Intent integration point — later phases advance payment_intents via paymentIntentMachine.
+  // Payment success does not auto-recognise revenue (FD-028) — Phase 9 recogniseRevenueComponent is explicit.
   void paymentIntentMachine;
 
   await options.client

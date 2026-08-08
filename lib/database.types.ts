@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -773,6 +778,127 @@ export type Database = {
           },
         ]
       }
+      emergency_access_grants: {
+        Row: {
+          approved_by: string | null
+          created_at: string
+          effective_from: string | null
+          effective_to: string | null
+          grantee_user_id: string
+          id: string
+          metadata: Json
+          reason: string
+          revoked_by: string | null
+          status: Database["public"]["Enums"]["emergency_access_status"]
+          ticket_ref: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_by?: string | null
+          created_at?: string
+          effective_from?: string | null
+          effective_to?: string | null
+          grantee_user_id: string
+          id?: string
+          metadata?: Json
+          reason: string
+          revoked_by?: string | null
+          status?: Database["public"]["Enums"]["emergency_access_status"]
+          ticket_ref?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_by?: string | null
+          created_at?: string
+          effective_from?: string | null
+          effective_to?: string | null
+          grantee_user_id?: string
+          id?: string
+          metadata?: Json
+          reason?: string
+          revoked_by?: string | null
+          status?: Database["public"]["Enums"]["emergency_access_status"]
+          ticket_ref?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_access_grants_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emergency_access_grants_grantee_user_id_fkey"
+            columns: ["grantee_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emergency_access_grants_revoked_by_fkey"
+            columns: ["revoked_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_access_uses: {
+        Row: {
+          action: string
+          actor_user_id: string
+          correlation_id: string | null
+          created_at: string
+          grant_id: string
+          id: string
+          metadata: Json
+          reason: string
+          resource_id: string | null
+          resource_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          correlation_id?: string | null
+          created_at?: string
+          grant_id: string
+          id?: string
+          metadata?: Json
+          reason: string
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          correlation_id?: string | null
+          created_at?: string
+          grant_id?: string
+          id?: string
+          metadata?: Json
+          reason?: string
+          resource_id?: string | null
+          resource_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_access_uses_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emergency_access_uses_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "emergency_access_grants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enterprise_applications: {
         Row: {
           budget_range: string | null
@@ -1159,6 +1285,73 @@ export type Database = {
             columns: ["payment_intent_id"]
             isOneToOne: false
             referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      identity_suspensions: {
+        Row: {
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          id: string
+          lifted_at: string | null
+          lifted_by: string | null
+          metadata: Json
+          reason: string
+          status: Database["public"]["Enums"]["identity_suspension_status"]
+          suspended_by: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          lifted_at?: string | null
+          lifted_by?: string | null
+          metadata?: Json
+          reason: string
+          status?: Database["public"]["Enums"]["identity_suspension_status"]
+          suspended_by?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          lifted_at?: string | null
+          lifted_by?: string | null
+          metadata?: Json
+          reason?: string
+          status?: Database["public"]["Enums"]["identity_suspension_status"]
+          suspended_by?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "identity_suspensions_lifted_by_fkey"
+            columns: ["lifted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "identity_suspensions_suspended_by_fkey"
+            columns: ["suspended_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "identity_suspensions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -2141,6 +2334,9 @@ export type Database = {
       }
       role_assignments: {
         Row: {
+          approval_reason: string | null
+          approved_at: string | null
+          approved_by: string | null
           created_at: string
           effective_from: string
           effective_to: string | null
@@ -2154,11 +2350,20 @@ export type Database = {
           scope_id: string | null
           scope_type: Database["public"]["Enums"]["assignment_scope_type"]
           status: Database["public"]["Enums"]["assignment_status"]
+          suspend_reason: string | null
+          suspended_at: string | null
+          suspended_by: string | null
+          terminate_reason: string | null
+          terminated_at: string | null
+          terminated_by: string | null
           title: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          approval_reason?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           effective_from?: string
           effective_to?: string | null
@@ -2172,11 +2377,20 @@ export type Database = {
           scope_id?: string | null
           scope_type?: Database["public"]["Enums"]["assignment_scope_type"]
           status?: Database["public"]["Enums"]["assignment_status"]
+          suspend_reason?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          terminate_reason?: string | null
+          terminated_at?: string | null
+          terminated_by?: string | null
           title?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          approval_reason?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           effective_from?: string
           effective_to?: string | null
@@ -2190,11 +2404,24 @@ export type Database = {
           scope_id?: string | null
           scope_type?: Database["public"]["Enums"]["assignment_scope_type"]
           status?: Database["public"]["Enums"]["assignment_status"]
+          suspend_reason?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          terminate_reason?: string | null
+          terminated_at?: string | null
+          terminated_by?: string | null
           title?: string | null
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "role_assignments_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "role_assignments_granted_by_fkey"
             columns: ["granted_by"]
@@ -2212,6 +2439,20 @@ export type Database = {
           {
             foreignKeyName: "role_assignments_revoked_by_fkey"
             columns: ["revoked_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_assignments_suspended_by_fkey"
+            columns: ["suspended_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_assignments_terminated_by_fkey"
+            columns: ["terminated_by"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -2909,6 +3150,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      gce_has_active_emergency_access: {
+        Args: { p_user_id?: string }
+        Returns: boolean
+      }
+      gce_is_identity_suspended: {
+        Args: { p_user_id?: string }
+        Returns: boolean
+      }
+      gce_is_org_member: {
+        Args: { p_organisation_id: string }
+        Returns: boolean
+      }
       gce_is_platform_admin: { Args: never; Returns: boolean }
     }
     Enums: {
@@ -2933,6 +3186,7 @@ export type Database = {
         | "suspended"
         | "expired"
         | "revoked"
+        | "terminated"
       background_job_status:
         | "pending"
         | "leased"
@@ -2940,6 +3194,12 @@ export type Database = {
         | "succeeded"
         | "failed"
         | "dead_letter"
+      emergency_access_status:
+        | "requested"
+        | "active"
+        | "revoked"
+        | "expired"
+        | "denied"
       gce_role_key:
         | "platform_user"
         | "circle_member"
@@ -2957,6 +3217,9 @@ export type Database = {
         | "finance_admin"
         | "compliance_admin"
         | "support_admin"
+        | "enterprise_platform_expert"
+        | "opportunity_desk"
+      identity_suspension_status: "active" | "lifted" | "expired"
       ledger_account_kind:
         | "customer_wallet"
         | "escrow"
@@ -3156,6 +3419,7 @@ export const Constants = {
         "suspended",
         "expired",
         "revoked",
+        "terminated",
       ],
       background_job_status: [
         "pending",
@@ -3164,6 +3428,13 @@ export const Constants = {
         "succeeded",
         "failed",
         "dead_letter",
+      ],
+      emergency_access_status: [
+        "requested",
+        "active",
+        "revoked",
+        "expired",
+        "denied",
       ],
       gce_role_key: [
         "platform_user",
@@ -3182,7 +3453,10 @@ export const Constants = {
         "finance_admin",
         "compliance_admin",
         "support_admin",
+        "enterprise_platform_expert",
+        "opportunity_desk",
       ],
+      identity_suspension_status: ["active", "lifted", "expired"],
       ledger_account_kind: [
         "customer_wallet",
         "escrow",
@@ -3238,4 +3512,3 @@ export const Constants = {
     },
   },
 } as const
-

@@ -10,12 +10,14 @@ export const GCE_ROLE_KEYS = [
   "marketplace_bdp",
   "enterprise_bdp",
   "enterprise_client_representative",
+  "enterprise_platform_expert",
   "venue_representative",
   "governing_body_member",
   "circle_finance_coordinator",
   "sergeant_at_arms",
   "relationship_manager",
   "platform_relationship_manager",
+  "opportunity_desk",
   "platform_admin",
   "finance_admin",
   "compliance_admin",
@@ -24,12 +26,24 @@ export const GCE_ROLE_KEYS = [
 
 export type GceRoleKey = (typeof GCE_ROLE_KEYS)[number];
 
+/** Privileged roles that may not be self-granted / self-approved (FD-023/035). */
+export const PRIVILEGED_ROLE_KEYS = [
+  "platform_admin",
+  "finance_admin",
+  "compliance_admin",
+  "support_admin",
+  "enterprise_platform_expert",
+] as const satisfies readonly GceRoleKey[];
+
+export type PrivilegedRoleKey = (typeof PRIVILEGED_ROLE_KEYS)[number];
+
 export const ASSIGNMENT_STATUSES = [
   "pending",
   "active",
   "suspended",
   "expired",
   "revoked",
+  "terminated",
 ] as const;
 
 export type AssignmentStatus = (typeof ASSIGNMENT_STATUSES)[number];

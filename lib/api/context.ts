@@ -155,3 +155,26 @@ export function validateBody<T>(schema: ZodSchema<T>, data: unknown): T {
 
 /** Re-export Phase 2 wrapper for compatibility. */
 export { withApiArchitecture, parseJsonWithSchema } from "@/lib/architecture/api/http";
+
+/**
+ * Authenticated Route Handler wrapper.
+ * Ensures JWT user + active entitlements are loaded before the handler runs.
+ */
+export function withAuthedRoute(
+  handler: (
+    request: Request,
+    ctx: AuthedRequestContext
+  ) => Promise<NextResponse | { status?: number; body?: unknown }>,
+  options?: { rateLimitKey?: string; rateLimitMax?: number; rateLimitWindowMs?: number }
+) {
+  return async (request: Request): Promise<NextResponse> =>
+    withApiHandler(
+      request,
+      async (ctx) => {
+        const authed = await requireUser(ctx);
+        const result = await handler(request, authed);
+        return result;
+      },
+      options
+    );
+}

@@ -2,10 +2,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 2) |
+| **Status** | Living documentation (Phase 4 — identity resources implemented on gce-dev) |
 | **Classification** | Logical permission matrix — **Technical recommendation** where codes not Founder-finalised |
 | **Authority** | FD-023 (RBAC principles), FD-035 (identity / assignment / workspace); role names → `docs/core/35_Role_Taxonomy.md` |
-| **Related** | [`RLS_ACCESS_MATRIX.md`](./RLS_ACCESS_MATRIX.md), `docs/core/19_Permissions_Roles.md` (must defer to FD-023) |
+| **Related** | [`RLS_ACCESS_MATRIX.md`](./RLS_ACCESS_MATRIX.md), `docs/core/19_Permissions_Roles.md` (must defer to FD-023), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
 
 ---
 

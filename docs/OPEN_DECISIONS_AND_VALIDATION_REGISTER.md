@@ -8,6 +8,7 @@
 | **Exclusions** | Routine technical design (exact enums, schemas, RLS SQL, API shapes, UX copy polish) — those belong in ADRs / technical backlog |
 | **Date** | 2026-08-08 |
 | **Phase 2 note** | Architecture spine is **COMPLETE on gce-dev** (migrations applied; types regenerated from gce-dev). Non-blocking: historical legacy schema baseline dump (ADR-004). Open OD items below are **unchanged** — money/legal gates remain Validation Pending / Deferred. |
+| **Phase 4 note** | Identity/RBAC/organisation **COMPLETE on gce-dev** (`20260808150000_phase4_identity_rbac_organisation`). Non-blocking: bulk historical legacy→assignment migration ops. Production untouched. Emergency break-glass runbook still Pending Technical Design / security validation (not ordinary Super Admin). |
 
 ---
 

@@ -61,6 +61,21 @@ const STATIC_MAP: Record<string, Omit<LegacyMappingResult, "legacyRole" | "grant
     mappingStatus: "quarantined",
     notes: "Franchise Unit is commercial construct, not RBAC role (FD-039)",
   },
+  cbdp: {
+    canonicalRoleKey: "connect_bdp",
+    mappingStatus: "mapped",
+    notes: "Maps only with clear provenance; requires explicit assignment",
+  },
+  mbdp: {
+    canonicalRoleKey: "marketplace_bdp",
+    mappingStatus: "mapped",
+    notes: "Maps only with clear provenance; requires explicit assignment",
+  },
+  super_admin: {
+    canonicalRoleKey: null,
+    mappingStatus: "quarantined",
+    notes: "Not an ordinary product role (FD-035/039)",
+  },
 };
 
 /**

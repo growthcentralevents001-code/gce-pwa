@@ -64,6 +64,17 @@ export const LEGACY_DASHBOARD_REDIRECTS: Record<
   },
 };
 
+/** Extra role keys that unlock an existing workspace shell (no Super Admin shell). */
+const EXTRA_WORKSPACE_ROLES: Array<{ role: GceRoleKey; workspace: WorkspaceKey }> = [
+  { role: "opportunity_desk", workspace: "platform-ops" },
+  { role: "enterprise_platform_expert", workspace: "platform-ops" },
+  { role: "relationship_manager", workspace: "platform-ops" },
+  { role: "platform_relationship_manager", workspace: "platform-ops" },
+  { role: "governing_body_member", workspace: "connect-member" },
+  { role: "circle_finance_coordinator", workspace: "connect-member" },
+  { role: "sergeant_at_arms", workspace: "connect-member" },
+];
+
 export function workspacesForAssignments(
   assignments: RoleAssignment[]
 ): WorkspaceKey[] {
@@ -75,6 +86,9 @@ export function workspacesForAssignments(
   ][]) {
     if (!roleKey) continue;
     if (active.some((a) => a.roleKey === roleKey)) keys.add(workspaceKey);
+  }
+  for (const { role, workspace } of EXTRA_WORKSPACE_ROLES) {
+    if (active.some((a) => a.roleKey === role)) keys.add(workspace);
   }
   // Platform admins may also access finance/compliance/support if assigned those roles only;
   // platform_admin unlocks platform-ops.

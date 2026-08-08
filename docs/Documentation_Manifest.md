@@ -240,6 +240,7 @@ Additional mandatory behaviors:
 | Phase 2 Technical Architecture Master Plan | `docs/phase-2/PHASE_2_TECHNICAL_ARCHITECTURE_MASTER_PLAN.md` | Authoritative Phase 2 technical blueprint |
 | Schema SoT reconciliation | `docs/phase-2/implementation/SCHEMA_SOT_RECONCILIATION.md` | ADR-004 baseline plan |
 | Phase 3 implementation notes | `docs/phase-3/PHASE_3_IMPLEMENTATION_NOTES.md` | Phase 3 delivery notes |
+| Phase 4 implementation notes | `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` | Phase 4 identity/RBAC/org delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

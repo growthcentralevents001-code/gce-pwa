@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Phase** | 4 |
-| **Status** | Documentation — implementation-ready |
+| **Status** | **Implementation Complete on gce-dev** — see `PHASE_4_IMPLEMENTATION_NOTES.md` |
 | **Classification** | Primarily **Business** (FD-023, FD-035, FD-034, FD-039); technical enforcement via ADR-001/002/003/005 |
 | **Date** | 2026-08-08 |
 

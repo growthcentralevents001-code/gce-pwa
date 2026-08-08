@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 7 — Marketplace & MBDP policies applied on gce-dev) |
+| **Status** | Living documentation (Phase 8 — Enterprise policies applied on gce-dev) |
 | **Classification** | Logical RLS **policy intent** — SQL lives in migrations (ADR-004) |
 | **Authority** | [ADR-005](../phase-2/adrs/ADR-005_RLS_Strategy.md) (technical); FD-023 / FD-035 (permission rules); ADR-004 (policies live in migrations) |
 | **Related** | [`RBAC_PERMISSION_MATRIX.md`](./RBAC_PERMISSION_MATRIX.md), [`../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md`](../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -131,12 +131,17 @@ Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remain
 
 ## Matrix — Enterprise
 
-| Resource (logical) | Ent. Client Rep | Enterprise BDP | Platform Ops | Finance Admin | Compliance |
-|--------------------|-----------------|----------------|--------------|---------------|------------|
-| EnterpriseClient | Org scope | Assigned | Platform admin | Finance scoped | Platform admin |
-| Quote | Org scope | Assigned | Platform admin | Finance scoped + co-sign path (TR) | Platform admin |
-| Project / Milestone | Org scope | Assigned | Platform admin | Finance scoped | Platform admin |
-| VendorRecord | Org / Project limited (TR) | Assigned limited (TR) | Platform admin | Finance scoped | Platform admin |
+**Implementation note (Phase 8 / gce-dev):** Canonical tables `enterprise_client_profiles`, `enterprise_bdp_packs`, `enterprise_client_attributions`, `enterprise_opportunities`, `enterprise_requirements*`, `enterprise_solution_proposals`, `enterprise_quotes*`, `enterprise_projects*`, `enterprise_milestones`, `enterprise_vendors*`, `enterprise_change_orders`, `enterprise_disputes`, `enterprise_revenue_entitlements`, `gce_commissioned_revenue_components`. Deny-by-default RLS; vendor staff-managed; entitlement rows Finance/admin/own-pack. Legacy `enterprise_requests`/`enterprise_proposals` remain historical. Migration `20260808190000_phase8_enterprise`.
+
+| Resource (logical) | Ent. Client Rep | Enterprise BDP | Platform Expert | Finance Admin | Platform Admin |
+|--------------------|-----------------|----------------|-----------------|---------------|----------------|
+| EnterpriseClient | Org / primary rep | Active attribution | ✓ | scoped | ✓ |
+| Opportunity / Requirement | Org scope | Attributed | ✓ | limited | ✓ |
+| Proposal / Quote | Org (client-facing) | Attributed (no issue alone) | ✓ draft/issue | co-sign path | ✓ |
+| Project / Component / Milestone | Org scope | Attributed | ✓ | Finance scoped | ✓ |
+| VendorRecord | Client-facing limited | Limited | ✓ manage | Finance scoped | ✓ |
+| Entitlement boundary | Deny | Own pack | Deny | ✓ | ✓ |
+| Commissioned revenue component claim | Deny | Deny | Deny | ✓ read | ✓ |
 
 ---
 

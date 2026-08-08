@@ -65,12 +65,12 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Marketplace | Event QR validation at launch | Redemption/check-in | FD-037 | 11 | P1 | Medium | QR validates ticket; replay protected | QR replay tests | Low | **DONE** foundation Phase 7 |
 | Marketplace | Marketplace BDP unit caps 20 / max 2 units / 40 venues | Capacity engine | FD-033 | 7 | P1 | Medium | Caps enforced; second unit not automatic | Capacity tests | Low | **DONE** DB triggers |
 | Marketplace | Affiliate commercial path feature-flagged **off** | Flags | FD-032/039 Part J | 7 | Future | Low | No Affiliate entitlements in production spine | Flag-off proof | Low |
-| Enterprise | Enterprise Client org + Client Representative | Orgs + RBAC | FD-038/035 | 8 | P1 | High | Client ≠ Enterprise BDP | Org isolation tests | Medium |
-| Enterprise | Enterprise BDP pack + client-based attribution | Payments + commission | FD-026/038 | 8 | P1 | High | No territorial exclusivity entitlement | Attribution tests | Medium |
-| Enterprise | Quotation path + Finance co-sign ≥ ₹5,00,000 | SoD + audit | FD-038/039 | 8 / 13 | P0 | Critical | Quotes above threshold blocked without Finance co-sign | Threshold boundary tests | Low |
-| Enterprise | Project components + project-specific milestones | Project SM | FD-038 | 8 | P1 | High | No fixed mandatory 30/40/30; milestones negotiated | Milestone config tests | Medium |
-| Enterprise | Componentised settlement; **no double commission** | Settlement + commission | FD-038/037 | 8 / 9 | P0 | Critical | Same rupee component cannot pay two vertical commissions | Cross-vertical recon tests | High |
-| Enterprise | Managed vendors without mandatory login | Vendor records | FD-038/039 | 8 | P1 | Medium | Vendor portal inactive; architecture allows future workspace | Vendor record CRUD tests | Low |
+| Enterprise | Enterprise Client org + Client Representative | Orgs + RBAC | FD-038/035 | 8 | P1 | High | Client ≠ Enterprise BDP | Org isolation tests | **Done on gce-dev** |
+| Enterprise | Enterprise BDP pack + client-based attribution | Payments + commission | FD-026/038 | 8 | P1 | High | No territorial exclusivity entitlement | Attribution tests | **Done on gce-dev** |
+| Enterprise | Quotation path + Finance co-sign > ₹5,00,000 | SoD + audit | FD-038/039 | 8 / 13 | P0 | Critical | Quotes above threshold blocked without Finance co-sign | Threshold boundary tests | **Done on gce-dev** |
+| Enterprise | Project components + project-specific milestones | Project SM | FD-038 | 8 | P1 | High | No fixed mandatory 30/40/30; milestones negotiated | Milestone config tests | **Done on gce-dev** |
+| Enterprise | Componentised entitlement boundary; **no double commission** | Settlement + commission | FD-038/037 | 8 / 9 | P0 | Critical | Same rupee component cannot pay two vertical commissions | Cross-vertical recon tests | **Boundary done; Phase 9 settlement pending** |
+| Enterprise | Managed vendors without mandatory login | Vendor records | FD-038/039 | 8 | P1 | Medium | Vendor portal inactive; architecture allows future workspace | Vendor record CRUD tests | **Done on gce-dev** |
 | Enterprise | Vendor Opportunity Fee % **not** activated | Flags | FD-026; OD-026 | 8 | Future | Medium | Fee concept stored inactive; no invented % | Flag-off proof | Low |
 | Finance | Ledger principles (internal wallet; cash-out inactive) | ADR-007 | FD-020/039 | 9 | P0 | Critical | Ledgers auditable; cash-out flag off | Ledger invariant tests | High |
 | Finance | Commission Engine entitlement states | `SM_Commission` | FD-029 | 9 | P0 | Critical | States versioned; self-approval impossible | Commission SM + SoD tests | High |

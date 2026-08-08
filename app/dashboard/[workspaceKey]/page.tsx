@@ -11,6 +11,13 @@ import {
   listMbdpUnitsForUser,
   buildMbdpDashboard,
 } from "@/lib/architecture/marketplace";
+import {
+  listEbdpPacksForUser,
+  buildEbdpDashboard,
+  listClientsForRepresentative,
+  buildEnterpriseClientDashboard,
+  buildExpertDashboard,
+} from "@/lib/architecture/enterprise";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
 import { WorkspaceSwitcher } from "./workspace-switcher";
@@ -127,6 +134,55 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
   if (showVenuePanel) {
     venueHint =
       "Canonical Venue Partner workspace (FD-033/037). Use Marketplace API for Event/Offer/claim. Avoid legacy prototype routes for new data.";
+  }
+
+  const showEbdpPanel = canAccess && key === "enterprise-bdp";
+  let ebdpReports: Array<Awaited<ReturnType<typeof buildEbdpDashboard>>> = [];
+  if (showEbdpPanel) {
+    try {
+      const packs = await listEbdpPacksForUser(supabase, user.id);
+      ebdpReports = await Promise.all(
+        packs.slice(0, 3).map((p) => buildEbdpDashboard(supabase, String(p.id)))
+      );
+    } catch {
+      ebdpReports = [];
+    }
+  }
+
+  const showEnterpriseClientPanel = canAccess && key === "enterprise-client";
+  let clientReports: Array<
+    Awaited<ReturnType<typeof buildEnterpriseClientDashboard>>
+  > = [];
+  if (showEnterpriseClientPanel) {
+    try {
+      const clients = await listClientsForRepresentative(supabase, user.id);
+      clientReports = await Promise.all(
+        clients
+          .slice(0, 5)
+          .map((c) => buildEnterpriseClientDashboard(supabase, String(c.id)))
+      );
+    } catch {
+      clientReports = [];
+    }
+  }
+
+  const showExpertPanel =
+    canAccess &&
+    (key === "platform-ops" || key === "finance") &&
+    identity.entitlements.activeAssignments.some(
+      (a) =>
+        a.roleKey === "enterprise_platform_expert" ||
+        a.roleKey === "finance_admin" ||
+        a.roleKey === "platform_admin"
+    );
+  let expertReport: Awaited<ReturnType<typeof buildExpertDashboard>> | null =
+    null;
+  if (showExpertPanel) {
+    try {
+      expertReport = await buildExpertDashboard(supabase, user.id);
+    } catch {
+      expertReport = null;
+    }
   }
 
   if (!canAccess) {
@@ -301,6 +357,99 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
         <section className="mt-6 rounded-lg border border-neutral-200 p-4">
           <h2 className="text-sm font-medium">Venue Partner</h2>
           <p className="mt-1 text-xs text-neutral-500">{venueHint}</p>
+        </section>
+      ) : null}
+      {showEbdpPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Enterprise BDP Franchise Pack</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Client-based attribution · 30 clients/pack · EBDP = 25% of GCE platform
+            commission · Finance co-sign &gt; ₹5L
+          </p>
+          {ebdpReports.length === 0 || !ebdpReports[0] ? (
+            <p className="mt-3 text-sm text-neutral-600">
+              No Enterprise BDP pack yet. Apply via <code>/api/enterprise</code>.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-3 text-sm">
+              {ebdpReports.filter(Boolean).map((r) =>
+                r ? (
+                  <li key={r.packId} className="border-t border-neutral-100 pt-2">
+                    <div className="font-medium">{r.applicationStatus}</div>
+                    <div className="mt-1 text-xs text-neutral-600">
+                      Package: {r.packageOption} · clients {r.activeClientCount}/
+                      {r.clientsCapacity} · proposed {r.proposedAttributions}
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Opportunities: {r.openOpportunities} · projects:{" "}
+                      {r.activeProjects} · handovers: {r.reassignmentEvents}
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Eligible entitlement: ₹
+                      {(r.grossEligibleCommissionMinor / 100).toLocaleString(
+                        "en-IN"
+                      )}{" "}
+                      · recoverable left: ₹
+                      {(r.remainingRecoverableMinor / 100).toLocaleString(
+                        "en-IN"
+                      )}
+                    </div>
+                  </li>
+                ) : null
+              )}
+            </ul>
+          )}
+        </section>
+      ) : null}
+      {showEnterpriseClientPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Enterprise Client</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Organisation workspace — internal margins/commission hidden
+          </p>
+          {clientReports.length === 0 || !clientReports[0] ? (
+            <p className="mt-3 text-sm text-neutral-600">
+              No Enterprise Client organisations linked to your representative
+              profile.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-3 text-sm">
+              {clientReports.filter(Boolean).map((r) =>
+                r ? (
+                  <li key={r.clientId} className="border-t border-neutral-100 pt-2">
+                    <div className="font-medium">{r.displayName}</div>
+                    <div className="mt-1 text-xs text-neutral-600">
+                      {r.status} · {r.engagementStatus}
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Opportunities: {r.opportunities} · quotes pending:{" "}
+                      {r.quotesAwaitingAcceptance} · projects: {r.projects}
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Milestones due: {r.milestonesDue} · disputes:{" "}
+                      {r.openDisputes}
+                    </div>
+                  </li>
+                ) : null
+              )}
+            </ul>
+          )}
+        </section>
+      ) : null}
+      {showExpertPanel && expertReport ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">
+            Enterprise operations / Finance boundary
+          </h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Requirement structuring · proposals · Finance co-sign queue (Phase 9
+            settlement not included)
+          </p>
+          <div className="mt-3 text-sm text-neutral-700">
+            Assigned opportunities: {expertReport.assignedOpportunities} · draft
+            proposals: {expertReport.draftProposals} · quotes pending Finance
+            co-sign: {expertReport.quotesPendingFinanceCosign}
+          </div>
         </section>
       ) : null}
     </main>

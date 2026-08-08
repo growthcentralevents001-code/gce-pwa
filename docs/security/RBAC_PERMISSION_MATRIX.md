@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 5 — membership/Circle resources implemented on gce-dev) |
+| **Status** | Living documentation (Phase 8 — Enterprise resources implemented on gce-dev) |
 | **Classification** | Logical permission matrix — **Technical recommendation** where codes not Founder-finalised |
 | **Authority** | FD-023 (RBAC principles), FD-035 (identity / assignment / workspace); role names → `docs/core/35_Role_Taxonomy.md` |
 | **Related** | [`RLS_ACCESS_MATRIX.md`](./RLS_ACCESS_MATRIX.md), `docs/core/19_Permissions_Roles.md` (must defer to FD-023), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -138,13 +138,16 @@ Symbols: `✓` allowed within scope · `—` not by default · `✗` forbidden (
 
 ## Matrix C — Enterprise
 
+**Implementation note (Phase 8 / gce-dev):** Permission intents enforced in `lib/architecture/enterprise/permissions.ts` + API SoD. Enterprise BDP cannot issue binding quotes or Finance-co-sign. Finance co-sign required for quotes with `total_proposed_minor > 50000000`. Client Rep has no entitlement-read. Platform Expert drafts/structures/issues. See `docs/phase-8/PHASE_8_IMPLEMENTATION_NOTES.md`.
+
 | Role | Resource | R | C | U | A | D | F | P | X | Scope |
 |------|----------|---|---|---|---|---|---|---|---|-------|
-| Enterprise Client Rep | Own quotes / projects / milestones | ✓ | C change req (TR) | limited | — | — | — | Org | — | Org |
-| Enterprise BDP | Attributed clients / pipeline | ✓ | ✓ BD | ✓ | ✗ finance release | — | ✗ | limited (TR) | — | Assigned |
+| Enterprise Client Rep | Own quotes / projects / milestones | ✓ | C change req (TR) | limited | accept quote | — | — | Org | — | Org |
+| Enterprise Platform Expert | Requirements / proposals / quotes / components | ✓ | ✓ | ✓ | issue (not finance) | — | ✗ | limited (TR) | — | Assigned |
+| Enterprise BDP | Attributed clients / pipeline | ✓ | ✓ BD | ✓ | ✗ finance release / ✗ issue quote | — | ✗ | limited (TR) | — | Assigned |
 | Enterprise BDP | Own commission approve | ✓ view | — | — | ✗ | — | ✗ | — | — | Self view only |
-| Finance Admin | Quote co-sign / settlement components | ✓ | — | — | ✓ (FD-038) | — | ✓ | ✓ | ✓ | Platform finance |
-| Platform Ops | Enterprise ops coordination | ✓ | ✓ | ✓ | limited | — | ✗ | limited (TR) | ✓ (TR) | Assigned |
+| Finance Admin | Quote co-sign / entitlement boundary | ✓ | — | — | ✓ co-sign (FD-038) | — | ✓ | ✓ | ✓ | Platform finance |
+| Platform Ops / Admin | Enterprise ops / attribution / reassignment | ✓ | ✓ | ✓ | limited | — | ✗ | limited (TR) | ✓ (TR) | Assigned |
 
 ---
 

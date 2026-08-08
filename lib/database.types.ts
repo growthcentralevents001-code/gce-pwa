@@ -2598,6 +2598,103 @@ export type Database = {
         }
         Relationships: []
       }
+      enterprise_bdp_packs: {
+        Row: {
+          activated_at: string | null
+          active_client_count: number
+          application_status: Database["public"]["Enums"]["enterprise_bdp_pack_status"]
+          clients_capacity_max: number
+          created_at: string
+          id: string
+          initial_payment_minor: number
+          metadata: Json
+          offline_payment_ref: string | null
+          package_option: Database["public"]["Enums"]["enterprise_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          active_client_count?: number
+          application_status?: Database["public"]["Enums"]["enterprise_bdp_pack_status"]
+          clients_capacity_max?: number
+          created_at?: string
+          id?: string
+          initial_payment_minor?: number
+          metadata?: Json
+          offline_payment_ref?: string | null
+          package_option?: Database["public"]["Enums"]["enterprise_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          active_client_count?: number
+          application_status?: Database["public"]["Enums"]["enterprise_bdp_pack_status"]
+          clients_capacity_max?: number
+          created_at?: string
+          id?: string
+          initial_payment_minor?: number
+          metadata?: Json
+          offline_payment_ref?: string | null
+          package_option?: Database["public"]["Enums"]["enterprise_bdp_package_option"]
+          package_total_minor?: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_bdp_packs_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_bdp_packs_role_assignment_id_fkey"
+            columns: ["role_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "role_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_bdp_packs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enterprise_campaigns: {
         Row: {
           created_at: string | null
@@ -2630,6 +2727,768 @@ export type Database = {
           valid_until?: string | null
         }
         Relationships: []
+      }
+      enterprise_change_orders: {
+        Row: {
+          approved_by: string | null
+          client_accepted_at: string | null
+          client_accepted_by: string | null
+          commercial_impact_minor: number
+          created_at: string
+          id: string
+          metadata: Json
+          project_id: string
+          requested_by: string | null
+          requested_change: string
+          status: string
+          timeline_impact: string | null
+          title: string
+          updated_at: string
+          version_no: number
+        }
+        Insert: {
+          approved_by?: string | null
+          client_accepted_at?: string | null
+          client_accepted_by?: string | null
+          commercial_impact_minor?: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          project_id: string
+          requested_by?: string | null
+          requested_change: string
+          status?: string
+          timeline_impact?: string | null
+          title: string
+          updated_at?: string
+          version_no?: number
+        }
+        Update: {
+          approved_by?: string | null
+          client_accepted_at?: string | null
+          client_accepted_by?: string | null
+          commercial_impact_minor?: number
+          created_at?: string
+          id?: string
+          metadata?: Json
+          project_id?: string
+          requested_by?: string | null
+          requested_change?: string
+          status?: string
+          timeline_impact?: string | null
+          title?: string
+          updated_at?: string
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_change_orders_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_change_orders_client_accepted_by_fkey"
+            columns: ["client_accepted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_change_orders_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_client_attributions: {
+        Row: {
+          approved_by: string | null
+          basis: string | null
+          bdp_user_id: string | null
+          client_id: string
+          created_at: string
+          created_by: string | null
+          effective_from: string | null
+          effective_to: string | null
+          id: string
+          is_correction: boolean
+          metadata: Json
+          pack_id: string | null
+          provenance: string
+          reason: string | null
+          status: Database["public"]["Enums"]["enterprise_attribution_status"]
+          updated_at: string
+        }
+        Insert: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          metadata?: Json
+          pack_id?: string | null
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["enterprise_attribution_status"]
+          updated_at?: string
+        }
+        Update: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          metadata?: Json
+          pack_id?: string | null
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["enterprise_attribution_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_client_attributions_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_attributions_bdp_user_id_fkey"
+            columns: ["bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_attributions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_attributions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_attributions_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_client_handovers: {
+        Row: {
+          approved_by: string | null
+          client_id: string
+          completed_at: string | null
+          created_at: string
+          effective_from: string | null
+          id: string
+          metadata: Json
+          notes: string | null
+          requested_by: string | null
+          source_pack_id: string | null
+          status: string
+          target_pack_id: string | null
+        }
+        Insert: {
+          approved_by?: string | null
+          client_id: string
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_pack_id?: string | null
+          status?: string
+          target_pack_id?: string | null
+        }
+        Update: {
+          approved_by?: string | null
+          client_id?: string
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_pack_id?: string | null
+          status?: string
+          target_pack_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_client_handovers_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_handovers_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_handovers_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_handovers_source_pack_id_fkey"
+            columns: ["source_pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_handovers_target_pack_id_fkey"
+            columns: ["target_pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_client_profiles: {
+        Row: {
+          billing_ref: string | null
+          compliance_ref: string | null
+          created_at: string
+          display_name: string
+          engagement_status: string
+          id: string
+          industry: string | null
+          legacy_application_id: string | null
+          metadata: Json
+          organisation_id: string
+          primary_representative_user_id: string | null
+          status: Database["public"]["Enums"]["enterprise_client_status"]
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          billing_ref?: string | null
+          compliance_ref?: string | null
+          created_at?: string
+          display_name: string
+          engagement_status?: string
+          id?: string
+          industry?: string | null
+          legacy_application_id?: string | null
+          metadata?: Json
+          organisation_id: string
+          primary_representative_user_id?: string | null
+          status?: Database["public"]["Enums"]["enterprise_client_status"]
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          billing_ref?: string | null
+          compliance_ref?: string | null
+          created_at?: string
+          display_name?: string
+          engagement_status?: string
+          id?: string
+          industry?: string | null
+          legacy_application_id?: string | null
+          metadata?: Json
+          organisation_id?: string
+          primary_representative_user_id?: string | null
+          status?: Database["public"]["Enums"]["enterprise_client_status"]
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_client_profiles_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: true
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_client_profiles_primary_representative_user_id_fkey"
+            columns: ["primary_representative_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_disputes: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          details: string | null
+          escalation: string | null
+          id: string
+          metadata: Json
+          owner_user_id: string | null
+          project_id: string | null
+          resolution: string | null
+          resolved_at: string | null
+          severity: string
+          status: string
+          subject_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          details?: string | null
+          escalation?: string | null
+          id?: string
+          metadata?: Json
+          owner_user_id?: string | null
+          project_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          subject_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          details?: string | null
+          escalation?: string | null
+          id?: string
+          metadata?: Json
+          owner_user_id?: string | null
+          project_id?: string | null
+          resolution?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          subject_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_disputes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_disputes_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_disputes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_milestones: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          amount_minor: number | null
+          component_id: string | null
+          created_at: string
+          due_on: string | null
+          due_trigger: string | null
+          id: string
+          metadata: Json
+          name: string
+          percentage_bps: number | null
+          project_id: string
+          sort_order: number
+          status: Database["public"]["Enums"]["enterprise_milestone_status"]
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          amount_minor?: number | null
+          component_id?: string | null
+          created_at?: string
+          due_on?: string | null
+          due_trigger?: string | null
+          id?: string
+          metadata?: Json
+          name: string
+          percentage_bps?: number | null
+          project_id: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["enterprise_milestone_status"]
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          amount_minor?: number | null
+          component_id?: string | null
+          created_at?: string
+          due_on?: string | null
+          due_trigger?: string | null
+          id?: string
+          metadata?: Json
+          name?: string
+          percentage_bps?: number | null
+          project_id?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["enterprise_milestone_status"]
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_milestones_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_milestones_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_project_components"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_opportunities: {
+        Row: {
+          attributed_bdp_user_id: string | null
+          category: string | null
+          client_id: string
+          client_rep_user_id: string | null
+          created_at: string
+          expected_budget_max_minor: number | null
+          expected_budget_min_minor: number | null
+          expert_user_id: string | null
+          id: string
+          legacy_request_id: string | null
+          metadata: Json
+          owner_user_id: string | null
+          pack_id: string | null
+          priority: string
+          source: string | null
+          status: Database["public"]["Enums"]["enterprise_opportunity_status"]
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attributed_bdp_user_id?: string | null
+          category?: string | null
+          client_id: string
+          client_rep_user_id?: string | null
+          created_at?: string
+          expected_budget_max_minor?: number | null
+          expected_budget_min_minor?: number | null
+          expert_user_id?: string | null
+          id?: string
+          legacy_request_id?: string | null
+          metadata?: Json
+          owner_user_id?: string | null
+          pack_id?: string | null
+          priority?: string
+          source?: string | null
+          status?: Database["public"]["Enums"]["enterprise_opportunity_status"]
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attributed_bdp_user_id?: string | null
+          category?: string | null
+          client_id?: string
+          client_rep_user_id?: string | null
+          created_at?: string
+          expected_budget_max_minor?: number | null
+          expected_budget_min_minor?: number | null
+          expert_user_id?: string | null
+          id?: string
+          legacy_request_id?: string | null
+          metadata?: Json
+          owner_user_id?: string | null
+          pack_id?: string | null
+          priority?: string
+          source?: string | null
+          status?: Database["public"]["Enums"]["enterprise_opportunity_status"]
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_opportunities_attributed_bdp_user_id_fkey"
+            columns: ["attributed_bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_opportunities_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_opportunities_client_rep_user_id_fkey"
+            columns: ["client_rep_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_opportunities_expert_user_id_fkey"
+            columns: ["expert_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_opportunities_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_opportunities_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_project_components: {
+        Row: {
+          commercial_amount_minor: number
+          component_key: string
+          component_type: string
+          created_at: string
+          id: string
+          label: string
+          marketplace_venue_id: string | null
+          metadata: Json
+          platform_commission_bps: number
+          platform_commission_minor: number
+          project_id: string
+          provider_ref: string | null
+          revenue_component_key: string
+          sourcing_vertical: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          commercial_amount_minor?: number
+          component_key: string
+          component_type: string
+          created_at?: string
+          id?: string
+          label: string
+          marketplace_venue_id?: string | null
+          metadata?: Json
+          platform_commission_bps?: number
+          platform_commission_minor?: number
+          project_id: string
+          provider_ref?: string | null
+          revenue_component_key: string
+          sourcing_vertical: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          commercial_amount_minor?: number
+          component_key?: string
+          component_type?: string
+          created_at?: string
+          id?: string
+          label?: string
+          marketplace_venue_id?: string | null
+          metadata?: Json
+          platform_commission_bps?: number
+          platform_commission_minor?: number
+          project_id?: string
+          provider_ref?: string | null
+          revenue_component_key?: string
+          sourcing_vertical?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_project_components_marketplace_venue_id_fkey"
+            columns: ["marketplace_venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_project_components_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_projects: {
+        Row: {
+          accepted_quote_id: string | null
+          attribution_id: string | null
+          client_id: string
+          commercial_total_minor: number
+          created_at: string
+          ends_on: string | null
+          gce_execution_role: string
+          id: string
+          metadata: Json
+          opportunity_id: string | null
+          owner_user_id: string | null
+          pack_id: string | null
+          project_ref: string
+          starts_on: string | null
+          status: Database["public"]["Enums"]["enterprise_project_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_quote_id?: string | null
+          attribution_id?: string | null
+          client_id: string
+          commercial_total_minor?: number
+          created_at?: string
+          ends_on?: string | null
+          gce_execution_role?: string
+          id?: string
+          metadata?: Json
+          opportunity_id?: string | null
+          owner_user_id?: string | null
+          pack_id?: string | null
+          project_ref: string
+          starts_on?: string | null
+          status?: Database["public"]["Enums"]["enterprise_project_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_quote_id?: string | null
+          attribution_id?: string | null
+          client_id?: string
+          commercial_total_minor?: number
+          created_at?: string
+          ends_on?: string | null
+          gce_execution_role?: string
+          id?: string
+          metadata?: Json
+          opportunity_id?: string | null
+          owner_user_id?: string | null
+          pack_id?: string | null
+          project_ref?: string
+          starts_on?: string | null
+          status?: Database["public"]["Enums"]["enterprise_project_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_projects_accepted_quote_id_fkey"
+            columns: ["accepted_quote_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_projects_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_projects_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_projects_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_projects_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       enterprise_proposals: {
         Row: {
@@ -2678,6 +3537,188 @@ export type Database = {
           },
         ]
       }
+      enterprise_quote_lines: {
+        Row: {
+          amount_minor: number
+          component_type: string
+          created_at: string
+          id: string
+          label: string
+          line_no: number
+          metadata: Json
+          platform_commission_bps: number
+          quote_id: string
+          revenue_component_key: string
+          sourcing_vertical: string
+        }
+        Insert: {
+          amount_minor?: number
+          component_type?: string
+          created_at?: string
+          id?: string
+          label: string
+          line_no: number
+          metadata?: Json
+          platform_commission_bps?: number
+          quote_id: string
+          revenue_component_key: string
+          sourcing_vertical?: string
+        }
+        Update: {
+          amount_minor?: number
+          component_type?: string
+          created_at?: string
+          id?: string
+          label?: string
+          line_no?: number
+          metadata?: Json
+          platform_commission_bps?: number
+          quote_id?: string
+          revenue_component_key?: string
+          sourcing_vertical?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_quote_lines_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_quotes: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          client_id: string
+          created_at: string
+          currency: string
+          finance_cosign_required: boolean
+          finance_cosigned_at: string | null
+          finance_cosigned_by: string | null
+          id: string
+          issued_at: string | null
+          issued_by: string | null
+          metadata: Json
+          opportunity_id: string
+          proposal_id: string | null
+          quote_ref: string
+          requirement_version_id: string | null
+          status: Database["public"]["Enums"]["enterprise_quote_status"]
+          supersedes_quote_id: string | null
+          total_proposed_minor: number
+          updated_at: string
+          validity_until: string | null
+          version_no: number
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          client_id: string
+          created_at?: string
+          currency?: string
+          finance_cosign_required?: boolean
+          finance_cosigned_at?: string | null
+          finance_cosigned_by?: string | null
+          id?: string
+          issued_at?: string | null
+          issued_by?: string | null
+          metadata?: Json
+          opportunity_id: string
+          proposal_id?: string | null
+          quote_ref: string
+          requirement_version_id?: string | null
+          status?: Database["public"]["Enums"]["enterprise_quote_status"]
+          supersedes_quote_id?: string | null
+          total_proposed_minor?: number
+          updated_at?: string
+          validity_until?: string | null
+          version_no?: number
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          client_id?: string
+          created_at?: string
+          currency?: string
+          finance_cosign_required?: boolean
+          finance_cosigned_at?: string | null
+          finance_cosigned_by?: string | null
+          id?: string
+          issued_at?: string | null
+          issued_by?: string | null
+          metadata?: Json
+          opportunity_id?: string
+          proposal_id?: string | null
+          quote_ref?: string
+          requirement_version_id?: string | null
+          status?: Database["public"]["Enums"]["enterprise_quote_status"]
+          supersedes_quote_id?: string | null
+          total_proposed_minor?: number
+          updated_at?: string
+          validity_until?: string | null
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_quotes_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_finance_cosigned_by_fkey"
+            columns: ["finance_cosigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_issued_by_fkey"
+            columns: ["issued_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_solution_proposals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_requirement_version_id_fkey"
+            columns: ["requirement_version_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_requirement_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_quotes_supersedes_quote_id_fkey"
+            columns: ["supersedes_quote_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enterprise_requests: {
         Row: {
           budget_range: string | null
@@ -2711,6 +3752,443 @@ export type Database = {
           preferred_dates?: string | null
           status?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      enterprise_requirement_versions: {
+        Row: {
+          actor_user_id: string | null
+          approval_status: string
+          budget_guidance_minor: number | null
+          change_reason: string | null
+          constraints: string | null
+          created_at: string
+          deliverables: string | null
+          id: string
+          locations: string | null
+          metadata: Json
+          objectives: string | null
+          raw_requirement: string | null
+          requirement_id: string
+          structured_scope: string | null
+          timeline_notes: string | null
+          version_no: number
+        }
+        Insert: {
+          actor_user_id?: string | null
+          approval_status?: string
+          budget_guidance_minor?: number | null
+          change_reason?: string | null
+          constraints?: string | null
+          created_at?: string
+          deliverables?: string | null
+          id?: string
+          locations?: string | null
+          metadata?: Json
+          objectives?: string | null
+          raw_requirement?: string | null
+          requirement_id: string
+          structured_scope?: string | null
+          timeline_notes?: string | null
+          version_no: number
+        }
+        Update: {
+          actor_user_id?: string | null
+          approval_status?: string
+          budget_guidance_minor?: number | null
+          change_reason?: string | null
+          constraints?: string | null
+          created_at?: string
+          deliverables?: string | null
+          id?: string
+          locations?: string | null
+          metadata?: Json
+          objectives?: string | null
+          raw_requirement?: string | null
+          requirement_id?: string
+          structured_scope?: string | null
+          timeline_notes?: string | null
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_requirement_versions_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_requirement_versions_requirement_id_fkey"
+            columns: ["requirement_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_requirements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_requirements: {
+        Row: {
+          created_at: string
+          current_version: number
+          id: string
+          metadata: Json
+          opportunity_id: string
+          readiness_status: string
+          structured_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_version?: number
+          id?: string
+          metadata?: Json
+          opportunity_id: string
+          readiness_status?: string
+          structured_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_version?: number
+          id?: string
+          metadata?: Json
+          opportunity_id?: string
+          readiness_status?: string
+          structured_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_requirements_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: true
+            referencedRelation: "enterprise_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_requirements_structured_by_fkey"
+            columns: ["structured_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_revenue_entitlements: {
+        Row: {
+          attribution_id: string | null
+          client_id: string
+          component_id: string | null
+          created_at: string
+          earning_event_key: string
+          ebdp_entitlement_bps: number
+          ebdp_entitlement_minor: number
+          eligible_event_revenue_minor: number
+          has_valid_attribution: boolean
+          id: string
+          metadata: Json
+          pack_id: string | null
+          platform_commission_minor: number
+          project_id: string | null
+          revenue_component_key: string
+          rule_version: string
+          state: Database["public"]["Enums"]["enterprise_entitlement_state"]
+          updated_at: string
+        }
+        Insert: {
+          attribution_id?: string | null
+          client_id: string
+          component_id?: string | null
+          created_at?: string
+          earning_event_key: string
+          ebdp_entitlement_bps?: number
+          ebdp_entitlement_minor?: number
+          eligible_event_revenue_minor?: number
+          has_valid_attribution?: boolean
+          id?: string
+          metadata?: Json
+          pack_id?: string | null
+          platform_commission_minor?: number
+          project_id?: string | null
+          revenue_component_key: string
+          rule_version?: string
+          state?: Database["public"]["Enums"]["enterprise_entitlement_state"]
+          updated_at?: string
+        }
+        Update: {
+          attribution_id?: string | null
+          client_id?: string
+          component_id?: string | null
+          created_at?: string
+          earning_event_key?: string
+          ebdp_entitlement_bps?: number
+          ebdp_entitlement_minor?: number
+          eligible_event_revenue_minor?: number
+          has_valid_attribution?: boolean
+          id?: string
+          metadata?: Json
+          pack_id?: string | null
+          platform_commission_minor?: number
+          project_id?: string | null
+          revenue_component_key?: string
+          rule_version?: string
+          state?: Database["public"]["Enums"]["enterprise_entitlement_state"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_revenue_entitlements_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_revenue_entitlements_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_client_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_revenue_entitlements_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_project_components"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_revenue_entitlements_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_bdp_packs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_revenue_entitlements_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_solution_proposals: {
+        Row: {
+          assumptions: string | null
+          client_facing_status: string
+          created_at: string
+          exclusions: string | null
+          id: string
+          internal_status: string
+          metadata: Json
+          opportunity_id: string
+          prepared_by: string | null
+          pricing_summary_minor: number
+          requirement_version_id: string | null
+          reviewed_by: string | null
+          solution_summary: string | null
+          title: string
+          updated_at: string
+          validity_until: string | null
+          version_no: number
+        }
+        Insert: {
+          assumptions?: string | null
+          client_facing_status?: string
+          created_at?: string
+          exclusions?: string | null
+          id?: string
+          internal_status?: string
+          metadata?: Json
+          opportunity_id: string
+          prepared_by?: string | null
+          pricing_summary_minor?: number
+          requirement_version_id?: string | null
+          reviewed_by?: string | null
+          solution_summary?: string | null
+          title: string
+          updated_at?: string
+          validity_until?: string | null
+          version_no?: number
+        }
+        Update: {
+          assumptions?: string | null
+          client_facing_status?: string
+          created_at?: string
+          exclusions?: string | null
+          id?: string
+          internal_status?: string
+          metadata?: Json
+          opportunity_id?: string
+          prepared_by?: string | null
+          pricing_summary_minor?: number
+          requirement_version_id?: string | null
+          reviewed_by?: string | null
+          solution_summary?: string | null
+          title?: string
+          updated_at?: string
+          validity_until?: string | null
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_solution_proposals_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_solution_proposals_prepared_by_fkey"
+            columns: ["prepared_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_solution_proposals_requirement_version_id_fkey"
+            columns: ["requirement_version_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_requirement_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_solution_proposals_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_vendor_assignments: {
+        Row: {
+          approved_by: string | null
+          assigned_by: string | null
+          commercial_amount_minor: number | null
+          component_id: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          project_id: string
+          scope: string | null
+          status: string
+          vendor_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          assigned_by?: string | null
+          commercial_amount_minor?: number | null
+          component_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          project_id: string
+          scope?: string | null
+          status?: string
+          vendor_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          assigned_by?: string | null
+          commercial_amount_minor?: number | null
+          component_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          project_id?: string
+          scope?: string | null
+          status?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_vendor_assignments_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_vendor_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_vendor_assignments_component_id_fkey"
+            columns: ["component_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_project_components"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_vendor_assignments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enterprise_vendor_assignments_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "enterprise_vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      enterprise_vendors: {
+        Row: {
+          business_name: string
+          capabilities: string | null
+          category: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          login_enabled: boolean
+          metadata: Json
+          payout_ref: string | null
+          status: string
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          business_name: string
+          capabilities?: string | null
+          category?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          login_enabled?: boolean
+          metadata?: Json
+          payout_ref?: string | null
+          status?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          business_name?: string
+          capabilities?: string | null
+          category?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          login_enabled?: boolean
+          metadata?: Json
+          payout_ref?: string | null
+          status?: string
+          updated_at?: string
+          verification_status?: string
         }
         Relationships: []
       }
@@ -2945,6 +4423,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      gce_commissioned_revenue_components: {
+        Row: {
+          created_at: string
+          entitlement_ref: string | null
+          metadata: Json
+          revenue_component_key: string
+          source_vertical: string
+          stakeholder_family: string
+        }
+        Insert: {
+          created_at?: string
+          entitlement_ref?: string | null
+          metadata?: Json
+          revenue_component_key: string
+          source_vertical: string
+          stakeholder_family: string
+        }
+        Update: {
+          created_at?: string
+          entitlement_ref?: string | null
+          metadata?: Json
+          revenue_component_key?: string
+          source_vertical?: string
+          stakeholder_family?: string
+        }
+        Relationships: []
       }
       identity_suspensions: {
         Row: {
@@ -3272,6 +4777,30 @@ export type Database = {
           id?: string
           legacy_role?: string
           mapping_status?: Database["public"]["Enums"]["legacy_connect_bdp_map_status"]
+          notes?: string | null
+        }
+        Relationships: []
+      }
+      legacy_enterprise_migration_map: {
+        Row: {
+          created_at: string
+          id: string
+          legacy_object: string
+          mapping_status: Database["public"]["Enums"]["legacy_enterprise_map_status"]
+          notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          legacy_object: string
+          mapping_status?: Database["public"]["Enums"]["legacy_enterprise_map_status"]
+          notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legacy_object?: string
+          mapping_status?: Database["public"]["Enums"]["legacy_enterprise_map_status"]
           notes?: string | null
         }
         Relationships: []
@@ -6244,6 +7773,28 @@ export type Database = {
           lifecycle: Database["public"]["Enums"]["circle_lifecycle_status"]
         }[]
       }
+      gce_claim_revenue_component: {
+        Args: {
+          p_entitlement_ref?: string
+          p_key: string
+          p_stakeholder: string
+          p_vertical: string
+        }
+        Returns: {
+          created_at: string
+          entitlement_ref: string | null
+          metadata: Json
+          revenue_component_key: string
+          source_vertical: string
+          stakeholder_family: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "gce_commissioned_revenue_components"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_confirm_circle_seat: {
         Args: { p_actor?: string; p_seat_id: string }
         Returns: {
@@ -6355,6 +7906,39 @@ export type Database = {
         }
       }
       gce_current_user_id: { Args: never; Returns: string }
+      gce_ebdp_refresh_client_counts: {
+        Args: { p_pack_id: string }
+        Returns: {
+          activated_at: string | null
+          active_client_count: number
+          application_status: Database["public"]["Enums"]["enterprise_bdp_pack_status"]
+          clients_capacity_max: number
+          created_at: string
+          id: string
+          initial_payment_minor: number
+          metadata: Json
+          offline_payment_ref: string | null
+          package_option: Database["public"]["Enums"]["enterprise_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "enterprise_bdp_packs"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_has_active_assignment: {
         Args: {
           p_role?: Database["public"]["Enums"]["gce_role_key"]
@@ -6371,6 +7955,12 @@ export type Database = {
         Args: { p_unit_id: string }
         Returns: boolean
       }
+      gce_is_ebdp_pack_owner: { Args: { p_pack_id: string }; Returns: boolean }
+      gce_is_enterprise_client_rep: {
+        Args: { p_client_id: string }
+        Returns: boolean
+      }
+      gce_is_enterprise_expert: { Args: never; Returns: boolean }
       gce_is_identity_suspended: {
         Args: { p_user_id?: string }
         Returns: boolean
@@ -6657,6 +8247,82 @@ export type Database = {
         | "revoked"
         | "expired"
         | "denied"
+      enterprise_attribution_status:
+        | "unattributed"
+        | "proposed"
+        | "pending_evidence"
+        | "active"
+        | "disputed"
+        | "suspended"
+        | "reassigned_closed"
+        | "voided"
+      enterprise_bdp_pack_status:
+        | "draft"
+        | "submitted"
+        | "pending_verification"
+        | "pending_payment"
+        | "pending_approval"
+        | "active"
+        | "rejected"
+        | "suspended"
+        | "terminated"
+        | "archived"
+      enterprise_bdp_package_option: "direct_30000" | "finance_recovery_36000"
+      enterprise_client_status:
+        | "draft"
+        | "active"
+        | "on_hold"
+        | "suspended"
+        | "terminated"
+        | "archived"
+      enterprise_entitlement_state:
+        | "estimated"
+        | "provisional"
+        | "earned"
+        | "on_hold"
+        | "settlement_eligible"
+        | "paid"
+        | "reversed"
+      enterprise_milestone_status:
+        | "planned"
+        | "due"
+        | "submitted"
+        | "accepted"
+        | "disputed"
+        | "completed"
+        | "cancelled"
+      enterprise_opportunity_status:
+        | "draft"
+        | "open"
+        | "qualifying"
+        | "proposal_in_progress"
+        | "quoting"
+        | "won"
+        | "lost"
+        | "on_hold"
+        | "cancelled"
+        | "archived"
+      enterprise_project_status:
+        | "setup"
+        | "approved"
+        | "active"
+        | "on_hold"
+        | "completed"
+        | "cancelled"
+        | "terminated"
+      enterprise_quote_status:
+        | "draft"
+        | "internal_review"
+        | "pending_finance_cosign"
+        | "finance_cosigned"
+        | "issued"
+        | "viewed"
+        | "accepted"
+        | "rejected"
+        | "changes_requested"
+        | "expired"
+        | "superseded"
+        | "cancelled"
       gce_role_key:
         | "platform_user"
         | "circle_member"
@@ -6705,6 +8371,12 @@ export type Database = {
         | "historical_only"
         | "ambiguous"
         | "needs_review"
+      legacy_enterprise_map_status:
+        | "mapped"
+        | "historical_only"
+        | "ambiguous"
+        | "needs_review"
+        | "reusable_shell"
       legacy_marketplace_map_status:
         | "mapped"
         | "historical_only"
@@ -7118,6 +8790,90 @@ export const Constants = {
         "expired",
         "denied",
       ],
+      enterprise_attribution_status: [
+        "unattributed",
+        "proposed",
+        "pending_evidence",
+        "active",
+        "disputed",
+        "suspended",
+        "reassigned_closed",
+        "voided",
+      ],
+      enterprise_bdp_pack_status: [
+        "draft",
+        "submitted",
+        "pending_verification",
+        "pending_payment",
+        "pending_approval",
+        "active",
+        "rejected",
+        "suspended",
+        "terminated",
+        "archived",
+      ],
+      enterprise_bdp_package_option: ["direct_30000", "finance_recovery_36000"],
+      enterprise_client_status: [
+        "draft",
+        "active",
+        "on_hold",
+        "suspended",
+        "terminated",
+        "archived",
+      ],
+      enterprise_entitlement_state: [
+        "estimated",
+        "provisional",
+        "earned",
+        "on_hold",
+        "settlement_eligible",
+        "paid",
+        "reversed",
+      ],
+      enterprise_milestone_status: [
+        "planned",
+        "due",
+        "submitted",
+        "accepted",
+        "disputed",
+        "completed",
+        "cancelled",
+      ],
+      enterprise_opportunity_status: [
+        "draft",
+        "open",
+        "qualifying",
+        "proposal_in_progress",
+        "quoting",
+        "won",
+        "lost",
+        "on_hold",
+        "cancelled",
+        "archived",
+      ],
+      enterprise_project_status: [
+        "setup",
+        "approved",
+        "active",
+        "on_hold",
+        "completed",
+        "cancelled",
+        "terminated",
+      ],
+      enterprise_quote_status: [
+        "draft",
+        "internal_review",
+        "pending_finance_cosign",
+        "finance_cosigned",
+        "issued",
+        "viewed",
+        "accepted",
+        "rejected",
+        "changes_requested",
+        "expired",
+        "superseded",
+        "cancelled",
+      ],
       gce_role_key: [
         "platform_user",
         "circle_member",
@@ -7169,6 +8925,13 @@ export const Constants = {
         "historical_only",
         "ambiguous",
         "needs_review",
+      ],
+      legacy_enterprise_map_status: [
+        "mapped",
+        "historical_only",
+        "ambiguous",
+        "needs_review",
+        "reusable_shell",
       ],
       legacy_marketplace_map_status: [
         "mapped",

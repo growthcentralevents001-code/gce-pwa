@@ -5,7 +5,7 @@
 | **Phase** | 11 |
 | **Document** | `PHASE_11_EVENTS_OFFERS_BOOKINGS_CUSTOMER_EXPERIENCE.md` |
 | **Type** | Phase planning / living architecture summary (documentation only) |
-| **Status** | Draft for Marketplace customer & Venue Partner experience |
+| **Status** | **Implementation Complete on gce-dev** — see `PHASE_11_IMPLEMENTATION_NOTES.md` |
 | **Date** | 2026-08-08 |
 
 ---
@@ -333,3 +333,9 @@ Customers pay for tickets; Venue Partner settlement follows completion + hold ru
 - FD-037, FD-039, FD-021, FD-029, FD-033, FD-034, FD-035
 - Marketplace & payment state machines listed above
 - Phase 9 (finance), Phase 12 (notifications/analytics), Phase 13 (approval/moderation), Phase 14 (e2e booking tests)
+
+---
+
+## Implementation status
+
+Implemented on **gce-dev** (`20260808220000_phase11_customer_experience`). Customer CX layer reuses Phase 7 `marketplace_*` and Phase 9 payment intents. Production money/settlement/payout/refund_processing remain OFF. OD-006 refund economics and Trust/Venue rank formulas remain non-blocking Unresolved. Phase 12 not started.

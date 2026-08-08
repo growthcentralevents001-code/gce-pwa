@@ -24,5 +24,6 @@ export * from "./connect";
 export * from "./connect-bdp";
 export * from "./marketplace";
 export * from "./lead-assist";
+export * from "./customer-cx";
 export * from "./jobs/queue";
 export * from "./observability/sentry";

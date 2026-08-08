@@ -187,6 +187,11 @@ Opportunity Desk must **not** own leads or take hidden personal commission (FD-0
 `lead.outcome.submit`, `lead.desk.review`, `lead.desk.assign`, `lead.desk.reassign`.
 Canonical role key `opportunity_desk` (FD-035) unlocks workspace `opportunity-desk`.
 
+**Phase 11 implementation (gce-dev):** permission codes in `lib/architecture/customer-cx/permissions.ts` —
+`cx.discover`, `cx.book`, `cx.booking.read_own`, `cx.ticket.read_own`, `cx.cancel_own`, `cx.refund_request`,
+`cx.offer_claim`, `cx.redeem_own`, `cx.feedback`, `cx.rank.read_own`, `cx.check_in.venue`, `cx.redeem.venue`.
+Customers act on own records; Venue Rep scoped check-in/redeem; no customer self-approval of refunds (OD-006 manual review).
+
 ---
 
 ## Self-approval & conflict (SoD)

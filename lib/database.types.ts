@@ -1,3 +1,7 @@
+/**
+ * Generated Database types from gce-dev (Phase 11).
+ * Do not hand-edit; regenerate via Supabase MCP generate_typescript_types.
+ */
 export type Json =
   | string
   | number
@@ -3463,6 +3467,366 @@ export type Database = {
           },
         ]
       }
+      customer_cx_preferences: {
+        Row: {
+          created_at: string
+          location_label: string | null
+          metadata: Json
+          notification_opt_in_placeholder: boolean
+          preferred_categories: string[]
+          preferred_city: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          location_label?: string | null
+          metadata?: Json
+          notification_opt_in_placeholder?: boolean
+          preferred_categories?: string[]
+          preferred_city?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          location_label?: string | null
+          metadata?: Json
+          notification_opt_in_placeholder?: boolean
+          preferred_categories?: string[]
+          preferred_city?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_cx_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_domain_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          payload: Json
+          subject_id: string | null
+          subject_type: string | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_domain_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_feedback: {
+        Row: {
+          booking_id: string | null
+          claim_id: string | null
+          created_at: string
+          dimensions: Json
+          free_text: string | null
+          id: string
+          metadata: Json
+          moderation_status: string
+          rating: number | null
+          subject_id: string
+          subject_type: string
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          dimensions?: Json
+          free_text?: string | null
+          id?: string
+          metadata?: Json
+          moderation_status?: string
+          rating?: number | null
+          subject_id: string
+          subject_type: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          dimensions?: Json
+          free_text?: string | null
+          id?: string
+          metadata?: Json
+          moderation_status?: string
+          rating?: number | null
+          subject_id?: string
+          subject_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_feedback_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_feedback_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_offer_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_feedback_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_non_purchase_reasons: {
+        Row: {
+          context_id: string | null
+          context_type: string
+          created_at: string
+          event_id: string | null
+          id: string
+          metadata: Json
+          note: string | null
+          offer_event_id: string | null
+          penalty_exempt: boolean
+          reason_code: string
+          review_status: string
+          user_id: string
+        }
+        Insert: {
+          context_id?: string | null
+          context_type: string
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          metadata?: Json
+          note?: string | null
+          offer_event_id?: string | null
+          penalty_exempt?: boolean
+          reason_code: string
+          review_status?: string
+          user_id: string
+        }
+        Update: {
+          context_id?: string | null
+          context_type?: string
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          metadata?: Json
+          note?: string | null
+          offer_event_id?: string | null
+          penalty_exempt?: boolean
+          reason_code?: string
+          review_status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_non_purchase_reasons_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_non_purchase_reasons_offer_event_id_fkey"
+            columns: ["offer_event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_offer_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_non_purchase_reasons_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_refund_requests: {
+        Row: {
+          amount_determination: string
+          booking_id: string
+          created_at: string
+          cutoff_hours: number
+          eligible_under_cutoff: boolean
+          finance_reversal_ref: string | null
+          id: string
+          metadata: Json
+          policy_version: string
+          reason: string
+          requested_amount_minor: number | null
+          requester_user_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_determination?: string
+          booking_id: string
+          created_at?: string
+          cutoff_hours: number
+          eligible_under_cutoff: boolean
+          finance_reversal_ref?: string | null
+          id?: string
+          metadata?: Json
+          policy_version: string
+          reason: string
+          requested_amount_minor?: number | null
+          requester_user_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_determination?: string
+          booking_id?: string
+          created_at?: string
+          cutoff_hours?: number
+          eligible_under_cutoff?: boolean
+          finance_reversal_ref?: string | null
+          id?: string
+          metadata?: Json
+          policy_version?: string
+          reason?: string
+          requested_amount_minor?: number | null
+          requester_user_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_refund_requests_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_refund_requests_requester_user_id_fkey"
+            columns: ["requester_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_refund_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_support_signals: {
+        Row: {
+          booking_id: string | null
+          claim_id: string | null
+          created_at: string
+          event_id: string | null
+          id: string
+          message: string
+          metadata: Json
+          status: string
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          message: string
+          metadata?: Json
+          status?: string
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          message?: string
+          metadata?: Json
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_support_signals_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_support_signals_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_offer_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_support_signals_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_support_signals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_trust_rank_events: {
         Row: {
           actor_user_id: string | null
@@ -3515,6 +3879,44 @@ export type Database = {
             foreignKeyName: "customer_trust_rank_events_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_trust_rank_snapshots: {
+        Row: {
+          event_count: number
+          formula_status: string
+          level_label: string
+          rule_version: string
+          score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          event_count?: number
+          formula_status?: string
+          level_label?: string
+          rule_version?: string
+          score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          event_count?: number
+          formula_status?: string
+          level_label?: string
+          rule_version?: string
+          score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_trust_rank_snapshots_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
@@ -9465,6 +9867,44 @@ export type Database = {
           },
         ]
       }
+      venue_performance_rank_snapshots: {
+        Row: {
+          event_count: number
+          formula_status: string
+          public_display_allowed: boolean
+          rule_version: string
+          score: number
+          updated_at: string
+          venue_id: string
+        }
+        Insert: {
+          event_count?: number
+          formula_status?: string
+          public_display_allowed?: boolean
+          rule_version?: string
+          score?: number
+          updated_at?: string
+          venue_id: string
+        }
+        Update: {
+          event_count?: number
+          formula_status?: string
+          public_display_allowed?: boolean
+          rule_version?: string
+          score?: number
+          updated_at?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venue_performance_rank_snapshots_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       venue_plans: {
         Row: {
           capacity_max: number | null
@@ -10196,6 +10636,69 @@ export type Database = {
         Returns: boolean
       }
       gce_is_platform_admin: { Args: never; Returns: boolean }
+      gce_marketplace_claim_offer: {
+        Args: {
+          p_claimant: string
+          p_expires_at: string
+          p_offer_id: string
+          p_token_hash: string
+        }
+        Returns: {
+          claim_token_hash: string
+          claimant_user_id: string
+          claimed_at: string
+          created_at: string
+          expires_at: string
+          id: string
+          metadata: Json
+          non_purchase_notes: string | null
+          non_purchase_reason: string | null
+          offer_event_id: string
+          penalty_exempt: boolean
+          redeemed_at: string | null
+          status: Database["public"]["Enums"]["marketplace_claim_status"]
+          updated_at: string
+          venue_response: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_offer_claims"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_marketplace_create_booking: {
+        Args: {
+          p_buyer: string
+          p_event_id: string
+          p_idempotency_key?: string
+          p_quantity: number
+        }
+        Returns: {
+          attribution_id: string | null
+          buyer_user_id: string
+          cancel_cutoff_hours: number
+          cancel_policy_version: string
+          created_at: string
+          currency: string
+          event_id: string
+          id: string
+          idempotency_key: string | null
+          metadata: Json
+          payment_intent_id: string | null
+          quantity: number
+          status: Database["public"]["Enums"]["marketplace_booking_status"]
+          total_minor: number
+          unit_price_minor: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_marketplace_redeem_claim: {
         Args: {
           p_actor?: string
@@ -10355,6 +10858,8 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       allocation_proposal_status:

@@ -63,3 +63,7 @@ Expired, Redeemed, Cancelled, Invalid.
 
 - Whether all offer types use 72h vs offer-specific windows — “where applicable” in FD-037; exact matrix Pending Product Design
 - Customer cancel-of-claim UX — Pending Product Design
+
+## Implementation note (Phase 11)
+
+Customer claim UX uses Phase 7 `marketplace_offer_claims` + RPC `gce_marketplace_claim_offer` (72h expiry, cap 100). Claim never creates revenue; redemption uses existing validate/redeem path.

@@ -127,6 +127,8 @@ Service-role/RPC only for target credit + recovery apply. Pack payment productio
 Marketplace BDP must not receive blanket “all venues in city” policies — attribution/assignment scoped (FD-033).
 Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remains `marketplace_*`.
 
+**Phase 11 CX tables (gce-dev / `20260808220000`):** `customer_cx_preferences`, `customer_refund_requests`, `customer_feedback`, `customer_non_purchase_reasons`, `customer_domain_events`, `customer_trust_rank_snapshots`, `venue_performance_rank_snapshots`, `customer_support_signals` — own-row customer select/insert; Venue/MBDP do not gain blanket private customer profile access. Public discovery continues on published marketplace Event/Offer rows only.
+
 ---
 
 ## Matrix — Enterprise

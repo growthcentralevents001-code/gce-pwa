@@ -82,3 +82,7 @@ Completed, Cancelled, Rejected.
 - Exact refund percentage / schedule — Pending Finance, Legal, Tax, Product (FD-039 §16; FD-037 §44)
 - Event-specific cancel variations process — Pending Product / Ops Design
 - Chargeback treatment — Pending Finance, Legal, Technical Design
+
+## Implementation note (Phase 11)
+
+Customer cancellation eligibility uses server clock + default **48h** (or event policy version). Refund request UX creates `customer_refund_requests` with `manual_review_required` until OD-006 resolves percentages. Live ticket payments remain flag-gated OFF.

@@ -61,8 +61,8 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Marketplace | Marketplace Event booking MoR-aware collection | Payments + Event SM | FD-037/039 | 7 / 11 | P0 | Critical | Ticket booking records MoR-intended entity; money flagged until validation | Booking + webhook E2E | Medium | **DONE** boundary; money gated |
 | Marketplace | Unattributed split 80/0/20 vs attributed 80/10/10 | Commission engine | FD-037/029 | 7 / 9 | P0 | Critical | Correct split by attribution; no retroactive auto-commission | Split matrix tests | Medium | **DONE** entitlement boundary |
 | Marketplace | Offer Event claim ≠ revenue; redemption token flow | Offer/Redemption SMs | FD-037 | 7 / 11 | P1 | High | Claim alone does not create Platform Revenue | Claim/redeem tests | Low | **DONE** claims/redemptions |
-| Marketplace | 48-hour default cancellation cutoff | Event + Refund SM | FD-039; OD-006 open % | 11 | P0 | High | Cutoff enforced; refund % configurable/pending — not hard-coded invented | Cancel boundary tests | Low | **PARTIAL** policy version stored; % open |
-| Marketplace | Event QR validation at launch | Redemption/check-in | FD-037 | 11 | P1 | Medium | QR validates ticket; replay protected | QR replay tests | Low | **DONE** foundation Phase 7 |
+| Marketplace | 48-hour default cancellation cutoff | Event + Refund SM | FD-039; OD-006 open % | 11 | P0 | High | Cutoff enforced; refund % configurable/pending — not hard-coded invented | Cancel boundary tests | Low | **DONE** Phase 11 cutoff+policy version; % still OD-006 |
+| Marketplace | Event QR validation at launch | Redemption/check-in | FD-037 | 11 | P1 | Medium | QR validates ticket; replay protected | QR replay tests | Low | **DONE** Phase 7 RPC + Phase 11 customer QR display |
 | Marketplace | Marketplace BDP unit caps 20 / max 2 units / 40 venues | Capacity engine | FD-033 | 7 | P1 | Medium | Caps enforced; second unit not automatic | Capacity tests | Low | **DONE** DB triggers |
 | Marketplace | Affiliate commercial path feature-flagged **off** | Flags | FD-032/039 Part J | 7 | Future | Low | No Affiliate entitlements in production spine | Flag-off proof | Low |
 | Enterprise | Enterprise Client org + Client Representative | Orgs + RBAC | FD-038/035 | 8 | P1 | High | Client ≠ Enterprise BDP | Org isolation tests | **Done on gce-dev** |
@@ -80,9 +80,9 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Lead Assist | Stage 1 unpaid Lead Assist create/route/Desk | `SM_Lead_Assist` | FD-031/039 | 10 | Done (gce-dev) | Medium | Unpaid Stage 1 works; AI assistive only | Lead Assist E2E | Medium |
 | Lead Assist | Contact reveal consent-gated | Privacy controls | FD-031; OD-010 | 10 | Done (gce-dev) | High | No reveal without consent controls | Consent negative tests | Low |
 | Lead Assist | Paid / ₹500 / escrow / success-fee paths flagged **off** | Flags | FD-039 Part J | 10 | Done (quarantined) | High if leaked | No paid Lead Assist charges in spine | Flag-off proof | Low |
-| Customer UX | Event discovery + detail + booking PWA flows | Phase 7 domain | FD-037/039 | 11 | P1 | Medium | Mobile-first booking completable | Playwright booking smoke | Low |
-| Customer UX | Offer claim + redeem UX | Offer SMs | FD-037 | 11 | P1 | Medium | Claim/redeem distinct from ticket booking | UX E2E | Low |
-| Customer UX | Cancel UX respects 48h default + disclosure placeholders | Refund SM | FD-039; OD-006 | 11 | P1 | High | Cutoff shown; no invented refund % as final law | Cancel UX tests | Low |
+| Customer UX | Event discovery + detail + booking PWA flows | Phase 7 domain | FD-037/039 | 11 | P1 | Medium | Mobile-first booking completable | Playwright booking smoke | Low | **DONE** `/customer/*` gce-dev |
+| Customer UX | Offer claim + redeem UX | Offer SMs | FD-037 | 11 | P1 | Medium | Claim/redeem distinct from ticket booking | UX E2E | Low | **DONE** Phase 11 claim/redeem UX |
+| Customer UX | Cancel UX respects 48h default + disclosure placeholders | Refund SM | FD-039; OD-006 | 11 | P1 | High | Cutoff shown; no invented refund % as final law | Cancel UX tests | Low | **DONE** cancel+refund_request manual_review |
 | Notifications | Event-driven notification catalogue (email/SMS/push/in-app) | Jobs ADR-014 | Domain FDs | 12 | P1 | Medium | Critical lifecycle events notifiable; preferences respected | Notification contract tests | Low |
 | Analytics | KPI domains without invented vanity formulas | Reporting | FD-028 concepts | 12 | P2 | Low | Dashboards separate GMV vs Collected vs Eligible | Fixture assertions | Low |
 | Security | Fraud-review queue interface | Audit + Ops | Phase 12/13 | 12–13 | P1 | High | Signals → queue → human decision audited | Fraud workflow tests | Low |

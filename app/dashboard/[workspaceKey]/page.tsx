@@ -25,9 +25,11 @@ import {
   getOpportunityDeskQueue,
   presentLeadPrivacySafe,
 } from "@/lib/architecture/lead-assist";
+import { getCustomerDashboard } from "@/lib/architecture/customer-cx";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
 import { WorkspaceSwitcher } from "./workspace-switcher";
+import Link from "next/link";
 
 type PageProps = {
   params: Promise<{ workspaceKey: string }>;
@@ -216,6 +218,21 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
     } catch {
       sentLeads = [];
       receivedLeadCount = 0;
+    }
+  }
+
+  const showCustomerCxPanel = canAccess && key === "personal";
+  let cxHint: { upcoming: number; claims: number; trust: number } | null = null;
+  if (showCustomerCxPanel) {
+    try {
+      const dash = await getCustomerDashboard(supabase, user.id);
+      cxHint = {
+        upcoming: dash.upcomingBookings.length,
+        claims: dash.activeClaims.length,
+        trust: dash.trustRank.score,
+      };
+    } catch {
+      cxHint = null;
     }
   }
 
@@ -494,6 +511,29 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
             proposals: {expertReport.draftProposals} · quotes pending Finance
             co-sign: {expertReport.quotesPendingFinanceCosign}
           </div>
+        </section>
+      ) : null}
+      {showCustomerCxPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Customer Marketplace CX</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Events / Offers / Tickets · live payments gated OFF
+          </p>
+          {cxHint ? (
+            <p className="mt-3 text-sm text-neutral-700">
+              Upcoming {cxHint.upcoming} · active claims {cxHint.claims} · trust
+              score {cxHint.trust} (formula unresolved)
+            </p>
+          ) : (
+            <p className="mt-3 text-sm text-neutral-600">
+              Open customer workspace for full detail.
+            </p>
+          )}
+          <p className="mt-2 text-sm">
+            <Link href="/customer" className="underline">
+              Open /customer
+            </Link>
+          </p>
         </section>
       ) : null}
       {showLeadAssistPanel ? (

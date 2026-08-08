@@ -71,3 +71,7 @@ Completed, Rejected, Reversed / Cancelled Request.
 - Exact refund percentage by product / timing band — **Pending Finance, Legal, Tax, Product** (FD-039 §16; FD-037 §44)
 - Chargeback vs refund interaction matrix — Pending Finance, Legal, Technical Design
 - No-show refundability — Pending policy detail beyond FD-021 principles
+
+## Implementation note (Phase 11)
+
+Customer UX can cancel and raise a refund request (`customer_refund_requests`) without asserting refund %. Automatic refund_processing remains OFF.

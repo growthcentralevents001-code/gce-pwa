@@ -123,9 +123,19 @@ export const LEAD_ASSIST_STAGE1_FLAGS = [
   "contact_reveal",
 ] as const;
 
+/** Phase 11 customer CX operational flags (money capture still OFF via inactive flags). */
+export const CUSTOMER_CX_FLAGS = [
+  "customer_booking",
+  "offer_claims",
+  "customer_rank_display",
+  "venue_rank_display",
+  "refund_processing",
+] as const;
+
 export const FEATURE_FLAG_KEYS = [
   ...INACTIVE_FEATURE_FLAGS,
   ...LEAD_ASSIST_STAGE1_FLAGS,
+  ...CUSTOMER_CX_FLAGS,
 ] as const;
 
 export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];

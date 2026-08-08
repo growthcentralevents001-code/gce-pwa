@@ -6,6 +6,7 @@ import {
   FEATURE_FLAG_KEYS,
   INACTIVE_FEATURE_FLAGS,
   LEAD_ASSIST_STAGE1_FLAGS,
+  CUSTOMER_CX_FLAGS,
 } from "../types";
 
 const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = {
@@ -17,6 +18,12 @@ const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = {
     (typeof LEAD_ASSIST_STAGE1_FLAGS)[number],
     boolean
   >),
+  ...(Object.fromEntries(
+    CUSTOMER_CX_FLAGS.map((k) => [
+      k,
+      k === "venue_rank_display" || k === "refund_processing" ? false : true,
+    ])
+  ) as Record<(typeof CUSTOMER_CX_FLAGS)[number], boolean>),
 };
 
 export function isKnownFeatureFlag(key: string): key is FeatureFlagKey {

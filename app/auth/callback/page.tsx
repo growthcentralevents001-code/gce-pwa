@@ -1,32 +1,68 @@
 "use client";
-import { useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
 
-export default function AuthCallback() {
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { resolveAuthRedirectParam } from "@/lib/frontend/auth/redirect";
+import { AuthPanel } from "@/components/auth/AuthPanel";
+import { PageSkeleton } from "@/components/states/LoadingSkeletons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+function AuthCallbackInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const handleCallback = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        // Wait a moment for trigger to create profile
-        await new Promise(resolve => setTimeout(resolve, 500));
-        router.push("/");
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        if (!data.session) {
+          // Exchange code if present (PKCE)
+          const code = searchParams.get("code");
+          if (code) {
+            const { error: exchangeError } =
+              await supabase.auth.exchangeCodeForSession(code);
+            if (exchangeError) throw exchangeError;
+          } else {
+            throw new Error("No session available");
+          }
+        }
+        if (cancelled) return;
+        const next = resolveAuthRedirectParam(searchParams, "/onboarding/profile");
+        router.replace(next);
         router.refresh();
-      } else {
-        router.push("/login");
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Auth callback failed");
+          setTimeout(() => router.replace("/login"), 2000);
+        }
       }
+    })();
+    return () => {
+      cancelled = true;
     };
-    handleCallback();
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Completing login...</p>
-      </div>
-    </div>
+    <AuthPanel title="Completing sign-in" description="Please wait…">
+      {error ? (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      ) : (
+        <PageSkeleton />
+      )}
+    </AuthPanel>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <AuthCallbackInner />
+    </Suspense>
   );
 }

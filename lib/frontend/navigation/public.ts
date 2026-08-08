@@ -1,17 +1,40 @@
 import {
+  Briefcase,
+  Building2,
   CalendarDays,
   Home,
-  Handshake,
   Info,
   LogIn,
+  Store,
   Tag,
   Users,
 } from "lucide-react";
 import type { NavItem } from "./types";
 
-/** Public marketing / discovery navigation (Batch 1 will flesh pages). */
+/** Public marketing navigation — Batch 1. */
 export const PUBLIC_NAV: NavItem[] = [
   { id: "home", label: "Home", href: "/", icon: Home, mobileVisible: true },
+  {
+    id: "connect",
+    label: "Connect",
+    href: "/connect",
+    icon: Users,
+    mobileVisible: true,
+  },
+  {
+    id: "marketplace",
+    label: "Marketplace",
+    href: "/marketplace",
+    icon: Store,
+    mobileVisible: true,
+  },
+  {
+    id: "enterprise",
+    label: "Enterprise",
+    href: "/enterprise",
+    icon: Briefcase,
+    mobileVisible: true,
+  },
   {
     id: "events",
     label: "Events",
@@ -24,21 +47,14 @@ export const PUBLIC_NAV: NavItem[] = [
     label: "Offers",
     href: "/offers",
     icon: Tag,
-    mobileVisible: true,
-  },
-  {
-    id: "memberships",
-    label: "Memberships",
-    href: "/memberships",
-    icon: Users,
-    mobileVisible: true,
+    mobileVisible: false,
   },
   {
     id: "partners",
     label: "For Partners",
-    href: "/partners",
-    icon: Handshake,
-    mobileVisible: true,
+    href: "/for-partners",
+    icon: Building2,
+    mobileVisible: false,
   },
   {
     id: "about",
@@ -59,7 +75,7 @@ export const PUBLIC_AUTH_NAV: NavItem[] = [
   },
   {
     id: "signup",
-    label: "Sign up",
+    label: "Join",
     href: "/signup",
     mobileVisible: true,
   },

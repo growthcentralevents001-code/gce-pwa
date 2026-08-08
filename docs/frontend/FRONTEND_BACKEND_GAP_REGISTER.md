@@ -12,7 +12,7 @@
 | BG-02 | Paginated partner portfolios (venues, circles, clients) | Pagination | Batch 4–6 | Confirm list endpoints support cursor/limit |
 | BG-03 | Venue staff console API (check-in list by event night) | Read-model | Batch 5 | CX has check-in action; nightly ops list may need view |
 | BG-04 | Public SEO Event/Offer sitemaps + metadata endpoint | Search/SEO convenience | Batch 1 | Can start statically; automate later |
-| BG-05 | Contact form → ops_case / support_signal create from public | UX convenience | Batch 1 | May use `/api/ops/admin` only when auth; public path **GAP** |
+| BG-05 | Contact form → ops_case / support_signal create from public | UX convenience | Batch 1 | **Confirmed Batch 1:** UI shows FeatureGated; no browser email; awaiting public intake API |
 | BG-06 | Unified wishlist under CX | Read-model | Batch 2 | Legacy wishlist APIs exist |
 | BG-07 | Notification preference upsert under settings (non-ops) | UX | Batch 9 | Phase 12 prefs exist under ops-governance — expose customer path |
 | BG-08 | Opportunity Desk dedicated filters API | Convenience | Batch 8 | Desk queue exists — UX filters OK via query params |

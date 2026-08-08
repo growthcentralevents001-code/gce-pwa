@@ -35,7 +35,7 @@ export function PublicShell({ children, hideFooter }: PublicShellProps) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SkipToContent />
-      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/55">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex items-center gap-6">
             <Link

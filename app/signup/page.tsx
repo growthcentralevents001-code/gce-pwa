@@ -1,91 +1,143 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
 
-function SignupForm() {
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import { AuthPanel } from "@/components/auth/AuthPanel";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+/**
+ * AUTH-02 Signup — identity only (FD-035).
+ * Does not grant commercial roles. No affiliate track.
+ */
+export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [loading, setLoading] = useState(false);
-  const [referralId, setReferralId] = useState<string | null>(null);
 
-  // Capture referral parameter from URL
-  useEffect(() => {
-    const ref = searchParams.get("ref");
-    if (ref) {
-      setReferralId(ref);
-      localStorage.setItem("affiliate_ref", ref);
-    } else {
-      const stored = localStorage.getItem("affiliate_ref");
-      if (stored) setReferralId(stored);
-    }
-  }, [searchParams]);
-
-  const handleSignup = async (e: React.FormEvent) => {
+  async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-    // If referral exists, track it (optional: call API to create association)
-    if (referralId && data.user) {
-      await fetch("/api/affiliate/track", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ affiliateId: referralId, newUserId: data.user.id })
+    setInfo("");
+    try {
+      const { data, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo:
+            typeof window !== "undefined"
+              ? `${window.location.origin}/auth/callback`
+              : undefined,
+        },
       });
+      if (authError) {
+        setError(authError.message);
+        return;
+      }
+      if (data.session) {
+        router.push("/onboarding/profile");
+        router.refresh();
+        return;
+      }
+      setInfo(
+        "Check your email to confirm your account, then continue profile setup."
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Signup failed");
+    } finally {
+      setLoading(false);
     }
-    alert("Signup successful! Please check your email to confirm.");
-    router.push("/");
-    setLoading(false);
-  };
-
-  const handleGoogleSignup = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` }
-    });
-    if (error) setError(error.message);
-  };
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-        <h1 className="text-2xl font-bold text-center text-gray-900 mb-6">Create Account</h1>
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-        <form onSubmit={handleSignup} className="space-y-4">
-          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500" required />
+    <AuthPanel
+      title="Create your GCE identity"
+      description="This registers your base account only. Memberships and partner roles require separate approved steps."
+      brandPoints={[
+        "One person → one base identity",
+        "No privileged role from signup",
+        "Aadhaar is not mandatory by default",
+      ]}
+      footer={
+        <p>
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
+      }
+    >
+      <form onSubmit={handleSignup} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="fullName">Full name</Label>
+          <Input
+            id="fullName"
+            autoComplete="name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
           <div className="relative">
-            <input type={showPassword ? "text" : "password"} placeholder="Password (min 6 chars)" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 pr-10" required minLength={6} />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              className="pr-10"
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
-          <button type="submit" disabled={loading} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg transition">{loading ? "Creating account..." : "Sign Up"}</button>
-        </form>
-        <div className="mt-6">
-          <div className="relative"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300"></div></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or continue with</span></div></div>
-          <button onClick={handleGoogleSignup} className="mt-4 w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg py-2 hover:bg-gray-50 transition">Google</button>
         </div>
-        <p className="text-center text-sm mt-6 text-gray-600">Already have an account? <a href="/login" className="text-orange-600 font-semibold">Login</a></p>
-      </div>
-    </div>
-  );
-}
-
-export default function SignupPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-      <SignupForm />
-    </Suspense>
+        {error ? (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
+        {info ? (
+          <Alert>
+            <AlertDescription>{info}</AlertDescription>
+          </Alert>
+        ) : null}
+        <Button type="submit" className="min-h-11 w-full" disabled={loading}>
+          {loading ? "Creating…" : "Create account"}
+        </Button>
+      </form>
+    </AuthPanel>
   );
 }

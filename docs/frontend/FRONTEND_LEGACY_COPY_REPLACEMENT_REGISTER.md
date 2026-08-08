@@ -9,11 +9,11 @@
 | Priority | File / page | Old copy / concept | Canonical replacement source |
 |----------|-------------|--------------------|------------------------------|
 | P0 | `app/components/Header.tsx` | Nav maps `affiliate`/`zbp`/`bdm` labels | Assignment workspaces only; FD-039 inactive |
-| P0 | `app/apply/role/page.tsx` | “Zonal Business Partner (ZBP)” CTA | Remove; use Connect BDP / MBDP / Venue / Enterprise |
-| P0 | `app/affiliate/page.tsx` | “Become an Affiliate” | Remove product path |
+| P0 | `app/apply/role/page.tsx` | “Zonal Business Partner (ZBP)” CTA | **Batch 1 done** — approved intents only; ZBP/Affiliate blocked |
+| P0 | `app/affiliate/page.tsx` | “Become an Affiliate” | **Batch 1 done** — redirects to `/for-partners` |
 | P0 | `app/admin/affiliates/page.tsx` | Affiliate applications admin | Retire with `/admin` |
 | P0 | `app/admin/leads/page.tsx` | “Verify BDM lead submissions” | Opportunity Desk / Lead Assist (FD-031) |
-| P0 | `app/dashboard/bdm/page.tsx` / `bdm-dashboard` | “BDM Dashboard” / Regional BDM | Unauthorized; no auto Marketplace BDP |
+| P0 | `app/dashboard/bdm/page.tsx` / `bdm-dashboard` | “BDM Dashboard” / Regional BDM | **Batch 1:** `/bdm-dashboard` → unauthorized; dashboard BDM later |
 | P0 | `app/dashboard/zbp/page.tsx` / `admin/zbp` | ZBP referral tiers Basic/Gold/Platinum fees | Inactive ZBP commercial |
 | P0 | `app/admin/dashboard/page.tsx` | Gold/Silver/Bronze/Free membership mixes; invent revenue | Associate membership + server metrics only |
 | P0 | `app/for-partners/page.tsx` | Venue “Basic” plan “Commission: 20%” | Marketplace splits server-owned; no invent brochure rates |

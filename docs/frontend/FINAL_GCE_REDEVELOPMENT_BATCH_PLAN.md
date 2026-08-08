@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0 implemented — Checkpoint A ready**; Batches 1–10 not started |
+| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete — Public/Auth review ready** · Batches 2–10 not started |
 | **Date** | 2026-08-09 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
@@ -10,9 +10,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **COMPLETE — Checkpoint A ready for review** |
+| **Status** | **COMPLETE — Checkpoint A approved** |
 | **Evidence** | `docs/frontend/implementation/BATCH_0_DESIGN_SYSTEM_AND_SHELL_IMPLEMENTATION.md` |
-| **Batch 1** | Not started |
+
+### Batch 1 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Public/Auth product review ready** |
+| **Evidence** | `docs/frontend/implementation/BATCH_1_PUBLIC_AUTH_ONBOARDING_IMPLEMENTATION.md` |
+| **Batch 2** | Not started |
 
 ---
 

@@ -1,13 +1,21 @@
 "use client";
-import { Suspense, useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
+
+import { Suspense, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import { resolveAuthRedirectParam } from "@/lib/frontend/auth/redirect";
+import { AuthPanel } from "@/components/auth/AuthPanel";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || searchParams.get("redirect") || "/";
+  const redirectTo = resolveAuthRedirectParam(searchParams, "/dashboard/personal");
   const emailParam = searchParams.get("email") || "";
   const [email, setEmail] = useState(emailParam);
   const [password, setPassword] = useState("");
@@ -15,85 +23,99 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (emailParam) setEmail(emailParam);
-  }, [emailParam]);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        setError(error.message);
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (authError) {
+        setError(authError.message);
         return;
       }
-
-      const session = data.session;
-      const refreshToken = session.refresh_token;
-      const tokens = JSON.parse(localStorage.getItem("gce_tokens") || "{}");
-      tokens[email] = refreshToken;
-      localStorage.setItem("gce_tokens", JSON.stringify(tokens));
-
-      let recent = JSON.parse(localStorage.getItem("gce_recent_emails") || "[]");
-      recent = [email, ...recent.filter((e: string) => e !== email)].slice(0, 5);
-      localStorage.setItem("gce_recent_emails", JSON.stringify(recent));
-
       router.push(redirectTo);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
+    <AuthPanel
+      title="Welcome back"
+      description="Sign in to your GCE identity. Roles and workspaces come from server assignments."
+      footer={
+        <p>
+          New here?{" "}
+          <Link href="/signup" className="font-medium text-primary hover:underline">
+            Create an account
+          </Link>
+        </p>
+      }
+    >
       <form onSubmit={handleLogin} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className="w-full p-2 border rounded pr-10"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
-          >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
         </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-orange-600 text-white p-2 rounded"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              className="pr-10"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+        {error ? (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
+        <Button type="submit" className="min-h-11 w-full" disabled={loading}>
+          {loading ? "Signing in…" : "Sign in"}
+        </Button>
+        <p className="text-center text-sm">
+          <Link
+            href="/forgot-password"
+            className="text-muted-foreground hover:text-primary hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </p>
       </form>
-    </div>
+    </AuthPanel>
   );
 }
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="max-w-md mx-auto mt-20 p-6 text-center text-gray-500">Loading...</div>}>
+    <Suspense fallback={<div className="p-10 text-center text-sm text-muted-foreground">Loading…</div>}>
       <LoginForm />
     </Suspense>
   );

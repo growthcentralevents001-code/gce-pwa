@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Phase** | 7 |
-| **Status** | Documentation — implementation-ready |
+| **Status** | **Implementation Complete** on gce-dev (see `PHASE_7_IMPLEMENTATION_NOTES.md`) — non-blocking Legal/Tax/refund/rank-weight items remain |
 | **Classification** | Primarily **Business** (FD-033, FD-037, FD-039, FD-029, FD-021) |
 | **Date** | 2026-08-08 |
 

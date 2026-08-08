@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Living documentation (Phase 6 — Connect BDP policies applied on gce-dev) |
+| **Status** | Living documentation (Phase 7 — Marketplace & MBDP policies applied on gce-dev) |
 | **Classification** | Logical RLS **policy intent** — SQL lives in migrations (ADR-004) |
 | **Authority** | [ADR-005](../phase-2/adrs/ADR-005_RLS_Strategy.md) (technical); FD-023 / FD-035 (permission rules); ADR-004 (policies live in migrations) |
 | **Related** | [`RBAC_PERMISSION_MATRIX.md`](./RBAC_PERMISSION_MATRIX.md), [`../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md`](../data/DATA_OWNERSHIP_AND_SOURCE_OF_TRUTH.md), `docs/phase-4/PHASE_4_IMPLEMENTATION_NOTES.md` |
@@ -117,8 +117,15 @@ Service-role/RPC only for target credit + recovery apply. Pack payment productio
 | OfferClaim / Booking | Org scope | Assigned read (TR) | Own rows | Platform admin | Finance scoped | Assigned |
 | Redemption | Org scope | Assigned read (TR) | Own rows | Platform admin | Finance scoped | Assigned |
 | VenueAttribution | Deny mutate | Assigned read; mutate Platform / controlled workflow (TR) | Deny | Platform admin | Read | Assigned read |
+| marketplace_bdp_units (Phase 7) | Deny | Own | Deny | Platform admin | Read finance | Deny |
+| marketplace_venues (Phase 7) | Org / rep | Attributed portfolio | Published active read | Platform admin | Read | Assigned |
+| marketplace_events / offers (Phase 7) | Venue manage draft/submit | Portfolio read / recommend | Published | Platform final approve | Read | Assigned |
+| marketplace_bookings / tickets (Phase 7) | Venue read | Attributed read (TR) | Own | Platform admin | Finance scoped | Deny |
+| marketplace_offer_claims / redemptions | Venue read/redeem | Portfolio read | Own claims | Platform admin | Read | Deny |
+| marketplace_revenue_entitlements | Venue share read | Own MBDP share | Deny | Platform/Finance | Write Finance | Deny |
 
 Marketplace BDP must not receive blanket “all venues in city” policies — attribution/assignment scoped (FD-033).
+Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remains `marketplace_*`.
 
 ---
 

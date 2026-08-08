@@ -11,6 +11,7 @@
 | **Phase 4 note** | Identity/RBAC/organisation **COMPLETE on gce-dev** (`20260808150000_phase4_identity_rbac_organisation`). Non-blocking: bulk historical legacy→assignment migration ops. Production untouched. Emergency break-glass runbook still Pending Technical Design / security validation (not ordinary Super Admin). |
 | **Phase 5 note** | Membership & GCE Connect **COMPLETE on gce-dev** (`20260808160000_phase5_membership_gce_connect`). Associate active; Core purchase inactive; payment≠activation; activation≠allocation; 15/20/40 dual statuses; Tag rules. Non-blocking: OD-007 refund matrix, OD-023 contractual waitlist formula, GST/PSP production gates. |
 | **Phase 6 note** | Connect BDP **COMPLETE on gce-dev** (`20260808170000_phase6_connect_bdp`). Franchise Unit packs; city caps FD-025; attribution + 20% boundary; recovery ₹5k/cycle ≤₹55k; one-time 15 target credit; disputes/handover/suspend. Money flags OFF. Non-blocking: OD-021/022, BDP agreement, GST/TDS. Phase 7 not started. |
+| **Phase 7 note** | Marketplace & Marketplace BDP **COMPLETE on gce-dev** (`20260808180000_phase7_marketplace_and_mbdp`). Units 20/2/40; venue attribution; 80/10/10 & 80/0/20; Events/Offers/claims/tickets; MoR/ticket money gated OFF. Legacy venues preserved (53). Non-blocking: OD-006 refund economics, MoR/GST validation. Phase 8 not started. |
 
 ---
 

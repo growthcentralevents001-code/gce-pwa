@@ -22,5 +22,6 @@ export * from "./organisations/create";
 export * from "./organisations/memberships";
 export * from "./connect";
 export * from "./connect-bdp";
+export * from "./marketplace";
 export * from "./jobs/queue";
 export * from "./observability/sentry";

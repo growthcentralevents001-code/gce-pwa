@@ -7,6 +7,10 @@ import {
   listConnectBdpUnitsForUser,
   buildConnectBdpDashboard,
 } from "@/lib/architecture/connect-bdp";
+import {
+  listMbdpUnitsForUser,
+  buildMbdpDashboard,
+} from "@/lib/architecture/marketplace";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
 import { WorkspaceSwitcher } from "./workspace-switcher";
@@ -16,7 +20,7 @@ type PageProps = {
 };
 
 /**
- * Canonical workspace shell (ADR-003 / Phase 4–6).
+ * Canonical workspace shell (ADR-003 / Phase 4–7).
  * Route presence is not authorization — assignment check is enforced server-side.
  */
 export default async function WorkspaceDashboardPage({ params }: PageProps) {
@@ -101,6 +105,28 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
     } catch {
       bdpReports = [];
     }
+  }
+
+  const showMbdpPanel = canAccess && key === "marketplace-bdp";
+  let mbdpReports: Array<Awaited<ReturnType<typeof buildMbdpDashboard>>> = [];
+  if (showMbdpPanel) {
+    try {
+      const units = await listMbdpUnitsForUser(supabase, user.id);
+      mbdpReports = await Promise.all(
+        units.slice(0, 3).map((u) => buildMbdpDashboard(supabase, String(u.id)))
+      );
+    } catch {
+      mbdpReports = [];
+    }
+  }
+
+  const showVenuePanel = canAccess && key === "venue";
+  // Venue detail reports require venueId — show portfolio hint only to avoid dirty UI routes
+  let venueHint =
+    "Canonical Venue Partner workspace. Manage Events/Offers via /api/marketplace/bdp. Legacy /dashboard/venue/* remains prototype WIP.";
+  if (showVenuePanel) {
+    venueHint =
+      "Canonical Venue Partner workspace (FD-033/037). Use Marketplace API for Event/Offer/claim. Avoid legacy prototype routes for new data.";
   }
 
   if (!canAccess) {
@@ -229,6 +255,52 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
               )}
             </ul>
           )}
+        </section>
+      ) : null}
+      {showMbdpPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Marketplace BDP Franchise Unit</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            20 Venues/unit · max 2 units · attributed 80/10/10 · unattributed 80/0/20
+          </p>
+          {mbdpReports.length === 0 || !mbdpReports[0] ? (
+            <p className="mt-3 text-sm text-neutral-600">
+              No Marketplace BDP unit yet. Apply via{" "}
+              <code>/api/marketplace/bdp</code>.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-3 text-sm">
+              {mbdpReports.filter(Boolean).map((r) =>
+                r ? (
+                  <li key={r.unitId} className="border-t border-neutral-100 pt-2">
+                    <div className="font-medium">{r.applicationStatus}</div>
+                    <div className="mt-1 text-xs text-neutral-600">
+                      Package: {r.packageOption} · venues {r.activeVenueCount}/
+                      {r.venueCapacity} · proposed {r.proposedAttributions}
+                    </div>
+                    <div className="text-xs text-neutral-600">
+                      Recoverable remaining: ₹
+                      {(r.remainingRecoverableMinor / 100).toLocaleString(
+                        "en-IN"
+                      )}{" "}
+                      · MBDP entitlement: ₹
+                      {(r.grossMbdpEntitlementMinor / 100).toLocaleString(
+                        "en-IN"
+                      )}{" "}
+                      · net: ₹
+                      {(r.netMbdpPayableMinor / 100).toLocaleString("en-IN")}
+                    </div>
+                  </li>
+                ) : null
+              )}
+            </ul>
+          )}
+        </section>
+      ) : null}
+      {showVenuePanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Venue Partner</h2>
+          <p className="mt-1 text-xs text-neutral-500">{venueHint}</p>
         </section>
       ) : null}
     </main>

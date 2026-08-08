@@ -123,6 +123,13 @@ Symbols: `✓` allowed within scope · `—` not by default · `✗` forbidden (
 | Marketplace BDP | Attributed venues support | ✓ | onboard (TR) | support (TR) | ✗ sole self-related (FD-035) | — | ✗ settlement | limited (TR) | — | Assigned |
 | Marketplace BDP | Settlement / refund release | — | — | — | ✗ | — | ✗ | — | — | None |
 | Marketplace BDP | Own commission approve | ✓ view | — | — | ✗ | — | ✗ | — | — | Self view only |
+| Marketplace BDP | Own unit / Venue portfolio | ✓ | recommend | limited | ✗ final | — | — | Own unit | — | Assigned venues |
+| Marketplace BDP | Venue/Event/Offer final approve | — | — | — | ✗ | — | — | — | — | None |
+| Venue Representative | Own Venue Events/Offers | ✓ | draft/submit | ✓ | ✗ self | soft (TR) | ✗ | Org | — | Org |
+| Venue Representative | Settlement / commission rules | — | — | — | ✗ | — | ✗ | — | — | None |
+| Platform Ops | Venue/Event/Offer/MBDP/attr final | ✓ | ✓ | ✓ | ✓ | soft (TR) | — | ✓ | ✓ | Platform |
+| Finance Admin | Marketplace entitlements / recovery | ✓ | — | recovery (TR) | reconcile (TR) | — | ✓ | ✓ | ✓ | Platform finance |
+| Customer / User | Browse / book / claim / own history | ✓ public | book/claim | own | — | — | — | Own | — | Self |
 | Platform Ops | Venue onboarding approval | ✓ | — | ✓ | ✓ | — | — | ✓ (TR) | ✓ (TR) | Platform ops |
 | Finance Admin | Marketplace payments / splits | ✓ | — | adjust (TR) | ✓ | — | ✓ | ✓ | ✓ | Platform finance |
 | RM | Assigned venue relationship | ✓ | — | limited | — | — | ✗ | limited (TR) | — | Assigned |

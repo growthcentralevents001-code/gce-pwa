@@ -2378,6 +2378,63 @@ export type Database = {
           },
         ]
       }
+      customer_trust_rank_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          delta: number
+          event_type: string
+          id: string
+          metadata: Json
+          resulting_score: number | null
+          rule_version: string
+          source_id: string | null
+          source_type: string | null
+          user_id: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          delta: number
+          event_type: string
+          id?: string
+          metadata?: Json
+          resulting_score?: number | null
+          rule_version?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          delta?: number
+          event_type?: string
+          id?: string
+          metadata?: Json
+          resulting_score?: number | null
+          rule_version?: string
+          source_id?: string | null
+          source_type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_trust_rank_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_trust_rank_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       emergency_access_grants: {
         Row: {
           approved_by: string | null
@@ -3219,6 +3276,30 @@ export type Database = {
         }
         Relationships: []
       }
+      legacy_marketplace_migration_map: {
+        Row: {
+          created_at: string
+          id: string
+          legacy_object: string
+          mapping_status: Database["public"]["Enums"]["legacy_marketplace_map_status"]
+          notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          legacy_object: string
+          mapping_status?: Database["public"]["Enums"]["legacy_marketplace_map_status"]
+          notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legacy_object?: string
+          mapping_status?: Database["public"]["Enums"]["legacy_marketplace_map_status"]
+          notes?: string | null
+        }
+        Relationships: []
+      }
       legacy_membership_migration_map: {
         Row: {
           canonical_plan_key:
@@ -3342,6 +3423,1121 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      marketplace_bdp_recovery_entries: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          cycle_key: string
+          entitlement_id: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          cycle_key: string
+          entitlement_id?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          cycle_key?: string
+          entitlement_id?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          recovered_minor?: number
+          remaining_after_minor?: number
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_bdp_recovery_entries_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_recovery_entries_entitlement_id_fkey"
+            columns: ["entitlement_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_revenue_entitlements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_recovery_entries_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_bdp_units: {
+        Row: {
+          activated_at: string | null
+          active_venue_count: number
+          application_status: Database["public"]["Enums"]["marketplace_bdp_application_status"]
+          created_at: string
+          id: string
+          initial_payment_minor: number
+          kyc_case_id: string | null
+          metadata: Json
+          offline_approved_by: string | null
+          offline_payment_ref: string | null
+          offline_recorded_by: string | null
+          package_option: Database["public"]["Enums"]["marketplace_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+          venues_capacity_max: number
+        }
+        Insert: {
+          activated_at?: string | null
+          active_venue_count?: number
+          application_status?: Database["public"]["Enums"]["marketplace_bdp_application_status"]
+          created_at?: string
+          id?: string
+          initial_payment_minor?: number
+          kyc_case_id?: string | null
+          metadata?: Json
+          offline_approved_by?: string | null
+          offline_payment_ref?: string | null
+          offline_recorded_by?: string | null
+          package_option?: Database["public"]["Enums"]["marketplace_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id: string
+          venues_capacity_max?: number
+        }
+        Update: {
+          activated_at?: string | null
+          active_venue_count?: number
+          application_status?: Database["public"]["Enums"]["marketplace_bdp_application_status"]
+          created_at?: string
+          id?: string
+          initial_payment_minor?: number
+          kyc_case_id?: string | null
+          metadata?: Json
+          offline_approved_by?: string | null
+          offline_payment_ref?: string | null
+          offline_recorded_by?: string | null
+          package_option?: Database["public"]["Enums"]["marketplace_bdp_package_option"]
+          package_total_minor?: number
+          payment_intent_id?: string | null
+          pricing_rule_version?: string
+          recoverable_balance_minor?: number
+          recovered_to_date_minor?: number
+          remaining_recoverable_minor?: number
+          role_assignment_id?: string | null
+          suspended_at?: string | null
+          terminated_at?: string | null
+          terms_accepted_at?: string | null
+          updated_at?: string
+          user_id?: string
+          venues_capacity_max?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_bdp_units_kyc_case_id_fkey"
+            columns: ["kyc_case_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_verification_cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_units_offline_approved_by_fkey"
+            columns: ["offline_approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_units_offline_recorded_by_fkey"
+            columns: ["offline_recorded_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_units_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_units_role_assignment_id_fkey"
+            columns: ["role_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "role_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bdp_units_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_bookings: {
+        Row: {
+          attribution_id: string | null
+          buyer_user_id: string
+          cancel_cutoff_hours: number
+          cancel_policy_version: string
+          created_at: string
+          currency: string
+          event_id: string
+          id: string
+          idempotency_key: string | null
+          metadata: Json
+          payment_intent_id: string | null
+          quantity: number
+          status: Database["public"]["Enums"]["marketplace_booking_status"]
+          total_minor: number
+          unit_price_minor: number
+          updated_at: string
+        }
+        Insert: {
+          attribution_id?: string | null
+          buyer_user_id: string
+          cancel_cutoff_hours?: number
+          cancel_policy_version?: string
+          created_at?: string
+          currency?: string
+          event_id: string
+          id?: string
+          idempotency_key?: string | null
+          metadata?: Json
+          payment_intent_id?: string | null
+          quantity?: number
+          status?: Database["public"]["Enums"]["marketplace_booking_status"]
+          total_minor: number
+          unit_price_minor: number
+          updated_at?: string
+        }
+        Update: {
+          attribution_id?: string | null
+          buyer_user_id?: string
+          cancel_cutoff_hours?: number
+          cancel_policy_version?: string
+          created_at?: string
+          currency?: string
+          event_id?: string
+          id?: string
+          idempotency_key?: string | null
+          metadata?: Json
+          payment_intent_id?: string | null
+          quantity?: number
+          status?: Database["public"]["Enums"]["marketplace_booking_status"]
+          total_minor?: number
+          unit_price_minor?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_bookings_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venue_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bookings_buyer_user_id_fkey"
+            columns: ["buyer_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bookings_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_bookings_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_events: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          attribution_id: string | null
+          cancel_cutoff_hours: number
+          cancel_policy_version: string
+          capacity: number
+          category: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          ends_at: string | null
+          id: string
+          legacy_event_id: string | null
+          metadata: Json
+          price_minor: number
+          published_at: string | null
+          recommended_by: string | null
+          starts_at: string
+          status: Database["public"]["Enums"]["marketplace_event_status"]
+          submitted_by: string | null
+          title: string
+          updated_at: string
+          venue_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_id?: string | null
+          cancel_cutoff_hours?: number
+          cancel_policy_version?: string
+          capacity?: number
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          legacy_event_id?: string | null
+          metadata?: Json
+          price_minor?: number
+          published_at?: string | null
+          recommended_by?: string | null
+          starts_at: string
+          status?: Database["public"]["Enums"]["marketplace_event_status"]
+          submitted_by?: string | null
+          title: string
+          updated_at?: string
+          venue_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_id?: string | null
+          cancel_cutoff_hours?: number
+          cancel_policy_version?: string
+          capacity?: number
+          category?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          legacy_event_id?: string | null
+          metadata?: Json
+          price_minor?: number
+          published_at?: string | null
+          recommended_by?: string | null
+          starts_at?: string
+          status?: Database["public"]["Enums"]["marketplace_event_status"]
+          submitted_by?: string | null
+          title?: string
+          updated_at?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_events_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_events_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venue_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_events_recommended_by_fkey"
+            columns: ["recommended_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_events_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_events_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_offer_claims: {
+        Row: {
+          claim_token_hash: string
+          claimant_user_id: string
+          claimed_at: string
+          created_at: string
+          expires_at: string
+          id: string
+          metadata: Json
+          non_purchase_notes: string | null
+          non_purchase_reason: string | null
+          offer_event_id: string
+          penalty_exempt: boolean
+          redeemed_at: string | null
+          status: Database["public"]["Enums"]["marketplace_claim_status"]
+          updated_at: string
+          venue_response: string | null
+        }
+        Insert: {
+          claim_token_hash: string
+          claimant_user_id: string
+          claimed_at?: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          metadata?: Json
+          non_purchase_notes?: string | null
+          non_purchase_reason?: string | null
+          offer_event_id: string
+          penalty_exempt?: boolean
+          redeemed_at?: string | null
+          status?: Database["public"]["Enums"]["marketplace_claim_status"]
+          updated_at?: string
+          venue_response?: string | null
+        }
+        Update: {
+          claim_token_hash?: string
+          claimant_user_id?: string
+          claimed_at?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          non_purchase_notes?: string | null
+          non_purchase_reason?: string | null
+          offer_event_id?: string
+          penalty_exempt?: boolean
+          redeemed_at?: string | null
+          status?: Database["public"]["Enums"]["marketplace_claim_status"]
+          updated_at?: string
+          venue_response?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_offer_claims_claimant_user_id_fkey"
+            columns: ["claimant_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_offer_claims_offer_event_id_fkey"
+            columns: ["offer_event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_offer_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_offer_events: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          attribution_id: string | null
+          campaign_ends_at: string
+          campaign_starts_at: string
+          claim_validity_hours: number
+          claims_count: number
+          created_at: string
+          customer_cap: number
+          description: string | null
+          id: string
+          metadata: Json
+          planned_commercial_value_minor: number
+          published_at: string | null
+          recommended_by: string | null
+          status: Database["public"]["Enums"]["marketplace_offer_status"]
+          submitted_by: string | null
+          title: string
+          updated_at: string
+          venue_id: string
+          version: number
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_id?: string | null
+          campaign_ends_at: string
+          campaign_starts_at: string
+          claim_validity_hours?: number
+          claims_count?: number
+          created_at?: string
+          customer_cap?: number
+          description?: string | null
+          id?: string
+          metadata?: Json
+          planned_commercial_value_minor: number
+          published_at?: string | null
+          recommended_by?: string | null
+          status?: Database["public"]["Enums"]["marketplace_offer_status"]
+          submitted_by?: string | null
+          title: string
+          updated_at?: string
+          venue_id: string
+          version?: number
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attribution_id?: string | null
+          campaign_ends_at?: string
+          campaign_starts_at?: string
+          claim_validity_hours?: number
+          claims_count?: number
+          created_at?: string
+          customer_cap?: number
+          description?: string | null
+          id?: string
+          metadata?: Json
+          planned_commercial_value_minor?: number
+          published_at?: string | null
+          recommended_by?: string | null
+          status?: Database["public"]["Enums"]["marketplace_offer_status"]
+          submitted_by?: string | null
+          title?: string
+          updated_at?: string
+          venue_id?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_offer_events_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_offer_events_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venue_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_offer_events_recommended_by_fkey"
+            columns: ["recommended_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_offer_events_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_offer_events_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_redemptions: {
+        Row: {
+          claim_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          offer_event_id: string
+          redeemed_by_staff_user_id: string | null
+          redemption_token_hash: string
+          sale_confirmed: boolean
+          sale_reference: string | null
+          status: string
+          venue_id: string
+        }
+        Insert: {
+          claim_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          offer_event_id: string
+          redeemed_by_staff_user_id?: string | null
+          redemption_token_hash: string
+          sale_confirmed?: boolean
+          sale_reference?: string | null
+          status?: string
+          venue_id: string
+        }
+        Update: {
+          claim_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          offer_event_id?: string
+          redeemed_by_staff_user_id?: string | null
+          redemption_token_hash?: string
+          sale_confirmed?: boolean
+          sale_reference?: string | null
+          status?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_redemptions_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_offer_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_redemptions_offer_event_id_fkey"
+            columns: ["offer_event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_offer_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_redemptions_redeemed_by_staff_user_id_fkey"
+            columns: ["redeemed_by_staff_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_redemptions_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_revenue_entitlements: {
+        Row: {
+          attribution_id: string | null
+          created_at: string
+          earning_event_key: string
+          eligible_revenue_minor: number
+          gce_share_minor: number
+          has_valid_attribution: boolean
+          id: string
+          mbdp_commission_bps: number
+          mbdp_share_minor: number
+          metadata: Json
+          rule_version: string
+          source_id: string | null
+          source_type: string
+          state: Database["public"]["Enums"]["marketplace_entitlement_state"]
+          unit_id: string | null
+          updated_at: string
+          venue_id: string
+          venue_share_minor: number
+        }
+        Insert: {
+          attribution_id?: string | null
+          created_at?: string
+          earning_event_key: string
+          eligible_revenue_minor?: number
+          gce_share_minor?: number
+          has_valid_attribution?: boolean
+          id?: string
+          mbdp_commission_bps?: number
+          mbdp_share_minor?: number
+          metadata?: Json
+          rule_version?: string
+          source_id?: string | null
+          source_type: string
+          state?: Database["public"]["Enums"]["marketplace_entitlement_state"]
+          unit_id?: string | null
+          updated_at?: string
+          venue_id: string
+          venue_share_minor?: number
+        }
+        Update: {
+          attribution_id?: string | null
+          created_at?: string
+          earning_event_key?: string
+          eligible_revenue_minor?: number
+          gce_share_minor?: number
+          has_valid_attribution?: boolean
+          id?: string
+          mbdp_commission_bps?: number
+          mbdp_share_minor?: number
+          metadata?: Json
+          rule_version?: string
+          source_id?: string | null
+          source_type?: string
+          state?: Database["public"]["Enums"]["marketplace_entitlement_state"]
+          unit_id?: string | null
+          updated_at?: string
+          venue_id?: string
+          venue_share_minor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_revenue_entitlements_attribution_id_fkey"
+            columns: ["attribution_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venue_attributions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_revenue_entitlements_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_revenue_entitlements_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_tickets: {
+        Row: {
+          booking_id: string
+          checked_in_at: string | null
+          checked_in_by: string | null
+          created_at: string
+          event_id: string
+          holder_user_id: string
+          id: string
+          issued_at: string
+          metadata: Json
+          qr_token_hash: string
+          status: Database["public"]["Enums"]["marketplace_ticket_status"]
+          ticket_ref: string
+          updated_at: string
+          voided_at: string | null
+        }
+        Insert: {
+          booking_id: string
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          created_at?: string
+          event_id: string
+          holder_user_id: string
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          qr_token_hash: string
+          status?: Database["public"]["Enums"]["marketplace_ticket_status"]
+          ticket_ref: string
+          updated_at?: string
+          voided_at?: string | null
+        }
+        Update: {
+          booking_id?: string
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          created_at?: string
+          event_id?: string
+          holder_user_id?: string
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          qr_token_hash?: string
+          status?: Database["public"]["Enums"]["marketplace_ticket_status"]
+          ticket_ref?: string
+          updated_at?: string
+          voided_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_tickets_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_tickets_checked_in_by_fkey"
+            columns: ["checked_in_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_tickets_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_tickets_holder_user_id_fkey"
+            columns: ["holder_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_venue_attributions: {
+        Row: {
+          approved_by: string | null
+          basis: string | null
+          bdp_user_id: string | null
+          created_at: string
+          created_by: string | null
+          effective_from: string | null
+          effective_to: string | null
+          id: string
+          is_correction: boolean
+          metadata: Json
+          provenance: string
+          reason: string | null
+          status: Database["public"]["Enums"]["marketplace_attribution_status"]
+          unit_id: string | null
+          updated_at: string
+          venue_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          metadata?: Json
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["marketplace_attribution_status"]
+          unit_id?: string | null
+          updated_at?: string
+          venue_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          basis?: string | null
+          bdp_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          is_correction?: boolean
+          metadata?: Json
+          provenance?: string
+          reason?: string | null
+          status?: Database["public"]["Enums"]["marketplace_attribution_status"]
+          unit_id?: string | null
+          updated_at?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_venue_attributions_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_attributions_bdp_user_id_fkey"
+            columns: ["bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_attributions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_attributions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_attributions_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_venue_handovers: {
+        Row: {
+          approved_by: string | null
+          completed_at: string | null
+          created_at: string
+          effective_from: string | null
+          id: string
+          metadata: Json
+          notes: string | null
+          requested_by: string | null
+          source_unit_id: string | null
+          status: string
+          target_unit_id: string | null
+          updated_at: string
+          venue_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_unit_id?: string | null
+          status?: string
+          target_unit_id?: string | null
+          updated_at?: string
+          venue_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          effective_from?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          requested_by?: string | null
+          source_unit_id?: string | null
+          status?: string
+          target_unit_id?: string | null
+          updated_at?: string
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_venue_handovers_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_handovers_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_handovers_source_unit_id_fkey"
+            columns: ["source_unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_handovers_target_unit_id_fkey"
+            columns: ["target_unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venue_handovers_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_venues: {
+        Row: {
+          address: string | null
+          approved_at: string | null
+          approved_by: string | null
+          category: string | null
+          city: string
+          created_at: string
+          display_name: string
+          id: string
+          inactive_reason: string | null
+          kyc_case_id: string | null
+          legacy_venue_id: string | null
+          legal_name: string | null
+          metadata: Json
+          organisation_id: string
+          payout_details_ref: string | null
+          performance_score: number | null
+          recommended_at: string | null
+          recommended_by_unit_id: string | null
+          recommended_by_user_id: string | null
+          rejected_by: string | null
+          rejection_reason: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["marketplace_venue_status"]
+          submitted_by: string | null
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          address?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          category?: string | null
+          city: string
+          created_at?: string
+          display_name: string
+          id?: string
+          inactive_reason?: string | null
+          kyc_case_id?: string | null
+          legacy_venue_id?: string | null
+          legal_name?: string | null
+          metadata?: Json
+          organisation_id: string
+          payout_details_ref?: string | null
+          performance_score?: number | null
+          recommended_at?: string | null
+          recommended_by_unit_id?: string | null
+          recommended_by_user_id?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["marketplace_venue_status"]
+          submitted_by?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          address?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          category?: string | null
+          city?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          inactive_reason?: string | null
+          kyc_case_id?: string | null
+          legacy_venue_id?: string | null
+          legal_name?: string | null
+          metadata?: Json
+          organisation_id?: string
+          payout_details_ref?: string | null
+          performance_score?: number | null
+          recommended_at?: string | null
+          recommended_by_unit_id?: string | null
+          recommended_by_user_id?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["marketplace_venue_status"]
+          submitted_by?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_venues_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_kyc_case_id_fkey"
+            columns: ["kyc_case_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_verification_cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: true
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_recommended_by_unit_id_fkey"
+            columns: ["recommended_by_unit_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_bdp_units"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_recommended_by_user_id_fkey"
+            columns: ["recommended_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_rejected_by_fkey"
+            columns: ["rejected_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_venues_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       membership_plans: {
         Row: {
@@ -4539,6 +5735,63 @@ export type Database = {
         }
         Relationships: []
       }
+      venue_performance_rank_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          delta: number
+          event_type: string
+          id: string
+          metadata: Json
+          resulting_score: number | null
+          rule_version: string
+          source_id: string | null
+          source_type: string | null
+          venue_id: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          delta?: number
+          event_type: string
+          id?: string
+          metadata?: Json
+          resulting_score?: number | null
+          rule_version?: string
+          source_id?: string | null
+          source_type?: string | null
+          venue_id: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          delta?: number
+          event_type?: string
+          id?: string
+          metadata?: Json
+          resulting_score?: number | null
+          rule_version?: string
+          source_id?: string | null
+          source_type?: string | null
+          venue_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "venue_performance_rank_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "venue_performance_rank_events_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       venue_plans: {
         Row: {
           capacity_max: number | null
@@ -5122,11 +6375,144 @@ export type Database = {
         Args: { p_user_id?: string }
         Returns: boolean
       }
+      gce_is_marketplace_venue_rep: {
+        Args: { p_venue_id: string }
+        Returns: boolean
+      }
+      gce_is_mbdp_unit_owner: { Args: { p_unit_id: string }; Returns: boolean }
       gce_is_org_member: {
         Args: { p_organisation_id: string }
         Returns: boolean
       }
       gce_is_platform_admin: { Args: never; Returns: boolean }
+      gce_marketplace_redeem_claim: {
+        Args: {
+          p_actor?: string
+          p_claim_id: string
+          p_redemption_token_hash: string
+          p_sale_confirmed?: boolean
+          p_sale_reference?: string
+        }
+        Returns: {
+          claim_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          offer_event_id: string
+          redeemed_by_staff_user_id: string | null
+          redemption_token_hash: string
+          sale_confirmed: boolean
+          sale_reference: string | null
+          status: string
+          venue_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_redemptions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_marketplace_split: {
+        Args: { p_eligible_minor: number; p_has_attribution: boolean }
+        Returns: {
+          gce_share_minor: number
+          mbdp_commission_bps: number
+          mbdp_share_minor: number
+          venue_share_minor: number
+        }[]
+      }
+      gce_marketplace_ticket_check_in: {
+        Args: {
+          p_actor?: string
+          p_presented_token_hash: string
+          p_ticket_id: string
+        }
+        Returns: {
+          booking_id: string
+          checked_in_at: string | null
+          checked_in_by: string | null
+          created_at: string
+          event_id: string
+          holder_user_id: string
+          id: string
+          issued_at: string
+          metadata: Json
+          qr_token_hash: string
+          status: Database["public"]["Enums"]["marketplace_ticket_status"]
+          ticket_ref: string
+          updated_at: string
+          voided_at: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_tickets"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_mbdp_apply_recovery: {
+        Args: {
+          p_actor?: string
+          p_cycle_key: string
+          p_entitlement_id: string
+          p_unit_id: string
+        }
+        Returns: {
+          actor_user_id: string | null
+          created_at: string
+          cycle_key: string
+          entitlement_id: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          recovered_minor: number
+          remaining_after_minor: number
+          unit_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_bdp_recovery_entries"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_mbdp_refresh_venue_counts: {
+        Args: { p_unit_id: string }
+        Returns: {
+          activated_at: string | null
+          active_venue_count: number
+          application_status: Database["public"]["Enums"]["marketplace_bdp_application_status"]
+          created_at: string
+          id: string
+          initial_payment_minor: number
+          kyc_case_id: string | null
+          metadata: Json
+          offline_approved_by: string | null
+          offline_payment_ref: string | null
+          offline_recorded_by: string | null
+          package_option: Database["public"]["Enums"]["marketplace_bdp_package_option"]
+          package_total_minor: number
+          payment_intent_id: string | null
+          pricing_rule_version: string
+          recoverable_balance_minor: number
+          recovered_to_date_minor: number
+          remaining_recoverable_minor: number
+          role_assignment_id: string | null
+          suspended_at: string | null
+          terminated_at: string | null
+          terms_accepted_at: string | null
+          updated_at: string
+          user_id: string
+          venues_capacity_max: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "marketplace_bdp_units"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_refresh_circle_capacity: {
         Args: { p_actor?: string; p_circle_id: string }
         Returns: {
@@ -5319,11 +6705,101 @@ export type Database = {
         | "historical_only"
         | "ambiguous"
         | "needs_review"
+      legacy_marketplace_map_status:
+        | "mapped"
+        | "historical_only"
+        | "ambiguous"
+        | "needs_review"
+        | "reusable_shell"
       legacy_membership_map_status:
         | "mapped"
         | "historical_only"
         | "ambiguous"
         | "needs_review"
+      marketplace_attribution_status:
+        | "unattributed"
+        | "proposed"
+        | "pending_evidence"
+        | "active"
+        | "disputed"
+        | "suspended"
+        | "reassigned_closed"
+        | "voided"
+      marketplace_bdp_application_status:
+        | "draft"
+        | "submitted"
+        | "pending_verification"
+        | "pending_payment"
+        | "pending_approval"
+        | "active"
+        | "rejected"
+        | "suspended"
+        | "terminated"
+        | "archived"
+      marketplace_bdp_package_option: "direct_50000" | "finance_recovery_60000"
+      marketplace_booking_status:
+        | "draft"
+        | "pending_payment"
+        | "paid"
+        | "confirmed"
+        | "cancelled"
+        | "refund_pending"
+        | "refunded"
+        | "failed"
+      marketplace_claim_status:
+        | "claimed"
+        | "expired"
+        | "redeemed"
+        | "cancelled"
+        | "voided"
+        | "no_purchase"
+      marketplace_entitlement_state:
+        | "estimated"
+        | "provisional"
+        | "earned"
+        | "on_hold"
+        | "settlement_eligible"
+        | "paid"
+        | "reversed"
+      marketplace_event_status:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "changes_requested"
+        | "approved"
+        | "published"
+        | "suspended"
+        | "closed"
+        | "cancelled"
+        | "rejected"
+      marketplace_offer_status:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "changes_requested"
+        | "approved"
+        | "published"
+        | "suspended"
+        | "closed"
+        | "expired"
+        | "rejected"
+      marketplace_ticket_status:
+        | "issued"
+        | "cancelled"
+        | "checked_in"
+        | "voided"
+        | "expired"
+      marketplace_venue_status:
+        | "draft"
+        | "submitted"
+        | "pending_mbdp_recommendation"
+        | "pending_platform_approval"
+        | "active"
+        | "temporarily_inactive"
+        | "review_required"
+        | "suspended"
+        | "terminated"
+        | "archived"
       membership_allocation_status:
         | "unallocated"
         | "pending_allocation"
@@ -5694,11 +7170,114 @@ export const Constants = {
         "ambiguous",
         "needs_review",
       ],
+      legacy_marketplace_map_status: [
+        "mapped",
+        "historical_only",
+        "ambiguous",
+        "needs_review",
+        "reusable_shell",
+      ],
       legacy_membership_map_status: [
         "mapped",
         "historical_only",
         "ambiguous",
         "needs_review",
+      ],
+      marketplace_attribution_status: [
+        "unattributed",
+        "proposed",
+        "pending_evidence",
+        "active",
+        "disputed",
+        "suspended",
+        "reassigned_closed",
+        "voided",
+      ],
+      marketplace_bdp_application_status: [
+        "draft",
+        "submitted",
+        "pending_verification",
+        "pending_payment",
+        "pending_approval",
+        "active",
+        "rejected",
+        "suspended",
+        "terminated",
+        "archived",
+      ],
+      marketplace_bdp_package_option: [
+        "direct_50000",
+        "finance_recovery_60000",
+      ],
+      marketplace_booking_status: [
+        "draft",
+        "pending_payment",
+        "paid",
+        "confirmed",
+        "cancelled",
+        "refund_pending",
+        "refunded",
+        "failed",
+      ],
+      marketplace_claim_status: [
+        "claimed",
+        "expired",
+        "redeemed",
+        "cancelled",
+        "voided",
+        "no_purchase",
+      ],
+      marketplace_entitlement_state: [
+        "estimated",
+        "provisional",
+        "earned",
+        "on_hold",
+        "settlement_eligible",
+        "paid",
+        "reversed",
+      ],
+      marketplace_event_status: [
+        "draft",
+        "submitted",
+        "under_review",
+        "changes_requested",
+        "approved",
+        "published",
+        "suspended",
+        "closed",
+        "cancelled",
+        "rejected",
+      ],
+      marketplace_offer_status: [
+        "draft",
+        "submitted",
+        "under_review",
+        "changes_requested",
+        "approved",
+        "published",
+        "suspended",
+        "closed",
+        "expired",
+        "rejected",
+      ],
+      marketplace_ticket_status: [
+        "issued",
+        "cancelled",
+        "checked_in",
+        "voided",
+        "expired",
+      ],
+      marketplace_venue_status: [
+        "draft",
+        "submitted",
+        "pending_mbdp_recommendation",
+        "pending_platform_approval",
+        "active",
+        "temporarily_inactive",
+        "review_required",
+        "suspended",
+        "terminated",
+        "archived",
       ],
       membership_allocation_status: [
         "unallocated",

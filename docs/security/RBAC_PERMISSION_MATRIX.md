@@ -180,7 +180,12 @@ Symbols: `✓` allowed within scope · `—` not by default · `✗` forbidden (
 | Support Admin | AuditEvent | limited (TR) | — | — | — | ✗ | — | — | limited (TR) | Case (TR) |
 | Finance Admin | Finance-related AuditEvent | ✓ | — | — | — | ✗ | — | ✓ | ✓ | Platform finance |
 
-Opportunity Desk must **not** own leads or take hidden personal commission (FD-031). Exact desk RBAC enums: **Pending Technical Design**.
+Opportunity Desk must **not** own leads or take hidden personal commission (FD-031).
+
+**Phase 10 implementation (gce-dev):** permission codes in `lib/architecture/lead-assist/permissions.ts` —
+`lead.create.own`, `lead.read.own_sent`, `lead.read.assigned`, `lead.accept_decline`, `lead.reveal_contact`,
+`lead.outcome.submit`, `lead.desk.review`, `lead.desk.assign`, `lead.desk.reassign`.
+Canonical role key `opportunity_desk` (FD-035) unlocks workspace `opportunity-desk`.
 
 ---
 
@@ -213,8 +218,8 @@ Opportunity Desk must **not** own leads or take hidden personal commission (FD-0
 | Item | Status |
 |------|--------|
 | Exact permission-code list / naming | Pending Technical Design (FD-023) |
-| Exact masking / reveal rules for contacts | Pending (FD-023) |
-| Opportunity Desk enum RBAC | Pending Technical Design (FD-031) |
+| Exact masking / reveal rules for contacts | Phase 10 Stage 1: accepted assignment required; paid reveal OFF; Legal consent copy = OD-010 |
+| Opportunity Desk enum RBAC | Implemented Phase 10 (`opportunity_desk` + desk permissions); residual TR naming polish OK |
 | Venue Admin (platform console) vs Venue Rep naming in product UI | Clarify per FD-035; map under Platform Ops until Founder-distinct |
 | Security Administrator row detail | FD-023 family exists; expand when Phase 2 security ops design lands |
 

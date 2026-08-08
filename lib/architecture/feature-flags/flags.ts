@@ -2,14 +2,25 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { AppError } from "../errors";
 import { logStructured } from "../logging";
 import type { FeatureFlagKey } from "../types";
-import { INACTIVE_FEATURE_FLAGS } from "../types";
+import {
+  FEATURE_FLAG_KEYS,
+  INACTIVE_FEATURE_FLAGS,
+  LEAD_ASSIST_STAGE1_FLAGS,
+} from "../types";
 
-const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = Object.fromEntries(
-  INACTIVE_FEATURE_FLAGS.map((k) => [k, false])
-) as Record<FeatureFlagKey, boolean>;
+const DEFAULT_FLAGS: Record<FeatureFlagKey, boolean> = {
+  ...(Object.fromEntries(INACTIVE_FEATURE_FLAGS.map((k) => [k, false])) as Record<
+    (typeof INACTIVE_FEATURE_FLAGS)[number],
+    boolean
+  >),
+  ...(Object.fromEntries(LEAD_ASSIST_STAGE1_FLAGS.map((k) => [k, true])) as Record<
+    (typeof LEAD_ASSIST_STAGE1_FLAGS)[number],
+    boolean
+  >),
+};
 
 export function isKnownFeatureFlag(key: string): key is FeatureFlagKey {
-  return (INACTIVE_FEATURE_FLAGS as readonly string[]).includes(key);
+  return (FEATURE_FLAG_KEYS as readonly string[]).includes(key);
 }
 
 /** In-memory defaults when DB is unavailable — always fail closed for money/inactive flags. */

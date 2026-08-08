@@ -19,6 +19,12 @@ import {
   buildExpertDashboard,
 } from "@/lib/architecture/enterprise";
 import { buildFinanceDashboard } from "@/lib/architecture/finance";
+import {
+  getMyReceivedLeads,
+  getMySentLeads,
+  getOpportunityDeskQueue,
+  presentLeadPrivacySafe,
+} from "@/lib/architecture/lead-assist";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
 import { WorkspaceSwitcher } from "./workspace-switcher";
@@ -194,6 +200,32 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
       financeReport = await buildFinanceDashboard(supabase);
     } catch {
       financeReport = null;
+    }
+  }
+
+  const showLeadAssistPanel =
+    canAccess && (key === "connect-member" || key === "personal");
+  let sentLeads: Array<ReturnType<typeof presentLeadPrivacySafe>> = [];
+  let receivedLeadCount = 0;
+  if (showLeadAssistPanel) {
+    try {
+      const sent = await getMySentLeads(supabase, user.id);
+      sentLeads = sent.slice(0, 5).map((l) => presentLeadPrivacySafe(l));
+      const received = await getMyReceivedLeads(supabase, user.id);
+      receivedLeadCount = received.length;
+    } catch {
+      sentLeads = [];
+      receivedLeadCount = 0;
+    }
+  }
+
+  const showOpportunityDeskPanel = canAccess && key === "opportunity-desk";
+  let deskQueue: Awaited<ReturnType<typeof getOpportunityDeskQueue>> = [];
+  if (showOpportunityDeskPanel) {
+    try {
+      deskQueue = await getOpportunityDeskQueue(supabase);
+    } catch {
+      deskQueue = [];
     }
   }
 
@@ -462,6 +494,56 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
             proposals: {expertReport.draftProposals} · quotes pending Finance
             co-sign: {expertReport.quotesPendingFinanceCosign}
           </div>
+        </section>
+      ) : null}
+      {showLeadAssistPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">AI Lead Assist (Stage 1 unpaid)</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Formal in-app leads · Circle-first routing · no ₹500 fee · use{" "}
+            <code>/api/lead-assist</code>
+          </p>
+          <div className="mt-3 text-xs text-neutral-700">
+            Received assignments: {receivedLeadCount}
+          </div>
+          {sentLeads.length === 0 ? (
+            <p className="mt-3 text-sm text-neutral-600">No sent leads yet.</p>
+          ) : (
+            <ul className="mt-3 space-y-2 text-sm">
+              {sentLeads.map((l) => (
+                <li key={l.id} className="border-t border-neutral-100 pt-2">
+                  <span className="font-medium">{l.title}</span>
+                  {" · "}
+                  {l.workStatus}
+                  {l.city ? ` · ${l.city}` : ""}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ) : null}
+      {showOpportunityDeskPanel ? (
+        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+          <h2 className="text-sm font-medium">Opportunity Desk queue</h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            FD-031/035 — human review · classification · reassignment · no
+            finance entitlement
+          </p>
+          {deskQueue.length === 0 ? (
+            <p className="mt-3 text-sm text-neutral-600">Queue empty.</p>
+          ) : (
+            <ul className="mt-3 space-y-2 text-sm">
+              {deskQueue.slice(0, 10).map((q) => (
+                <li key={q.id} className="border-t border-neutral-100 pt-2">
+                  <span className="font-medium">{q.reason}</span>
+                  {" · "}
+                  {q.status}
+                  {" · lead "}
+                  {q.lead_id}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       ) : null}
       {showFinancePanel ? (

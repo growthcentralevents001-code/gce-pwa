@@ -11,6 +11,7 @@ export const WORKSPACE_ROLE_MAP: Record<WorkspaceKey, GceRoleKey | null> = {
   "enterprise-bdp": "enterprise_bdp",
   "enterprise-client": "enterprise_client_representative",
   "platform-ops": "platform_admin",
+  "opportunity-desk": "opportunity_desk",
   finance: "finance_admin",
   compliance: "compliance_admin",
   support: "support_admin",
@@ -67,6 +68,7 @@ export const LEGACY_DASHBOARD_REDIRECTS: Record<
 /** Extra role keys that unlock an existing workspace shell (no Super Admin shell). */
 const EXTRA_WORKSPACE_ROLES: Array<{ role: GceRoleKey; workspace: WorkspaceKey }> = [
   { role: "opportunity_desk", workspace: "platform-ops" },
+  { role: "platform_admin", workspace: "opportunity-desk" },
   { role: "enterprise_platform_expert", workspace: "platform-ops" },
   { role: "relationship_manager", workspace: "platform-ops" },
   { role: "platform_relationship_manager", workspace: "platform-ops" },

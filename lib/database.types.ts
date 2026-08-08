@@ -7,30 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -244,6 +224,1047 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      assist_closed_business_confirmations: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          id: string
+          lead_id: string
+          notes: string | null
+          outcome_id: string
+          party: string
+          party_user_id: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          id?: string
+          lead_id: string
+          notes?: string | null
+          outcome_id: string
+          party: string
+          party_user_id: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          id?: string
+          lead_id?: string
+          notes?: string | null
+          outcome_id?: string
+          party?: string
+          party_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_closed_business_confirmations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_closed_business_confirmations_outcome_id_fkey"
+            columns: ["outcome_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_outcomes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_closed_business_confirmations_party_user_id_fkey"
+            columns: ["party_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_contact_reveal_events: {
+        Row: {
+          assignment_id: string | null
+          created_at: string
+          fields_revealed: string[]
+          id: string
+          lead_id: string
+          reason: string | null
+          viewer_user_id: string
+        }
+        Insert: {
+          assignment_id?: string | null
+          created_at?: string
+          fields_revealed?: string[]
+          id?: string
+          lead_id: string
+          reason?: string | null
+          viewer_user_id: string
+        }
+        Update: {
+          assignment_id?: string | null
+          created_at?: string
+          fields_revealed?: string[]
+          id?: string
+          lead_id?: string
+          reason?: string | null
+          viewer_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_contact_reveal_events_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_contact_reveal_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_contact_reveal_events_viewer_user_id_fkey"
+            columns: ["viewer_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_domain_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          lead_id: string | null
+          payload: Json
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+          lead_id?: string | null
+          payload?: Json
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+          lead_id?: string | null
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_domain_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_domain_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_abuse_flags: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          created_by: string | null
+          details: string | null
+          flag_type: string
+          id: string
+          lead_id: string | null
+          status: string
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          details?: string | null
+          flag_type: string
+          id?: string
+          lead_id?: string | null
+          status?: string
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          details?: string | null
+          flag_type?: string
+          id?: string
+          lead_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_abuse_flags_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_abuse_flags_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_abuse_flags_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_ai_classifications: {
+        Row: {
+          ai_run_id: string | null
+          confidence_bps: number
+          created_at: string
+          extracted_city: string | null
+          extracted_state: string | null
+          final_specialisation_id: string | null
+          id: string
+          is_canonical: boolean
+          lead_id: string
+          metadata: Json
+          override_reason: string | null
+          ranking_reasons: string[]
+          review_reason: string | null
+          review_required: boolean
+          reviewed_by: string | null
+          suggested_specialisation_id: string | null
+          suggested_tag_codes: string[]
+          urgency: string | null
+        }
+        Insert: {
+          ai_run_id?: string | null
+          confidence_bps?: number
+          created_at?: string
+          extracted_city?: string | null
+          extracted_state?: string | null
+          final_specialisation_id?: string | null
+          id?: string
+          is_canonical?: boolean
+          lead_id: string
+          metadata?: Json
+          override_reason?: string | null
+          ranking_reasons?: string[]
+          review_reason?: string | null
+          review_required?: boolean
+          reviewed_by?: string | null
+          suggested_specialisation_id?: string | null
+          suggested_tag_codes?: string[]
+          urgency?: string | null
+        }
+        Update: {
+          ai_run_id?: string | null
+          confidence_bps?: number
+          created_at?: string
+          extracted_city?: string | null
+          extracted_state?: string | null
+          final_specialisation_id?: string | null
+          id?: string
+          is_canonical?: boolean
+          lead_id?: string
+          metadata?: Json
+          override_reason?: string | null
+          ranking_reasons?: string[]
+          review_reason?: string | null
+          review_required?: boolean
+          reviewed_by?: string | null
+          suggested_specialisation_id?: string | null
+          suggested_tag_codes?: string[]
+          urgency?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_ai_classifications_ai_run_id_fkey"
+            columns: ["ai_run_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_ai_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_ai_classifications_final_specialisation_id_fkey"
+            columns: ["final_specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_ai_classifications_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_ai_classifications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_ai_classifications_suggested_specialisation_id_fkey"
+            columns: ["suggested_specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_ai_runs: {
+        Row: {
+          confidence_bps: number
+          cost_metadata: Json
+          created_at: string
+          error_message: string | null
+          id: string
+          lead_id: string
+          model_id: string
+          prompt_template_version: string
+          provider: string
+          purpose: string
+          review_required: boolean
+          status: string
+          structured_output: Json
+        }
+        Insert: {
+          confidence_bps?: number
+          cost_metadata?: Json
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          lead_id: string
+          model_id?: string
+          prompt_template_version?: string
+          provider?: string
+          purpose?: string
+          review_required?: boolean
+          status?: string
+          structured_output?: Json
+        }
+        Update: {
+          confidence_bps?: number
+          cost_metadata?: Json
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          lead_id?: string
+          model_id?: string
+          prompt_template_version?: string
+          provider?: string
+          purpose?: string
+          review_required?: boolean
+          status?: string
+          structured_output?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_ai_runs_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_assignment_events: {
+        Row: {
+          actor_user_id: string | null
+          assignment_id: string
+          created_at: string
+          from_status:
+            | Database["public"]["Enums"]["assist_assignment_status"]
+            | null
+          id: string
+          lead_id: string
+          reason: string | null
+          to_status: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Insert: {
+          actor_user_id?: string | null
+          assignment_id: string
+          created_at?: string
+          from_status?:
+            | Database["public"]["Enums"]["assist_assignment_status"]
+            | null
+          id?: string
+          lead_id: string
+          reason?: string | null
+          to_status: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Update: {
+          actor_user_id?: string | null
+          assignment_id?: string
+          created_at?: string
+          from_status?:
+            | Database["public"]["Enums"]["assist_assignment_status"]
+            | null
+          id?: string
+          lead_id?: string
+          reason?: string | null
+          to_status?: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_assignment_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignment_events_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignment_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          assignment_source: string
+          created_at: string
+          decline_reason: string | null
+          id: string
+          is_active: boolean
+          lead_id: string
+          metadata: Json
+          receiver_circle_id: string | null
+          receiver_membership_id: string | null
+          receiver_user_id: string
+          responded_at: string | null
+          status: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assignment_source?: string
+          created_at?: string
+          decline_reason?: string | null
+          id?: string
+          is_active?: boolean
+          lead_id: string
+          metadata?: Json
+          receiver_circle_id?: string | null
+          receiver_membership_id?: string | null
+          receiver_user_id: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          assignment_source?: string
+          created_at?: string
+          decline_reason?: string | null
+          id?: string
+          is_active?: boolean
+          lead_id?: string
+          metadata?: Json
+          receiver_circle_id?: string | null
+          receiver_membership_id?: string | null
+          receiver_user_id?: string
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["assist_assignment_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignments_receiver_circle_id_fkey"
+            columns: ["receiver_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignments_receiver_membership_id_fkey"
+            columns: ["receiver_membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_assignments_receiver_user_id_fkey"
+            columns: ["receiver_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_duplicate_flags: {
+        Row: {
+          created_at: string
+          id: string
+          lead_id: string
+          metadata: Json
+          related_lead_id: string | null
+          reviewed_by: string | null
+          signal: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_id: string
+          metadata?: Json
+          related_lead_id?: string | null
+          reviewed_by?: string | null
+          signal: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_id?: string
+          metadata?: Json
+          related_lead_id?: string | null
+          reviewed_by?: string | null
+          signal?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_duplicate_flags_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_duplicate_flags_related_lead_id_fkey"
+            columns: ["related_lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_duplicate_flags_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_outcomes: {
+        Row: {
+          confirmed_amount_minor: number | null
+          confirmed_at: string | null
+          created_at: string
+          creates_finance_transaction: boolean
+          currency: string
+          declared_amount_minor: number | null
+          dispute_reason: string | null
+          giver_amount_minor: number | null
+          giver_status: Database["public"]["Enums"]["assist_outcome_party_status"]
+          giver_submitted_at: string | null
+          id: string
+          lead_id: string
+          metadata: Json
+          outcome_type: string
+          receiver_amount_minor: number | null
+          receiver_status: Database["public"]["Enums"]["assist_outcome_party_status"]
+          receiver_submitted_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          confirmed_amount_minor?: number | null
+          confirmed_at?: string | null
+          created_at?: string
+          creates_finance_transaction?: boolean
+          currency?: string
+          declared_amount_minor?: number | null
+          dispute_reason?: string | null
+          giver_amount_minor?: number | null
+          giver_status?: Database["public"]["Enums"]["assist_outcome_party_status"]
+          giver_submitted_at?: string | null
+          id?: string
+          lead_id: string
+          metadata?: Json
+          outcome_type?: string
+          receiver_amount_minor?: number | null
+          receiver_status?: Database["public"]["Enums"]["assist_outcome_party_status"]
+          receiver_submitted_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          confirmed_amount_minor?: number | null
+          confirmed_at?: string | null
+          created_at?: string
+          creates_finance_transaction?: boolean
+          currency?: string
+          declared_amount_minor?: number | null
+          dispute_reason?: string | null
+          giver_amount_minor?: number | null
+          giver_status?: Database["public"]["Enums"]["assist_outcome_party_status"]
+          giver_submitted_at?: string | null
+          id?: string
+          lead_id?: string
+          metadata?: Json
+          outcome_type?: string
+          receiver_amount_minor?: number | null
+          receiver_status?: Database["public"]["Enums"]["assist_outcome_party_status"]
+          receiver_submitted_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_outcomes_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_reassignments: {
+        Row: {
+          actor_user_id: string | null
+          contact_access_revoked: boolean
+          created_at: string
+          from_assignment_id: string | null
+          id: string
+          lead_id: string
+          reason: string
+          to_assignment_id: string | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          contact_access_revoked?: boolean
+          created_at?: string
+          from_assignment_id?: string | null
+          id?: string
+          lead_id: string
+          reason: string
+          to_assignment_id?: string | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          contact_access_revoked?: boolean
+          created_at?: string
+          from_assignment_id?: string | null
+          id?: string
+          lead_id?: string
+          reason?: string
+          to_assignment_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_reassignments_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_reassignments_from_assignment_id_fkey"
+            columns: ["from_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_reassignments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_reassignments_to_assignment_id_fkey"
+            columns: ["to_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_assignments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_requirement_versions: {
+        Row: {
+          actor_user_id: string | null
+          budget_indication_minor: number | null
+          change_reason: string | null
+          city: string | null
+          confidentiality_preference: string | null
+          created_at: string
+          district: string | null
+          id: string
+          lead_id: string
+          metadata: Json
+          requirement_details: string | null
+          requirement_summary: string
+          specialisation_id: string | null
+          state: string | null
+          tag_codes: string[]
+          timeline_notes: string | null
+          urgency: string | null
+          version_no: number
+        }
+        Insert: {
+          actor_user_id?: string | null
+          budget_indication_minor?: number | null
+          change_reason?: string | null
+          city?: string | null
+          confidentiality_preference?: string | null
+          created_at?: string
+          district?: string | null
+          id?: string
+          lead_id: string
+          metadata?: Json
+          requirement_details?: string | null
+          requirement_summary: string
+          specialisation_id?: string | null
+          state?: string | null
+          tag_codes?: string[]
+          timeline_notes?: string | null
+          urgency?: string | null
+          version_no: number
+        }
+        Update: {
+          actor_user_id?: string | null
+          budget_indication_minor?: number | null
+          change_reason?: string | null
+          city?: string | null
+          confidentiality_preference?: string | null
+          created_at?: string
+          district?: string | null
+          id?: string
+          lead_id?: string
+          metadata?: Json
+          requirement_details?: string | null
+          requirement_summary?: string
+          specialisation_id?: string | null
+          state?: string | null
+          tag_codes?: string[]
+          timeline_notes?: string | null
+          urgency?: string | null
+          version_no?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_requirement_versions_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_requirement_versions_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_requirement_versions_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_lead_routing_candidates: {
+        Row: {
+          ai_run_id: string | null
+          candidate_circle_id: string | null
+          candidate_membership_id: string | null
+          candidate_user_id: string
+          created_at: string
+          eligible: boolean
+          id: string
+          ineligibility_reason: string | null
+          lead_id: string
+          match_features: Json
+          ranking_reasons: string[]
+          routing_tier: string
+          score_bps: number
+        }
+        Insert: {
+          ai_run_id?: string | null
+          candidate_circle_id?: string | null
+          candidate_membership_id?: string | null
+          candidate_user_id: string
+          created_at?: string
+          eligible?: boolean
+          id?: string
+          ineligibility_reason?: string | null
+          lead_id: string
+          match_features?: Json
+          ranking_reasons?: string[]
+          routing_tier: string
+          score_bps?: number
+        }
+        Update: {
+          ai_run_id?: string | null
+          candidate_circle_id?: string | null
+          candidate_membership_id?: string | null
+          candidate_user_id?: string
+          created_at?: string
+          eligible?: boolean
+          id?: string
+          ineligibility_reason?: string | null
+          lead_id?: string
+          match_features?: Json
+          ranking_reasons?: string[]
+          routing_tier?: string
+          score_bps?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_lead_routing_candidates_ai_run_id_fkey"
+            columns: ["ai_run_id"]
+            isOneToOne: false
+            referencedRelation: "assist_lead_ai_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_routing_candidates_candidate_circle_id_fkey"
+            columns: ["candidate_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_routing_candidates_candidate_membership_id_fkey"
+            columns: ["candidate_membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_routing_candidates_candidate_user_id_fkey"
+            columns: ["candidate_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_lead_routing_candidates_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_leads: {
+        Row: {
+          budget_indication_minor: number | null
+          city: string | null
+          contact_reveal_state: string
+          created_at: string
+          district: string | null
+          expires_at: string | null
+          giver_membership_id: string | null
+          giver_user_id: string
+          id: string
+          lead_ref: string
+          legacy_lead_id: string | null
+          metadata: Json
+          origin_circle_id: string | null
+          privacy_level: Database["public"]["Enums"]["assist_privacy_level"]
+          quality_status: Database["public"]["Enums"]["assist_lead_quality_status"]
+          source: string
+          specialisation_id: string | null
+          state: string | null
+          submitted_at: string | null
+          title: string
+          updated_at: string
+          urgency: string
+          work_status: Database["public"]["Enums"]["assist_lead_work_status"]
+        }
+        Insert: {
+          budget_indication_minor?: number | null
+          city?: string | null
+          contact_reveal_state?: string
+          created_at?: string
+          district?: string | null
+          expires_at?: string | null
+          giver_membership_id?: string | null
+          giver_user_id: string
+          id?: string
+          lead_ref: string
+          legacy_lead_id?: string | null
+          metadata?: Json
+          origin_circle_id?: string | null
+          privacy_level?: Database["public"]["Enums"]["assist_privacy_level"]
+          quality_status?: Database["public"]["Enums"]["assist_lead_quality_status"]
+          source?: string
+          specialisation_id?: string | null
+          state?: string | null
+          submitted_at?: string | null
+          title: string
+          updated_at?: string
+          urgency?: string
+          work_status?: Database["public"]["Enums"]["assist_lead_work_status"]
+        }
+        Update: {
+          budget_indication_minor?: number | null
+          city?: string | null
+          contact_reveal_state?: string
+          created_at?: string
+          district?: string | null
+          expires_at?: string | null
+          giver_membership_id?: string | null
+          giver_user_id?: string
+          id?: string
+          lead_ref?: string
+          legacy_lead_id?: string | null
+          metadata?: Json
+          origin_circle_id?: string | null
+          privacy_level?: Database["public"]["Enums"]["assist_privacy_level"]
+          quality_status?: Database["public"]["Enums"]["assist_lead_quality_status"]
+          source?: string
+          specialisation_id?: string | null
+          state?: string | null
+          submitted_at?: string | null
+          title?: string
+          updated_at?: string
+          urgency?: string
+          work_status?: Database["public"]["Enums"]["assist_lead_work_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_leads_giver_membership_id_fkey"
+            columns: ["giver_membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_leads_giver_user_id_fkey"
+            columns: ["giver_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_leads_origin_circle_id_fkey"
+            columns: ["origin_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_leads_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assist_opportunity_desk_queue: {
+        Row: {
+          created_at: string
+          id: string
+          lead_id: string
+          metadata: Json
+          notes: string | null
+          owner_user_id: string | null
+          priority: string
+          reason: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_id: string
+          metadata?: Json
+          notes?: string | null
+          owner_user_id?: string | null
+          priority?: string
+          reason: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_id?: string
+          metadata?: Json
+          notes?: string | null
+          owner_user_id?: string | null
+          priority?: string
+          reason?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assist_opportunity_desk_queue_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "assist_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_opportunity_desk_queue_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assist_opportunity_desk_queue_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       audit_events: {
         Row: {
@@ -5209,6 +6230,30 @@ export type Database = {
         }
         Relationships: []
       }
+      legacy_lead_assist_migration_map: {
+        Row: {
+          created_at: string
+          id: string
+          legacy_object: string
+          mapping_status: string
+          notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          legacy_object: string
+          mapping_status?: string
+          notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legacy_object?: string
+          mapping_status?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
       legacy_marketplace_migration_map: {
         Row: {
           created_at: string
@@ -8866,6 +9911,58 @@ export type Database = {
       }
       create_venue_for_affiliate: { Args: { email: string }; Returns: Json }
       gce_assert_txn_balanced: { Args: { p_txn_id: string }; Returns: boolean }
+      gce_assist_emit_event: {
+        Args: {
+          p_actor: string
+          p_lead_id: string
+          p_payload?: Json
+          p_type: string
+        }
+        Returns: {
+          actor_user_id: string | null
+          created_at: string
+          event_type: string
+          id: string
+          lead_id: string | null
+          payload: Json
+        }
+        SetofOptions: {
+          from: "*"
+          to: "assist_domain_events"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      gce_assist_reconcile_outcome: {
+        Args: { p_outcome_id: string }
+        Returns: {
+          confirmed_amount_minor: number | null
+          confirmed_at: string | null
+          created_at: string
+          creates_finance_transaction: boolean
+          currency: string
+          declared_amount_minor: number | null
+          dispute_reason: string | null
+          giver_amount_minor: number | null
+          giver_status: Database["public"]["Enums"]["assist_outcome_party_status"]
+          giver_submitted_at: string | null
+          id: string
+          lead_id: string
+          metadata: Json
+          outcome_type: string
+          receiver_amount_minor: number | null
+          receiver_status: Database["public"]["Enums"]["assist_outcome_party_status"]
+          receiver_submitted_at: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "assist_lead_outcomes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_circle_statuses_for_count: {
         Args: { p_count: number }
         Returns: {
@@ -9093,6 +10190,7 @@ export type Database = {
         Returns: boolean
       }
       gce_is_mbdp_unit_owner: { Args: { p_unit_id: string }; Returns: boolean }
+      gce_is_opportunity_desk: { Args: never; Returns: boolean }
       gce_is_org_member: {
         Args: { p_organisation_id: string }
         Returns: boolean
@@ -9288,6 +10386,50 @@ export type Database = {
         | "expired"
         | "revoked"
         | "terminated"
+      assist_assignment_status:
+        | "proposed"
+        | "assigned"
+        | "accepted"
+        | "declined"
+        | "expired"
+        | "reassigned_closed"
+        | "revoked"
+      assist_lead_quality_status:
+        | "unverified"
+        | "preliminarily_verified"
+        | "qualified"
+        | "rejected"
+      assist_lead_work_status:
+        | "draft"
+        | "submitted"
+        | "classifying"
+        | "classified"
+        | "routing"
+        | "routed"
+        | "review_required"
+        | "offered"
+        | "accepted"
+        | "declined"
+        | "no_response"
+        | "in_follow_up"
+        | "reassigned"
+        | "contact_revealed"
+        | "outcome_pending"
+        | "closed_dual_confirmed"
+        | "closed_unconverted"
+        | "expired"
+        | "cancelled"
+        | "disputed"
+      assist_outcome_party_status:
+        | "pending"
+        | "submitted"
+        | "confirmed"
+        | "disputed"
+      assist_privacy_level:
+        | "standard"
+        | "restricted"
+        | "masked"
+        | "manual_review"
       background_job_status:
         | "pending"
         | "leased"
@@ -9831,9 +10973,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       allocation_proposal_status: [
@@ -9867,6 +11006,55 @@ export const Constants = {
         "expired",
         "revoked",
         "terminated",
+      ],
+      assist_assignment_status: [
+        "proposed",
+        "assigned",
+        "accepted",
+        "declined",
+        "expired",
+        "reassigned_closed",
+        "revoked",
+      ],
+      assist_lead_quality_status: [
+        "unverified",
+        "preliminarily_verified",
+        "qualified",
+        "rejected",
+      ],
+      assist_lead_work_status: [
+        "draft",
+        "submitted",
+        "classifying",
+        "classified",
+        "routing",
+        "routed",
+        "review_required",
+        "offered",
+        "accepted",
+        "declined",
+        "no_response",
+        "in_follow_up",
+        "reassigned",
+        "contact_revealed",
+        "outcome_pending",
+        "closed_dual_confirmed",
+        "closed_unconverted",
+        "expired",
+        "cancelled",
+        "disputed",
+      ],
+      assist_outcome_party_status: [
+        "pending",
+        "submitted",
+        "confirmed",
+        "disputed",
+      ],
+      assist_privacy_level: [
+        "standard",
+        "restricted",
+        "masked",
+        "manual_review",
       ],
       background_job_status: [
         "pending",
@@ -10338,4 +11526,3 @@ export const Constants = {
     },
   },
 } as const
-

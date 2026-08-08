@@ -176,6 +176,12 @@ Application layer still blocks self-approval even if a buggy policy were too wid
 
 Lead history: prefer soft status; hard-delete only legal workflow — policies should not offer casual DELETE to clients (FD-031).
 
+**Phase 10 physical tables (gce-dev):** `assist_leads`, `assist_lead_requirement_versions`,
+`assist_lead_routing_candidates` (desk-only; candidates ≠ assignment), `assist_lead_assignments`,
+`assist_opportunity_desk_queue`, `assist_contact_reveal_events`, `assist_lead_outcomes`,
+`assist_closed_business_confirmations`, `assist_lead_*_flags`, `assist_domain_events`.
+Deny-by-default RLS; candidate ranking never grants contact access.
+
 ---
 
 ## Service role (server-only)

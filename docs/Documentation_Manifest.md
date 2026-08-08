@@ -250,6 +250,8 @@ Additional mandatory behaviors:
 | Phase 8 implementation notes | `docs/phase-8/PHASE_8_IMPLEMENTATION_NOTES.md` | Phase 8 Enterprise delivery notes |
 | Phase 9 Finance plan | `docs/phase-9/PHASE_9_FINANCE_REVENUE_COMMISSION_SETTLEMENT.md` | Finance / commission / settlement plan |
 | Phase 9 implementation notes | `docs/phase-9/PHASE_9_IMPLEMENTATION_NOTES.md` | Phase 9 Finance delivery notes |
+| Phase 10 Lead Assist plan | `docs/phase-10/PHASE_10_AI_LEAD_ASSIST.md` | Stage 1 unpaid Lead Assist plan |
+| Phase 10 implementation notes | `docs/phase-10/PHASE_10_IMPLEMENTATION_NOTES.md` | Phase 10 Assist / Desk delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

@@ -59,9 +59,10 @@ Model **Stage 1 unpaid** Lead Assist: core lead rights, basic AI classification/
 ## Side effects
 
 - Preserve Lead Giver / Receiver / verifier / closer identities separately
-- Notify receivers; track response timers
+- Notify receivers via Phase 10 `assist_domain_events` hooks (full delivery = Phase 12)
 - May feed Enterprise/Marketplace intake **without** creating commission by lead submit alone (FD-031)
 - Performance metrics for Desk — non-punitive to genuine members per FD-031 abuse rules
+- **Implemented (Phase 10 / gce-dev):** `assist_*` tables; see `docs/phase-10/PHASE_10_IMPLEMENTATION_NOTES.md`
 
 ## Audit events
 

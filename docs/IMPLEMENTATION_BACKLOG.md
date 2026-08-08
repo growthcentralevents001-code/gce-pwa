@@ -77,9 +77,9 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Finance | Settlement batches; payment success ≠ settlement-eligible | `SM_Settlement` | FD-021 | 9 | P0 | Critical | Holds/overrides audited; monthly launch batch posture | Settlement batch tests | **Done — execution OFF** |
 | Finance | Rule versioning (no automatic retrospective recalc) | Commission/settlement | FD-032 | 9 | P0 | High | Historical transactions keep applicable rule version | Version freeze tests | **Done on gce-dev** |
 | Finance | GMV / Collected / Eligible / Platform measurement separation | Reporting views | FD-028 | 9 / 12 | P1 | Medium | Reports do not conflate concepts | Report fixture tests | Low |
-| Lead Assist | Stage 1 unpaid Lead Assist create/route/Desk | `SM_Lead_Assist` | FD-031/039 | 10 | P1 | Medium | Unpaid Stage 1 works; AI assistive only | Lead Assist E2E | Medium |
-| Lead Assist | Contact reveal consent-gated | Privacy controls | FD-031; OD-010 | 10 | P1 | High | No reveal without consent controls | Consent negative tests | Low |
-| Lead Assist | Paid / ₹500 / escrow / success-fee paths flagged **off** | Flags | FD-039 Part J | 10 | Future | High if leaked | No paid Lead Assist charges in spine | Flag-off proof | Low |
+| Lead Assist | Stage 1 unpaid Lead Assist create/route/Desk | `SM_Lead_Assist` | FD-031/039 | 10 | Done (gce-dev) | Medium | Unpaid Stage 1 works; AI assistive only | Lead Assist E2E | Medium |
+| Lead Assist | Contact reveal consent-gated | Privacy controls | FD-031; OD-010 | 10 | Done (gce-dev) | High | No reveal without consent controls | Consent negative tests | Low |
+| Lead Assist | Paid / ₹500 / escrow / success-fee paths flagged **off** | Flags | FD-039 Part J | 10 | Done (quarantined) | High if leaked | No paid Lead Assist charges in spine | Flag-off proof | Low |
 | Customer UX | Event discovery + detail + booking PWA flows | Phase 7 domain | FD-037/039 | 11 | P1 | Medium | Mobile-first booking completable | Playwright booking smoke | Low |
 | Customer UX | Offer claim + redeem UX | Offer SMs | FD-037 | 11 | P1 | Medium | Claim/redeem distinct from ticket booking | UX E2E | Low |
 | Customer UX | Cancel UX respects 48h default + disclosure placeholders | Refund SM | FD-039; OD-006 | 11 | P1 | High | Cutoff shown; no invented refund % as final law | Cancel UX tests | Low |

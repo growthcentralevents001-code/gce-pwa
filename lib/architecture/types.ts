@@ -76,6 +76,7 @@ export const WORKSPACE_KEYS = [
   "enterprise-bdp",
   "enterprise-client",
   "platform-ops",
+  "opportunity-desk",
   "finance",
   "compliance",
   "support",
@@ -83,6 +84,7 @@ export const WORKSPACE_KEYS = [
 
 export type WorkspaceKey = (typeof WORKSPACE_KEYS)[number];
 
+/** Money / commercial gates — defaults OFF and must stay OFF until Founder activation. */
 export const INACTIVE_FEATURE_FLAGS = [
   "marketplace_affiliate",
   "zbp_commercial",
@@ -105,9 +107,28 @@ export const INACTIVE_FEATURE_FLAGS = [
   "commission_posting_live",
   "settlement_batch_generation",
   "payout_execution",
+  "lead_escrow",
+  "lead_success_fee",
+  "pay_to_receive_leads",
+  "paid_contact_reveal",
+  "rupee_500_lead_fee",
 ] as const;
 
-export type FeatureFlagKey = (typeof INACTIVE_FEATURE_FLAGS)[number];
+/** Stage-1 Lead Assist operational flags (unpaid) — DB is SoT; defaults ON for local fail-open of unpaid flow. */
+export const LEAD_ASSIST_STAGE1_FLAGS = [
+  "lead_assist_stage1",
+  "ai_lead_classification",
+  "ai_candidate_ranking",
+  "opportunity_desk",
+  "contact_reveal",
+] as const;
+
+export const FEATURE_FLAG_KEYS = [
+  ...INACTIVE_FEATURE_FLAGS,
+  ...LEAD_ASSIST_STAGE1_FLAGS,
+] as const;
+
+export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];
 
 export type RoleAssignment = {
   id: string;

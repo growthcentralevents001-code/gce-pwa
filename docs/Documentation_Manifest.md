@@ -238,6 +238,8 @@ Additional mandatory behaviors:
 | Area | Location | Purpose |
 |------|----------|---------|
 | Phase 2 Technical Architecture Master Plan | `docs/phase-2/PHASE_2_TECHNICAL_ARCHITECTURE_MASTER_PLAN.md` | Authoritative Phase 2 technical blueprint |
+| Schema SoT reconciliation | `docs/phase-2/implementation/SCHEMA_SOT_RECONCILIATION.md` | ADR-004 baseline plan |
+| Phase 2 implementation notes | `docs/phase-2/implementation/PHASE_2_IMPLEMENTATION_NOTES.md` | What landed in code vs remaining gaps |
 | ADRs | `docs/phase-2/adrs/` | Accepted technical decisions (auth, RBAC, RLS, payments, ledgers, deploy, etc.) |
 | Phases 3–18 | `docs/phase-3/` … `docs/phase-18/` | Foundation through scale/future-product plans |
 | State machines | `docs/state-machines/` | Domain transition specs |

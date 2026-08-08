@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-005 |
 | **Title** | RLS Strategy |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation implementing security posture for FD-023 / FD-035 |
 | **Supersedes** | None |

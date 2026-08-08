@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-013 |
 | **Title** | Feature Flags |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation (not Founder law) |
 | **Supersedes** | None |

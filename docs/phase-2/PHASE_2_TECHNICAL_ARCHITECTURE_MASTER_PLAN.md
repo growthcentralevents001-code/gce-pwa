@@ -6,9 +6,9 @@
 | **Authority class** | Authoritative **Phase 2 technical blueprint** (implementation planning) |
 | **Business authority** | Founder Decisions FD-001, FD-020–FD-039 (highest business law) |
 | **Technical authority** | Accepted ADRs under `docs/phase-2/adrs/` (Technical recommendations — **not** Founder law) |
-| **Status** | Active planning baseline |
+| **Status** | **PHASE 2 IMPLEMENTATION COMPLETE** — gce-dev applied; types regenerated; non-blocking legacy SoT reconciliation remains |
 | **Date** | 2026-08-08 |
-| **Scope** | Documentation only — no SQL/DDL invention; schema SoT remains `supabase/migrations/` (ADR-004) |
+| **Scope** | Technical blueprint + in-repo foundation code/migrations/tests; schema SoT is `supabase/migrations/` for Phase 2 tables; legacy reconstruction path documented in `implementation/SCHEMA_SOT_RECONCILIATION.md`. |
 
 ---
 

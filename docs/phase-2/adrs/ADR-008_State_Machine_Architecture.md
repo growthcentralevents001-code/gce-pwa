@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-008 |
 | **Title** | State Machine Architecture |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation |
 | **Supersedes** | None |

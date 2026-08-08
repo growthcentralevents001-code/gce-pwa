@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-014 |
 | **Title** | Background Jobs and Scheduling |
-| **Status** | Accepted |
+| **Status** | Accepted — jobs foundation live on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation (not Founder law) |
 | **Supersedes** | None |

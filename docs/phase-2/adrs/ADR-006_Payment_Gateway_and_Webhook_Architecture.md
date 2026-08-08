@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-006 |
 | **Title** | Payment Gateway and Webhook Architecture |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation; MoR direction is Founder law but **implementation-validation-gated** |
 | **Supersedes** | None |

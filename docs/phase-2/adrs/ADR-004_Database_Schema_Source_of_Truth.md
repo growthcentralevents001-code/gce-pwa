@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-004 |
 | **Title** | Database Schema Source of Truth |
-| **Status** | Accepted |
+| **Status** | Accepted — Phase 2 SoT live on gce-dev; historical legacy baseline dump non-blocking |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation (not Founder law) |
 | **Supersedes** | None |

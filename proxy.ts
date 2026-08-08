@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { resolveLegacyDashboardPath } from '@/lib/architecture/workspace/registry'
 
 const PUBLIC_EXACT = ['/', '/sw.js', '/manifest.json']
 
@@ -30,12 +31,14 @@ const PUBLIC_PREFIXES = [
 
 const PUBLIC_API_PREFIXES = [
   '/api/health',
+  '/api/architecture/health',
   '/api/public-search',
   '/api/cities',
   '/api/venue-plans',
   '/api/venues/by-city',
   '/api/check-referral',
   '/api/affiliate/track',
+  '/api/webhooks/payments',
 ]
 
 function isPublicPath(pathname: string): boolean {
@@ -49,6 +52,11 @@ function isAdminPath(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/')
 }
 
+/**
+ * @deprecated Phase 2: legacy `user_roles` is NOT canonical entitlement.
+ * Prefer `resolveActiveEntitlements` / `role_assignments` (FD-035).
+ * Kept only for transitional admin path compatibility until Phase 4 migration.
+ */
 async function userHasRole(
   supabase: ReturnType<typeof createServerClient>,
   userId: string,
@@ -99,6 +107,22 @@ export async function proxy(request: NextRequest) {
     const redirectUrl = new URL('/login', request.url)
     redirectUrl.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(redirectUrl)
+  }
+
+  // Phase 2 legacy quarantine: inactive commercial workspaces do not grant entitlement (FD-039).
+  const legacy = resolveLegacyDashboardPath(pathname)
+  if (legacy && legacy.target === '/unauthorized') {
+    const redirectUrl = new URL('/unauthorized', request.url)
+    redirectUrl.searchParams.set('reason', legacy.reason)
+    return NextResponse.redirect(redirectUrl)
+  }
+  if (legacy && legacy.target !== '/unauthorized') {
+    const dest = `/dashboard/${legacy.target}`
+    const current = pathname.replace(/\/$/, '') || pathname
+    // Skip no-op redirects (e.g. already on the canonical path).
+    if (current !== dest) {
+      return NextResponse.redirect(new URL(dest, request.url))
+    }
   }
 
   if (isAdminPath(pathname)) {

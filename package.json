@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start -H 127.0.0.1",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "typecheck": "tsc --noEmit",
+    "db:phase2:validate": "bash scripts/validate-phase2-migrations.sh"
   },
   "dependencies": {
     "@bigdatacloudapi/react-reverse-geocode-client": "^1.1.2",
@@ -21,7 +27,8 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "recharts": "^3.8.1",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.14",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@sentry/nextjs": "^10.52.0",
@@ -33,6 +40,8 @@
     "eslint-config-next": "16.2.4",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.10"
   }
 }

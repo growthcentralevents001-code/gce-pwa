@@ -44,6 +44,15 @@
     "_archive",
     "**/*.backup*",
     "**/*.bak",
-    "**/*.restored"
+    "**/*.restored",
+    "docs/phase-2/implementation/*.generated.ts.txt",
+    ".tmp",
+    ".tools",
+    ".pgdata",
+    "components/ui",
+    "components/EventFiltersPanel.tsx",
+    "lib/eventCategories.ts",
+    "lib/venuePartner.ts",
+    "lib/utils.ts"
   ]
 }

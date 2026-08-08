@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-007 |
 | **Title** | Financial Ledger Architecture |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation implementing FD-020; cash-out inactive per FD-039 |
 | **Supersedes** | None |

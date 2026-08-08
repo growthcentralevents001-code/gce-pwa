@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-002 |
 | **Title** | Role Assignment and RBAC Model |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation implementing FD-023 / FD-035 |
 | **Supersedes** | None |

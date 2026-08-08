@@ -7,6 +7,7 @@
 | **Authority** | Subordinate to Founder Decisions; does not invent commercial products or rates |
 | **Exclusions** | Routine technical design (exact enums, schemas, RLS SQL, API shapes, UX copy polish) — those belong in ADRs / technical backlog |
 | **Date** | 2026-08-08 |
+| **Phase 2 note** | Architecture spine is **COMPLETE on gce-dev** (migrations applied; types regenerated from gce-dev). Non-blocking: historical legacy schema baseline dump (ADR-004). Open OD items below are **unchanged** — money/legal gates remain Validation Pending / Deferred. |
 
 ---
 

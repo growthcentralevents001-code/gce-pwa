@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-009 |
 | **Title** | API, Server Actions, and Route Handlers |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation (not Founder law) |
 | **Supersedes** | None |

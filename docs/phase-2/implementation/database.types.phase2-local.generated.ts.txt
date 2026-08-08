@@ -1,0 +1,8 @@
+OBSOLETE ARTIFACT — do not use as type SoT.
+
+This file was a temporary local-Postgres Phase 2 type dump used before gce-dev apply.
+Canonical types after Phase 2 closure:
+
+  gce-dev schema → lib/database.types.ts
+
+Retained only as historical verification evidence that local apply preceded remote apply.

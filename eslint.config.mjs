@@ -1,10 +1,22 @@
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
+/**
+ * Lint foundation fix for Next flat config.
+ * Explicitly register plugins referenced by project rules.
+ */
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    plugins: {
+      react,
+      "react-hooks": reactHooks,
+    },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
@@ -13,6 +25,9 @@ const eslintConfig = defineConfig([
     "_archive/**",
     "public/workbox-*.js",
     "public/sw.js",
+    "docs/phase-2/implementation/*.generated.ts.txt",
+    ".tools/**",
+    ".pgdata/**",
   ]),
   {
     rules: {

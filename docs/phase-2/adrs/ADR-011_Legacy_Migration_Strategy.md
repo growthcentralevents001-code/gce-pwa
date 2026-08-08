@@ -4,7 +4,7 @@
 |-------|-------|
 | **ID** | ADR-011 |
 | **Title** | Legacy Migration Strategy |
-| **Status** | Accepted |
+| **Status** | Accepted — implemented; verified on gce-dev |
 | **Date** | 2026-08-08 |
 | **Classification** | Technical recommendation implementing FD-035 Part G / taxonomy |
 | **Supersedes** | None |

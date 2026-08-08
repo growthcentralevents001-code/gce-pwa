@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Phase** | 5 |
-| **Status** | Documentation — implementation-ready |
+| **Status** | **Implementation Complete on gce-dev** — see `PHASE_5_IMPLEMENTATION_NOTES.md` |
 | **Classification** | Primarily **Business** (FD-022, FD-027, FD-030, FD-032, FD-036, FD-039) |
 | **Date** | 2026-08-08 |
 

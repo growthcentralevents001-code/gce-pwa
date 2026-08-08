@@ -612,6 +612,220 @@ export type Database = {
           },
         ]
       }
+      business_specialisations: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          label: string
+          metadata: Json
+          power_sector: string | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label: string
+          metadata?: Json
+          power_sector?: string | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label?: string
+          metadata?: Json
+          power_sector?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      circle_allocation_proposals: {
+        Row: {
+          assisted_by_bdp_user_id: string | null
+          circle_id: string
+          confirmed_by: string | null
+          created_at: string
+          due_business_days: number
+          id: string
+          membership_id: string
+          metadata: Json
+          proposed_by: string | null
+          reason: string | null
+          seat_id: string | null
+          specialisation_id: string | null
+          status: Database["public"]["Enums"]["allocation_proposal_status"]
+          updated_at: string
+        }
+        Insert: {
+          assisted_by_bdp_user_id?: string | null
+          circle_id: string
+          confirmed_by?: string | null
+          created_at?: string
+          due_business_days?: number
+          id?: string
+          membership_id: string
+          metadata?: Json
+          proposed_by?: string | null
+          reason?: string | null
+          seat_id?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["allocation_proposal_status"]
+          updated_at?: string
+        }
+        Update: {
+          assisted_by_bdp_user_id?: string | null
+          circle_id?: string
+          confirmed_by?: string | null
+          created_at?: string
+          due_business_days?: number
+          id?: string
+          membership_id?: string
+          metadata?: Json
+          proposed_by?: string | null
+          reason?: string | null
+          seat_id?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["allocation_proposal_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "circle_allocation_proposals_assisted_by_bdp_user_id_fkey"
+            columns: ["assisted_by_bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_confirmed_by_fkey"
+            columns: ["confirmed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_proposed_by_fkey"
+            columns: ["proposed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_seat_id_fkey"
+            columns: ["seat_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circle_seats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_allocation_proposals_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      circle_governance_appointments: {
+        Row: {
+          appointed_by: string | null
+          circle_id: string
+          created_at: string
+          ends_at: string
+          id: string
+          metadata: Json
+          reason: string | null
+          role_assignment_id: string | null
+          role_key: Database["public"]["Enums"]["gce_role_key"]
+          starts_at: string
+          status: string
+          term_months: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointed_by?: string | null
+          circle_id: string
+          created_at?: string
+          ends_at: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          role_assignment_id?: string | null
+          role_key: Database["public"]["Enums"]["gce_role_key"]
+          starts_at?: string
+          status?: string
+          term_months?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointed_by?: string | null
+          circle_id?: string
+          created_at?: string
+          ends_at?: string
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          role_assignment_id?: string | null
+          role_key?: Database["public"]["Enums"]["gce_role_key"]
+          starts_at?: string
+          status?: string
+          term_months?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "circle_governance_appointments_appointed_by_fkey"
+            columns: ["appointed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_governance_appointments_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_governance_appointments_role_assignment_id_fkey"
+            columns: ["role_assignment_id"]
+            isOneToOne: false
+            referencedRelation: "role_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_governance_appointments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       circle_leads: {
         Row: {
           circle_member_id: string | null
@@ -697,6 +911,189 @@ export type Database = {
           },
         ]
       }
+      circle_transfers: {
+        Row: {
+          admin_fee_minor: number
+          completed_at: string | null
+          created_at: string
+          fee_waived: boolean
+          id: string
+          membership_id: string
+          metadata: Json
+          preserve_bdp_attribution: boolean
+          reason: string | null
+          requested_by: string | null
+          reviewed_by: string | null
+          source_circle_id: string
+          source_seat_id: string | null
+          status: Database["public"]["Enums"]["circle_transfer_status"]
+          target_circle_id: string
+          target_seat_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          admin_fee_minor?: number
+          completed_at?: string | null
+          created_at?: string
+          fee_waived?: boolean
+          id?: string
+          membership_id: string
+          metadata?: Json
+          preserve_bdp_attribution?: boolean
+          reason?: string | null
+          requested_by?: string | null
+          reviewed_by?: string | null
+          source_circle_id: string
+          source_seat_id?: string | null
+          status?: Database["public"]["Enums"]["circle_transfer_status"]
+          target_circle_id: string
+          target_seat_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          admin_fee_minor?: number
+          completed_at?: string | null
+          created_at?: string
+          fee_waived?: boolean
+          id?: string
+          membership_id?: string
+          metadata?: Json
+          preserve_bdp_attribution?: boolean
+          reason?: string | null
+          requested_by?: string | null
+          reviewed_by?: string | null
+          source_circle_id?: string
+          source_seat_id?: string | null
+          status?: Database["public"]["Enums"]["circle_transfer_status"]
+          target_circle_id?: string
+          target_seat_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "circle_transfers_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_source_circle_id_fkey"
+            columns: ["source_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_source_seat_id_fkey"
+            columns: ["source_seat_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circle_seats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_target_circle_id_fkey"
+            columns: ["target_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_transfers_target_seat_id_fkey"
+            columns: ["target_seat_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circle_seats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      circle_waitlist_entries: {
+        Row: {
+          admin_priority: number
+          created_at: string
+          fulfilled_at: string | null
+          id: string
+          membership_id: string
+          metadata: Json
+          offered_at: string | null
+          preferred_circle_id: string | null
+          preferred_city: string | null
+          preferred_district: string | null
+          preferred_state: string | null
+          specialisation_id: string | null
+          status: Database["public"]["Enums"]["waitlist_status"]
+          updated_at: string
+        }
+        Insert: {
+          admin_priority?: number
+          created_at?: string
+          fulfilled_at?: string | null
+          id?: string
+          membership_id: string
+          metadata?: Json
+          offered_at?: string | null
+          preferred_circle_id?: string | null
+          preferred_city?: string | null
+          preferred_district?: string | null
+          preferred_state?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["waitlist_status"]
+          updated_at?: string
+        }
+        Update: {
+          admin_priority?: number
+          created_at?: string
+          fulfilled_at?: string | null
+          id?: string
+          membership_id?: string
+          metadata?: Json
+          offered_at?: string | null
+          preferred_circle_id?: string | null
+          preferred_city?: string | null
+          preferred_district?: string | null
+          preferred_state?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["waitlist_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "circle_waitlist_entries_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_waitlist_entries_preferred_circle_id_fkey"
+            columns: ["preferred_circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "circle_waitlist_entries_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cities: {
         Row: {
           city: string
@@ -774,6 +1171,462 @@ export type Database = {
             columns: ["venue_id"]
             isOneToOne: false
             referencedRelation: "venues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_circle_events: {
+        Row: {
+          active_seat_count: number | null
+          actor_user_id: string | null
+          circle_id: string
+          created_at: string
+          event_type: string
+          from_constitution:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          from_lifecycle:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+          id: string
+          metadata: Json
+          reason: string | null
+          to_constitution:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          to_lifecycle:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+        }
+        Insert: {
+          active_seat_count?: number | null
+          actor_user_id?: string | null
+          circle_id: string
+          created_at?: string
+          event_type: string
+          from_constitution?:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          from_lifecycle?:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_constitution?:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          to_lifecycle?:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+        }
+        Update: {
+          active_seat_count?: number | null
+          actor_user_id?: string | null
+          circle_id?: string
+          created_at?: string
+          event_type?: string
+          from_constitution?:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          from_lifecycle?:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          to_constitution?:
+            | Database["public"]["Enums"]["circle_constitution_status"]
+            | null
+          to_lifecycle?:
+            | Database["public"]["Enums"]["circle_lifecycle_status"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_circle_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_circle_events_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_circle_seats: {
+        Row: {
+          allocated_at: string | null
+          circle_id: string
+          confirmed_at: string | null
+          counts_toward_capacity: boolean
+          created_at: string
+          id: string
+          membership_id: string | null
+          metadata: Json
+          released_at: string | null
+          reserved_until: string | null
+          specialisation_id: string | null
+          status: Database["public"]["Enums"]["circle_seat_status"]
+          updated_at: string
+        }
+        Insert: {
+          allocated_at?: string | null
+          circle_id: string
+          confirmed_at?: string | null
+          counts_toward_capacity?: boolean
+          created_at?: string
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          released_at?: string | null
+          reserved_until?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["circle_seat_status"]
+          updated_at?: string
+        }
+        Update: {
+          allocated_at?: string | null
+          circle_id?: string
+          confirmed_at?: string | null
+          counts_toward_capacity?: boolean
+          created_at?: string
+          id?: string
+          membership_id?: string | null
+          metadata?: Json
+          released_at?: string | null
+          reserved_until?: string | null
+          specialisation_id?: string | null
+          status?: Database["public"]["Enums"]["circle_seat_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_circle_seats_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "connect_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_circle_seats_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_circle_seats_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_circles: {
+        Row: {
+          activated_at: string | null
+          active_seat_count: number
+          bdp_target_credit_event_id: string | null
+          bdp_target_credit_issued_at: string | null
+          capacity_max: number
+          city: string
+          code: string | null
+          constitution_status: Database["public"]["Enums"]["circle_constitution_status"]
+          created_at: string
+          created_by: string | null
+          district: string | null
+          full_capacity_at: string | null
+          id: string
+          lifecycle_status: Database["public"]["Enums"]["circle_lifecycle_status"]
+          locality: string | null
+          metadata: Json
+          name: string
+          platform_activation_granted_at: string | null
+          state: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          active_seat_count?: number
+          bdp_target_credit_event_id?: string | null
+          bdp_target_credit_issued_at?: string | null
+          capacity_max?: number
+          city: string
+          code?: string | null
+          constitution_status?: Database["public"]["Enums"]["circle_constitution_status"]
+          created_at?: string
+          created_by?: string | null
+          district?: string | null
+          full_capacity_at?: string | null
+          id?: string
+          lifecycle_status?: Database["public"]["Enums"]["circle_lifecycle_status"]
+          locality?: string | null
+          metadata?: Json
+          name: string
+          platform_activation_granted_at?: string | null
+          state?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          active_seat_count?: number
+          bdp_target_credit_event_id?: string | null
+          bdp_target_credit_issued_at?: string | null
+          capacity_max?: number
+          city?: string
+          code?: string | null
+          constitution_status?: Database["public"]["Enums"]["circle_constitution_status"]
+          created_at?: string
+          created_by?: string | null
+          district?: string | null
+          full_capacity_at?: string | null
+          id?: string
+          lifecycle_status?: Database["public"]["Enums"]["circle_lifecycle_status"]
+          locality?: string | null
+          metadata?: Json
+          name?: string
+          platform_activation_granted_at?: string | null
+          state?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_circles_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_membership_events: {
+        Row: {
+          actor_user_id: string | null
+          created_at: string
+          event_type: string
+          from_allocation:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          from_status: Database["public"]["Enums"]["membership_status"] | null
+          id: string
+          membership_id: string
+          metadata: Json
+          reason: string | null
+          to_allocation:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          to_status: Database["public"]["Enums"]["membership_status"] | null
+        }
+        Insert: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type: string
+          from_allocation?:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          from_status?: Database["public"]["Enums"]["membership_status"] | null
+          id?: string
+          membership_id: string
+          metadata?: Json
+          reason?: string | null
+          to_allocation?:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          to_status?: Database["public"]["Enums"]["membership_status"] | null
+        }
+        Update: {
+          actor_user_id?: string | null
+          created_at?: string
+          event_type?: string
+          from_allocation?:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          from_status?: Database["public"]["Enums"]["membership_status"] | null
+          id?: string
+          membership_id?: string
+          metadata?: Json
+          reason?: string | null
+          to_allocation?:
+            | Database["public"]["Enums"]["membership_allocation_status"]
+            | null
+          to_status?: Database["public"]["Enums"]["membership_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_membership_events_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_membership_events_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connect_memberships: {
+        Row: {
+          activated_at: string | null
+          allocation_status: Database["public"]["Enums"]["membership_allocation_status"]
+          attribution_provenance: string | null
+          connect_bdp_attribution_id: string | null
+          connect_bdp_user_id: string | null
+          created_at: string
+          ends_at: string | null
+          frozen_until: string | null
+          grace_ends_at: string | null
+          id: string
+          kyc_case_id: string | null
+          metadata: Json
+          organisation_id: string | null
+          payment_intent_id: string | null
+          plan_id: string
+          preferred_city: string | null
+          preferred_district: string | null
+          preferred_locality: string | null
+          preferred_state: string | null
+          pricing_rule_version: string
+          specialisation_id: string | null
+          starts_at: string | null
+          status: Database["public"]["Enums"]["membership_status"]
+          suspend_reason: string | null
+          suspended_at: string | null
+          suspended_by: string | null
+          terminate_reason: string | null
+          terminated_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          allocation_status?: Database["public"]["Enums"]["membership_allocation_status"]
+          attribution_provenance?: string | null
+          connect_bdp_attribution_id?: string | null
+          connect_bdp_user_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          frozen_until?: string | null
+          grace_ends_at?: string | null
+          id?: string
+          kyc_case_id?: string | null
+          metadata?: Json
+          organisation_id?: string | null
+          payment_intent_id?: string | null
+          plan_id: string
+          preferred_city?: string | null
+          preferred_district?: string | null
+          preferred_locality?: string | null
+          preferred_state?: string | null
+          pricing_rule_version?: string
+          specialisation_id?: string | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["membership_status"]
+          suspend_reason?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          terminate_reason?: string | null
+          terminated_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          allocation_status?: Database["public"]["Enums"]["membership_allocation_status"]
+          attribution_provenance?: string | null
+          connect_bdp_attribution_id?: string | null
+          connect_bdp_user_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          frozen_until?: string | null
+          grace_ends_at?: string | null
+          id?: string
+          kyc_case_id?: string | null
+          metadata?: Json
+          organisation_id?: string | null
+          payment_intent_id?: string | null
+          plan_id?: string
+          preferred_city?: string | null
+          preferred_district?: string | null
+          preferred_locality?: string | null
+          preferred_state?: string | null
+          pricing_rule_version?: string
+          specialisation_id?: string | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["membership_status"]
+          suspend_reason?: string | null
+          suspended_at?: string | null
+          suspended_by?: string | null
+          terminate_reason?: string | null
+          terminated_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connect_memberships_connect_bdp_user_id_fkey"
+            columns: ["connect_bdp_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_kyc_case_id_fkey"
+            columns: ["kyc_case_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_verification_cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_payment_intent_id_fkey"
+            columns: ["payment_intent_id"]
+            isOneToOne: false
+            referencedRelation: "payment_intents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "membership_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_specialisation_id_fkey"
+            columns: ["specialisation_id"]
+            isOneToOne: false
+            referencedRelation: "business_specialisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_suspended_by_fkey"
+            columns: ["suspended_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connect_memberships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -1356,6 +2209,69 @@ export type Database = {
           },
         ]
       }
+      kyc_verification_cases: {
+        Row: {
+          aadhaar_used: boolean
+          cleared_at: string | null
+          created_at: string
+          evidence_refs: Json
+          expires_at: string | null
+          id: string
+          metadata: Json
+          purpose: Database["public"]["Enums"]["kyc_purpose"]
+          reason: string | null
+          reviewer_user_id: string | null
+          status: Database["public"]["Enums"]["kyc_case_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aadhaar_used?: boolean
+          cleared_at?: string | null
+          created_at?: string
+          evidence_refs?: Json
+          expires_at?: string | null
+          id?: string
+          metadata?: Json
+          purpose?: Database["public"]["Enums"]["kyc_purpose"]
+          reason?: string | null
+          reviewer_user_id?: string | null
+          status?: Database["public"]["Enums"]["kyc_case_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aadhaar_used?: boolean
+          cleared_at?: string | null
+          created_at?: string
+          evidence_refs?: Json
+          expires_at?: string | null
+          id?: string
+          metadata?: Json
+          purpose?: Database["public"]["Enums"]["kyc_purpose"]
+          reason?: string | null
+          reviewer_user_id?: string | null
+          status?: Database["public"]["Enums"]["kyc_case_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kyc_verification_cases_reviewer_user_id_fkey"
+            columns: ["reviewer_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kyc_verification_cases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           bdm_id: string | null
@@ -1522,6 +2438,42 @@ export type Database = {
           },
         ]
       }
+      legacy_membership_migration_map: {
+        Row: {
+          canonical_plan_key:
+            | Database["public"]["Enums"]["membership_plan_key"]
+            | null
+          created_at: string
+          grants_new_purchase: boolean
+          id: string
+          legacy_plan: string
+          mapping_status: Database["public"]["Enums"]["legacy_membership_map_status"]
+          notes: string | null
+        }
+        Insert: {
+          canonical_plan_key?:
+            | Database["public"]["Enums"]["membership_plan_key"]
+            | null
+          created_at?: string
+          grants_new_purchase?: boolean
+          id?: string
+          legacy_plan: string
+          mapping_status?: Database["public"]["Enums"]["legacy_membership_map_status"]
+          notes?: string | null
+        }
+        Update: {
+          canonical_plan_key?:
+            | Database["public"]["Enums"]["membership_plan_key"]
+            | null
+          created_at?: string
+          grants_new_purchase?: boolean
+          id?: string
+          legacy_plan?: string
+          mapping_status?: Database["public"]["Enums"]["legacy_membership_map_status"]
+          notes?: string | null
+        }
+        Relationships: []
+      }
       legacy_role_migration_map: {
         Row: {
           canonical_role_key: Database["public"]["Enums"]["gce_role_key"] | null
@@ -1609,6 +2561,116 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      membership_plans: {
+        Row: {
+          billing_cadence: string
+          created_at: string
+          currency: string
+          id: string
+          included_tag_slots: number
+          is_active: boolean
+          is_purchasable: boolean
+          label: string
+          max_tag_slots: number
+          metadata: Json
+          plan_key: Database["public"]["Enums"]["membership_plan_key"]
+          price_minor: number
+          updated_at: string
+        }
+        Insert: {
+          billing_cadence?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          included_tag_slots?: number
+          is_active?: boolean
+          is_purchasable?: boolean
+          label: string
+          max_tag_slots?: number
+          metadata?: Json
+          plan_key: Database["public"]["Enums"]["membership_plan_key"]
+          price_minor: number
+          updated_at?: string
+        }
+        Update: {
+          billing_cadence?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          included_tag_slots?: number
+          is_active?: boolean
+          is_purchasable?: boolean
+          label?: string
+          max_tag_slots?: number
+          metadata?: Json
+          plan_key?: Database["public"]["Enums"]["membership_plan_key"]
+          price_minor?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      membership_tags: {
+        Row: {
+          created_at: string
+          effective_from: string
+          effective_to: string | null
+          id: string
+          is_included: boolean
+          membership_id: string
+          metadata: Json
+          pricing_rule_version: string
+          status: string
+          surcharge_bps: number
+          surcharge_minor: number
+          tag_key: string
+          tag_label: string
+          tag_slot: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          is_included?: boolean
+          membership_id: string
+          metadata?: Json
+          pricing_rule_version?: string
+          status?: string
+          surcharge_bps?: number
+          surcharge_minor?: number
+          tag_key: string
+          tag_label: string
+          tag_slot: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          effective_from?: string
+          effective_to?: string | null
+          id?: string
+          is_included?: boolean
+          membership_id?: string
+          metadata?: Json
+          pricing_rule_version?: string
+          status?: string
+          surcharge_bps?: number
+          surcharge_minor?: number
+          tag_key?: string
+          tag_label?: string
+          tag_slot?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "membership_tags_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "connect_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       offer_claims: {
         Row: {
@@ -3141,6 +4203,37 @@ export type Database = {
         Returns: undefined
       }
       create_venue_for_affiliate: { Args: { email: string }; Returns: Json }
+      gce_circle_statuses_for_count: {
+        Args: { p_count: number }
+        Returns: {
+          constitution: Database["public"]["Enums"]["circle_constitution_status"]
+          lifecycle: Database["public"]["Enums"]["circle_lifecycle_status"]
+        }[]
+      }
+      gce_confirm_circle_seat: {
+        Args: { p_actor?: string; p_seat_id: string }
+        Returns: {
+          allocated_at: string | null
+          circle_id: string
+          confirmed_at: string | null
+          counts_toward_capacity: boolean
+          created_at: string
+          id: string
+          membership_id: string | null
+          metadata: Json
+          released_at: string | null
+          reserved_until: string | null
+          specialisation_id: string | null
+          status: Database["public"]["Enums"]["circle_seat_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "connect_circle_seats"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       gce_current_user_id: { Args: never; Returns: string }
       gce_has_active_assignment: {
         Args: {
@@ -3163,8 +4256,46 @@ export type Database = {
         Returns: boolean
       }
       gce_is_platform_admin: { Args: never; Returns: boolean }
+      gce_refresh_circle_capacity: {
+        Args: { p_actor?: string; p_circle_id: string }
+        Returns: {
+          activated_at: string | null
+          active_seat_count: number
+          bdp_target_credit_event_id: string | null
+          bdp_target_credit_issued_at: string | null
+          capacity_max: number
+          city: string
+          code: string | null
+          constitution_status: Database["public"]["Enums"]["circle_constitution_status"]
+          created_at: string
+          created_by: string | null
+          district: string | null
+          full_capacity_at: string | null
+          id: string
+          lifecycle_status: Database["public"]["Enums"]["circle_lifecycle_status"]
+          locality: string | null
+          metadata: Json
+          name: string
+          platform_activation_granted_at: string | null
+          state: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "connect_circles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
+      allocation_proposal_status:
+        | "proposed"
+        | "accepted"
+        | "rejected"
+        | "confirmed"
+        | "expired"
+        | "cancelled"
       assignment_scope_type:
         | "platform"
         | "legal_entity"
@@ -3194,6 +4325,38 @@ export type Database = {
         | "succeeded"
         | "failed"
         | "dead_letter"
+      circle_constitution_status:
+        | "formation_circle"
+        | "provisionally_active_circle"
+        | "fully_constituted_circle"
+      circle_lifecycle_status:
+        | "draft"
+        | "formation"
+        | "pending_activation"
+        | "active_growth"
+        | "full_capacity"
+        | "mature"
+        | "under_review"
+        | "suspended"
+        | "merged"
+        | "archived"
+      circle_seat_status:
+        | "available"
+        | "reserved"
+        | "waitlisted"
+        | "pending_verification"
+        | "allocated"
+        | "protected_grace"
+        | "transfer_pending"
+        | "released"
+        | "blocked"
+      circle_transfer_status:
+        | "requested"
+        | "under_review"
+        | "approved"
+        | "rejected"
+        | "completed"
+        | "cancelled"
       emergency_access_status:
         | "requested"
         | "active"
@@ -3220,6 +4383,18 @@ export type Database = {
         | "enterprise_platform_expert"
         | "opportunity_desk"
       identity_suspension_status: "active" | "lifted" | "expired"
+      kyc_case_status:
+        | "not_started"
+        | "in_progress"
+        | "additional_info_required"
+        | "under_review"
+        | "conditionally_cleared"
+        | "cleared"
+        | "failed"
+        | "expired"
+        | "revoked"
+        | "waived"
+      kyc_purpose: "membership" | "seat" | "role_assignment" | "venue" | "other"
       ledger_account_kind:
         | "customer_wallet"
         | "escrow"
@@ -3231,6 +4406,32 @@ export type Database = {
         | "franchise_recovery"
         | "clearing"
         | "other"
+      legacy_membership_map_status:
+        | "mapped"
+        | "historical_only"
+        | "ambiguous"
+        | "needs_review"
+      membership_allocation_status:
+        | "unallocated"
+        | "pending_allocation"
+        | "allocated"
+        | "waitlisted"
+      membership_plan_key: "associate" | "core_future_inactive"
+      membership_status:
+        | "draft"
+        | "applied"
+        | "pending_payment"
+        | "pending_verification"
+        | "pending_approval"
+        | "active"
+        | "grace_period"
+        | "frozen"
+        | "restricted"
+        | "suspended"
+        | "expired"
+        | "terminated"
+        | "rejoining_review"
+        | "archived"
       org_membership_role:
         | "owner"
         | "admin"
@@ -3267,6 +4468,13 @@ export type Database = {
         | "zbp"
         | "affiliate"
         | "bdm"
+      waitlist_status:
+        | "active"
+        | "offered"
+        | "fulfilled"
+        | "withdrawn"
+        | "expired"
+        | "removed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3397,6 +4605,14 @@ export const Constants = {
   },
   public: {
     Enums: {
+      allocation_proposal_status: [
+        "proposed",
+        "accepted",
+        "rejected",
+        "confirmed",
+        "expired",
+        "cancelled",
+      ],
       assignment_scope_type: [
         "platform",
         "legal_entity",
@@ -3429,6 +4645,42 @@ export const Constants = {
         "failed",
         "dead_letter",
       ],
+      circle_constitution_status: [
+        "formation_circle",
+        "provisionally_active_circle",
+        "fully_constituted_circle",
+      ],
+      circle_lifecycle_status: [
+        "draft",
+        "formation",
+        "pending_activation",
+        "active_growth",
+        "full_capacity",
+        "mature",
+        "under_review",
+        "suspended",
+        "merged",
+        "archived",
+      ],
+      circle_seat_status: [
+        "available",
+        "reserved",
+        "waitlisted",
+        "pending_verification",
+        "allocated",
+        "protected_grace",
+        "transfer_pending",
+        "released",
+        "blocked",
+      ],
+      circle_transfer_status: [
+        "requested",
+        "under_review",
+        "approved",
+        "rejected",
+        "completed",
+        "cancelled",
+      ],
       emergency_access_status: [
         "requested",
         "active",
@@ -3457,6 +4709,19 @@ export const Constants = {
         "opportunity_desk",
       ],
       identity_suspension_status: ["active", "lifted", "expired"],
+      kyc_case_status: [
+        "not_started",
+        "in_progress",
+        "additional_info_required",
+        "under_review",
+        "conditionally_cleared",
+        "cleared",
+        "failed",
+        "expired",
+        "revoked",
+        "waived",
+      ],
+      kyc_purpose: ["membership", "seat", "role_assignment", "venue", "other"],
       ledger_account_kind: [
         "customer_wallet",
         "escrow",
@@ -3468,6 +4733,35 @@ export const Constants = {
         "franchise_recovery",
         "clearing",
         "other",
+      ],
+      legacy_membership_map_status: [
+        "mapped",
+        "historical_only",
+        "ambiguous",
+        "needs_review",
+      ],
+      membership_allocation_status: [
+        "unallocated",
+        "pending_allocation",
+        "allocated",
+        "waitlisted",
+      ],
+      membership_plan_key: ["associate", "core_future_inactive"],
+      membership_status: [
+        "draft",
+        "applied",
+        "pending_payment",
+        "pending_verification",
+        "pending_approval",
+        "active",
+        "grace_period",
+        "frozen",
+        "restricted",
+        "suspended",
+        "expired",
+        "terminated",
+        "rejoining_review",
+        "archived",
       ],
       org_membership_role: [
         "owner",
@@ -3508,6 +4802,14 @@ export const Constants = {
         "zbp",
         "affiliate",
         "bdm",
+      ],
+      waitlist_status: [
+        "active",
+        "offered",
+        "fulfilled",
+        "withdrawn",
+        "expired",
+        "removed",
       ],
     },
   },

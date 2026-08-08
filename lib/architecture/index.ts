@@ -20,5 +20,6 @@ export * from "./identity/suspension";
 export * from "./identity/emergency";
 export * from "./organisations/create";
 export * from "./organisations/memberships";
+export * from "./connect";
 export * from "./jobs/queue";
 export * from "./observability/sentry";

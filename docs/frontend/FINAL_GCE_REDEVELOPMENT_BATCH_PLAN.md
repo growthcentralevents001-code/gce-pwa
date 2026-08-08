@@ -2,9 +2,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Planning — **Batches 0–10 not started** |
-| **Date** | 2026-08-08 |
+| **Status** | **Batch 0 implemented — Checkpoint A ready**; Batches 1–10 not started |
+| **Date** | 2026-08-09 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
+
+### Batch 0 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Checkpoint A ready for review** |
+| **Evidence** | `docs/frontend/implementation/BATCH_0_DESIGN_SYSTEM_AND_SHELL_IMPLEMENTATION.md` |
+| **Batch 1** | Not started |
 
 ---
 

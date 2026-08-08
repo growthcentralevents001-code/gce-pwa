@@ -4,9 +4,10 @@
 |-------|-------|
 | **Phase** | 14 |
 | **Document** | `PHASE_14_TESTING_MIGRATION_DATA_VALIDATION.md` |
-| **Type** | Phase planning / living architecture summary (documentation only) |
-| **Status** | Draft |
+| **Type** | Phase planning / living architecture summary |
+| **Status** | Phase 14A **COMPLETE** (backend validation). Phase 14B **DEFERRED** until final frontend redevelopment. Phase 14 overall **NOT COMPLETE**. |
 | **Date** | 2026-08-08 |
+| **Evidence** | `PHASE_14A_PLATFORM_BACKEND_VALIDATION_REPORT.md`, `PHASE_14A_VALIDATION_CHECKLIST.md` |
 
 ---
 

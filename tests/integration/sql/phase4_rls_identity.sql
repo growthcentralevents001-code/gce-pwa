@@ -110,41 +110,46 @@ BEGIN
     RAISE EXCEPTION 'FAIL: can see admin assignments';
   END IF;
 
-  -- Legacy quarantine: new zbp insert blocked
+  -- Legacy quarantine: new zbp/affiliate/bdm/franchisee insert blocked when table exists (gce-dev).
+  -- Clean Phase 2–13 rebuild does not create public.user_roles (legacy compatibility surface).
   RESET ROLE;
-  BEGIN
-    INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'zbp');
-    RAISE EXCEPTION 'FAIL: legacy zbp insert allowed';
-  EXCEPTION WHEN insufficient_privilege OR check_violation OR integrity_constraint_violation THEN
-    NULL;
-  WHEN OTHERS THEN
-    IF SQLERRM ILIKE '%quarantined%' OR SQLERRM ILIKE '%zbp%' THEN
+  IF to_regclass('public.user_roles') IS NOT NULL THEN
+    BEGIN
+      INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'zbp');
+      RAISE EXCEPTION 'FAIL: legacy zbp insert allowed';
+    EXCEPTION WHEN insufficient_privilege OR check_violation OR integrity_constraint_violation THEN
       NULL;
-    ELSE
-      RAISE;
-    END IF;
-  END;
+    WHEN OTHERS THEN
+      IF SQLERRM ILIKE '%quarantined%' OR SQLERRM ILIKE '%zbp%' THEN
+        NULL;
+      ELSE
+        RAISE;
+      END IF;
+    END;
 
-  BEGIN
-    INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'affiliate');
-    RAISE EXCEPTION 'FAIL: legacy affiliate insert allowed';
-  EXCEPTION WHEN OTHERS THEN
-    IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
-  END;
+    BEGIN
+      INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'affiliate');
+      RAISE EXCEPTION 'FAIL: legacy affiliate insert allowed';
+    EXCEPTION WHEN OTHERS THEN
+      IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
+    END;
 
-  BEGIN
-    INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'bdm');
-    RAISE EXCEPTION 'FAIL: legacy bdm insert allowed';
-  EXCEPTION WHEN OTHERS THEN
-    IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
-  END;
+    BEGIN
+      INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'bdm');
+      RAISE EXCEPTION 'FAIL: legacy bdm insert allowed';
+    EXCEPTION WHEN OTHERS THEN
+      IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
+    END;
 
-  BEGIN
-    INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'franchisee');
-    RAISE EXCEPTION 'FAIL: legacy franchisee insert allowed';
-  EXCEPTION WHEN OTHERS THEN
-    IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
-  END;
+    BEGIN
+      INSERT INTO public.user_roles (user_id, role) VALUES (u1, 'franchisee');
+      RAISE EXCEPTION 'FAIL: legacy franchisee insert allowed';
+    EXCEPTION WHEN OTHERS THEN
+      IF SQLERRM ILIKE '%FAIL:%' THEN RAISE; END IF;
+    END;
+  ELSE
+    RAISE NOTICE 'phase4_legacy_user_roles_absent_on_clean_rebuild';
+  END IF;
 
   -- emergency grants not writable by authenticated
   PERFORM test_set_user(admin);

@@ -132,10 +132,28 @@ export const CUSTOMER_CX_FLAGS = [
   "refund_processing",
 ] as const;
 
+/** Phase 12 notifications / analytics / security / compliance flags. */
+export const OPS_GOVERNANCE_FLAGS = [
+  "notifications_in_app",
+  "notifications_email_sandbox",
+  "notifications_sms_sandbox",
+  "notifications_push_sandbox",
+  "notifications_email_live",
+  "notifications_sms_live",
+  "notifications_push_live",
+  "marketing_notifications",
+  "analytics_pipeline",
+  "security_monitoring",
+  "fraud_review",
+  "compliance_holds",
+  "retention_enforcement",
+] as const;
+
 export const FEATURE_FLAG_KEYS = [
   ...INACTIVE_FEATURE_FLAGS,
   ...LEAD_ASSIST_STAGE1_FLAGS,
   ...CUSTOMER_CX_FLAGS,
+  ...OPS_GOVERNANCE_FLAGS,
 ] as const;
 
 export type FeatureFlagKey = (typeof FEATURE_FLAG_KEYS)[number];

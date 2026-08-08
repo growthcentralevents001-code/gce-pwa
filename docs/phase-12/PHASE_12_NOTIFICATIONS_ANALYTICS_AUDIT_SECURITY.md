@@ -5,7 +5,7 @@
 | **Phase** | 12 |
 | **Document** | `PHASE_12_NOTIFICATIONS_ANALYTICS_AUDIT_SECURITY.md` |
 | **Type** | Phase planning / living architecture summary (documentation only) |
-| **Status** | Draft |
+| **Status** | **Implementation Complete on gce-dev** — see `PHASE_12_IMPLEMENTATION_NOTES.md` |
 | **Date** | 2026-08-08 |
 
 ---
@@ -318,3 +318,9 @@ Exact score thresholds Unresolved — do not invent.
 - FD-023, FD-031, FD-035, FD-039, FD-020, FD-021
 - `20_Notifications.md`, `17_Security.md`, `23_Analytics_Reports.md`
 - Phase 9–11 producers; Phase 13 consumers (queues); Phase 14 security/RLS tests
+
+---
+
+## Implementation status
+
+Implemented on **gce-dev** (`20260808230000_phase12_notifications_analytics_security_compliance`). Shared notification outbox, analytics minimisation, audit search, security/risk (flag_only), compliance holds, privacy/retention hooks. Live providers + marketing + retention_enforcement OFF. Phase 13 not started.

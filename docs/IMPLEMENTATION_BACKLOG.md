@@ -83,10 +83,10 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Customer UX | Event discovery + detail + booking PWA flows | Phase 7 domain | FD-037/039 | 11 | P1 | Medium | Mobile-first booking completable | Playwright booking smoke | Low | **DONE** `/customer/*` gce-dev |
 | Customer UX | Offer claim + redeem UX | Offer SMs | FD-037 | 11 | P1 | Medium | Claim/redeem distinct from ticket booking | UX E2E | Low | **DONE** Phase 11 claim/redeem UX |
 | Customer UX | Cancel UX respects 48h default + disclosure placeholders | Refund SM | FD-039; OD-006 | 11 | P1 | High | Cutoff shown; no invented refund % as final law | Cancel UX tests | Low | **DONE** cancel+refund_request manual_review |
-| Notifications | Event-driven notification catalogue (email/SMS/push/in-app) | Jobs ADR-014 | Domain FDs | 12 | P1 | Medium | Critical lifecycle events notifiable; preferences respected | Notification contract tests | Low |
-| Analytics | KPI domains without invented vanity formulas | Reporting | FD-028 concepts | 12 | P2 | Low | Dashboards separate GMV vs Collected vs Eligible | Fixture assertions | Low |
-| Security | Fraud-review queue interface | Audit + Ops | Phase 12/13 | 12–13 | P1 | High | Signals → queue → human decision audited | Fraud workflow tests | Low |
-| Privacy | Retention placeholders + access logging for KYC | Audit | OD-008/009 | 12 / 15 | P1 | High | Retention configurable; Aadhaar access logged | Access log tests | Medium |
+| Notifications | Event-driven notification catalogue (email/SMS/push/in-app) | Jobs ADR-014 | Domain FDs | 12 | P1 | Medium | Critical lifecycle events notifiable; preferences respected | Notification contract tests | Low | **DONE** Phase 12 outbox/in-app/sandbox |
+| Analytics | KPI domains without invented vanity formulas | Reporting | FD-028 concepts | 12 | P2 | Low | Dashboards separate GMV vs Collected vs Eligible | Fixture assertions | Low | **DONE** foundation domains; formulas unresolved where required |
+| Security | Fraud-review queue interface | Audit + Ops | Phase 12/13 | 12–13 | P1 | High | Signals → queue → human decision audited | Fraud workflow tests | Low | **DONE** Phase 12 risk_signals flag_only; Phase 13 full ops UX |
+| Privacy | Retention placeholders + access logging for KYC | Audit | OD-008/009 | 12 / 15 | P1 | High | Retention configurable; Aadhaar access logged | Access log tests | Medium | **DONE** placeholders + sensitive_access_events; purge OFF |
 | Admin Ops | Approval queues (membership, listings, Enterprise quotes, KYC, offline pay) | RBAC + audit | FD-036/037/038/039 | 13 | P1 | High | Queues enforce SoD; Platform final where required | Queue SoD tests | Low |
 | Admin Ops | Exception / dispute / financial hold queues | Settlement | FD-021/029 | 13 | P1 | High | Holds block payout; overrides audited | Hold/override tests | Low |
 | Admin Ops | Support playbooks + escalation (Operational Recommendation SLAs) | Notifications | Phase 13 | 13 | P2 | Low | Playbooks linked; no invented commercial rates | Ops checklist review | Low |
@@ -105,7 +105,7 @@ Do not invent GST%, refund%, or inactive commercial SKUs. Feature-flag validatio
 | Scale / future | Wallet cash-out / consumer withdrawals | Ledger + FD | FD-039 inactive | 18 | Future | Critical if leaked | Remains inactive | Flag-off proof | High |
 | Scale / future | Core Tier direct purchase / nationwide Core | Membership | FD-027/039 inactive | 18 | Future | High if premature | Remains inactive; no forced Core overflow | Flag-off proof | Medium |
 | Scale / future | Native iOS / Android apps | PWA-first | FD-039 inactive | 18 | Future | Low | Not in near-term spine | N/A | Low |
-| Scale / future | Dark mode MVP | Design system | FD-039 inactive | 18 | Future | Low | Not MVP requirement | N/A | Low |
+| Design system | Dark mode MVP (Layer A: system + toggle + home/chrome) | Design system | FD-039 §26A approved | UX | P1 | Low | System default + header toggle; homepage/header/footer | Manual light/dark/system check | Low |
 | Scale / future | Vendor self-serve login portal | Enterprise vendors | FD-039 inactive | 18 | Future | Medium | Architecture-ready only | N/A until FD | Medium |
 | Scale / future | Advertising / premium listing SKUs | Catalogue | FD-028 category approved; activation inactive | 18 | Future | Medium | No live SKU/prices invented | N/A until FD | Low |
 

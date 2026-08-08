@@ -25,6 +25,13 @@ const SENSITIVE_KEYS = [
   "pan",
   "bankAccount",
   "account_number",
+  "email",
+  "phone",
+  "mobile",
+  "otp",
+  "qr_token",
+  "kyc",
+  "document_number",
 ];
 
 export function createCorrelationId(): string {

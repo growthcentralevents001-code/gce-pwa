@@ -129,6 +129,8 @@ Legacy prototype `venues` RLS enabled in Phase 7 migration; canonical SoT remain
 
 **Phase 11 CX tables (gce-dev / `20260808220000`):** `customer_cx_preferences`, `customer_refund_requests`, `customer_feedback`, `customer_non_purchase_reasons`, `customer_domain_events`, `customer_trust_rank_snapshots`, `venue_performance_rank_snapshots`, `customer_support_signals` — own-row customer select/insert; Venue/MBDP do not gain blanket private customer profile access. Public discovery continues on published marketplace Event/Offer rows only.
 
+**Phase 12 ops tables (gce-dev / `20260808230000`):** `notification_*`, `in_app_notifications`, `push_subscriptions`, `analytics_events`, `security_events`, `risk_signals`, `operational_alerts`, `incident_signals`, `compliance_holds`, `privacy_requests`, `retention_*`, `sensitive_access_events` — deny-by-default; users own notifications/prefs/privacy requests; security/risk/alerts/holds restricted to platform/compliance/support (and finance where scoped). Audit remains append-only `audit_events`.
+
 ---
 
 ## Matrix — Enterprise

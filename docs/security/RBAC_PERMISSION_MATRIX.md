@@ -192,6 +192,11 @@ Canonical role key `opportunity_desk` (FD-035) unlocks workspace `opportunity-de
 `cx.offer_claim`, `cx.redeem_own`, `cx.feedback`, `cx.rank.read_own`, `cx.check_in.venue`, `cx.redeem.venue`.
 Customers act on own records; Venue Rep scoped check-in/redeem; no customer self-approval of refunds (OD-006 manual review).
 
+**Phase 12 implementation (gce-dev):** permission codes in `lib/architecture/ops-governance/permissions.ts` —
+`notif.read_own`, `notif.prefs_own`, `notif.manage_templates`, `notif.dead_letter`, `analytics.read`, `audit.search`,
+`security.read`, `risk.review`, `alerts.manage`, `compliance.hold`, `privacy.review`, `retention.review`,
+`sensitive_access.log`. Ordinary BDP/Venue/Member roles have no unrestricted security-queue access.
+
 ---
 
 ## Self-approval & conflict (SoD)

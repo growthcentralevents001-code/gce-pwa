@@ -254,6 +254,8 @@ Additional mandatory behaviors:
 | Phase 10 implementation notes | `docs/phase-10/PHASE_10_IMPLEMENTATION_NOTES.md` | Phase 10 Assist / Desk delivery notes |
 | Phase 11 CX plan | `docs/phase-11/PHASE_11_EVENTS_OFFERS_BOOKINGS_CUSTOMER_EXPERIENCE.md` | Events / Offers / Booking customer experience plan |
 | Phase 11 implementation notes | `docs/phase-11/PHASE_11_IMPLEMENTATION_NOTES.md` | Phase 11 customer CX delivery notes |
+| Phase 12 ops governance plan | `docs/phase-12/PHASE_12_NOTIFICATIONS_ANALYTICS_AUDIT_SECURITY.md` | Notifications / analytics / audit / security plan |
+| Phase 12 implementation notes | `docs/phase-12/PHASE_12_IMPLEMENTATION_NOTES.md` | Phase 12 ops governance delivery notes |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |
@@ -275,7 +277,7 @@ Phase docs defer to Founder Decisions for business rules and to ADRs for technic
 
 | Field | Value |
 |-------|-------|
-| Documentation Version | v1.14.0 |
+| Documentation Version | v1.15.0 |
 | Last Updated | 2026-08-08 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |

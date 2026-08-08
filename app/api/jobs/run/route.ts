@@ -6,10 +6,14 @@ import {
   createJobWorkerClient,
 } from "@/lib/jobs";
 import { logger } from "@/lib/logging";
+import {
+  handlePhase12Job,
+  isPhase12JobType,
+} from "@/lib/architecture/ops-governance/jobs";
 
 /**
- * ADR-014 / Phase 3 job runner.
- * Protected by CRON_SECRET. Does not execute settlement.
+ * ADR-014 / Phase 3 job runner + Phase 12 notification/ops handlers.
+ * Protected by CRON_SECRET. Does not execute settlement or live providers.
  */
 export async function POST(request: NextRequest) {
   return withApiHandler(
@@ -21,19 +25,23 @@ export async function POST(request: NextRequest) {
       const result = await claimAndRunJob(client, {
         leaseOwner: `cron:${ctx.correlationId}`,
         handler: async (job) => {
+          const jobType = String(job.job_type ?? "");
+          if (isPhase12JobType(jobType)) {
+            return handlePhase12Job(client, job);
+          }
           logger.info("job_handler_skeleton", {
             correlationId: ctx.correlationId,
             eventType: "background_job.run",
-            meta: { jobType: job.job_type, jobId: job.id },
+            meta: { jobType, jobId: job.id },
           });
-          return { acknowledged: true, jobType: job.job_type };
+          return { acknowledged: true, jobType };
         },
       });
 
       return jsonSuccess(
         {
           ok: true,
-          phase: 3,
+          phase: 12,
           correlationId: ctx.correlationId,
           ...result,
         },

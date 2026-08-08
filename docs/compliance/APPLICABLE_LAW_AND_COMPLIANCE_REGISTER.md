@@ -253,6 +253,10 @@ There is no permanent “closed” exit. **Go-live readiness** for money movemen
 - Pilot-city local licensing overlays (city intentionally undecided — FD-039 Part K).  
 - Whether any DPIIT policy/requirement applies at all — **TBD**, not assumed.
 
+### Phase 12 technical hooks (non-legal conclusion)
+
+Phase 12 implemented platform hooks for notifications consent categories, privacy request workflow, retention policy metadata (`pending_validation`), compliance holds, and sensitive-access logging. **Exact legal retention periods and production SMS/DLT / email provider compliance remain PENDING PROFESSIONAL VALIDATION** (OD-008/009). Destructive retention enforcement remains feature-flagged OFF.
+
 ---
 
 ## Document control

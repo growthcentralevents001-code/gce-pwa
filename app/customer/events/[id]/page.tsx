@@ -56,9 +56,9 @@ export default async function CustomerEventDetailPage({
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div className="space-y-6">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 via-amber-50 to-sky-100 dark:from-orange-950/50 dark:via-neutral-900 dark:to-sky-950/40">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 via-amber-50 to-orange-50 dark:from-orange-950/50 dark:via-neutral-900 dark:to-orange-950/20">
             <div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(37,99,235,0.2),transparent_50%)]"
+              className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.22),transparent_50%)]"
               aria-hidden
             />
             <GlassPanel className="absolute inset-x-4 bottom-4 p-3 sm:inset-x-6">

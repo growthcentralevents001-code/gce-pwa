@@ -52,7 +52,7 @@ export function EventCard({
         href={`/customer/events/${event.id}`}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-orange-100 via-amber-50 to-sky-100 dark:from-orange-950/40 dark:via-neutral-900 dark:to-sky-950/30">
+        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-orange-100 via-amber-50 to-orange-50 dark:from-orange-950/40 dark:via-neutral-900 dark:to-orange-950/20">
           <div
             className={cn(
               "absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(234,88,12,0.25),transparent_55%)]",

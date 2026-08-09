@@ -1,0 +1,254 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  buildMbdpDashboard,
+  buildVenueDashboard,
+  listMbdpUnitsForUser,
+} from "@/lib/architecture/marketplace";
+import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
+
+export type MbdpUnitRow = Record<string, unknown> & { id: string };
+
+export type MbdpBundle = {
+  units: MbdpUnitRow[];
+  unit: MbdpUnitRow | null;
+  report: Awaited<ReturnType<typeof buildMbdpDashboard>>;
+  attributions: Record<string, unknown>[];
+  venues: Record<string, unknown>[];
+  entitlements: Record<string, unknown>[];
+  events: Record<string, unknown>[];
+  offers: Record<string, unknown>[];
+};
+
+export type VenueBundle = {
+  organisations: Record<string, unknown>[];
+  venues: Record<string, unknown>[];
+  venue: Record<string, unknown> | null;
+  report: Awaited<ReturnType<typeof buildVenueDashboard>>;
+  events: Record<string, unknown>[];
+  offers: Record<string, unknown>[];
+  bookings: Record<string, unknown>[];
+  claims: Record<string, unknown>[];
+  entitlements: Record<string, unknown>[];
+};
+
+export async function loadMbdpBundle(
+  userClient: SupabaseClient,
+  adminClient: SupabaseClient,
+  userId: string,
+  preferredUnitId?: string | null
+): Promise<MbdpBundle> {
+  const units = (await listMbdpUnitsForUser(
+    userClient,
+    userId
+  )) as MbdpUnitRow[];
+  const unit =
+    (preferredUnitId
+      ? units.find((u) => u.id === preferredUnitId)
+      : undefined) ??
+    units.find((u) => u.application_status === "active") ??
+    units[0] ??
+    null;
+
+  if (!unit) {
+    return {
+      units,
+      unit: null,
+      report: null,
+      attributions: [],
+      venues: [],
+      entitlements: [],
+      events: [],
+      offers: [],
+    };
+  }
+
+  const unitId = unit.id;
+  const client = adminClient;
+
+  const [
+    report,
+    { data: attrs },
+    { data: ents },
+  ] = await Promise.all([
+    buildMbdpDashboard(client, unitId),
+    client
+      .from("marketplace_venue_attributions")
+      .select("*, marketplace_venues(*)")
+      .eq("unit_id", unitId)
+      .order("created_at", { ascending: false })
+      .limit(100),
+    client
+      .from("marketplace_revenue_entitlements")
+      .select("*")
+      .eq("unit_id", unitId)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+
+  const attributions = (attrs as Record<string, unknown>[]) ?? [];
+  const venues = attributions
+    .map((a) => {
+      const v = a.marketplace_venues;
+      return Array.isArray(v) ? v[0] : v;
+    })
+    .filter(Boolean) as Record<string, unknown>[];
+
+  const venueIds = venues.map((v) => String(v.id)).filter(Boolean);
+  let events: Record<string, unknown>[] = [];
+  let offers: Record<string, unknown>[] = [];
+  if (venueIds.length > 0) {
+    const [{ data: ev }, { data: of }] = await Promise.all([
+      client
+        .from("marketplace_events")
+        .select("*")
+        .in("venue_id", venueIds)
+        .order("created_at", { ascending: false })
+        .limit(40),
+      client
+        .from("marketplace_offer_events")
+        .select("*")
+        .in("venue_id", venueIds)
+        .order("created_at", { ascending: false })
+        .limit(40),
+    ]);
+    events = (ev as Record<string, unknown>[]) ?? [];
+    offers = (of as Record<string, unknown>[]) ?? [];
+  }
+
+  return {
+    units,
+    unit,
+    report,
+    attributions,
+    venues,
+    entitlements: (ents as Record<string, unknown>[]) ?? [],
+    events,
+    offers,
+  };
+}
+
+export async function loadVenueBundle(
+  userClient: SupabaseClient,
+  adminClient: SupabaseClient,
+  userId: string,
+  preferredVenueId?: string | null
+): Promise<VenueBundle> {
+  const orgs = (await listUserOrganisations(userClient, userId).catch(
+    () => []
+  )) as Record<string, unknown>[];
+  const orgIds = orgs
+    .map((o) => String(o.organisation_id ?? ""))
+    .filter(Boolean);
+
+  let venues: Record<string, unknown>[] = [];
+  if (orgIds.length > 0) {
+    const { data } = await adminClient
+      .from("marketplace_venues")
+      .select("*")
+      .in("organisation_id", orgIds)
+      .order("created_at", { ascending: false })
+      .limit(40);
+    venues = (data as Record<string, unknown>[]) ?? [];
+  }
+
+  // Also include venues where user is submitter (assistive fallback)
+  if (venues.length === 0) {
+    const { data } = await adminClient
+      .from("marketplace_venues")
+      .select("*")
+      .eq("submitted_by", userId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    venues = (data as Record<string, unknown>[]) ?? [];
+  }
+
+  const venue =
+    (preferredVenueId
+      ? venues.find((v) => String(v.id) === preferredVenueId)
+      : undefined) ??
+    venues.find((v) => v.status === "active") ??
+    venues[0] ??
+    null;
+
+  if (!venue) {
+    return {
+      organisations: orgs,
+      venues,
+      venue: null,
+      report: null,
+      events: [],
+      offers: [],
+      bookings: [],
+      claims: [],
+      entitlements: [],
+    };
+  }
+
+  const venueId = String(venue.id);
+  const [
+    report,
+    { data: events },
+    { data: offers },
+    { data: entitlements },
+  ] = await Promise.all([
+    buildVenueDashboard(adminClient, venueId),
+    adminClient
+      .from("marketplace_events")
+      .select("*")
+      .eq("venue_id", venueId)
+      .order("starts_at", { ascending: false })
+      .limit(50),
+    adminClient
+      .from("marketplace_offer_events")
+      .select("*")
+      .eq("venue_id", venueId)
+      .order("created_at", { ascending: false })
+      .limit(50),
+    adminClient
+      .from("marketplace_revenue_entitlements")
+      .select("*")
+      .eq("venue_id", venueId)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+
+  const eventIds = ((events as Record<string, unknown>[]) ?? []).map((e) =>
+    String(e.id)
+  );
+  let bookings: Record<string, unknown>[] = [];
+  if (eventIds.length > 0) {
+    const { data } = await adminClient
+      .from("marketplace_bookings")
+      .select("*")
+      .in("event_id", eventIds)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    bookings = (data as Record<string, unknown>[]) ?? [];
+  }
+
+  const offerIds = ((offers as Record<string, unknown>[]) ?? []).map((o) =>
+    String(o.id)
+  );
+  let claims: Record<string, unknown>[] = [];
+  if (offerIds.length > 0) {
+    const { data } = await adminClient
+      .from("marketplace_offer_claims")
+      .select("*")
+      .in("offer_event_id", offerIds)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    claims = (data as Record<string, unknown>[]) ?? [];
+  }
+
+  return {
+    organisations: orgs,
+    venues,
+    venue,
+    report,
+    events: (events as Record<string, unknown>[]) ?? [],
+    offers: (offers as Record<string, unknown>[]) ?? [],
+    bookings,
+    claims,
+    entitlements: (entitlements as Record<string, unknown>[]) ?? [],
+  };
+}

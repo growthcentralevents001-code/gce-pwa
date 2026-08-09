@@ -17,9 +17,18 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
     pathname.startsWith("/connect/") && pathname !== "/connect";
   const isConnectBdpCx =
     pathname === "/connect-bdp" || pathname.startsWith("/connect-bdp/");
+  const isMarketplaceBdpCx =
+    pathname === "/marketplace-bdp" ||
+    pathname.startsWith("/marketplace-bdp/");
+  const isVenuePartnerCx =
+    pathname.startsWith("/venue/") &&
+    pathname !== "/venue/apply" &&
+    !pathname.startsWith("/venue/plans");
   const usesOwnShell =
     isConnectMemberCx ||
     isConnectBdpCx ||
+    isMarketplaceBdpCx ||
+    isVenuePartnerCx ||
     SHELL_PREFIXES.some(
       (p) => pathname === p || pathname.startsWith(`${p}/`)
     );

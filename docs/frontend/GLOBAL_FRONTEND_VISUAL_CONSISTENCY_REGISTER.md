@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 4 — Checkpoint C) |
+| **Status** | Active (Batch 5 — Marketplace + Venue) |
 | **Date** | 2026-08-09 |
-| **Authority** | Founder Batch 3 supersession — no blue; one GCE component language; Batch 4 partner pattern |
+| **Authority** | Founder no-blue + Checkpoint C partner pattern |
 
 ## Rules
 
@@ -56,6 +56,13 @@
 - No decorative blue in Batch 4-owned Connect BDP surfaces
 - Legacy BDM/ZBP dashboards remain quarantined (not Batch 4 rewrite)
 
+## Batch 5 notes
+
+- Marketplace BDP + Venue reuse Checkpoint C partner primitives
+- Legacy `/dashboard/venue` client WIP replaced with canonical Marketplace-backed dashboard (allowlisted)
+- No decorative blue in Batch 5-owned marketplace/venue surfaces
+- Stale Venue RM / Affiliate / ₹30k / 24h claim language avoided in owned copy
+
 ## Follow-ups
 
 | ID | Item | Priority | Target |
@@ -64,4 +71,5 @@
 | VC-02 | Legacy dashboard blue | P1 | Batch 10 |
 | VC-03 | MarketingHero side-by-side polish vs Connect | P2 | Batch 10 |
 | VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
-| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5/6 |
+| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5 done / Batch 6 |
+| VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |

@@ -58,6 +58,20 @@ function workspaceFromPathname(pathname: string): WorkspaceKey | null {
   ) {
     return "connect-bdp";
   }
+  if (
+    pathname.startsWith("/dashboard/marketplace-bdp") ||
+    pathname.startsWith("/marketplace-bdp")
+  ) {
+    return "marketplace-bdp";
+  }
+  if (
+    pathname.startsWith("/dashboard/venue") ||
+    (pathname.startsWith("/venue/") &&
+      pathname !== "/venue/apply" &&
+      !pathname.startsWith("/venue/plans"))
+  ) {
+    return "venue";
+  }
   return null;
 }
 

@@ -187,18 +187,146 @@ export function workspaceNavSections(
         ],
       },
     ],
-    "marketplace-bdp": [base],
-    venue: [
-      base,
+    "marketplace-bdp": [
       {
-        id: "venue",
-        label: "Venue",
+        id: "main",
+        label: "Workspace",
         items: [
           {
-            id: "listings",
-            label: "Listings",
-            href: `/dashboard/${workspaceKey}/listings`,
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/marketplace-bdp",
+            icon: LayoutDashboard,
+            workspaces: ["marketplace-bdp"],
+          },
+          {
+            id: "apply",
+            label: "Application",
+            href: "/marketplace-bdp/apply",
+            icon: FileCheck,
+          },
+        ],
+      },
+      {
+        id: "portfolio",
+        label: "Portfolio",
+        items: [
+          {
+            id: "units",
+            label: "Units",
+            href: "/marketplace-bdp/units",
+            icon: Building2,
+          },
+          {
+            id: "venues",
+            label: "Venues",
+            href: "/marketplace-bdp/venues",
             icon: Store,
+          },
+          {
+            id: "attribution",
+            label: "Attribution",
+            href: "/marketplace-bdp/attribution",
+            icon: Users,
+          },
+          {
+            id: "recommendations",
+            label: "Recommendations",
+            href: "/marketplace-bdp/recommendations",
+            icon: Target,
+          },
+        ],
+      },
+      {
+        id: "commercial",
+        label: "Commercial",
+        items: [
+          {
+            id: "entitlements",
+            label: "Entitlements",
+            href: "/marketplace-bdp/entitlements",
+            icon: CircleDollarSign,
+          },
+          {
+            id: "reassignment",
+            label: "Reassignment",
+            href: "/marketplace-bdp/reassignment",
+            icon: ArrowLeftRight,
+          },
+        ],
+      },
+    ],
+    venue: [
+      {
+        id: "main",
+        label: "Workspace",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/venue",
+            icon: LayoutDashboard,
+            workspaces: ["venue"],
+          },
+          {
+            id: "profile",
+            label: "Profile",
+            href: "/venue/profile",
+            icon: Building2,
+          },
+        ],
+      },
+      {
+        id: "operations",
+        label: "Operations",
+        items: [
+          {
+            id: "events",
+            label: "Events",
+            href: "/venue/events",
+            icon: Target,
+          },
+          {
+            id: "offers",
+            label: "Offers",
+            href: "/venue/offers",
+            icon: Store,
+          },
+          {
+            id: "bookings",
+            label: "Bookings",
+            href: "/venue/bookings",
+            icon: Users,
+          },
+          {
+            id: "check-in",
+            label: "Check-in",
+            href: "/venue/check-in",
+            icon: FileCheck,
+          },
+          {
+            id: "redemptions",
+            label: "Redemptions",
+            href: "/venue/redemptions",
+            icon: Scale,
+          },
+        ],
+      },
+      {
+        id: "commercial",
+        label: "Commercial",
+        items: [
+          {
+            id: "performance",
+            label: "Performance",
+            href: "/venue/performance",
+            icon: Target,
+          },
+          {
+            id: "entitlements",
+            label: "Entitlements",
+            href: "/venue/entitlements",
+            icon: CircleDollarSign,
           },
         ],
       },

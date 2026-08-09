@@ -26,6 +26,10 @@
 | BG-16 | Connect BDP member sourcing stages beyond attribution statuses | UX read-model | Batch 4 | Pipeline uses attribution statuses; richer invite/KYC/payment stages need DTO |
 | BG-17 | Paginated Connect BDP portfolios (members/circles/entitlements) | Pagination | Batch 4 | Lists capped; extend BG-02 for BDP-specific cursors |
 | BG-18 | BDP-facing reassignment request API | Action API | Batch 4 | Handover is Platform-gated; self-serve reassignment request not exposed |
+| BG-19 | Venue representative invite/remove console | Action API / UX | Batch 5 | Profile FeatureGated; organisation membership APIs exist but workspace console incomplete |
+| BG-20 | Paginated MBDP/Venue event/offer/booking portfolios | Pagination | Batch 5 | Lists capped; extends BG-02/17 |
+| BG-21 | Venue aggregated non-purchase feedback DTO | UX read-model | Batch 5 | Customer reasons exist; Venue aggregate redaction pending |
+| BG-22 | Marketplace BDP self-serve reassignment request | Action API | Batch 5 | Handover Platform-gated; status page shipped |
 
 ### Not gaps
 

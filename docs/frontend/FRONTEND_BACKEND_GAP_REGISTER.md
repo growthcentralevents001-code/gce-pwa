@@ -23,6 +23,9 @@
 | BG-13 | Member-facing Circle transfer request | UX / Permission | Batch 3 | `transfer_request` exists but Connect circles POST is admin-gated; FeatureGated UI shipped |
 | BG-14 | Member Tag self-serve editor | UX | Batch 3 | Tags display + pricing notes shipped; mutation UX pending review |
 | BG-15 | Circle directory member display names | UX read-model | Batch 3 | Seats listed with privacy-safe placeholders until profile join DTO |
+| BG-16 | Connect BDP member sourcing stages beyond attribution statuses | UX read-model | Batch 4 | Pipeline uses attribution statuses; richer invite/KYC/payment stages need DTO |
+| BG-17 | Paginated Connect BDP portfolios (members/circles/entitlements) | Pagination | Batch 4 | Lists capped; extend BG-02 for BDP-specific cursors |
+| BG-18 | BDP-facing reassignment request API | Action API | Batch 4 | Handover is Platform-gated; self-serve reassignment request not exposed |
 
 ### Not gaps
 

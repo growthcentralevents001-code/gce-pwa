@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 3) |
+| **Status** | Active (Batch 4 — Checkpoint C) |
 | **Date** | 2026-08-09 |
-| **Authority** | Founder Batch 3 supersession — no blue; one GCE component language |
+| **Authority** | Founder Batch 3 supersession — no blue; one GCE component language; Batch 4 partner pattern |
 
 ## Rules
 
@@ -49,6 +49,13 @@
 | Timeline family | `components/connect/Timeline.tsx` |
 | No rainbow Power Sector colors | Icon + orange border only |
 
+## Batch 4 notes
+
+- Established Checkpoint C partner primitives under `components/partner/`
+- Reused Batch 3 `KpiCard` / `CircleCard` / `Timeline` — no new BDP-only visual system
+- No decorative blue in Batch 4-owned Connect BDP surfaces
+- Legacy BDM/ZBP dashboards remain quarantined (not Batch 4 rewrite)
+
 ## Follow-ups
 
 | ID | Item | Priority | Target |
@@ -57,3 +64,4 @@
 | VC-02 | Legacy dashboard blue | P1 | Batch 10 |
 | VC-03 | MarketingHero side-by-side polish vs Connect | P2 | Batch 10 |
 | VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
+| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5/6 |

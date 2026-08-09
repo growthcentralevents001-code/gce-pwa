@@ -9,6 +9,11 @@ import {
   LifeBuoy,
   Target,
   Settings,
+  MapPin,
+  GitBranch,
+  Scale,
+  ArrowLeftRight,
+  FileCheck,
 } from "lucide-react";
 import type { NavSection } from "./types";
 import type { WorkspaceKey } from "@/lib/architecture/types";
@@ -101,7 +106,87 @@ export function workspaceNavSections(
         ],
       },
     ],
-    "connect-bdp": [base],
+    "connect-bdp": [
+      {
+        id: "main",
+        label: "Workspace",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/connect-bdp",
+            icon: LayoutDashboard,
+            workspaces: ["connect-bdp"],
+          },
+          {
+            id: "apply",
+            label: "Application",
+            href: "/connect-bdp/apply",
+            icon: FileCheck,
+          },
+        ],
+      },
+      {
+        id: "operations",
+        label: "Operations",
+        items: [
+          {
+            id: "unit",
+            label: "Unit & package",
+            href: "/connect-bdp/unit",
+            icon: Building2,
+          },
+          {
+            id: "city",
+            label: "City assignment",
+            href: "/connect-bdp/city",
+            icon: MapPin,
+          },
+          {
+            id: "members",
+            label: "Members",
+            href: "/connect-bdp/members",
+            icon: Users,
+          },
+          {
+            id: "circles",
+            label: "Circles",
+            href: "/connect-bdp/circles",
+            icon: GitBranch,
+          },
+          {
+            id: "targets",
+            label: "Targets",
+            href: "/connect-bdp/targets",
+            icon: Target,
+          },
+        ],
+      },
+      {
+        id: "commercial",
+        label: "Commercial",
+        items: [
+          {
+            id: "entitlements",
+            label: "Entitlements",
+            href: "/connect-bdp/entitlements",
+            icon: CircleDollarSign,
+          },
+          {
+            id: "disputes",
+            label: "Disputes",
+            href: "/connect-bdp/disputes",
+            icon: Scale,
+          },
+          {
+            id: "handover",
+            label: "Handover",
+            href: "/connect-bdp/handover",
+            icon: ArrowLeftRight,
+          },
+        ],
+      },
+    ],
     "marketplace-bdp": [base],
     venue: [
       base,

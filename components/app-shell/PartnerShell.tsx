@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import { Bell, Menu, PanelLeftClose, PanelLeft } from "lucide-react";
 import type { WorkspaceKey } from "@/lib/architecture/types";
@@ -45,6 +45,22 @@ type PartnerShellProps = {
   forcedWorkspaceKey?: WorkspaceKey;
 };
 
+function workspaceFromPathname(pathname: string): WorkspaceKey | null {
+  if (
+    pathname.startsWith("/dashboard/connect-member") ||
+    (pathname.startsWith("/connect/") && pathname !== "/connect")
+  ) {
+    return "connect-member";
+  }
+  if (
+    pathname.startsWith("/dashboard/connect-bdp") ||
+    pathname.startsWith("/connect-bdp")
+  ) {
+    return "connect-bdp";
+  }
+  return null;
+}
+
 /**
  * Desktop-first partner/workspace shell with responsive sidebar + drawer.
  */
@@ -58,9 +74,12 @@ export function PartnerShell({
   forcedWorkspaceKey,
 }: PartnerShellProps) {
   const params = useParams();
+  const pathname = usePathname() || "";
   const raw = typeof params?.workspaceKey === "string" ? params.workspaceKey : "";
   const fromUrl: WorkspaceKey | null = isCanonicalWorkspaceKey(raw) ? raw : null;
-  const current: WorkspaceKey | null = forcedWorkspaceKey ?? fromUrl;
+  const fromPath = workspaceFromPathname(pathname);
+  const current: WorkspaceKey | null =
+    forcedWorkspaceKey ?? fromUrl ?? fromPath;
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete** · **Batch 2 complete (Checkpoint B accepted)** · **Batch 3 complete — Connect Member experience ready for review** · Batches 4–10 not started |
+| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete** · **Batch 2 complete (Checkpoint B accepted)** · **Batch 3 complete** · **Batch 4 complete — Partner Dashboard Checkpoint C ready for review** · Batches 5–10 not started |
 | **Date** | 2026-08-09 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
@@ -34,7 +34,15 @@
 | **Status** | **COMPLETE — Connect Member experience ready for review** |
 | **Evidence** | `docs/frontend/implementation/BATCH_3_MEMBER_CONNECT_CIRCLE_LEAD_ASSIST_IMPLEMENTATION.md` |
 | **Visual** | No-blue supersession + `GLOBAL_FRONTEND_VISUAL_CONSISTENCY_REGISTER.md` |
-| **Batch 4** | Not started |
+
+### Batch 4 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Partner Dashboard Checkpoint C ready for review** |
+| **Evidence** | `docs/frontend/implementation/BATCH_4_CONNECT_BDP_IMPLEMENTATION.md` |
+| **Checkpoint C** | Canonical Partner Dashboard Pattern established |
+| **Batch 5** | Not started |
 
 ---
 

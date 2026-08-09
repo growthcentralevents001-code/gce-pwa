@@ -51,22 +51,52 @@ export function workspaceNavSections(
       },
     ],
     "connect-member": [
-      base,
+      {
+        id: "main",
+        label: "Workspace",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/connect-member",
+            icon: LayoutDashboard,
+            workspaces: ["connect-member"],
+          },
+        ],
+      },
       {
         id: "connect",
         label: "Connect",
         items: [
           {
+            id: "membership",
+            label: "Membership",
+            href: "/connect/membership",
+            icon: CircleDollarSign,
+          },
+          {
             id: "circle",
             label: "My Circle",
-            href: `/dashboard/${workspaceKey}/circle`,
+            href: "/connect/circle",
             icon: Users,
           },
           {
             id: "leads",
-            label: "Leads",
-            href: `/dashboard/${workspaceKey}/leads`,
+            label: "Lead Assist",
+            href: "/connect/leads",
             icon: Target,
+          },
+          {
+            id: "tags",
+            label: "Tags",
+            href: "/connect/tags",
+            icon: Settings,
+          },
+          {
+            id: "governance",
+            label: "Governance",
+            href: "/connect/governance",
+            icon: Shield,
           },
         ],
       },

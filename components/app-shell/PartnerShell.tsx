@@ -31,6 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { typography } from "@/lib/frontend/typography";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 type PartnerShellProps = {
@@ -40,6 +41,8 @@ type PartnerShellProps = {
   displayName?: string | null;
   roleLabel?: string;
   inactiveFeatureFlags?: string[];
+  /** When set (e.g. /connect/* member CX), ignore URL workspace param. */
+  forcedWorkspaceKey?: WorkspaceKey;
 };
 
 /**
@@ -52,10 +55,12 @@ export function PartnerShell({
   displayName,
   roleLabel,
   inactiveFeatureFlags = [...INACTIVE_FEATURE_FLAGS],
+  forcedWorkspaceKey,
 }: PartnerShellProps) {
   const params = useParams();
   const raw = typeof params?.workspaceKey === "string" ? params.workspaceKey : "";
-  const current: WorkspaceKey | null = isCanonicalWorkspaceKey(raw) ? raw : null;
+  const fromUrl: WorkspaceKey | null = isCanonicalWorkspaceKey(raw) ? raw : null;
+  const current: WorkspaceKey | null = forcedWorkspaceKey ?? fromUrl;
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -144,6 +149,7 @@ export function PartnerShell({
           </div>
 
           <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"

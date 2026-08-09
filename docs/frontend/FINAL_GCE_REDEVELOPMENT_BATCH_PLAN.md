@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete** · **Batch 2 complete — Customer Mobile Checkpoint B ready for review** · Batches 3–10 not started |
+| **Status** | **Batch 0 complete (Checkpoint A approved)** · **Batch 1 complete** · **Batch 2 complete (Checkpoint B accepted)** · **Batch 3 complete — Connect Member experience ready for review** · Batches 4–10 not started |
 | **Date** | 2026-08-09 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
@@ -26,7 +26,15 @@
 |-------|-------|
 | **Status** | **COMPLETE — Customer Mobile Checkpoint B ready for review** |
 | **Evidence** | `docs/frontend/implementation/BATCH_2_CUSTOMER_EVENTS_OFFERS_BOOKING_TICKETS_IMPLEMENTATION.md` |
-| **Batch 3** | Not started |
+
+### Batch 3 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Connect Member experience ready for review** |
+| **Evidence** | `docs/frontend/implementation/BATCH_3_MEMBER_CONNECT_CIRCLE_LEAD_ASSIST_IMPLEMENTATION.md` |
+| **Visual** | No-blue supersession + `GLOBAL_FRONTEND_VISUAL_CONSISTENCY_REGISTER.md` |
+| **Batch 4** | Not started |
 
 ---
 

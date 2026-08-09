@@ -2,7 +2,15 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { resolveLegacyDashboardPath } from '@/lib/architecture/workspace/registry'
 
-const PUBLIC_EXACT = ['/', '/sw.js', '/manifest.json']
+const PUBLIC_EXACT = [
+  '/',
+  '/sw.js',
+  '/manifest.json',
+  // Marketing landings only — member CX under /connect/* requires auth
+  '/connect',
+  '/marketplace',
+  '/enterprise',
+]
 
 const PUBLIC_PREFIXES = [
   '/login',
@@ -18,9 +26,6 @@ const PUBLIC_PREFIXES = [
   '/contact',
   '/for-partners',
   '/partners',
-  '/connect',
-  '/marketplace',
-  '/enterprise',
   '/unauthorized',
   '/offline',
   '/the-circle',

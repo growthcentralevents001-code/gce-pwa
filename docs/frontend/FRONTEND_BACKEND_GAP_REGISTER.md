@@ -20,6 +20,9 @@
 | BG-10 | Global ops search result DTOs redaction contract docs | Search | Batch 8 | Service exists — document field allowlists for UI |
 | BG-11 | Ticket QR re-display after confirmation | UX read-model | Batch 2 | Raw QR tokens returned once from `confirm_booking_sandbox`; ticket list never exposes `qr_token_hash`. Optional re-issue endpoint if Founder wants reopenable passes |
 | BG-12 | Claim token re-display after claim | UX read-model | Batch 2 | Same one-time token pattern; session stash used for same-session UX only |
+| BG-13 | Member-facing Circle transfer request | UX / Permission | Batch 3 | `transfer_request` exists but Connect circles POST is admin-gated; FeatureGated UI shipped |
+| BG-14 | Member Tag self-serve editor | UX | Batch 3 | Tags display + pricing notes shipped; mutation UX pending review |
+| BG-15 | Circle directory member display names | UX read-model | Batch 3 | Seats listed with privacy-safe placeholders until profile join DTO |
 
 ### Not gaps
 

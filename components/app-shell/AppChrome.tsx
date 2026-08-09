@@ -7,14 +7,19 @@ const SHELL_PREFIXES = ["/dashboard", "/customer", "/ops", "/unauthorized"];
 
 /**
  * Root chrome router:
- * - App shells (dashboard/customer/ops) provide their own chrome
+ * - App shells (dashboard/customer/ops/connect member) provide their own chrome
+ * - Exact /connect marketing landing keeps PublicShell
  * - Public routes use PublicShell (leaves dirty Header.tsx untouched)
  */
 export function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || "/";
-  const usesOwnShell = SHELL_PREFIXES.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  const isConnectMemberCx =
+    pathname.startsWith("/connect/") && pathname !== "/connect";
+  const usesOwnShell =
+    isConnectMemberCx ||
+    SHELL_PREFIXES.some(
+      (p) => pathname === p || pathname.startsWith(`${p}/`)
+    );
 
   if (usesOwnShell) {
     return <>{children}</>;

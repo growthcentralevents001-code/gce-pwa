@@ -34,6 +34,9 @@
 | BG-24 | Enterprise BDP self-serve reassignment request | Action API | Batch 6 | Prospective handover status shipped; self-serve request incomplete |
 | BG-25 | Expert assignment-scoped project/quote list DTO | UX read-model | Batch 6 | Opportunities scoped; broader project fan-out capped |
 | BG-26 | Paginated Enterprise client/opportunity/project portfolios | Pagination | Batch 6 | Lists capped; extends BG-02 |
+| BG-27 | Paginated Finance list DTOs (revenue/entitlements/ledger) | Pagination | Batch 7 | Lists capped at 80 |
+| BG-28 | Finance dashboard recognised ₹ amount aggregates | Aggregation | Batch 7 | Counts + entitlement totals exist; recognised ₹ sum pending |
+| BG-29 | Refund review join DTO (booking/event redaction) | UX read-model | Batch 7 | Requests listed; deep booking join deferred |
 
 ### Not gaps
 

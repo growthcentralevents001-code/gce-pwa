@@ -528,16 +528,94 @@ export function workspaceNavSections(
     ],
     "opportunity-desk": [base],
     finance: [
-      base,
       {
-        id: "finance",
-        label: "Finance",
+        id: "main",
+        label: "Workspace",
         items: [
           {
-            id: "ledger",
-            label: "Ledger",
-            href: `/dashboard/${workspaceKey}/ledger`,
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/finance",
+            icon: LayoutDashboard,
+            workspaces: ["finance"],
+          },
+        ],
+      },
+      {
+        id: "money",
+        label: "Money",
+        items: [
+          {
+            id: "revenue",
+            label: "Revenue",
+            href: "/finance/revenue",
             icon: CircleDollarSign,
+          },
+          {
+            id: "entitlements",
+            label: "Entitlements",
+            href: "/finance/entitlements",
+            icon: Users,
+          },
+          {
+            id: "holds",
+            label: "Holds",
+            href: "/finance/holds",
+            icon: Shield,
+          },
+          {
+            id: "recovery",
+            label: "Recovery",
+            href: "/finance/recovery",
+            icon: Scale,
+          },
+        ],
+      },
+      {
+        id: "settlement",
+        label: "Settlement",
+        items: [
+          {
+            id: "settlements",
+            label: "Settlement batches",
+            href: "/finance/settlements",
+            icon: FileCheck,
+          },
+          {
+            id: "payout",
+            label: "Payout readiness",
+            href: "/finance/payout-readiness",
+            icon: Target,
+          },
+          {
+            id: "recon",
+            label: "Reconciliation",
+            href: "/finance/reconciliation",
+            icon: GitBranch,
+          },
+        ],
+      },
+      {
+        id: "exceptions",
+        label: "Exceptions",
+        items: [
+          {
+            id: "refunds",
+            label: "Refunds",
+            href: "/finance/refunds",
+            icon: ArrowLeftRight,
+          },
+          {
+            id: "chargebacks",
+            label: "Chargebacks",
+            href: "/finance/chargebacks",
+            icon: Scale,
+          },
+          {
+            id: "offline",
+            label: "Offline payments",
+            href: "/finance/offline",
+            icon: Building2,
           },
         ],
       },

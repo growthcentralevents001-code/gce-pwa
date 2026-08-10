@@ -92,6 +92,13 @@ function workspaceFromPathname(pathname: string): WorkspaceKey | null {
   ) {
     return "platform-ops";
   }
+  if (
+    pathname.startsWith("/dashboard/finance") ||
+    pathname === "/finance" ||
+    pathname.startsWith("/finance/")
+  ) {
+    return "finance";
+  }
   return null;
 }
 

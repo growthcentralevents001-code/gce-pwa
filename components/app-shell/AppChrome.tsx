@@ -34,6 +34,8 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   const isEnterpriseExpertCx =
     pathname === "/enterprise-expert" ||
     pathname.startsWith("/enterprise-expert/");
+  const isFinanceCx =
+    pathname === "/finance" || pathname.startsWith("/finance/");
   const usesOwnShell =
     isConnectMemberCx ||
     isConnectBdpCx ||
@@ -42,6 +44,7 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
     isEnterpriseClientCx ||
     isEnterpriseBdpCx ||
     isEnterpriseExpertCx ||
+    isFinanceCx ||
     SHELL_PREFIXES.some(
       (p) => pathname === p || pathname.startsWith(`${p}/`)
     );

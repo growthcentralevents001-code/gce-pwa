@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0–5 complete** · **Batch 6 complete — Enterprise experience ready for review** · Batches 7–10 not started |
+| **Status** | **Batch 0–6 complete** · **Batch 7 complete — Finance experience ready for review** · Batches 8–10 not started |
 | **Date** | 2026-08-10 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
@@ -59,6 +59,15 @@
 | **Evidence** | `docs/frontend/implementation/BATCH_6_ENTERPRISE_CLIENT_BDP_EXPERT_IMPLEMENTATION.md` |
 | **Checkpoint C** | Reused for Enterprise Client / BDP / Expert |
 | **Batch 7** | Not started |
+
+### Batch 7 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Finance experience ready for review** (non-blocking gaps remain) |
+| **Evidence** | `docs/frontend/implementation/BATCH_7_FINANCE_IMPLEMENTATION.md` |
+| **Checkpoint C** | Reused (dense finance extension) |
+| **Batch 8** | Not started |
 
 ---
 

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 6 — Enterprise Client / BDP / Expert) |
+| **Status** | Active (Batch 7 — Finance) |
 | **Date** | 2026-08-10 |
 | **Authority** | Founder no-blue + Checkpoint C partner pattern |
 
@@ -71,6 +71,14 @@
 - Stale 30/40/30, 25%-of-project-value, and “₹5L and above” wording blocked in owned copy
 - Deferred: legacy `/dashboard/enterprise`, admin enterprise-proposals blue (unowned)
 
+## Batch 7 notes
+
+- Finance reuses Checkpoint C with denser, restrained presentation — not a separate fintech theme
+- Rejected ui-ux-pro-max dark OLED + blue finance palette; charts optional/deferred
+- Settlement/payout/refund execution FeatureGated OFF; no Pay Now / Edit Ledger
+- Partner commercial summaries and Finance entitlement views share DNA
+- Deferred: admin finance blue, `/ops/finance` Batch 8 polish
+
 ## Follow-ups
 
 | ID | Item | Priority | Target |
@@ -81,3 +89,4 @@
 | VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
 | VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5–6 done |
 | VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |
+| VC-07 | Finance ↔ partner commercial summary visual parity | P1 | Batch 7 done / Batch 10 polish |

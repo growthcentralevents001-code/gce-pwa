@@ -69,7 +69,12 @@ describe("Batch 0 navigation", () => {
 
   it("keeps ops under /ops and not inventing ops workspace keys", () => {
     const hrefs = OPS_NAV_SECTIONS.flatMap((s) => s.items.map((i) => i.href));
-    expect(hrefs.every((h) => h.startsWith("/ops"))).toBe(true);
+    // Batch 8 inventory also places holds + Opportunity Desk outside /ops/*
+    const allowed = (h: string) =>
+      h.startsWith("/ops") ||
+      h === "/compliance/holds" ||
+      h.startsWith("/desk/");
+    expect(hrefs.every(allowed)).toBe(true);
     expect(WORKSPACE_KEYS).not.toContain("connect-ops");
     expect(WORKSPACE_KEYS).not.toContain("marketplace-ops");
     expect(WORKSPACE_KEYS).not.toContain("enterprise-ops");

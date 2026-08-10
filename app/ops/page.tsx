@@ -1,20 +1,41 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import {
+  AlertTriangle,
+  CheckSquare,
+  FolderOpen,
+  LifeBuoy,
+  Lock,
+  Shield,
+} from "lucide-react";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { EmptyState } from "@/components/states/EmptyState";
+import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import { OpsKpiStrip } from "@/components/ops/OpsKpiStrip";
+import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
+import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import {
   actorHasOpsAdminPermission,
-  getOpsDashboard,
 } from "@/lib/architecture/ops-admin";
 import { actorHasOpsPermission } from "@/lib/architecture/ops-governance";
-import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { loadOpsDashboardCards } from "@/lib/frontend/ops/reads";
+import { GCE_SPACING, GCE_SURFACE, GCE_RADIUS } from "@/lib/frontend/design-language";
+import { cn } from "@/lib/utils";
 
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Operations · GCE",
+};
+
+/** OPS-01 — Platform Ops control plane (no mega-admin, no Super Admin). */
 export default async function OpsHomePage() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/ops");
 
   const entitlements = await resolveActiveEntitlements(supabase, user.id);
   const assignments = entitlements.activeAssignments;
@@ -23,148 +44,196 @@ export default async function OpsHomePage() {
   const canAudit = actorHasOpsPermission(assignments, "audit.search");
   const canRisk = actorHasOpsPermission(assignments, "risk.review");
   const canHolds = actorHasOpsPermission(assignments, "compliance.hold");
+  const canApprovals = actorHasOpsAdminPermission(assignments, "ops.approvals.review");
+  const canExceptions = actorHasOpsAdminPermission(assignments, "ops.exceptions.resolve");
+  const canCases = actorHasOpsAdminPermission(assignments, "ops.cases.manage");
+  const canIncidents = actorHasOpsAdminPermission(assignments, "ops.incident.manage");
+  const canSupport = actorHasOpsAdminPermission(assignments, "ops.support");
+  const canConnect = actorHasOpsAdminPermission(assignments, "ops.connect");
+  const canMarketplace = actorHasOpsAdminPermission(assignments, "ops.marketplace");
+  const canEnterprise = actorHasOpsAdminPermission(assignments, "ops.enterprise");
+  const canFinance = actorHasOpsAdminPermission(assignments, "ops.finance");
+  const canCompliance = actorHasOpsAdminPermission(assignments, "ops.compliance");
 
-  let cards: Awaited<ReturnType<typeof getOpsDashboard>>["cards"] | null =
-    null;
-  if (canDash) {
-    try {
-      const admin = createPrivilegedSupabaseClient();
-      cards = (await getOpsDashboard(admin)).cards;
-    } catch {
-      cards = null;
-    }
+  if (!canDash) {
+    return (
+      <main>
+        <PageHeader
+          title="Operations"
+          description="Scoped operational workspaces. No Super Admin productization."
+        />
+        <EmptyState
+          title="Ops access required"
+          description="This control plane requires an active ops-capable role assignment. Sidebar visibility is not authorization."
+        />
+      </main>
+    );
   }
 
+  const admin = createPrivilegedSupabaseClient();
+  const cards = await loadOpsDashboardCards(admin);
+
+  const kpiItems = cards
+    ? [
+        {
+          label: "Pending approvals",
+          value: cards.pendingApprovals,
+          href: canApprovals ? "/ops/approvals" : undefined,
+          icon: CheckSquare,
+        },
+        {
+          label: "Open exceptions",
+          value: cards.openExceptions,
+          href: canExceptions ? "/ops/exceptions" : undefined,
+          icon: AlertTriangle,
+        },
+        {
+          label: "Open cases",
+          value: cards.openCases,
+          href: canCases ? "/ops/cases" : undefined,
+          icon: FolderOpen,
+        },
+        {
+          label: "Incidents",
+          value: cards.openIncidents,
+          href: canIncidents ? "/ops/incidents" : undefined,
+          icon: Shield,
+        },
+        {
+          label: "Risk signals",
+          value: cards.openRiskSignals,
+          href: canRisk ? "/ops/security?tab=risk" : undefined,
+          icon: AlertTriangle,
+          hint: "Review-only unless backend action exists",
+        },
+        {
+          label: "Compliance holds",
+          value: cards.activeComplianceHolds,
+          href: canHolds || canCompliance ? "/compliance/holds" : undefined,
+          icon: Lock,
+        },
+        {
+          label: "Support signals",
+          value: cards.supportSignalsQueued,
+          href: canSupport ? "/ops/support" : undefined,
+          icon: LifeBuoy,
+        },
+        {
+          label: "Privacy requests",
+          value: cards.privacyRequests,
+          href: canCompliance ? "/ops/privacy" : undefined,
+          icon: Lock,
+        },
+      ]
+    : [];
+
+  const actions = [
+    canApprovals
+      ? {
+          id: "a",
+          title: "Approval queues",
+          href: "/ops/approvals",
+          description: "SoD enforced",
+        }
+      : null,
+    canExceptions
+      ? { id: "e", title: "Exceptions", href: "/ops/exceptions" }
+      : null,
+    canCases ? { id: "c", title: "Cases", href: "/ops/cases" } : null,
+    canIncidents
+      ? { id: "i", title: "Incidents", href: "/ops/incidents" }
+      : null,
+    canConnect
+      ? { id: "co", title: "Connect Ops", href: "/ops/connect" }
+      : null,
+    canMarketplace
+      ? { id: "m", title: "Marketplace Ops", href: "/ops/marketplace" }
+      : null,
+    canEnterprise
+      ? { id: "en", title: "Enterprise Ops", href: "/ops/enterprise" }
+      : null,
+    canFinance
+      ? {
+          id: "f",
+          title: "Finance workspace",
+          href: "/dashboard/finance",
+          description: "Batch 7 truth — not a second engine",
+        }
+      : null,
+    canCompliance
+      ? { id: "cm", title: "Compliance", href: "/ops/compliance" }
+      : null,
+    canSupport ? { id: "s", title: "Support", href: "/ops/support" } : null,
+    canSecurity
+      ? { id: "sec", title: "Security events", href: "/ops/security" }
+      : null,
+    canAudit
+      ? { id: "au", title: "Audit search", href: "/ops/security?tab=audit" }
+      : null,
+  ].filter(Boolean) as Array<{
+    id: string;
+    title: string;
+    href: string;
+    description?: string;
+  }>;
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="text-2xl font-semibold">Operations control plane</h1>
-      <p className="mt-1 text-sm text-neutral-600">
-        Phase 13 Admin / Ops / Support · no Super Admin shortcut · money/live
-        providers remain OFF
-      </p>
+    <main className={GCE_SPACING.section}>
+      <PageHeader
+        title="Operations control plane"
+        description="Scoped Platform / Vertical Ops. No mega-admin. Money and live providers remain OFF. Frontend is not policy authority."
+        breadcrumbs={[{ label: "Ops" }]}
+      />
 
-      {cards ? (
-        <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={cn(
+          GCE_RADIUS.card,
+          GCE_SURFACE.glassLight,
+          "px-4 py-3 text-sm text-muted-foreground"
+        )}
+      >
+        Role-scoped queues only. Finance write/execution stays in Batch 7 /
+        Phase 9 boundaries. Root / emergency admin is not productized here.
+      </div>
+
+      {kpiItems.length > 0 ? <OpsKpiStrip items={kpiItems} /> : null}
+
+      <PartnerActionCenter
+        title="Action center"
+        items={actions}
+        emptyLabel="No authorized actions for your current assignments."
+      />
+
+      <section className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "p-4")}>
+        <h2 className="text-sm font-semibold">Vertical scopes</h2>
+        <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
           {[
-            ["Pending approvals", cards.pendingApprovals],
-            ["Open exceptions", cards.openExceptions],
-            ["Open cases", cards.openCases],
-            ["Incidents", cards.openIncidents],
-            ["Risk signals", cards.openRiskSignals],
-            ["Compliance holds", cards.activeComplianceHolds],
-            ["Privacy requests", cards.privacyRequests],
-            ["Dead letters", cards.notificationDeadLetters],
-            ["Support signals", cards.supportSignalsQueued],
-          ].map(([label, value]) => (
-            <div
-              key={String(label)}
-              className="rounded border border-neutral-200 p-3 text-sm"
-            >
-              <div className="text-neutral-500">{label}</div>
-              <div className="mt-1 text-xl font-semibold">{value}</div>
-            </div>
-          ))}
-        </section>
-      ) : null}
-
-      <ul className="mt-8 space-y-2 text-sm">
-        {canDash ? (
-          <>
-            <li>
-              <Link className="underline" href="/ops/approvals">
-                Approval queues
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/exceptions">
-                Exception queues
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/cases">
-                Cases / disputes
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/connect">
-                Connect Ops
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/marketplace">
-                Marketplace Ops
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/enterprise">
-                Enterprise Ops
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/finance">
-                Finance Admin
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/compliance">
-                Compliance Admin
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/support">
-                Support Admin
-              </Link>
-            </li>
-            <li>
-              <Link className="underline" href="/ops/incidents">
-                Incidents
-              </Link>
-            </li>
-          </>
-        ) : null}
-        <li>
-          <Link className="underline" href="/ops/notifications">
-            Notification center & preferences
-          </Link>
-        </li>
-        {canAudit ? (
-          <li>
-            <Link className="underline" href="/ops/security?tab=audit">
-              Audit search
-            </Link>
-          </li>
-        ) : null}
-        {canSecurity ? (
-          <li>
-            <Link className="underline" href="/ops/security?tab=security">
-              Security events
-            </Link>
-          </li>
-        ) : null}
-        {canRisk ? (
-          <li>
-            <Link className="underline" href="/ops/security?tab=risk">
-              Risk / fraud queue
-            </Link>
-          </li>
-        ) : null}
-        {canHolds ? (
-          <li>
-            <Link className="underline" href="/ops/security?tab=holds">
-              Compliance holds
-            </Link>
-          </li>
-        ) : null}
-        <li>
-          <Link className="underline" href="/ops/privacy">
-            Privacy requests
-          </Link>
-        </li>
-      </ul>
-      <p className="mt-6 text-xs text-neutral-500">
-        Legacy `/app/admin/*` prototype WIP is not used. Canonical workspace
-        remains `/dashboard/[workspaceKey]` + `/ops/*`.
-      </p>
+            canConnect && ["/ops/connect", "Connect Ops"],
+            canMarketplace && ["/ops/marketplace", "Marketplace Ops"],
+            canEnterprise && ["/ops/enterprise", "Enterprise Ops"],
+            canFinance && ["/ops/finance", "Finance Ops entry → Finance workspace"],
+          ]
+            .filter(Boolean)
+            .map((row) => {
+              const [href, label] = row as [string, string];
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+        </ul>
+        <div className="mt-4">
+          <Button asChild variant="outline" size="sm">
+            <Link href="/dashboard/platform-ops">Platform Ops dashboard</Link>
+          </Button>
+        </div>
+      </section>
     </main>
   );
 }

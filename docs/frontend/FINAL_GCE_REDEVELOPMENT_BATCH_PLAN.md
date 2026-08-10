@@ -67,7 +67,16 @@
 | **Status** | **COMPLETE — Finance experience ready for review** (non-blocking gaps remain) |
 | **Evidence** | `docs/frontend/implementation/BATCH_7_FINANCE_IMPLEMENTATION.md` |
 | **Checkpoint C** | Reused (dense finance extension) |
-| **Batch 8** | Not started |
+| **Batch 8** | Complete (see below) |
+
+### Batch 8 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Operations experience ready for review** (non-blocking gaps remain) |
+| **Evidence** | `docs/frontend/implementation/BATCH_8_PLATFORM_VERTICAL_OPS_COMPLIANCE_SUPPORT_OPPORTUNITY_DESK_IMPLEMENTATION.md` |
+| **Checkpoint D** | Ops queue/table pattern established |
+| **Batch 9** | Not started |
 
 ---
 

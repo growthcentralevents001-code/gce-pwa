@@ -6,7 +6,7 @@ export default function EnterpriseOpsPage() {
       vertical="enterprise"
       title="Enterprise Ops"
       permission="ops.enterprise"
-      description="Client / EBDP / project exceptions. Quotations &gt; ₹5L still require Finance co-sign (FD-038)."
+      description="Client / opportunity / project exceptions. No territory ownership. Finance co-sign strictly > ₹5,00,000 stays Finance. Expert has no automatic commission."
     />
   );
 }

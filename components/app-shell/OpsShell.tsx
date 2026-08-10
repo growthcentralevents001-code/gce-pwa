@@ -15,7 +15,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { OpsSearch } from "@/components/ops/OpsSearch";
 import { typography } from "@/lib/frontend/typography";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 type OpsShellProps = {
@@ -23,19 +25,24 @@ type OpsShellProps = {
   /** Presentation-only permission filter; server still authorizes routes. */
   permissions?: string[];
   userEmail?: string | null;
+  /** Enable ops search when actor has ops.search (passed from layout). */
+  canSearch?: boolean;
 };
 
 /**
- * Ops shell alignment — wraps Phase 13 /ops/* without rewriting business logic.
- * Dense desktop nav; tablet supported via drawer.
+ * Canonical /ops shell — Batch 8.
+ * Dense operational chrome; orange/warm GCE language; no decorative blue.
  */
-export function OpsShell({ children, permissions, userEmail }: OpsShellProps) {
+export function OpsShell({
+  children,
+  permissions,
+  userEmail,
+  canSearch = true,
+}: OpsShellProps) {
   const [open, setOpen] = useState(false);
   const sections = filterNavSections(OPS_NAV_SECTIONS, { permissions });
 
-  const nav = (
-    <SidebarNav sections={sections} dense className="px-1" />
-  );
+  const nav = <SidebarNav sections={sections} dense className="px-1" />;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -55,17 +62,23 @@ export function OpsShell({ children, permissions, userEmail }: OpsShellProps) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b border-border bg-background/95 px-4 backdrop-blur">
           <div className="flex items-center gap-2 lg:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" aria-label="Open ops navigation">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Open ops navigation"
+                >
                   <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-4">
                 <SheetHeader className="mb-4">
-                  <SheetTitle className={typography.brandMark}>GCE Ops</SheetTitle>
+                  <SheetTitle className={typography.brandMark}>
+                    GCE Ops
+                  </SheetTitle>
                 </SheetHeader>
                 {nav}
               </SheetContent>
@@ -73,9 +86,11 @@ export function OpsShell({ children, permissions, userEmail }: OpsShellProps) {
             <span className="text-sm font-semibold">Operations</span>
           </div>
           <p className={cn("hidden text-sm text-muted-foreground lg:block")}>
-            Control plane · money & live providers remain OFF
+            Control plane · scoped roles · money & live providers OFF
           </p>
           <div className="ml-auto flex items-center gap-2">
+            <OpsSearch enabled={canSearch} />
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"

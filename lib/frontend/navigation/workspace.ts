@@ -1,4 +1,5 @@
 import {
+  AlertTriangle,
   Building2,
   CircleDollarSign,
   LayoutDashboard,
@@ -7,6 +8,7 @@ import {
   Briefcase,
   Shield,
   LifeBuoy,
+  Lock,
   Target,
   Settings,
   MapPin,
@@ -476,6 +478,24 @@ export function workspaceNavSections(
             icon: Shield,
           },
           {
+            id: "ops-approvals",
+            label: "Approvals",
+            href: "/ops/approvals",
+            icon: FileCheck,
+          },
+          {
+            id: "ops-connect",
+            label: "Connect Ops",
+            href: "/ops/connect",
+            icon: Building2,
+          },
+          {
+            id: "ops-marketplace",
+            label: "Marketplace Ops",
+            href: "/ops/marketplace",
+            icon: Store,
+          },
+          {
             id: "ops-enterprise",
             label: "Enterprise Ops",
             href: "/ops/enterprise",
@@ -526,7 +546,27 @@ export function workspaceNavSections(
         ],
       },
     ],
-    "opportunity-desk": [base],
+    "opportunity-desk": [
+      {
+        id: "main",
+        label: "Desk",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/opportunity-desk",
+            icon: LayoutDashboard,
+            workspaces: ["opportunity-desk"],
+          },
+          {
+            id: "queue",
+            label: "Queue",
+            href: "/desk/queue",
+            icon: Target,
+          },
+        ],
+      },
+    ],
     finance: [
       {
         id: "main",
@@ -620,13 +660,57 @@ export function workspaceNavSections(
         ],
       },
     ],
-    compliance: [base],
-    support: [
-      base,
+    compliance: [
       {
-        id: "support",
+        id: "main",
+        label: "Compliance",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/compliance",
+            icon: LayoutDashboard,
+            workspaces: ["compliance"],
+          },
+          {
+            id: "holds",
+            label: "Holds",
+            href: "/compliance/holds",
+            icon: Shield,
+          },
+          {
+            id: "ops-compliance",
+            label: "Compliance Ops",
+            href: "/ops/compliance",
+            icon: Lock,
+          },
+          {
+            id: "risk",
+            label: "Risk review",
+            href: "/ops/security?tab=risk",
+            icon: AlertTriangle,
+          },
+        ],
+      },
+    ],
+    support: [
+      {
+        id: "main",
         label: "Support",
         items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/support",
+            icon: LayoutDashboard,
+            workspaces: ["support"],
+          },
+          {
+            id: "signals",
+            label: "Signals",
+            href: "/ops/support",
+            icon: LifeBuoy,
+          },
           {
             id: "cases",
             label: "Cases",

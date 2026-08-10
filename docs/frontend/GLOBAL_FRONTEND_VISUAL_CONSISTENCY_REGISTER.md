@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 7 — Finance) |
+| **Status** | Active (Batch 8 — Ops / Compliance / Support / Desk) |
 | **Date** | 2026-08-10 |
-| **Authority** | Founder no-blue + Checkpoint C partner pattern |
+| **Authority** | Founder no-blue + Checkpoint C partner pattern + Checkpoint D Ops queue |
 
 ## Rules
 
@@ -77,16 +77,26 @@
 - Rejected ui-ux-pro-max dark OLED + blue finance palette; charts optional/deferred
 - Settlement/payout/refund execution FeatureGated OFF; no Pay Now / Edit Ledger
 - Partner commercial summaries and Finance entitlement views share DNA
-- Deferred: admin finance blue, `/ops/finance` Batch 8 polish
+- Deferred: admin finance blue (unowned)
+
+## Batch 8 notes
+
+- Ops queue/table/detail language under `components/ops/` — denser than CX, same GCE family
+- `/ops` shell: orange active nav, warm neutrals — **no blue admin sidebar**
+- Glass: optional hub strip only; queues/tables/cases/holds stay opaque
+- Approval / exception / case / incident / moderation share OpsQueueCard + StatusBadge
+- Legacy admin blue in `app/admin/**` remains deferred (unowned dirty WIP)
+- `/ops/finance` is Finance entry only — Batch 7 owns presentation
 
 ## Follow-ups
 
 | ID | Item | Priority | Target |
 |----|------|----------|--------|
-| VC-01 | Admin blue cleanup | P1 | Batch 8/10 |
+| VC-01 | Admin blue cleanup | P1 | Batch 10 |
 | VC-02 | Legacy dashboard blue | P1 | Batch 10 |
 | VC-03 | MarketingHero side-by-side polish vs Connect | P2 | Batch 10 |
 | VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
 | VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5–6 done |
 | VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |
 | VC-07 | Finance ↔ partner commercial summary visual parity | P1 | Batch 7 done / Batch 10 polish |
+| VC-08 | Ops split-pane moderation polish | P2 | Batch 10 |

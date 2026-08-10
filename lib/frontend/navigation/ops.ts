@@ -11,12 +11,15 @@ import {
   Store,
   Briefcase,
   CircleDollarSign,
+  Search,
+  Eye,
 } from "lucide-react";
 import type { NavSection } from "./types";
 
 /**
- * Ops navigation — Phase 13 routes preserved under /ops/*.
- * Vertical ops stay here (no connect-ops / marketplace-ops workspace keys).
+ * Ops navigation — Phase 13 / Batch 8 under /ops/*.
+ * Permission keys match ops-admin / ops-governance (pages still gate).
+ * No mega-admin / Super Admin entry.
  */
 export const OPS_NAV_SECTIONS: NavSection[] = [
   {
@@ -35,28 +38,35 @@ export const OPS_NAV_SECTIONS: NavSection[] = [
         label: "Approvals",
         href: "/ops/approvals",
         icon: CheckSquare,
-        permission: "ops.approvals",
+        permission: "ops.approvals.review",
       },
       {
         id: "exceptions",
         label: "Exceptions",
         href: "/ops/exceptions",
         icon: AlertTriangle,
-        permission: "ops.exceptions",
+        permission: "ops.exceptions.resolve",
       },
       {
         id: "cases",
         label: "Cases",
         href: "/ops/cases",
         icon: FolderOpen,
-        permission: "ops.cases",
+        permission: "ops.cases.manage",
       },
       {
         id: "incidents",
         label: "Incidents",
         href: "/ops/incidents",
         icon: Shield,
-        permission: "ops.incidents",
+        permission: "ops.incident.manage",
+      },
+      {
+        id: "moderation",
+        label: "Moderation",
+        href: "/ops/moderation",
+        icon: Eye,
+        permission: "ops.moderation",
       },
     ],
   },
@@ -69,28 +79,28 @@ export const OPS_NAV_SECTIONS: NavSection[] = [
         label: "Connect",
         href: "/ops/connect",
         icon: Building2,
-        permission: "ops.vertical.connect",
+        permission: "ops.connect",
       },
       {
         id: "marketplace-ops",
         label: "Marketplace",
         href: "/ops/marketplace",
         icon: Store,
-        permission: "ops.vertical.marketplace",
+        permission: "ops.marketplace",
       },
       {
         id: "enterprise-ops",
         label: "Enterprise",
         href: "/ops/enterprise",
         icon: Briefcase,
-        permission: "ops.vertical.enterprise",
+        permission: "ops.enterprise",
       },
       {
         id: "finance-ops",
-        label: "Finance",
+        label: "Finance entry",
         href: "/ops/finance",
         icon: CircleDollarSign,
-        permission: "ops.vertical.finance",
+        permission: "ops.finance",
       },
     ],
   },
@@ -103,7 +113,14 @@ export const OPS_NAV_SECTIONS: NavSection[] = [
         label: "Compliance",
         href: "/ops/compliance",
         icon: Lock,
-        permission: "compliance.hold",
+        permission: "ops.compliance",
+      },
+      {
+        id: "holds",
+        label: "Holds",
+        href: "/compliance/holds",
+        icon: Lock,
+        permission: "ops.compliance",
       },
       {
         id: "support",
@@ -113,11 +130,18 @@ export const OPS_NAV_SECTIONS: NavSection[] = [
         permission: "ops.support",
       },
       {
+        id: "desk",
+        label: "Opportunity Desk",
+        href: "/desk/queue",
+        icon: Search,
+        permission: "ops.dashboard",
+      },
+      {
         id: "notifications",
         label: "Notifications",
         href: "/ops/notifications",
         icon: Bell,
-        permission: "ops.notifications",
+        permission: "ops.support",
       },
       {
         id: "security",
@@ -131,7 +155,7 @@ export const OPS_NAV_SECTIONS: NavSection[] = [
         label: "Privacy",
         href: "/ops/privacy",
         icon: Lock,
-        permission: "privacy.request",
+        permission: "ops.compliance",
       },
     ],
   },

@@ -4,9 +4,9 @@ export default function FinanceOpsPage() {
   return (
     <VerticalOpsPage
       vertical="finance"
-      title="Finance Admin"
+      title="Finance Ops entry"
       permission="ops.finance"
-      description="Holds / reconciliation / refund review integration. Corrections only via Phase 9 immutable architecture."
+      description="Scoped operational entry into Finance. Batch 7 owns Finance presentation. Settlement / payout / refund execution remain OFF. No second finance engine."
     />
   );
 }

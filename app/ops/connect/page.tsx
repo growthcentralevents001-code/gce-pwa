@@ -6,7 +6,7 @@ export default function ConnectOpsPage() {
       vertical="connect"
       title="Connect Ops"
       permission="ops.connect"
-      description="Membership / Circle / Connect BDP operational queues. RM/PRM coordination only — no automatic commission."
+      description="Membership / Circle / Connect BDP review. System proposes → Connect BDP assists → Platform confirms. RM/PRM coordination only — no automatic commission."
     />
   );
 }

@@ -1,10 +1,12 @@
 import { OpsShell } from "@/components/app-shell/OpsShell";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
+import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
 
 /**
- * Ops shell alignment for Phase 13 /ops/*.
- * Does not rewrite ops business pages — chrome + token alignment only.
+ * Ops shell — Batch 8.
+ * Soft presence for chrome; pages still enforce permissions.
+ * Search enabled only when ops.search is granted.
  */
 export default async function OpsLayout({
   children,
@@ -16,20 +18,29 @@ export default async function OpsLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Soft presence — pages still enforce permissions.
   let permissions: string[] | undefined;
+  let canSearch = false;
   if (user) {
     try {
-      await resolveActiveEntitlements(supabase, user.id);
-      // Pass undefined so nav shows structural links; pages gate access.
+      const entitlements = await resolveActiveEntitlements(supabase, user.id);
+      // Pass undefined so structural nav remains visible; pages gate access.
       permissions = undefined;
+      canSearch = actorHasOpsAdminPermission(
+        entitlements.activeAssignments,
+        "ops.search"
+      );
     } catch {
       permissions = undefined;
+      canSearch = false;
     }
   }
 
   return (
-    <OpsShell userEmail={user?.email ?? null} permissions={permissions}>
+    <OpsShell
+      userEmail={user?.email ?? null}
+      permissions={permissions}
+      canSearch={canSearch}
+    >
       {children}
     </OpsShell>
   );

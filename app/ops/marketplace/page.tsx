@@ -6,7 +6,7 @@ export default function MarketplaceOpsPage() {
       vertical="marketplace"
       title="Marketplace Ops"
       permission="ops.marketplace"
-      description="Venue / Event / Offer approvals and CX exceptions. Final listing approval remains Platform Marketplace Ops (FD-037)."
+      description="Venue / Event / Offer operational review. Marketplace Ops holds final Venue onboarding approval. MBDP recommend ≠ approve."
     />
   );
 }

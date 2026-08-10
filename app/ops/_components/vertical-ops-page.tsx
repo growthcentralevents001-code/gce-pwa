@@ -1,17 +1,72 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { OpsKpiStrip } from "@/components/ops/OpsKpiStrip";
+import { ApprovalQueue } from "@/components/ops/ApprovalQueue";
+import { ExceptionQueue } from "@/components/ops/ExceptionQueue";
+import { EmptyState } from "@/components/states/EmptyState";
+import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import {
   actorHasOpsAdminPermission,
-  getOpsDashboard,
-  getApprovalQueue,
-  getExceptionQueue,
-  listCases,
-  type OpsVertical,
   type OpsAdminPermission,
+  type OpsVertical,
 } from "@/lib/architecture/ops-admin";
+import {
+  loadApprovals,
+  loadCases,
+  loadExceptions,
+  loadOpsDashboardCards,
+} from "@/lib/frontend/ops/reads";
+import { GCE_SPACING } from "@/lib/frontend/design-language";
+
+const VERTICAL_COPY: Partial<
+  Record<
+    OpsVertical,
+    { boundary: string; extraLinks?: Array<{ href: string; label: string }> }
+  >
+> = {
+  connect: {
+    boundary:
+      "System proposes → Connect BDP assists → Platform confirms. No self-approval. Treasurer legacy absent.",
+  },
+  marketplace: {
+    boundary:
+      "Marketplace Ops final Venue approval. MBDP recommend ≠ approve. Unattributed economics not altered here.",
+  },
+  enterprise: {
+    boundary:
+      "No territory ownership. Finance co-sign strictly > ₹5,00,000 remains Finance. Expert has no automatic commission. No vendor portal.",
+  },
+  finance: {
+    boundary:
+      "Ops entry only — Batch 7 Finance workspace owns presentation. Settlement / payout / refund execution remain OFF.",
+    extraLinks: [
+      { href: "/dashboard/finance", label: "Open Finance workspace" },
+      { href: "/finance/holds", label: "Finance holds" },
+      { href: "/finance/reconciliation", label: "Reconciliation" },
+    ],
+  },
+  compliance: {
+    boundary:
+      "Holds are explicit, reasoned, audited — not a toggle. Flags require review; they are not legal determinations.",
+    extraLinks: [
+      { href: "/compliance/holds", label: "Compliance holds" },
+      { href: "/ops/privacy", label: "Privacy requests" },
+      { href: "/ops/security?tab=risk", label: "Risk review" },
+    ],
+  },
+  support: {
+    boundary:
+      "Support cannot bypass protected business state machines. Sensitive data minimized. No fake SLA.",
+    extraLinks: [
+      { href: "/ops/cases", label: "Open cases" },
+      { href: "/dashboard/support", label: "Support dashboard" },
+    ],
+  },
+};
 
 export async function VerticalOpsPage(props: {
   vertical: OpsVertical;
@@ -33,63 +88,93 @@ export async function VerticalOpsPage(props: {
   ) {
     redirect("/ops");
   }
+
   const admin = createPrivilegedSupabaseClient();
-  const [dash, approvals, exceptions, cases] = await Promise.all([
-    getOpsDashboard(admin, { vertical: props.vertical }),
-    getApprovalQueue(admin, { vertical: props.vertical }),
-    getExceptionQueue(admin, { vertical: props.vertical }),
-    listCases(admin, { vertical: props.vertical }),
+  const [cards, approvals, exceptions, cases] = await Promise.all([
+    loadOpsDashboardCards(admin, props.vertical),
+    loadApprovals(admin, props.vertical),
+    loadExceptions(admin, props.vertical),
+    loadCases(admin, { vertical: props.vertical }),
   ]);
 
+  const copy = VERTICAL_COPY[props.vertical];
+  const canReviewApprovals = actorHasOpsAdminPermission(
+    entitlements.activeAssignments,
+    "ops.approvals.review"
+  );
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <p className="text-sm text-neutral-500">
-        <Link href="/ops" className="underline">
-          Ops
-        </Link>{" "}
-        / {props.title}
-      </p>
-      <h1 className="mt-2 text-2xl font-semibold">{props.title}</h1>
-      <p className="mt-1 text-sm text-neutral-600">{props.description}</p>
-      <section className="mt-4 grid gap-3 sm:grid-cols-3">
-        {[
-          ["Approvals", dash.cards.pendingApprovals],
-          ["Exceptions", dash.cards.openExceptions],
-          ["Cases", cases.length],
-        ].map(([label, value]) => (
-          <div
-            key={String(label)}
-            className="rounded border border-neutral-200 p-3 text-sm"
-          >
-            <div className="text-neutral-500">{label}</div>
-            <div className="text-xl font-semibold">{value}</div>
-          </div>
-        ))}
-      </section>
-      <section className="mt-6 text-sm">
-        <h2 className="font-medium">Open approvals ({approvals.length})</h2>
-        <ul className="mt-2 space-y-2">
-          {approvals.slice(0, 10).map((a) => (
-            <li key={a.id} className="rounded border border-neutral-200 p-2">
-              {a.title} · {a.status}
-            </li>
+    <main className={GCE_SPACING.section}>
+      <PageHeader
+        title={props.title}
+        description={props.description}
+        breadcrumbs={[
+          { label: "Ops", href: "/ops" },
+          { label: props.title },
+        ]}
+      />
+
+      {copy?.boundary ? (
+        <p className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          {copy.boundary}
+        </p>
+      ) : null}
+
+      {copy?.extraLinks && copy.extraLinks.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {copy.extraLinks.map((l) => (
+            <Button key={l.href} asChild variant="outline" size="sm">
+              <Link href={l.href}>{l.label}</Link>
+            </Button>
           ))}
-        </ul>
+        </div>
+      ) : null}
+
+      {cards ? (
+        <OpsKpiStrip
+          items={[
+            {
+              label: "Approvals",
+              value: cards.pendingApprovals,
+              href: "/ops/approvals",
+            },
+            {
+              label: "Exceptions",
+              value: cards.openExceptions,
+              href: "/ops/exceptions",
+            },
+            {
+              label: "Cases",
+              value: cases.length,
+              href: "/ops/cases",
+            },
+          ]}
+        />
+      ) : (
+        <EmptyState
+          title="Queue metrics unavailable"
+          description="Could not load ops dashboard cards for this vertical."
+        />
+      )}
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold">
+          Open approvals ({approvals.length})
+        </h2>
+        <ApprovalQueue
+          items={approvals.slice(0, 15)}
+          actorUserId={user.id}
+          showActions={canReviewApprovals}
+          dense={!canReviewApprovals}
+        />
       </section>
-      <section className="mt-6 text-sm">
-        <h2 className="font-medium">Open exceptions ({exceptions.length})</h2>
-        <ul className="mt-2 space-y-2">
-          {exceptions.slice(0, 10).map((e) => (
-            <li key={e.id} className="rounded border border-neutral-200 p-2">
-              {e.title} · {e.severity}
-            </li>
-          ))}
-        </ul>
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold">
+          Open exceptions ({exceptions.length})
+        </h2>
+        <ExceptionQueue items={exceptions.slice(0, 15)} dense />
       </section>
-      <p className="mt-6 text-xs text-neutral-500">
-        Domain mutations continue via Phase 4–12 services only. No ledger edit
-        here.
-      </p>
     </main>
   );
 }

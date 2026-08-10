@@ -1,17 +1,27 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { OpsQueueCard } from "@/components/ops/OpsQueueCard";
+import { EmptyState } from "@/components/states/EmptyState";
+import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
+import { GCE_SPACING } from "@/lib/frontend/design-language";
 import { PromoteSignalButton } from "./promote-button";
+
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Support · Ops · GCE",
+};
 
 export default async function SupportOpsPage() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/ops/support");
   const entitlements = await resolveActiveEntitlements(supabase, user.id);
   if (
     !actorHasOpsAdminPermission(
@@ -30,33 +40,40 @@ export default async function SupportOpsPage() {
     .limit(50);
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <p className="text-sm text-neutral-500">
-        <Link href="/ops" className="underline">
-          Ops
-        </Link>{" "}
-        / Support
-      </p>
-      <h1 className="mt-2 text-2xl font-semibold">Support Admin</h1>
-      <p className="mt-1 text-sm text-neutral-600">
-        Customer/partner tier-1. No ledger/commission/KYC dump.{" "}
-        <Link className="underline" href="/ops/cases">
-          Open cases
-        </Link>
-      </p>
-      <ul className="mt-6 space-y-3 text-sm">
-        {(signals ?? []).length === 0 ? (
-          <li className="text-neutral-600">No queued support signals.</li>
-        ) : (
-          (signals ?? []).map((s) => (
-            <li key={s.id} className="rounded border border-neutral-200 p-3">
-              <div>{s.message}</div>
-              <div className="mt-1 text-xs text-neutral-500">{s.created_at}</div>
-              <PromoteSignalButton signalId={s.id} />
+    <main className={GCE_SPACING.section}>
+      <PageHeader
+        title="Support"
+        description="Tier-1 signals and case promotion. No ledger, commission, or KYC dump. No fake SLA."
+        breadcrumbs={[
+          { label: "Ops", href: "/ops" },
+          { label: "Support" },
+        ]}
+        primaryAction={
+          <Button asChild variant="outline" size="sm">
+            <Link href="/ops/cases">Open cases</Link>
+          </Button>
+        }
+      />
+      {(signals ?? []).length === 0 ? (
+        <EmptyState
+          title="No queued support signals"
+          description="Promote signals to cases only through the canonical command."
+        />
+      ) : (
+        <ul className="space-y-3">
+          {(signals ?? []).map((s) => (
+            <li key={s.id}>
+              <OpsQueueCard
+                title="Support signal"
+                summary={s.message}
+                status={s.status}
+                meta={s.created_at}
+                actions={<PromoteSignalButton signalId={s.id} />}
+              />
             </li>
-          ))
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }

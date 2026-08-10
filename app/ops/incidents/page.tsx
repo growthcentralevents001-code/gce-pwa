@@ -1,17 +1,26 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { IncidentCard } from "@/components/ops/IncidentCard";
+import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
+import { loadIncidents } from "@/lib/frontend/ops/reads";
+import { GCE_SPACING } from "@/lib/frontend/design-language";
 import { IncidentActions } from "./incident-actions";
+
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Incidents · Ops · GCE",
+};
 
 export default async function IncidentsPage() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/ops/incidents");
   const entitlements = await resolveActiveEntitlements(supabase, user.id);
   if (
     !actorHasOpsAdminPermission(
@@ -21,37 +30,43 @@ export default async function IncidentsPage() {
   ) {
     redirect("/ops");
   }
-  const { data } = await createPrivilegedSupabaseClient()
-    .from("incident_signals")
-    .select("*")
-    .in("status", ["candidate", "acknowledged", "investigating"])
-    .order("last_seen_at", { ascending: false })
-    .limit(50);
+  const data = await loadIncidents(createPrivilegedSupabaseClient());
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8">
-      <p className="text-sm text-neutral-500">
-        <Link href="/ops" className="underline">
-          Ops
-        </Link>{" "}
-        / Incidents
-      </p>
-      <h1 className="mt-2 text-2xl font-semibold">Incident operations</h1>
-      <p className="mt-1 text-xs text-neutral-500">
-        Phase 12 signal foundation + Phase 13 acknowledge/resolve workflow
-      </p>
-      <ul className="mt-6 space-y-3 text-sm">
-        {(data ?? []).map((i) => (
-          <li key={i.id} className="rounded border border-neutral-200 p-3">
-            <div className="font-medium">{i.title}</div>
-            <p className="mt-1 text-neutral-700">{i.summary}</p>
-            <div className="mt-1 text-xs text-neutral-500">
-              {i.severity} · {i.status} · {i.source}
-            </div>
-            <IncidentActions incidentId={i.id} />
-          </li>
-        ))}
-      </ul>
+    <main className={GCE_SPACING.section}>
+      <PageHeader
+        title="Incident operations"
+        description="Severity and status from backend. No invented incident rules."
+        breadcrumbs={[
+          { label: "Ops", href: "/ops" },
+          { label: "Incidents" },
+        ]}
+      />
+      {data.length === 0 ? (
+        <EmptyState
+          title="No open incidents"
+          description="Incident signals appear here when queued by the ops pipeline."
+        />
+      ) : (
+        <ul className="space-y-3">
+          {data.map((i) => (
+            <li key={i.id}>
+              <IncidentCard
+                incident={{
+                  id: i.id,
+                  title: i.title,
+                  summary: i.summary,
+                  severity: i.severity,
+                  status: i.status,
+                  source: i.source,
+                  category: i.category,
+                }}
+                actions={<IncidentActions incidentId={i.id} />}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }

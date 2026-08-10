@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Status** | Planning — backend pre-work may precede some batches |
-| **Date** | 2026-08-08 |
+| **Date** | 2026-08-10 |
 | **Rule** | Missing UI ≠ backend gap |
 
 | ID | Gap | Class | Needed by | Notes |
@@ -37,6 +37,9 @@
 | BG-27 | Paginated Finance list DTOs (revenue/entitlements/ledger) | Pagination | Batch 7 | Lists capped at 80 |
 | BG-28 | Finance dashboard recognised ₹ amount aggregates | Aggregation | Batch 7 | Counts + entitlement totals exist; recognised ₹ sum pending |
 | BG-29 | Refund review join DTO (booking/event redaction) | UX read-model | Batch 7 | Requests listed; deep booking join deferred |
+| BG-30 | Ops queue cursor pagination beyond limit 100 | Pagination | Batch 8 | Approvals/exceptions/cases/incidents capped |
+| BG-31 | Full compliance hold state machine (proposed / release_requested / rejected) | UX read-model | Batch 8 | Backend create/release uses active/released today |
+| BG-32 | Authenticated Playwright smoke identities for Ops roles | Test infra | Batch 8 | Deep smoke deferred without test users |
 
 ### Not gaps
 

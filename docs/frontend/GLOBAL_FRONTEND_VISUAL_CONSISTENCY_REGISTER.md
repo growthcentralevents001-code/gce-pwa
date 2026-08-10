@@ -2,8 +2,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 5 — Marketplace + Venue) |
-| **Date** | 2026-08-09 |
+| **Status** | Active (Batch 6 — Enterprise Client / BDP / Expert) |
+| **Date** | 2026-08-10 |
 | **Authority** | Founder no-blue + Checkpoint C partner pattern |
 
 ## Rules
@@ -63,6 +63,14 @@
 - No decorative blue in Batch 5-owned marketplace/venue surfaces
 - Stale Venue RM / Affiliate / ₹30k / 24h claim language avoided in owned copy
 
+## Batch 6 notes
+
+- Enterprise Client / BDP / Expert reuse Checkpoint C — denser information, same visual family
+- Rejected ui-ux-pro-max navy/blue “Trust & Authority” suggestion; MASTER.md orange/cream retained
+- No Vendor self-service portal; no Expert commission widgets; no territory ownership UI
+- Stale 30/40/30, 25%-of-project-value, and “₹5L and above” wording blocked in owned copy
+- Deferred: legacy `/dashboard/enterprise`, admin enterprise-proposals blue (unowned)
+
 ## Follow-ups
 
 | ID | Item | Priority | Target |
@@ -71,5 +79,5 @@
 | VC-02 | Legacy dashboard blue | P1 | Batch 10 |
 | VC-03 | MarketingHero side-by-side polish vs Connect | P2 | Batch 10 |
 | VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
-| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5 done / Batch 6 |
+| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5–6 done |
 | VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |

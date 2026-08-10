@@ -331,18 +331,134 @@ export function workspaceNavSections(
         ],
       },
     ],
-    "enterprise-bdp": [base],
-    "enterprise-client": [
-      base,
+    "enterprise-bdp": [
       {
-        id: "enterprise",
-        label: "Enterprise",
+        id: "main",
+        label: "Workspace",
         items: [
           {
-            id: "engagements",
-            label: "Engagements",
-            href: `/dashboard/${workspaceKey}/engagements`,
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/enterprise-bdp",
+            icon: LayoutDashboard,
+            workspaces: ["enterprise-bdp"],
+          },
+          {
+            id: "apply",
+            label: "Application",
+            href: "/enterprise-bdp/apply",
+            icon: FileCheck,
+          },
+        ],
+      },
+      {
+        id: "portfolio",
+        label: "Portfolio",
+        items: [
+          {
+            id: "clients",
+            label: "Clients",
+            href: "/enterprise-bdp/clients",
+            icon: Users,
+          },
+          {
+            id: "pipeline",
+            label: "Pipeline",
+            href: "/enterprise-bdp/pipeline",
+            icon: GitBranch,
+          },
+        ],
+      },
+      {
+        id: "commercial",
+        label: "Commercial",
+        items: [
+          {
+            id: "entitlements",
+            label: "Entitlements",
+            href: "/enterprise-bdp/entitlements",
+            icon: CircleDollarSign,
+          },
+          {
+            id: "handover",
+            label: "Handover",
+            href: "/enterprise-bdp/handover",
+            icon: ArrowLeftRight,
+          },
+          {
+            id: "disputes",
+            label: "Disputes",
+            href: "/enterprise-bdp/disputes",
+            icon: Scale,
+          },
+        ],
+      },
+    ],
+    "enterprise-client": [
+      {
+        id: "main",
+        label: "Workspace",
+        items: [
+          {
+            id: "overview",
+            label: "Overview",
+            href: "/dashboard/enterprise-client",
+            icon: LayoutDashboard,
+            workspaces: ["enterprise-client"],
+          },
+        ],
+      },
+      {
+        id: "pipeline",
+        label: "Pipeline",
+        items: [
+          {
+            id: "opportunities",
+            label: "Opportunities",
+            href: "/enterprise/opportunities",
+            icon: Target,
+          },
+          {
+            id: "requirements",
+            label: "Requirements",
+            href: "/enterprise/requirements",
+            icon: FileCheck,
+          },
+          {
+            id: "proposals",
+            label: "Proposals",
+            href: "/enterprise/proposals",
             icon: Briefcase,
+          },
+          {
+            id: "quotes",
+            label: "Quotes",
+            href: "/enterprise/quotes",
+            icon: CircleDollarSign,
+          },
+        ],
+      },
+      {
+        id: "delivery",
+        label: "Delivery",
+        items: [
+          {
+            id: "projects",
+            label: "Projects",
+            href: "/enterprise/projects",
+            icon: Building2,
+          },
+          {
+            id: "vendors",
+            label: "Vendors",
+            href: "/enterprise/vendors",
+            icon: Store,
+          },
+          {
+            id: "disputes",
+            label: "Disputes",
+            href: "/enterprise/disputes",
+            icon: Scale,
           },
         ],
       },
@@ -358,6 +474,54 @@ export function workspaceNavSections(
             label: "Ops control plane",
             href: "/ops",
             icon: Shield,
+          },
+          {
+            id: "ops-enterprise",
+            label: "Enterprise Ops",
+            href: "/ops/enterprise",
+            icon: Briefcase,
+          },
+        ],
+      },
+      {
+        id: "expert",
+        label: "Platform Expert",
+        items: [
+          {
+            id: "expert-home",
+            label: "Expert overview",
+            href: "/enterprise-expert",
+            icon: LayoutDashboard,
+          },
+          {
+            id: "expert-queue",
+            label: "Assigned queue",
+            href: "/enterprise-expert/queue",
+            icon: Target,
+          },
+          {
+            id: "expert-requirements",
+            label: "Requirements",
+            href: "/enterprise-expert/requirements",
+            icon: FileCheck,
+          },
+          {
+            id: "expert-proposals",
+            label: "Proposals",
+            href: "/enterprise-expert/proposals",
+            icon: Briefcase,
+          },
+          {
+            id: "expert-projects",
+            label: "Projects",
+            href: "/enterprise-expert/projects",
+            icon: Building2,
+          },
+          {
+            id: "expert-vendors",
+            label: "Vendors",
+            href: "/enterprise-expert/vendors",
+            icon: Store,
           },
         ],
       },

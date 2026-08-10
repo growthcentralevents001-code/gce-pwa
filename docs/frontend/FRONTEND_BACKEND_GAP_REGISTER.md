@@ -30,6 +30,10 @@
 | BG-20 | Paginated MBDP/Venue event/offer/booking portfolios | Pagination | Batch 5 | Lists capped; extends BG-02/17 |
 | BG-21 | Venue aggregated non-purchase feedback DTO | UX read-model | Batch 5 | Customer reasons exist; Venue aggregate redaction pending |
 | BG-22 | Marketplace BDP self-serve reassignment request | Action API | Batch 5 | Handover Platform-gated; status page shipped |
+| BG-23 | Enterprise Client representative invite/remove console | Action API / UX | Batch 6 | Organisation ≠ representative preserved; invite console FeatureGated |
+| BG-24 | Enterprise BDP self-serve reassignment request | Action API | Batch 6 | Prospective handover status shipped; self-serve request incomplete |
+| BG-25 | Expert assignment-scoped project/quote list DTO | UX read-model | Batch 6 | Opportunities scoped; broader project fan-out capped |
+| BG-26 | Paginated Enterprise client/opportunity/project portfolios | Pagination | Batch 6 | Lists capped; extends BG-02 |
 
 ### Not gaps
 

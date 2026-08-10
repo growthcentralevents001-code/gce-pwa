@@ -24,11 +24,24 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
     pathname.startsWith("/venue/") &&
     pathname !== "/venue/apply" &&
     !pathname.startsWith("/venue/plans");
+  const isEnterpriseClientCx =
+    pathname.startsWith("/enterprise/") &&
+    pathname !== "/enterprise/signup" &&
+    !pathname.startsWith("/enterprise/signup/");
+  const isEnterpriseBdpCx =
+    pathname === "/enterprise-bdp" ||
+    pathname.startsWith("/enterprise-bdp/");
+  const isEnterpriseExpertCx =
+    pathname === "/enterprise-expert" ||
+    pathname.startsWith("/enterprise-expert/");
   const usesOwnShell =
     isConnectMemberCx ||
     isConnectBdpCx ||
     isMarketplaceBdpCx ||
     isVenuePartnerCx ||
+    isEnterpriseClientCx ||
+    isEnterpriseBdpCx ||
+    isEnterpriseExpertCx ||
     SHELL_PREFIXES.some(
       (p) => pathname === p || pathname.startsWith(`${p}/`)
     );

@@ -72,6 +72,26 @@ function workspaceFromPathname(pathname: string): WorkspaceKey | null {
   ) {
     return "venue";
   }
+  if (
+    pathname.startsWith("/dashboard/enterprise-bdp") ||
+    pathname.startsWith("/enterprise-bdp")
+  ) {
+    return "enterprise-bdp";
+  }
+  if (
+    pathname.startsWith("/dashboard/enterprise-client") ||
+    (pathname.startsWith("/enterprise/") &&
+      pathname !== "/enterprise/signup" &&
+      !pathname.startsWith("/enterprise/signup/"))
+  ) {
+    return "enterprise-client";
+  }
+  if (
+    pathname === "/enterprise-expert" ||
+    pathname.startsWith("/enterprise-expert/")
+  ) {
+    return "platform-ops";
+  }
   return null;
 }
 

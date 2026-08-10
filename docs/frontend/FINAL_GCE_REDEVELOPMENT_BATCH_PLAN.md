@@ -2,8 +2,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0–4 complete** · **Batch 5 complete — Marketplace Partner experience ready for review** · Batches 6–10 not started |
-| **Date** | 2026-08-09 |
+| **Status** | **Batch 0–5 complete** · **Batch 6 complete — Enterprise experience ready for review** · Batches 7–10 not started |
+| **Date** | 2026-08-10 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
 ### Batch 0 implementation status
@@ -50,7 +50,15 @@
 | **Status** | **COMPLETE — Marketplace Partner experience ready for review** |
 | **Evidence** | `docs/frontend/implementation/BATCH_5_MARKETPLACE_BDP_AND_VENUE_IMPLEMENTATION.md` |
 | **Checkpoint C** | Reused for Marketplace BDP + Venue |
-| **Batch 6** | Not started |
+
+### Batch 6 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Enterprise experience ready for review** (non-blocking gaps remain) |
+| **Evidence** | `docs/frontend/implementation/BATCH_6_ENTERPRISE_CLIENT_BDP_EXPERT_IMPLEMENTATION.md` |
+| **Checkpoint C** | Reused for Enterprise Client / BDP / Expert |
+| **Batch 7** | Not started |
 
 ---
 

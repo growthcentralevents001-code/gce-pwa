@@ -1,81 +1,46 @@
-"use client";
+import { redirect } from "next/navigation";
+import { SettingsShell } from "@/components/settings/SettingsShell";
+import { NotificationInbox } from "@/components/settings/NotificationInbox";
+import { NotificationPrefsForm } from "@/components/settings/NotificationPrefsForm";
+import { createServerSupabaseClient } from "@/lib/supabase/clients";
+import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { loadSettingsNotificationBundle } from "@/lib/frontend/settings/reads";
+import { SETTINGS_COPY } from "@/lib/frontend/settings/format";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Bell, Mail, Smartphone, CheckCircle, ArrowLeft, ToggleLeft, ToggleRight } from "lucide-react";
+export const metadata = {
+  robots: { index: false, follow: false },
+  title: "Notifications · Settings · GCE",
+};
 
-export default function NotificationsPage() {
-  const [settings, setSettings] = useState({
-    email: true,
-    push: true,
-    reminders: true,
-    promotions: false,
-    updates: true,
-  });
+/** SET-04 — inbox + preferences (non-ops path; BG-07). */
+export default async function SettingsNotificationsPage() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login?next=/settings/notifications");
 
-  const toggleSetting = (key: keyof typeof settings) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
-  };
+  // Privileged read for prefs upsert defaults / inbox (own user only via service helpers).
+  const admin = createPrivilegedSupabaseClient();
+  const bundle = await loadSettingsNotificationBundle(admin, user.id);
+  const prefs = bundle.prefs;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Orange Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <Link href="/settings" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition mb-4">
-            <ArrowLeft size={18} /> Back to Settings
-          </Link>
-          <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <Bell className="text-white/90" size={32} />
-            Notifications
-          </h1>
-          <p className="text-orange-100 mt-1 text-sm">Manage how you receive updates and alerts</p>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-6 space-y-6">
-            {[
-              { key: 'email', icon: Mail, label: 'Email Notifications', desc: 'Receive updates via email' },
-              { key: 'push', icon: Smartphone, label: 'Push Notifications', desc: 'Get alerts on your device' },
-              { key: 'reminders', icon: Bell, label: 'Event Reminders', desc: '24 hours before events' },
-              { key: 'promotions', icon: Bell, label: 'Promotions & Offers', desc: 'Special deals and discounts' },
-              { key: 'updates', icon: Bell, label: 'Platform Updates', desc: 'New features and improvements' },
-            ].map((item) => {
-              const isEnabled = settings[item.key as keyof typeof settings];
-              return (
-                <div key={item.key} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white rounded-lg shadow-sm">
-                      <item.icon size={18} className="text-orange-500" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-slate-700">{item.label}</p>
-                      <p className="text-sm text-slate-400">{item.desc}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => toggleSetting(item.key as keyof typeof settings)}
-                    className="text-slate-400 hover:text-orange-500 transition"
-                  >
-                    {isEnabled ? (
-                      <ToggleRight size={28} className="text-orange-500" />
-                    ) : (
-                      <ToggleLeft size={28} className="text-slate-300" />
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mt-4 text-sm text-slate-400 text-center">
-          Changes saved automatically
-        </div>
-      </div>
-    </div>
+    <SettingsShell
+      title="Notifications"
+      description={`${SETTINGS_COPY.marketingSeparate} ${SETTINGS_COPY.channelPrefVsLive}`}
+    >
+      <NotificationInbox items={bundle.items} unread={bundle.unread} />
+      <NotificationPrefsForm
+        channels={bundle.channels}
+        initial={{
+          inAppEnabled: prefs?.in_app_enabled ?? true,
+          emailEnabled: prefs?.email_enabled ?? true,
+          smsEnabled: prefs?.sms_enabled ?? false,
+          pushEnabled: prefs?.push_enabled ?? false,
+          marketingOptIn: prefs?.marketing_opt_in ?? false,
+        }}
+      />
+    </SettingsShell>
   );
 }

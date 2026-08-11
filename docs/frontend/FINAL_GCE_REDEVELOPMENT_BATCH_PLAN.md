@@ -76,7 +76,15 @@
 | **Status** | **COMPLETE — Operations experience ready for review** (non-blocking gaps remain) |
 | **Evidence** | `docs/frontend/implementation/BATCH_8_PLATFORM_VERTICAL_OPS_COMPLIANCE_SUPPORT_OPPORTUNITY_DESK_IMPLEMENTATION.md` |
 | **Checkpoint D** | Ops queue/table pattern established |
-| **Batch 9** | Not started |
+| **Batch 9** | Complete (see below) |
+
+### Batch 9 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Settings Privacy experience ready for review** (non-blocking gaps remain) |
+| **Evidence** | `docs/frontend/implementation/BATCH_9_SETTINGS_NOTIFICATIONS_PRIVACY_IMPLEMENTATION.md` |
+| **Batch 10** | Not started |
 
 ---
 

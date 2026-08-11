@@ -11,6 +11,7 @@ import { MobileBottomNav } from "@/components/navigation/MobileBottomNav";
 import { SkipToContent } from "@/components/layout/ContentContainer";
 import { Button } from "@/components/ui/button";
 import { typography } from "@/lib/frontend/typography";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 type CustomerShellProps = {
@@ -52,16 +53,14 @@ export function CustomerShell({
             )}
           </div>
           <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Notifications (coming soon)"
-              disabled
-            >
-              <Bell className="h-4 w-4" />
+            <ThemeToggle />
+            <Button asChild variant="ghost" size="icon" aria-label="Notifications">
+              <Link href="/settings/notifications">
+                <Bell className="h-4 w-4" />
+              </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link href="/customer/profile">{userLabel ?? "Account"}</Link>
+              <Link href="/settings">{userLabel ?? "Settings"}</Link>
             </Button>
           </div>
         </div>

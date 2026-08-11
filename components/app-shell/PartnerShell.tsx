@@ -243,6 +243,15 @@ export function PartnerShell({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link href="/settings/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">Settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings/notifications">Notifications</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/customer">Customer app</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

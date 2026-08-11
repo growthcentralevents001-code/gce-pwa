@@ -14,7 +14,7 @@
 | BG-04 | Public SEO Event/Offer sitemaps + metadata endpoint | Search/SEO convenience | Batch 1 | Can start statically; automate later |
 | BG-05 | Contact form → ops_case / support_signal create from public | UX convenience | Batch 1 | **Confirmed Batch 1:** UI shows FeatureGated; no browser email; awaiting public intake API |
 | BG-06 | Unified wishlist under CX | Read-model | Batch 2 | **Batch 2:** `/customer/wishlist` FeatureGated (coming_later); legacy wishlist not CX authority |
-| BG-07 | Notification preference upsert under settings (non-ops) | UX | Batch 9 | Phase 12 prefs exist under ops-governance — expose customer path |
+| BG-07 | Notification preference upsert under settings (non-ops) | UX | Batch 9 | **Closed Batch 9:** `/api/settings` exposes own prefs/inbox/privacy requests |
 | BG-08 | Opportunity Desk dedicated filters API | Convenience | Batch 8 | Desk queue exists — UX filters OK via query params |
 | BG-09 | Finance dashboard summary cards | Aggregation | Batch 7 | Prefer server aggregate to avoid heavy client fan-out |
 | BG-10 | Global ops search result DTOs redaction contract docs | Search | Batch 8 | Service exists — document field allowlists for UI |
@@ -40,6 +40,9 @@
 | BG-30 | Ops queue cursor pagination beyond limit 100 | Pagination | Batch 8 | Approvals/exceptions/cases/incidents capped |
 | BG-31 | Full compliance hold state machine (proposed / release_requested / rejected) | UX read-model | Batch 8 | Backend create/release uses active/released today |
 | BG-32 | Authenticated Playwright smoke identities for Ops roles | Test infra | Batch 8 | Deep smoke deferred without test users |
+| BG-33 | Auth session list / revoke API for Settings | Security/session gap | Batch 9 | FeatureGated in `/settings/security` |
+| BG-34 | Consent version read-model for Settings | Privacy workflow | Batch 9 | FeatureGated — no invented acceptance history |
+| BG-35 | Avatar upload convention for Settings profile | UX | Batch 9 | Profile notes FeatureGated until storage path approved |
 
 ### Not gaps
 

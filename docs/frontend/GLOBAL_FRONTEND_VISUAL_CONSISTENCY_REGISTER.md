@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 8 — Ops / Compliance / Support / Desk) |
-| **Date** | 2026-08-10 |
-| **Authority** | Founder no-blue + Checkpoint C partner pattern + Checkpoint D Ops queue |
+| **Status** | Active (Batch 9 — Settings / Notifications / Privacy) |
+| **Date** | 2026-08-11 |
+| **Authority** | Founder no-blue + Checkpoint C/D + Settings quiet form language |
 
 ## Rules
 
@@ -88,6 +88,15 @@
 - Legacy admin blue in `app/admin/**` remains deferred (unowned dirty WIP)
 - `/ops/finance` is Finance entry only — Batch 7 owns presentation
 
+## Batch 9 notes
+
+- Canonical SettingsShell / SettingsNav / SettingsSection — quiet, readable, orange active nav
+- Switch: orange checked (`components/ui/switch.tsx`) — no decorative blue toggles
+- Notification preference rows + explicit Save; channel live status clearly OFF
+- Privacy/security: minimal glass (overview identity strip only); forms opaque
+- No dark-mode productization toggle in Settings; no accent picker
+- Deferred: admin settings blue, legacy Header WIP polish → Batch 10
+
 ## Follow-ups
 
 | ID | Item | Priority | Target |
@@ -100,3 +109,4 @@
 | VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |
 | VC-07 | Finance ↔ partner commercial summary visual parity | P1 | Batch 7 done / Batch 10 polish |
 | VC-08 | Ops split-pane moderation polish | P2 | Batch 10 |
+| VC-09 | Settings ↔ shell account menu parity polish | P2 | Batch 10 |

@@ -18,7 +18,7 @@ export function publicMetadata(input: {
   const path = input.path ?? "/";
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: path },
     openGraph: {

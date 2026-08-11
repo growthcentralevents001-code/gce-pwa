@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Active (Batch 9 — Settings / Notifications / Privacy) |
+| **Status** | **CLOSED for Checkpoint E** — Batch 10 complete |
 | **Date** | 2026-08-11 |
-| **Authority** | Founder no-blue + Checkpoint C/D + Settings quiet form language |
+| **Authority** | Founder no-blue + Checkpoints A–E + MASTER.md |
 
 ## Rules
 
@@ -12,101 +12,57 @@
 2. Product UI uses orange + warm cream + neutrals.
 3. Semantic success/warning/destructive remain allowed.
 4. One radius/shadow/motion/glass language (`lib/frontend/design-language.ts` + `design-system/MASTER.md`).
-5. Do not mass-rewrite Batch 1–2 pages in later batches — register P1/P2 here.
+5. Active product routes must not present legacy blue admin/dashboard templates.
 
-## Blue audit (2026-08-09)
+## Blue audit (Batch 10 closeout)
 
-| Class | Count (approx) | Action |
-|-------|----------------|--------|
-| A — decorative/brand in Batch 0–3 owned surfaces | Fixed in shared tokens + EventCard/detail sky→orange | Fixed Batch 3 |
-| B — semantic | info remapped to orange in `globals.css` | OK |
-| C — dirty admin/dashboard WIP (`app/admin/*`, `app/dashboard/venue`, affiliate, zbp, bdm, etc.) | 40+ | Deferred Batch 8–10 / owners |
-| C — `_archive/*` | Many | Ignore (archive) |
+| Class | Count | Status |
+|-------|------:|--------|
+| A — decorative on navigable product routes | **0** | **FIXED** |
+| B — semantic (info→orange) | — | **ACCEPTED EXCEPTION** (remapped) |
+| C — dirty WIP source (`app/admin/**`, legacy dashboards) | ~50+ | **LEGACY/ARCHIVED** — routes redirect; files unstaged WIP |
+| D — docs/archive mentions | — | **LEGACY/ARCHIVED** |
 
-### Fixed in Batch 3 (shared / owned)
+### Batch 10 actions
 
-- `design-system/MASTER.md` — no-blue supersession documented
-- `app/globals.css` — already orange charts/info/ring (verified)
-- `components/customer/EventCard.tsx` — removed sky gradient
-- `app/customer/events/[id]/page.tsx` — removed sky/blue radial
-- `proxy.ts` — `/connect` exact public only (auth for `/connect/*`)
-
-### Deferred (dirty / unowned)
-
-- `app/admin/**` blue badges/KPI cards
-- `app/dashboard/venue|affiliate|zbp|bdm|enterprise/**`
-- Archive trees
+- `/admin/*` → `/ops` (next.config + proxy)
+- `/venue/plans` → `/venue/apply` (cyan invent-fee UI retired)
+- Manifest theme `#EA580C` / background `#FFF7ED`
+- SW `/api` NetworkOnly; next-pwa production runtimeCaching NetworkOnly for APIs
+- not-found / error / offline aligned to GCE tokens
+- MASTER + design-language Checkpoint E
 
 ## Consistency checklist
 
 | Item | Status |
 |------|--------|
-| Radius card `rounded-2xl` | Enforced in Connect + Customer cards |
-| Shadow orange-tinted hover | Enforced |
-| Button `min-h-11` | Enforced on Connect CTAs |
-| Glass recipes | 2 canonical (Light / Elevated) |
-| KPI card family | `components/connect/KpiCard.tsx` |
-| Timeline family | `components/connect/Timeline.tsx` |
-| No rainbow Power Sector colors | Icon + orange border only |
+| Radius card `rounded-2xl` | **FIXED** |
+| Shadow orange-tinted hover | **FIXED** |
+| Button `min-h-11` | **FIXED** (owned CTAs) |
+| Glass recipes (2) | **FIXED** |
+| KPI / Ops / Partner families | **FIXED** |
+| No rainbow Power Sector colors | **FIXED** |
+| Decorative blue active | **FIXED** (zero) |
+| PWA theme brand orange | **FIXED** |
+| Private noindex shells | **FIXED** |
 
-## Batch 4 notes
+## Batch 10 notes
 
-- Established Checkpoint C partner primitives under `components/partner/`
-- Reused Batch 3 `KpiCard` / `CircleCard` / `Timeline` — no new BDP-only visual system
-- No decorative blue in Batch 4-owned Connect BDP surfaces
-- Legacy BDM/ZBP dashboards remain quarantined (not Batch 4 rewrite)
+- Checkpoint E — global polish + PWA + a11y baseline
+- Evidence: `docs/frontend/implementation/BATCH_10_PWA_RESPONSIVE_A11Y_GLOBAL_POLISH_IMPLEMENTATION.md`
+- Phase 14B **not** started
 
-## Batch 5 notes
+## Follow-ups (post–Checkpoint E)
 
-- Marketplace BDP + Venue reuse Checkpoint C partner primitives
-- Legacy `/dashboard/venue` client WIP replaced with canonical Marketplace-backed dashboard (allowlisted)
-- No decorative blue in Batch 5-owned marketplace/venue surfaces
-- Stale Venue RM / Affiliate / ₹30k / 24h claim language avoided in owned copy
-
-## Batch 6 notes
-
-- Enterprise Client / BDP / Expert reuse Checkpoint C — denser information, same visual family
-- Rejected ui-ux-pro-max navy/blue “Trust & Authority” suggestion; MASTER.md orange/cream retained
-- No Vendor self-service portal; no Expert commission widgets; no territory ownership UI
-- Stale 30/40/30, 25%-of-project-value, and “₹5L and above” wording blocked in owned copy
-- Deferred: legacy `/dashboard/enterprise`, admin enterprise-proposals blue (unowned)
-
-## Batch 7 notes
-
-- Finance reuses Checkpoint C with denser, restrained presentation — not a separate fintech theme
-- Rejected ui-ux-pro-max dark OLED + blue finance palette; charts optional/deferred
-- Settlement/payout/refund execution FeatureGated OFF; no Pay Now / Edit Ledger
-- Partner commercial summaries and Finance entitlement views share DNA
-- Deferred: admin finance blue (unowned)
-
-## Batch 8 notes
-
-- Ops queue/table/detail language under `components/ops/` — denser than CX, same GCE family
-- `/ops` shell: orange active nav, warm neutrals — **no blue admin sidebar**
-- Glass: optional hub strip only; queues/tables/cases/holds stay opaque
-- Approval / exception / case / incident / moderation share OpsQueueCard + StatusBadge
-- Legacy admin blue in `app/admin/**` remains deferred (unowned dirty WIP)
-- `/ops/finance` is Finance entry only — Batch 7 owns presentation
-
-## Batch 9 notes
-
-- Canonical SettingsShell / SettingsNav / SettingsSection — quiet, readable, orange active nav
-- Switch: orange checked (`components/ui/switch.tsx`) — no decorative blue toggles
-- Notification preference rows + explicit Save; channel live status clearly OFF
-- Privacy/security: minimal glass (overview identity strip only); forms opaque
-- No dark-mode productization toggle in Settings; no accent picker
-- Deferred: admin settings blue, legacy Header WIP polish → Batch 10
-
-## Follow-ups
-
-| ID | Item | Priority | Target |
+| ID | Item | Priority | Status |
 |----|------|----------|--------|
-| VC-01 | Admin blue cleanup | P1 | Batch 10 |
-| VC-02 | Legacy dashboard blue | P1 | Batch 10 |
-| VC-03 | MarketingHero side-by-side polish vs Connect | P2 | Batch 10 |
-| VC-04 | Public Batch 1 page token sweep | P2 | Batch 10 |
-| VC-05 | Marketplace/Enterprise BDP must reuse Checkpoint C pattern | P0 | Batch 5–6 done |
-| VC-06 | Legacy `/venue/plans` invent-pricing retirement polish | P2 | Batch 10 |
-| VC-07 | Finance ↔ partner commercial summary visual parity | P1 | Batch 7 done / Batch 10 polish |
-| VC-08 | Ops split-pane moderation polish | P2 | Batch 10 |
-| VC-09 | Settings ↔ shell account menu parity polish | P2 | Batch 10 |
+| VC-01 | Admin blue source deletion | P2 | **LEGACY/ARCHIVED** — redirects live; delete after Founder OK |
+| VC-02 | Legacy dashboard blue source deletion | P2 | **LEGACY/ARCHIVED** |
+| VC-03 | MarketingHero polish | P2 | **DEFERRED TO PHASE 14B** |
+| VC-04 | Public token micro-sweep | P2 | **DEFERRED TO PHASE 14B** |
+| VC-05 | Marketplace/Enterprise Checkpoint C | P0 | **FIXED** (Batches 5–6) |
+| VC-06 | `/venue/plans` invent pricing | P1 | **FIXED** (redirect) |
+| VC-07 | Finance ↔ partner parity | P1 | **FIXED** / accepted |
+| VC-08 | Ops moderation split-pane | P2 | **DEFERRED TO PHASE 14B** |
+| VC-09 | Settings ↔ account menu parity | P2 | **ACCEPTED EXCEPTION** / polish later |
+| VC-10 | Authenticated deep visual smoke | P0 UAT | **DEFERRED TO PHASE 14B** (BG-32) |

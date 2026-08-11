@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { workspacesForAssignments } from "@/lib/architecture/workspace/registry";
 import { PartnerShell } from "@/components/app-shell/PartnerShell";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 /**
  * Partner / workspace shell layout — Batch 0.

@@ -1,5 +1,5 @@
 /**
- * Canonical GCE visual language — Batch 3.
+ * Canonical GCE visual language — Batch 3 + Batch 10 Checkpoint E closeout.
  * Compose these classes; do not invent per-page magic numbers.
  */
 
@@ -8,6 +8,7 @@ export const GCE_RADIUS = {
   control: "rounded-md",
   chip: "rounded-full",
   panel: "rounded-2xl",
+  dialog: "rounded-2xl",
 } as const;
 
 export const GCE_SURFACE = {
@@ -21,6 +22,15 @@ export const GCE_SURFACE = {
     "rounded-2xl border border-white/50 bg-white/80 shadow-lg shadow-orange-950/10 backdrop-blur-md dark:border-white/10 dark:bg-black/60",
   warmHero:
     "bg-gradient-to-br from-orange-100 via-amber-50 to-orange-50 dark:from-orange-950/40 dark:via-neutral-900 dark:to-orange-950/20",
+  operational:
+    "border border-border/80 bg-card shadow-sm",
+} as const;
+
+export const GCE_ELEVATION = {
+  surface: "shadow-none",
+  raised: "shadow-sm",
+  hover: "shadow-lg shadow-orange-950/10",
+  overlay: "shadow-xl shadow-orange-950/10",
 } as const;
 
 export const GCE_MOTION = {
@@ -36,6 +46,17 @@ export const GCE_SPACING = {
   section: "space-y-8",
   stack: "space-y-4",
   grid: "gap-4",
+  page: "mx-auto w-full max-w-7xl px-4 py-8 sm:px-6",
+  pageNarrow: "mx-auto w-full max-w-3xl px-4 py-8 sm:px-6",
+} as const;
+
+export const GCE_BRAND = {
+  primaryHex: "#EA580C",
+  secondaryHex: "#F97316",
+  backgroundHex: "#FFF7ED",
+  foregroundHex: "#0F172A",
+  /** Forbidden decorative accents — tests assert absence in product tokens. */
+  forbiddenDecorative: ["#2563EB", "blue-", "sky-", "cyan-", "indigo-"] as const,
 } as const;
 
 /** Four fixed GC Power Sectors (FD-030) — differentiate by icon/label, not rainbow. */

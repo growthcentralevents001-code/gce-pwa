@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { OpsShell } from "@/components/app-shell/OpsShell";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 /**
  * Ops shell — Batch 8.

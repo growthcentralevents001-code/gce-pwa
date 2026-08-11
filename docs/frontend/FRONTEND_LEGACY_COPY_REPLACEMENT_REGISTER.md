@@ -2,28 +2,22 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Audit list — **do not mass-replace** during planning |
-| **Date** | 2026-08-08 |
-| **Authority** | FD-032/035/039 + role taxonomy `docs/core/35_Role_Taxonomy.md` |
+| **Status** | **Batch 10 active-route audit closed** — remaining hits are retired/redirected sources |
+| **Date** | 2026-08-11 |
+| **Authority** | FD-032/035/039 + role taxonomy |
 
-| Priority | File / page | Old copy / concept | Canonical replacement source |
-|----------|-------------|--------------------|------------------------------|
-| P0 | `app/components/Header.tsx` | Nav maps `affiliate`/`zbp`/`bdm` labels | Assignment workspaces only; FD-039 inactive |
-| P0 | `app/apply/role/page.tsx` | “Zonal Business Partner (ZBP)” CTA | **Batch 1 done** — approved intents only; ZBP/Affiliate blocked |
-| P0 | `app/affiliate/page.tsx` | “Become an Affiliate” | **Batch 1 done** — redirects to `/for-partners` |
-| P0 | `app/admin/affiliates/page.tsx` | Affiliate applications admin | Retire with `/admin` |
-| P0 | `app/admin/leads/page.tsx` | “Verify BDM lead submissions” | Opportunity Desk / Lead Assist (FD-031) |
-| P0 | `app/dashboard/bdm/page.tsx` / `bdm-dashboard` | “BDM Dashboard” / Regional BDM | **Batch 1:** `/bdm-dashboard` → unauthorized; dashboard BDM later |
-| P0 | `app/dashboard/zbp/page.tsx` / `admin/zbp` | ZBP referral tiers Basic/Gold/Platinum fees | Inactive ZBP commercial |
-| P0 | `app/admin/dashboard/page.tsx` | Gold/Silver/Bronze/Free membership mixes; invent revenue | Associate membership + server metrics only |
-| P0 | `app/for-partners/page.tsx` | Venue “Basic” plan “Commission: 20%” | Marketplace splits server-owned; no invent brochure rates |
-| P1 | `app/venues/page.tsx` `/venues/[id]` | `tier \|\| "Basic"` | Venue partner status from marketplace |
-| P1 | `app/partner-dashboard/page.tsx` | Mock Gold tier WeWork | Venue workspace |
-| P1 | `app/admin/franchisees/page.tsx` | Franchisee approve/add | Connect/Enterprise BDP packs — not franchisee RBAC |
-| P1 | `app/admin/ratings/page.tsx` | Stakeholder type BDM | Role taxonomy names |
-| P1 | `app/admin/payouts/page.tsx` | Affiliate payout requests | Phase 9 settlement — gated |
-| P2 | Signup affiliate track `api/affiliate/track` | Referral affiliate economics | Inactive unless future FD |
-| P2 | Any ₹500 / paid Lead Assist copy if present | Paid Lead Assist | Stage 1 unpaid only FD-031/039 |
+| Priority | File / page | Old copy / concept | Status |
+|----------|-------------|--------------------|--------|
+| P0 | `app/components/Header.tsx` | affiliate/zbp/bdm maps | Active Header cleaned in Batches 0–1; dirty WIP may remain unstaged |
+| P0 | `app/apply/role/page.tsx` | ZBP CTA | **FIXED** Batch 1 |
+| P0 | `app/affiliate/*` | Become Affiliate | **FIXED** redirects → `/for-partners` (Batch 10 config) |
+| P0 | `app/admin/**` | Mega-admin / BDM / Affiliate | **RETIRED** routes → `/ops` (Batch 10); source LEGACY |
+| P0 | `app/dashboard/bdm|zbp|affiliate` | Legacy dashboards | **RETIRED** via LEGACY_DASHBOARD_REDIRECTS |
+| P0 | `/bdm-dashboard` `/zbp` | Public legacy | **RETIRED** → `/for-partners` |
+| P0 | `/venue/plans` | Invent fees / cyan tiers | **RETIRED** → `/venue/apply` |
+| P0 | `/partner-dashboard` | Mock Gold | **RETIRED** → `/dashboard/venue` |
+| P1 | Public/for-partners invent rates | Brochure rates | Owned pages Batch 1; no reintroduce |
+| P2 | API affiliate track | Referral economics | Inactive flag |
 
 ### Replacement language anchors
 

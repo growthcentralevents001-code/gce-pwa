@@ -6,13 +6,29 @@ import { AppChrome } from "@/components/app-shell/AppChrome";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GCE Events",
-  description: "Discover amazing events near you",
+  title: {
+    default: "GCE Events",
+    template: "%s · GCE Events",
+  },
+  description:
+    "Growth Central Events — GCE Connect Circles, Marketplace events and offers, and Enterprise delivery across India.",
   manifest: "/manifest.json",
+  applicationName: "GCE Events",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "GCE",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#EA580C",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#EA580C" },
+    { media: "(prefers-color-scheme: dark)", color: "#EA580C" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 // Make all pages dynamic (no static generation)

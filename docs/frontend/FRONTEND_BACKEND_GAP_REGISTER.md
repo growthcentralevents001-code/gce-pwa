@@ -2,47 +2,47 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Planning — backend pre-work may precede some batches |
-| **Date** | 2026-08-10 |
+| **Status** | **Batch 10 classified** — Phase 14B readiness (not started) |
+| **Date** | 2026-08-11 |
 | **Rule** | Missing UI ≠ backend gap |
 
-| ID | Gap | Class | Needed by | Notes |
-|----|-----|-------|-----------|-------|
-| BG-01 | Workspace home KPI aggregations (queued counts, upcoming tickets) | UX convenience / Aggregation | Batch 0–2 | May compose client-side from existing list endpoints short-term |
-| BG-02 | Paginated partner portfolios (venues, circles, clients) | Pagination | Batch 4–6 | Confirm list endpoints support cursor/limit |
-| BG-03 | Venue staff console API (check-in list by event night) | Read-model | Batch 5 | CX has check-in action; nightly ops list may need view |
-| BG-04 | Public SEO Event/Offer sitemaps + metadata endpoint | Search/SEO convenience | Batch 1 | Can start statically; automate later |
-| BG-05 | Contact form → ops_case / support_signal create from public | UX convenience | Batch 1 | **Confirmed Batch 1:** UI shows FeatureGated; no browser email; awaiting public intake API |
-| BG-06 | Unified wishlist under CX | Read-model | Batch 2 | **Batch 2:** `/customer/wishlist` FeatureGated (coming_later); legacy wishlist not CX authority |
-| BG-07 | Notification preference upsert under settings (non-ops) | UX | Batch 9 | **Closed Batch 9:** `/api/settings` exposes own prefs/inbox/privacy requests |
-| BG-08 | Opportunity Desk dedicated filters API | Convenience | Batch 8 | Desk queue exists — UX filters OK via query params |
-| BG-09 | Finance dashboard summary cards | Aggregation | Batch 7 | Prefer server aggregate to avoid heavy client fan-out |
-| BG-10 | Global ops search result DTOs redaction contract docs | Search | Batch 8 | Service exists — document field allowlists for UI |
-| BG-11 | Ticket QR re-display after confirmation | UX read-model | Batch 2 | Raw QR tokens returned once from `confirm_booking_sandbox`; ticket list never exposes `qr_token_hash`. Optional re-issue endpoint if Founder wants reopenable passes |
-| BG-12 | Claim token re-display after claim | UX read-model | Batch 2 | Same one-time token pattern; session stash used for same-session UX only |
-| BG-13 | Member-facing Circle transfer request | UX / Permission | Batch 3 | `transfer_request` exists but Connect circles POST is admin-gated; FeatureGated UI shipped |
-| BG-14 | Member Tag self-serve editor | UX | Batch 3 | Tags display + pricing notes shipped; mutation UX pending review |
-| BG-15 | Circle directory member display names | UX read-model | Batch 3 | Seats listed with privacy-safe placeholders until profile join DTO |
-| BG-16 | Connect BDP member sourcing stages beyond attribution statuses | UX read-model | Batch 4 | Pipeline uses attribution statuses; richer invite/KYC/payment stages need DTO |
-| BG-17 | Paginated Connect BDP portfolios (members/circles/entitlements) | Pagination | Batch 4 | Lists capped; extend BG-02 for BDP-specific cursors |
-| BG-18 | BDP-facing reassignment request API | Action API | Batch 4 | Handover is Platform-gated; self-serve reassignment request not exposed |
-| BG-19 | Venue representative invite/remove console | Action API / UX | Batch 5 | Profile FeatureGated; organisation membership APIs exist but workspace console incomplete |
-| BG-20 | Paginated MBDP/Venue event/offer/booking portfolios | Pagination | Batch 5 | Lists capped; extends BG-02/17 |
-| BG-21 | Venue aggregated non-purchase feedback DTO | UX read-model | Batch 5 | Customer reasons exist; Venue aggregate redaction pending |
-| BG-22 | Marketplace BDP self-serve reassignment request | Action API | Batch 5 | Handover Platform-gated; status page shipped |
-| BG-23 | Enterprise Client representative invite/remove console | Action API / UX | Batch 6 | Organisation ≠ representative preserved; invite console FeatureGated |
-| BG-24 | Enterprise BDP self-serve reassignment request | Action API | Batch 6 | Prospective handover status shipped; self-serve request incomplete |
-| BG-25 | Expert assignment-scoped project/quote list DTO | UX read-model | Batch 6 | Opportunities scoped; broader project fan-out capped |
-| BG-26 | Paginated Enterprise client/opportunity/project portfolios | Pagination | Batch 6 | Lists capped; extends BG-02 |
-| BG-27 | Paginated Finance list DTOs (revenue/entitlements/ledger) | Pagination | Batch 7 | Lists capped at 80 |
-| BG-28 | Finance dashboard recognised ₹ amount aggregates | Aggregation | Batch 7 | Counts + entitlement totals exist; recognised ₹ sum pending |
-| BG-29 | Refund review join DTO (booking/event redaction) | UX read-model | Batch 7 | Requests listed; deep booking join deferred |
-| BG-30 | Ops queue cursor pagination beyond limit 100 | Pagination | Batch 8 | Approvals/exceptions/cases/incidents capped |
-| BG-31 | Full compliance hold state machine (proposed / release_requested / rejected) | UX read-model | Batch 8 | Backend create/release uses active/released today |
-| BG-32 | Authenticated Playwright smoke identities for Ops roles | Test infra | Batch 8 | Deep smoke deferred without test users |
-| BG-33 | Auth session list / revoke API for Settings | Security/session gap | Batch 9 | FeatureGated in `/settings/security` |
-| BG-34 | Consent version read-model for Settings | Privacy workflow | Batch 9 | FeatureGated — no invented acceptance history |
-| BG-35 | Avatar upload convention for Settings profile | UX | Batch 9 | Profile notes FeatureGated until storage path approved |
+| ID | Gap | Class | Needed by | Phase 14B class | Notes |
+|----|-----|-------|-----------|-----------------|-------|
+| BG-01 | Workspace home KPI aggregations | UX convenience | Batch 0–2 | non-blocking | May compose client-side |
+| BG-02 | Paginated partner portfolios | Pagination | Batch 4–6 | P1 | Cursor/limit |
+| BG-03 | Venue staff console API | Read-model | Batch 5 | P1 | Nightly ops list |
+| BG-04 | Public SEO sitemaps | SEO | Batch 1 | P2 / future | Static OK short-term |
+| BG-05 | Contact → ops_case | UX | Batch 1 | P1 | FeatureGated |
+| BG-06 | Unified wishlist | Read-model | Batch 2 | future | FeatureGated |
+| BG-07 | Notification prefs settings | UX | Batch 9 | **closed** | `/api/settings` |
+| BG-08 | Opportunity Desk filters | Convenience | Batch 8 | non-blocking | Query params OK |
+| BG-09 | Finance dashboard summary | Aggregation | Batch 7 | P1 | Prefer server aggregate |
+| BG-10 | Ops search redaction docs | Search | Batch 8 | P2 | Document allowlists |
+| BG-11 | Ticket QR re-display | UX read-model | Batch 2 | **P1** | One-time token |
+| BG-12 | Claim token re-display | UX read-model | Batch 2 | **P1** | Same pattern |
+| BG-13 | Circle transfer request | UX / Permission | Batch 3 | P1 | FeatureGated |
+| BG-14 | Member Tag editor | UX | Batch 3 | P1 | Display only |
+| BG-15 | Directory display names | UX read-model | Batch 3 | P1 | Placeholders |
+| BG-16 | Connect BDP sourcing stages | UX read-model | Batch 4 | non-blocking | Attribution statuses |
+| BG-17 | Paginated Connect BDP portfolios | Pagination | Batch 4 | P1 | Extends BG-02 |
+| BG-18 | BDP reassignment request | Action API | Batch 4 | future | Platform-gated |
+| BG-19 | Venue representative console | Action API | Batch 5 | P1 | FeatureGated |
+| BG-20 | Paginated MBDP/Venue portfolios | Pagination | Batch 5 | P1 | |
+| BG-21 | Venue feedback aggregate | UX read-model | Batch 5 | future | |
+| BG-22 | MBDP reassignment request | Action API | Batch 5 | future | |
+| BG-23 | Enterprise Client representatives | Action API | Batch 6 | P1 | FeatureGated |
+| BG-24 | Enterprise BDP reassignment | Action API | Batch 6 | future | |
+| BG-25 | Expert project list DTO | UX read-model | Batch 6 | non-blocking | |
+| BG-26 | Paginated Enterprise portfolios | Pagination | Batch 6 | P1 | |
+| BG-27 | Paginated Finance lists | Pagination | Batch 7 | P1 | Cap 80 |
+| BG-28 | Finance recognised ₹ aggregates | Aggregation | Batch 7 | P1 | |
+| BG-29 | Refund review join DTO | UX read-model | Batch 7 | non-blocking | |
+| BG-30 | Ops queue cursor pagination | Pagination | Batch 8 | P1 | Cap 100 |
+| BG-31 | Full compliance hold SM | UX read-model | Batch 8 | P1 | |
+| BG-32 | Authenticated Playwright identities | Test infra | Batch 8–10 | **blocks deep E2E** | Phase 14B readiness |
+| BG-33 | Session list / revoke | Security | Batch 9 | P1 | FeatureGated |
+| BG-34 | Consent version history | Privacy | Batch 9 | P1 | FeatureGated |
+| BG-35 | Avatar upload | UX | Batch 9 | P2 | FeatureGated |
 
 ### Not gaps
 
@@ -51,6 +51,6 @@
 - Live email/SMS — intentionally OFF  
 - Trust Rank formula — unresolved; display foundation / FeatureGated only  
 
-### Severity for redevelopment start
+### Batch 10 severity note
 
-No **P0 backend blocker** prevents Batch 0–2. BG-11/12 are **P1 UX** for ticket/claim reopen. BG-03/05/07 remain **P1** before later batches.
+No **frontend P0** remains for Checkpoint E. BG-32 blocks **authenticated deep E2E** in Phase 14B, not Batch 10 visual closeout.

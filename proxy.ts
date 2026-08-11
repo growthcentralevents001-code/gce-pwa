@@ -63,26 +63,6 @@ function isAdminPath(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/')
 }
 
-/**
- * @deprecated Phase 2: legacy `user_roles` is NOT canonical entitlement.
- * Prefer `resolveActiveEntitlements` / `role_assignments` (FD-035).
- * Kept only for transitional admin path compatibility until Phase 4 migration.
- */
-async function userHasRole(
-  supabase: ReturnType<typeof createServerClient>,
-  userId: string,
-  role: string
-): Promise<boolean> {
-  const { data } = await supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', userId)
-    .eq('role', role)
-    .eq('approved', true)
-    .limit(1)
-  return (data?.length ?? 0) > 0
-}
-
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
   const supabase = createServerClient(
@@ -136,11 +116,10 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  // Batch 10: mega-admin UI retired — Ops is canonical (Batch 8).
+  // Prefer next.config redirects; proxy also covers authenticated hits.
   if (isAdminPath(pathname)) {
-    const isAdmin = await userHasRole(supabase, user.id, 'admin')
-    if (!isAdmin) {
-      return NextResponse.redirect(new URL('/unauthorized', request.url))
-    }
+    return NextResponse.redirect(new URL('/ops', request.url))
   }
 
   return supabaseResponse

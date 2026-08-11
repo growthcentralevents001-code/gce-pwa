@@ -2,8 +2,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 0–6 complete** · **Batch 7 complete — Finance experience ready for review** · Batches 8–10 not started |
-| **Date** | 2026-08-10 |
+| **Status** | **Batches 0–10 complete** · **Checkpoint E ready for review** · **Phase 14B not started** |
+| **Date** | 2026-08-11 |
 | **Numbering** | Exactly Batch **0** through Batch **10** (11 batches) |
 
 ### Batch 0 implementation status
@@ -58,7 +58,7 @@
 | **Status** | **COMPLETE — Enterprise experience ready for review** (non-blocking gaps remain) |
 | **Evidence** | `docs/frontend/implementation/BATCH_6_ENTERPRISE_CLIENT_BDP_EXPERT_IMPLEMENTATION.md` |
 | **Checkpoint C** | Reused for Enterprise Client / BDP / Expert |
-| **Batch 7** | Not started |
+| **Batch 7** | Complete (see below) |
 
 ### Batch 7 implementation status
 
@@ -84,7 +84,16 @@
 |-------|-------|
 | **Status** | **COMPLETE — Settings Privacy experience ready for review** (non-blocking gaps remain) |
 | **Evidence** | `docs/frontend/implementation/BATCH_9_SETTINGS_NOTIFICATIONS_PRIVACY_IMPLEMENTATION.md` |
-| **Batch 10** | Not started |
+| **Batch 10** | Complete (see below) |
+
+### Batch 10 implementation status
+
+| Field | Value |
+|-------|-------|
+| **Status** | **COMPLETE — Checkpoint E ready for review** (non-blocking Phase 14B items remain) |
+| **Evidence** | `docs/frontend/implementation/BATCH_10_PWA_RESPONSIVE_A11Y_GLOBAL_POLISH_IMPLEMENTATION.md` |
+| **Checkpoint E** | Global visual + responsive + PWA + a11y baseline |
+| **Phase 14B** | **Not started** |
 
 ---
 
@@ -217,12 +226,13 @@ Do not mass-build past a checkpoint if Founder/Product rejects the pattern.
 
 | Dimension | Specification |
 |-----------|---------------|
-| **Skills** | `ui-ux-pro-max` (responsive), `ui-styling`, `design-system`, `brand` |
-| **PWA** | Manifest/icons; carefully replace/regenerate SW — **do not blind-overwrite dirty sw.js**; coordinate |
-| **Tools to install** | Playwright + Testing Library + axe (**authorise install here or start of Batch 10**) |
-| **Browser/a11y** | Playwright MCP + axe checks |
+| **Skills** | `ui-ux-pro-max`, `ui-styling`, `design-system`, `brand` |
+| **PWA** | Manifest brand colors; SW `/api` NetworkOnly; next-pwa runtimeCaching NetworkOnly |
+| **Tools** | Playwright MCP + Vitest Batch 10 suite (no new axe stack required) |
+| **Browser/a11y** | Baseline validated; full a11y cert → Phase 14B |
 | **Checkpoint** | **E** |
-| **Complexity** | Medium | **Commit** | `feat(ui): batch10 pwa a11y polish` |
+| **Complexity** | Medium | **Commit** | `style/feat/docs: batch10 global polish` |
+| **Status** | **COMPLETE** |
 
 ---
 

@@ -11,6 +11,8 @@
     "test:watch": "vitest",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
+    "test:e2e": "playwright test",
+    "test:e2e:chromium": "playwright test --project=chromium",
     "typecheck": "tsc --noEmit",
     "db:phase2:validate": "bash scripts/validate-phase2-migrations.sh",
     "lint:phase3": "eslint lib/config lib/validation lib/errors lib/logging lib/observability lib/feature-flags lib/database lib/api lib/jobs lib/rate-limit lib/platform lib/permissions lib/supabase/index.ts app/api/health app/api/architecture/health app/api/jobs --max-warnings 0"
@@ -51,6 +53,7 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.1",
     "@sentry/nextjs": "^10.52.0",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",

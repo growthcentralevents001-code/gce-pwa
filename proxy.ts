@@ -63,6 +63,21 @@ function isAdminPath(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/')
 }
 
+/** Phase 14B — retire legacy Venue dashboard siblings before auth gate. */
+function resolveRetiredVenueSibling(pathname: string): string | null {
+  const p = pathname.replace(/\/$/, '') || pathname
+  if (p === '/dashboard/venue/events' || p.startsWith('/dashboard/venue/events/')) {
+    if (p.startsWith('/dashboard/venue/events/edit/')) {
+      const id = p.slice('/dashboard/venue/events/edit/'.length)
+      return id ? `/venue/events/${id}` : '/venue/events'
+    }
+    return '/venue/events'
+  }
+  if (p === '/dashboard/venue/create-event') return '/venue/events/new'
+  if (p === '/dashboard/venue/bookings') return '/venue/bookings'
+  return null
+}
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
   const supabase = createServerClient(
@@ -86,6 +101,11 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
+
+  const venueSibling = resolveRetiredVenueSibling(pathname)
+  if (venueSibling) {
+    return NextResponse.redirect(new URL(venueSibling, request.url))
+  }
 
   if (isPublicPath(pathname)) {
     return supabaseResponse

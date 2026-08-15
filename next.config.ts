@@ -29,6 +29,27 @@ const nextConfig: NextConfig = {
       { source: "/affiliate", destination: "/for-partners", permanent: false },
       { source: "/affiliate/:path*", destination: "/for-partners", permanent: false },
       { source: "/bdm-dashboard", destination: "/for-partners", permanent: false },
+      // Phase 14B — retire legacy Venue dashboard siblings (canonical /venue/*)
+      {
+        source: "/dashboard/venue/events",
+        destination: "/venue/events",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/venue/events/:path*",
+        destination: "/venue/events",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/venue/create-event",
+        destination: "/venue/events/new",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/venue/bookings",
+        destination: "/venue/bookings",
+        permanent: false,
+      },
     ];
   },
 };

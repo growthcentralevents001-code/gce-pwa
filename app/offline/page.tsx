@@ -1,11 +1,14 @@
-"use client";
-
+import Link from "next/link";
 import { WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GCE_SPACING, GCE_SURFACE } from "@/lib/frontend/design-language";
 import { typography } from "@/lib/frontend/typography";
 import { cn } from "@/lib/utils";
 
+/**
+ * Offline fallback — Phase 14B hardened as a Server Component
+ * (no client-only handlers) for PWA shell resilience.
+ */
 export default function OfflinePage() {
   return (
     <main
@@ -31,12 +34,8 @@ export default function OfflinePage() {
           Connectivity is required for live account, booking, Finance, and Ops
           data. Cached public pages may still open when available.
         </p>
-        <Button
-          type="button"
-          className="mt-8 min-h-11"
-          onClick={() => window.location.reload()}
-        >
-          Retry connection
+        <Button asChild className="mt-8 min-h-11">
+          <Link href="/">Retry connection</Link>
         </Button>
       </div>
     </main>

@@ -59,6 +59,8 @@ Cursor Rules live separately in `.cursor/rules/`.
 | `data/` | Logical data domain / ER / ownership |
 | `security/` | RBAC + RLS matrices |
 | `compliance/APPLICABLE_LAW_AND_COMPLIANCE_REGISTER.md` | FD-039 compliance register |
+| `compliance/PHASE_15_*` | Phase 15 professional/compliance execution pack (2026-08-15) — **not** legal approval |
+| `legal/drafts/` | Phase 15 draft instruments — **DRAFT — NOT FOR PUBLICATION OR EXECUTION** |
 
 ---
 

@@ -51,7 +51,8 @@ AGENTS.md
 | `docs/state-machines/` | Domain state-machine specifications |
 | `docs/data/` | Logical data domain / ER / ownership |
 | `docs/security/` | RBAC permission and RLS access matrices |
-| `docs/compliance/` | Applicable Law & Compliance Register |
+| `docs/compliance/` | Applicable Law & Compliance Register plus Phase 15 professional-review pack |
+| `legal/drafts/` | Phase 15 draft legal instruments (not for publication or execution) |
 | `docs/MASTER_IMPLEMENTATION_ROADMAP.md` | Program roadmap Phases 1–18 |
 | `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Founder/Legal/Tax/Privacy validation items |
 | `docs/IMPLEMENTATION_BACKLOG.md` | Implementation epics / features |
@@ -283,6 +284,8 @@ Additional mandatory behaviors:
 | Data model | `docs/data/` | Conceptual domains, logical ER, ownership/SoT |
 | Security matrices | `docs/security/` | RBAC + RLS logical matrices |
 | Compliance | `docs/compliance/APPLICABLE_LAW_AND_COMPLIANCE_REGISTER.md` | FD-039 Applicable Law & Compliance Register |
+| Phase 15 execution | `docs/compliance/PHASE_15_FINAL_SIGNOFF_REPORT.md` | Professional sign-off report (documentation complete; approvals outstanding) |
+| Phase 15 drafts | `legal/drafts/` | Privacy, customer, Connect, BDP, Venue, Offer, Enterprise, Lead Assist drafts |
 | Program roadmap | `docs/MASTER_IMPLEMENTATION_ROADMAP.md` | Phase status, dependencies, exit criteria |
 | Open decisions | `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Non-routine Founder/Legal/Tax/Privacy items |
 | Implementation backlog | `docs/IMPLEMENTATION_BACKLOG.md` | P0–Future epics for engineering |

@@ -8,6 +8,7 @@
 **Platform and Master Brand:** Growth Central Events (GCE)  
 **Primary Authority:** [FD-039 — GCE Phase 2 Commercial Acceptance and Compliance Direction](../founder-decisions/FD-039_GCE_Phase_2_Commercial_Acceptance_and_Compliance_Direction.md) Part E (§11–§13), Part M (§32–§33)  
 **Related Phase Doc:** [Phase 15 — Legal, Tax, Privacy & Production Readiness](../phase-15/PHASE_15_LEGAL_TAX_PRIVACY_PRODUCTION_READINESS.md)  
+**Phase 15 execution (2026-08-15):** [PHASE_15_MASTER_COMPLIANCE_REGISTER.md](./PHASE_15_MASTER_COMPLIANCE_REGISTER.md) · [PHASE_15_PRIMARY_SOURCE_REGISTER.md](./PHASE_15_PRIMARY_SOURCE_REGISTER.md) — this FD-039 law map remains canonical; Phase 15 files are control/source/draft packs, not a second law register.  
 **Applies To:** GCE Connect, GCE Marketplace, GCE Enterprise, Finance, Legal, Tax, Privacy, Product, Operations, Technical Architecture
 
 ---

@@ -82,7 +82,7 @@
 | Paid Lead Assist OFF | Intentional |
 | Wishlist FeatureGated | Future / BG-06 |
 | Sessions/consent/avatar FeatureGated | BG-33–35 |
-| QR re-display API | BG-11 (backend) — **confirmed live** with authenticated booking; hash-only; FeatureGated |
+| QR re-display API | BG-11 — **CLOSED** 14B-P1 (encrypted retrievable credential + owner API) |
 
 ---
 
@@ -98,12 +98,12 @@
 | **Expected** | Owner can safely redisplay a server-authorized QR for Venue check-in |
 | **Actual** | Backend stores SHA-256 hash only; plaintext issued once; frontend does not mint a token |
 | **Root cause** | Canonical ticket model has no retrievable display-token column/API (BG-11). Not a frontend-only bug. |
-| **Fix** | None in 14B-R — schema/token policy required (Founder approval for migration) |
-| **Files** | `lib/architecture/customer-cx/operations.ts` (hash), ticket UI FeatureGated |
-| **Regression test** | `tests/e2e/customer/booking-ticket.spec.ts` |
-| **Retest** | FAIL recorded as evidence, not product PASS |
-| **Pilot impact** | Venue cannot check in from a reopened ticket without the original confirmation payload |
-| **Status** | **OPEN** — Backend Gap; no safe no-schema fix |
+| **Fix** | Encrypted retrievable display credential in `marketplace_display_credentials`; owner-only redisplay API; check-in still hash-verified |
+| **Files** | `lib/architecture/credentials/*`, `lib/architecture/marketplace/operations.ts`, `lib/architecture/customer-cx/operations.ts`, `app/api/customer/route.ts`, ticket/claim UI, migration `20260815140000_phase14b_p1_display_credentials` |
+| **Regression test** | `tests/e2e/customer/qr-redisplay.spec.ts`, `tests/e2e/customer/booking-ticket.spec.ts` |
+| **Retest** | **PASSED** Chromium, Firefox, WebKit — new session QR matches first-issue fingerprint; Venue check-in after reopen; Customer B denied |
+| **Pilot impact** | Closed |
+| **Status** | **FIXED / RETEST PASSED** |
 
 ---
 
@@ -152,5 +152,5 @@
 | Severity | Open | Fixed / Closed |
 |----------|-----:|---------------:|
 | P0 | 0 | 0 |
-| P1 | 1 (BG-11 QR redisplay) | 3 (legacy venue blue; BG-32; venue-scope check-in) |
-| P2 | 0 blocking | Settings main; Ops overflow; Finance unauthorized redirect |
+| P1 | 0 Pilot-blocking | 4 (legacy venue blue; BG-32; venue-scope check-in; BG-11 QR redisplay) |
+| P2 | Cross-Circle/wider Lead routing permutations; in-memory credential rate limit; pre-migration ticket backfill | Settings main; Ops overflow; Finance unauthorized redirect |

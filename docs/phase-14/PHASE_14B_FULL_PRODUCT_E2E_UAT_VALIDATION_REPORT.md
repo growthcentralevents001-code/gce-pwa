@@ -2,14 +2,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **PHASE 14B VALIDATION COMPLETE — PILOT-BLOCKING P1 ITEMS REMAIN** |
+| **Status** | **PHASE 14B COMPLETE — VALIDATION PASSED WITH NON-BLOCKING ITEMS** |
 | **Date** | 2026-08-15 |
 | **Branch** | `development` |
 | **Phase 14B tip (pre-14B-R)** | `4163287` |
-| **Phase 14B-F** | Dev test fixtures + authenticated role matrix resumed |
-| **Phase 14B-R** | Authenticated deep lifecycle + security closeout |
+| **Phase 14B-R tip** | `afe365f` |
+| **Phase 14B-P1** | Token persistence + Lead Assist evidence closeout |
 | **Production** | Untouched |
 | **gce-dev** | Fixtures applied (`role_assignments` with `fixture_family=phase14b`) |
+| **BG-11** | **CLOSED** (retest passed) |
+| **BG-12** | **CLOSED** (retest passed) |
 | **BG-32** | **CLOSED** |
 | **Phase 15** | **Not started** |
 | **Pilot** | **Not started** |
@@ -24,9 +26,11 @@ Unauthenticated / static / redirect / PWA baselines remain accepted from the pri
 
 Core booking → ticket → Venue check-in, offer claim → redemption, Marketplace economics copy, Enterprise co-sign threshold, Finance gated lists, live IDOR, and self-approval probes **passed**. Firefox and WebKit authenticated representative matrices **passed**.
 
-**Pilot-blocking P1 remaining:** ticket QR cannot be redisplayed after confirmation (hash-only storage; FeatureGated “QR issued at confirmation”) — **BG-11**, confirmed with a real authenticated booking. Lead Assist receiver accept / dual confirmation / full Circle-first routing stages were only partially exercised (create/submit + Desk queue + contact-hidden JSON).
+**Pilot-blocking P1 remaining (14B-R):** ticket QR cannot be redisplayed after confirmation (hash-only storage; FeatureGated “QR issued at confirmation”) — **BG-11**, confirmed with a real authenticated booking. Lead Assist receiver accept / dual confirmation / full Circle-first routing stages were only partially exercised (create/submit + Desk queue + contact-hidden JSON).
 
-Final verdict: **PHASE 14B VALIDATION COMPLETE — PILOT-BLOCKING P1 ITEMS REMAIN**. Phase 15 has **not** been started.
+**Phase 14B-P1** closed those blockers. See section 12.
+
+Final verdict: **PHASE 14B COMPLETE — VALIDATION PASSED WITH NON-BLOCKING ITEMS**. Phase 15 has **not** been started. GCE is ready for Founder approval to start Phase 15.
 
 ---
 
@@ -184,14 +188,65 @@ Environment: `development` / gce-dev only. No Super Admin fixture. Money executi
 | Desktop 1366×768 | 9 passed |
 | Authenticated a11y baseline | 9 passed; axe **not** run (not integrated) |
 
-### Blockers
+### Blockers (14B-R — subsequently closed in 14B-P1)
 
-1. **P1 BG-11** — QR cannot be reopened for normal ticket use (no retrievable display token).
-2. **Evidence gap** — Lead Assist receiver accept, contact reveal-after-accept, dual confirmation, and Circle-first → cross-Circle → Desk routing stages were not fully live-probed.
-3. **BG-12** — claim token redisplay after a new session was not separately proven (token issued once at claim, same pattern as tickets).
-4. Booking inventory concurrency and near-simultaneous check-in races were not executed (fixture capacity not safely dual-customer contended).
+1. **P1 BG-11** — QR cannot be reopened — **CLOSED in 14B-P1**.
+2. **Lead Assist evidence gap** — core receiver lifecycle **CLOSED in 14B-P1**; cross-Circle / wider-network permutations remain P2.
+3. **BG-12** — claim token redisplay — **CLOSED in 14B-P1**.
+4. Booking inventory concurrency and near-simultaneous check-in races were not executed (fixture capacity not safely dual-customer contended) — remains P2/non-blocking.
 
 ### Final 14B-R verdict
 
-**PHASE 14B VALIDATION COMPLETE — PILOT-BLOCKING P1 ITEMS REMAIN**
+**PHASE 14B VALIDATION COMPLETE — PILOT-BLOCKING P1 ITEMS REMAIN** (superseded by 14B-P1 below)
+
+---
+
+## 12. Phase 14B-P1 — Token Persistence & Lead Assist Closeout
+
+Starting tip: `afe365f`. Environment: `development` / gce-dev (`hvevqoltcwumcvxetxsf`). Production (`tzeqeywezmqslovpflqu`) untouched. BG-32 remains **CLOSED**. Phase 15 not started.
+
+### Token architecture
+
+Verified 14B-R root cause still true: `issueTicketsForBooking` / claim paths generated `randomBytes` tokens, persisted **SHA-256 hex only**, returned plaintext once, and list/detail never selected the hash. No client mint. No existing AES helper in-repo.
+
+Options:
+
+| Option | Decision |
+|--------|----------|
+| A — Encrypted retrievable display token | **Selected**, stored off the parent row |
+| B — Short-lived renewable display token | Rejected — would require Venue to validate a rotating session and risk invalidating a still-open customer QR |
+| C — Dedicated credential table | **Adopted as the storage vehicle for A** so Venue RLS on `marketplace_tickets` cannot SELECT ciphertext |
+
+Implementation: `marketplace_display_credentials` (service-role only, RLS forced, no authenticated policies). AES-256-GCM via `GCE_CREDENTIAL_ENCRYPTION_KEY` (SHA-256 → 32-byte key). Parent `qr_token_hash` / `claim_token_hash` remain the check-in/redemption verifiers. Owner-only `GET /api/customer?view=ticket_credential|claim_credential` with `Cache-Control: private, no-store`. `/api` stays NetworkOnly. Session storage is not the source of truth.
+
+Migration `20260815140000_phase14b_p1_display_credentials` **applied to gce-dev only** and marked applied. **Not applied to production.** Tickets issued before this migration have no ciphertext; gce-dev tests create new bookings/claims. Production backfill is a later rollout item.
+
+### Evidence (live)
+
+| Probe | Result |
+|-------|--------|
+| Ticket first display + list omits secret | PASS |
+| New session QR redisplay (same fingerprint) | PASS Chromium / Firefox / WebKit |
+| Customer B IDOR on credential | PASS |
+| Venue check-in after reopen; duplicate + invalid reject | PASS |
+| Checked-in ticket not displayable | PASS |
+| Claim reopen → redeem once → repeat reject | PASS Chromium / Firefox / WebKit |
+| Expired claim not redeemable | PASS |
+| Unauthenticated credential GET | PASS (401+) |
+| Lead manual_review → Opportunity Desk, no assignment | PASS |
+| Receiver assign / accept / decline / stale accept | PASS |
+| Contact hidden before accept; revealed after (JSON email, phone null) | PASS |
+| Unrelated user cannot accept/reveal | PASS |
+| Dual confirmation; Finance report has no lead id; `creates_finance_transaction` not true | PASS |
+| Paid Lead Assist remains OFF | PASS |
+| Same-Circle (`circle_first`) candidates | PASS (2 eligible) |
+| Cross-Circle / wider-network permutations | **P2** — single Circle fixture topology |
+| Vitest | 276 passed |
+| typecheck / scoped lint / build | PASS |
+
+### Final 14B-P1 / Phase 14B verdict
+
+**PHASE 14B COMPLETE — VALIDATION PASSED WITH NON-BLOCKING ITEMS**
+
+No P0. No Pilot-blocking P1. BG-11 and BG-12 closed. BG-32 remains closed. Ready for Founder approval to start Phase 15. Phase 15 has not been started.
 

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Phase 14B-R** — BG-32 **CLOSED**; QR redisplay **BG-11 P1 confirmed live** |
+| **Status** | **Phase 14B-P1** — BG-11 **CLOSED**; BG-12 **CLOSED**; BG-32 remains **CLOSED** |
 | **Date** | 2026-08-15 |
 | **Rule** | Missing UI ≠ backend gap |
 
@@ -18,8 +18,8 @@
 | BG-08 | Opportunity Desk filters | Convenience | PILOT P2 | Query params OK |
 | BG-09 | Finance dashboard summary | Aggregation | P1 | Prefer server aggregate |
 | BG-10 | Ops search redaction docs | Search | PILOT P2 | Document allowlists |
-| BG-11 | Ticket QR re-display | UX read-model | **P1** | **Confirmed live** (14B-R): SHA-256 hash only; plaintext once at sandbox confirm; ticket page FeatureGated; new session cannot redisplay. Schema/token policy required. |
-| BG-12 | Claim token re-display | UX read-model | **P1** | Same hash-once pattern as tickets; 14B-R redeemed with token from the claim response, not a later reopen |
+| BG-11 | Ticket QR re-display | UX read-model | **CLOSED** | 14B-P1: AES-256-GCM retrievable credential; owner-only API; check-in still hash-verified. Chromium/Firefox/WebKit retest passed. |
+| BG-12 | Claim token re-display | UX read-model | **CLOSED** | 14B-P1: same credential table/API for offer claims; reopen → redeem once passed. |
 | BG-13 | Circle transfer request | UX / Permission | P1 | FeatureGated |
 | BG-14 | Member Tag editor | UX | P1 | Display only |
 | BG-15 | Directory display names | UX read-model | P1 | Placeholders |
@@ -48,6 +48,7 @@
 
 - No product **P0 security/finance** defects opened in unauthenticated pass.
 - **BG-32 CLOSED** after Phase 14B-F fixtures + authenticated shell matrix. Do not reopen because a lifecycle test fails.
-- **BG-11 confirmed** in Phase 14B-R with a real authenticated booking — Pilot-blocking P1.
+- **BG-11 CLOSED** in Phase 14B-P1 (encrypted retrievable display credential + owner redisplay API).
+- **BG-12 CLOSED** in Phase 14B-P1 (claim credential reopen + redemption after new session).
 - Deep authenticated lifecycle otherwise executed (booking, check-in, redemption, economics, co-sign, Finance, IDOR, self-approval, Firefox/WebKit).
 - Money/execution flags remain OFF (intentional — not Pilot blockers by themselves).

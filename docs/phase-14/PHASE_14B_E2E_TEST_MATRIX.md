@@ -60,15 +60,25 @@ Legend: PASS · FAIL · BLOCKED · N/A · PENDING
 | P14B-ROLE-01…15 | Customer → multi-role (homes + negatives) | **PASS** (Chromium) | BG-32 CLOSED |
 | P14B-XR-01 | Customer booking sandbox → ticket | Customer | `/customer/events/{id}/book` | fixture Event | PASS | Chromium | |
 | P14B-XR-02 | Duplicate booking | Customer | `create_booking` idempotencyKey | PASS | Chromium | |
-| P14B-XR-03 | Ticket list/detail; QR not redisplayed | Customer | `/customer/tickets/{id}` | **FAIL evidence / BG-11** | Chromium | DEF-14B-005 |
-| P14B-XR-04 | QR new session | Customer | storageState reopen | **FAIL / BG-11** | Chromium | DEF-14B-005 |
+| P14B-XR-03 | Ticket list/detail; QR redisplay | Customer | `/customer/tickets/{id}` | **PASS** | Chromium/Firefox/WebKit | BG-11 closed |
+| P14B-XR-04 | QR new session | Customer | storageState reopen | **PASS** | Chromium/Firefox/WebKit | BG-11 closed |
+| P14B-XR-04b | QR owner isolation | Customer B | `ticket_credential` | **PASS** | Chromium/Firefox/WebKit | |
+| P14B-XR-04c | Venue check-in after QR reopen | Venue | API | **PASS** | Chromium/Firefox/WebKit | |
 | P14B-XR-05 | Venue check-in success + duplicate | Customer→Venue | `/venue/check-in` | PASS | Chromium | |
 | P14B-XR-06 | Invalid token / customer role deny | Venue / Customer | API | PASS | Chromium | |
 | P14B-XR-07 | Venue A vs Venue B ticket | Venue | API | PASS | Chromium | DEF-14B-007 fixed |
 | P14B-XR-08 | Offer claim → redeem → repeat | Customer B→Venue | `/customer/offers` `/venue/redemptions` | PASS | Chromium | |
+| P14B-XR-08b | Claim credential first display + reopen | Customer B | `claim_credential` | **PASS** | Chromium/Firefox/WebKit | BG-12 closed |
+| P14B-XR-08c | Claim redemption after reopen | Venue | API | **PASS** | Chromium/Firefox/WebKit | |
 | P14B-XR-09 | Expired claim | Venue | fixture expired claim | PASS | Chromium | |
 | P14B-XR-10 | Lead create/submit + paid OFF | Connect Member | `/connect/leads` API | PASS | Chromium | |
-| P14B-XR-11 | Opportunity Desk queue | Opportunity Desk | `/desk/queue` | PASS (boundary) | Chromium | routing stages not fully exercised |
+| P14B-XR-11 | Opportunity Desk fallback | Opportunity Desk | `privacy=manual_review` | **PASS** | Chromium | Case D |
+| P14B-XR-11b | Same-Circle routing candidates | Desk | `generate_candidates` | **PASS** `circle_first` | Chromium | |
+| P14B-XR-11c | Receiver assign/accept/decline | Multi-role | API | **PASS** | Chromium | |
+| P14B-XR-11d | Contact before/after accept + IDOR | Receiver / Customer B | JSON | **PASS** | Chromium | |
+| P14B-XR-11e | Outcome + dual confirmation | Receiver + giver | API | **PASS** | Chromium | |
+| P14B-XR-11f | Closed-business ≠ GCE revenue | Finance | `/api/finance` | **PASS** | Chromium | |
+| P14B-XR-11g | Cross-Circle / wider routing | — | — | **P2** | — | single Circle fixture |
 | P14B-XR-12 | Marketplace 80/10/10 and 80/0/20 | MBDP / Finance | entitlements/revenue | PASS | Chromium | |
 | P14B-XR-13 | EBDP 25% of platform commission | EBDP | entitlements | PASS | Chromium | |
 | P14B-XR-14 | Co-sign &gt; ₹5L only; Finance authority | Expert / Finance / EBDP | quotes | PASS | Chromium | |

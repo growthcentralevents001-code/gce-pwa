@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-08-15 |
-| **Pilot** | **NOT READY** (P1 QR redisplay) |
+| **Pilot** | **READY FOR FOUNDER APPROVAL TO START PHASE 15** (Pilot itself not started) |
 | **Phase 15** | **NOT STARTED** |
 
 Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intentional · ◐ partial
@@ -14,10 +14,10 @@ Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intention
 | 2 | Auth testability (BG-32) | ✅ | CLOSED |
 | 3 | Authenticated role matrix (shells) | ✅ | Chromium 36 passed |
 | 4 | Customer Event lifecycle | ✅ | sandbox booking PASS |
-| 5 | Ticket / QR | ❌ | BG-11 / DEF-14B-005 — cannot redisplay |
-| 6 | Offer claim / redemption | ✅ | claim, redeem, repeat, expiry |
-| 7 | Venue check-in | ✅ | success + negatives + venue scope |
-| 8 | Connect / Lead Assist | ◐ | create/submit + Desk + paid OFF; receiver/dual-confirm/routing stages not fully live |
+| 5 | Ticket / QR | ✅ | BG-11 closed — reopen + check-in after reopen |
+| 6 | Offer claim / redemption | ✅ | claim, reopen, redeem, repeat, expiry |
+| 7 | Venue check-in | ✅ | success + negatives + venue scope + after QR reopen |
+| 8 | Connect / Lead Assist | ✅ | assign/accept/decline/reveal/outcome/dual confirm/Desk; cross-Circle/wider P2 |
 | 9 | Partner BDP flows | ✅ | MBDP unit copy; 80/10/10 and 80/0/20 |
 | 10 | Enterprise + Finance co-sign | ✅ | strict `>` ₹5L; Finance only |
 | 11 | Finance execution flags OFF | ✅ | no Execute Settlement/Payout/Process Refund |
@@ -43,8 +43,8 @@ Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intention
 
 ## UAT readiness
 
-**PARTIAL** — core booking/check-in/redemption/economics/security matrices passed; QR redisplay remains Pilot-blocking.
+**READY** — core booking/check-in/QR reopen/redemption/Lead Assist receiver lifecycle/economics/security matrices passed. Remaining items are non-blocking P2.
 
 ## Pilot readiness
 
-**NOT READY** — P1 BG-11 QR redisplay remains. Phase 15 professional sign-off has not started.
+**READY FOR FOUNDER APPROVAL TO START PHASE 15** — no Pilot-blocking P1. Phase 15 professional sign-off has not started. Pilot has not started.

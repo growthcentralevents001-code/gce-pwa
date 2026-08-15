@@ -271,6 +271,7 @@ Additional mandatory behaviors:
 | Frontend legacy copy | `docs/frontend/FRONTEND_LEGACY_COPY_REPLACEMENT_REGISTER.md` | Stale copy register |
 | Frontend batch plan | `docs/frontend/FINAL_GCE_REDEVELOPMENT_BATCH_PLAN.md` | Batches 0–10 + tooling |
 | Cursor tooling plan | `docs/frontend/CURSOR_TOOLING_AND_SKILLS_PLAN.md` | Skills/MCP/shadcn/21st plan |
+| Design redesign tooling | `docs/frontend/DESIGN_REDESIGN_TOOLING_PLAN.md` | Taste / Impeccable / Emil Stage 0–6 plan |
 | Definition of Done | `docs/engineering/DEFINITION_OF_DONE.md` | Engineering DoD |
 | Technical debt register | `docs/engineering/TECHNICAL_DEBT_REGISTER.md` | Engineering debt |
 | Dependency governance | `docs/engineering/DEPENDENCY_GOVERNANCE.md` | Package policy |

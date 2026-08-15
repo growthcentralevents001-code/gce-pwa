@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Evidence-based inventory + redevelopment usage |
-| **Date** | 2026-08-08 |
-| **Invented tools?** | **No** — only inspected env |
+| **Status** | Evidence-based inventory + Taste / Impeccable / Emil integration |
+| **Date** | 2026-08-15 |
+| **Invented tools?** | **No** — only inspected env + official skill installers |
 
 ---
 
@@ -33,6 +33,19 @@
 | design | Broader design deliverables | Yes selective | 1,3,6 | Only when layout/systems help |
 | banner-design | Heroes/banners | Yes | 1 | Home/Offer/Event banners |
 | slides | HTML decks | **No product UI** | — | Skip unless leadership deck |
+| impeccable | Critique / audit / polish commands | Yes | Later redesign | Advisory; MASTER wins |
+| design-taste-frontend | Anti-slop composition | Yes | Later redesign | Advisory; no brand fork |
+| redesign-existing-projects | Existing-UI redesign analysis | Yes | Later redesign | Analysis first; no global rewrite |
+| emil-design-eng | Design-engineering craft | Yes | Later motion/polish | Advisory motion craft |
+| animate | Build a specific animation | Yes | Later motion | Extend `lib/frontend/motion.ts` |
+| review-animations | Strict motion review | Yes | Later motion QA | Review/QA |
+| improve-animations | Motion audit plans | Yes | Later motion | Planning unless asked to implement |
+| find-animation-opportunities | Where motion helps | Yes | Later, conservative | Not “animate everything” |
+| animation-vocabulary | Motion naming | Yes | As needed | Not brand authority |
+| apple-design | Fluid-motion principles | Yes | Later gestures | No Apple visual identity |
+| pick-ui-library | Library lookup | Advisory only | Rare | Existing stack wins |
+| prototype | Isolated variants | Later only | Not this pass | Never production pages now |
+| ask-sonner | Sonner toast guide | **Installed — not authorised** | — | Do not adopt Sonner |
 
 **User-global Cursor skills** (from agent_skills list when present): create-rule, create-skill, create-hook, update-cursor-settings, canvas, etc. — use only if task matches (e.g. rules updates), **not** for GCE page building.
 
@@ -134,7 +147,52 @@
 
 ## L. Design tooling summary
 
-MASTER.md + skills (ui-ux-pro-max, ui-styling, design-system, brand, banner-design, design) + 21st search + shadcn.
+MASTER.md is visual authority. Skills: ui-ux-pro-max (UX), ui-styling (CSS), design-system, brand, banner-design, design, Taste (anti-slop), Impeccable (critique/polish), Emil (motion craft). MCP: 21st search-only + shadcn primitives. Figma MCP deferred.
+
+---
+
+## Taste + Impeccable + Emil Design Engineering
+
+Added 2026-08-15 to reduce generic AI-looking UI **without** replacing GCE identity.
+
+### Why they were added
+
+Existing GCE tooling was strong at tokens, shadcn, and UX structure. It was weaker at anti-generic composition, systematic critique/polish, and craft-level motion (easing, restraint, micro-interactions).
+
+### Installed sources
+
+| Tool | Source | Install command actually used |
+|------|--------|-------------------------------|
+| Impeccable 3.6.0 | `npx impeccable@latest` | `npx impeccable@latest skills install -y --providers=cursor --scope=project --no-hooks` |
+| Taste | `https://github.com/Leonxlnx/taste-skill` | `npx skills@latest add https://github.com/Leonxlnx/taste-skill -s "design-taste-frontend" -s "redesign-existing-projects" -a cursor -y --copy` |
+| Emil | `https://github.com/emilkowalski/skills` | `npx skills@latest add emilkowalski/skills -a cursor -y --copy` |
+
+Older `npx impeccable install --providers=cursor --scope=project` is **not** the current CLI. Live syntax is `impeccable skills install`.
+
+### Intended responsibilities
+
+- **Taste** — anti-slop composition, hierarchy, redesign analysis of existing layouts
+- **Impeccable** — critique / audit / polish; do not free-form `/impeccable init` into a second brand
+- **Emil** — motion and micro-interaction craft; better motion, not more motion
+- **ui-ux-pro-max** — UX architecture (not the only design engine)
+- **ui-styling** — Tailwind/CSS implementation
+- **MASTER** — brand tokens; Founder approval required to change them
+- **shadcn** — primitives; do not churn to Base UI
+- **Motion** (`motion` package + `lib/frontend/motion.ts`) — canonical animation runtime; do not swap to GSAP
+- **21st.dev** — search-only; skills cannot bypass `.cursor/rules/08_21st_Dev_MCP.mdc`
+- **Figma MCP** — deferred because GCE currently does not use Figma as its canonical design source of truth
+
+### Precedence and prohibited overrides
+
+See `.cursor/rules/09_Design_Tooling_Governance.mdc`. Do not average disagreements. Hard bans: no primary-color change, no decorative blue/purple SaaS, no font swap, no second glass/motion/radius systems, no nav/workspace rewrite, no Sonner/Base UI/GSAP churn, no backend/business changes.
+
+### Motion governance
+
+Extend `lib/frontend/motion.ts` later; do not fork per-page easing. High-frequency Finance/Ops/keyboard flows should often have no animation.
+
+### Reload
+
+Reload Cursor (or start a new Agent chat) after skill install so discovery picks up `.cursor/skills/*` and `.agents/skills/*`.
 
 ---
 
@@ -164,6 +222,8 @@ See also Mandatory Tooling Strategy in `FINAL_GCE_REDEVELOPMENT_BATCH_PLAN.md`.
 | 21st generate/install | Policy + paid; need explicit ask |
 | Production Supabase MCP writes | Forbidden |
 | Automate skill / unrelated global skills | Out of scope |
+| Figma MCP | Deferred — GCE has no Figma source of truth |
+| ask-sonner | Installed with Emil collection; not authorised for active use |
 
 ---
 
@@ -176,5 +236,6 @@ See also Mandatory Tooling Strategy in `FINAL_GCE_REDEVELOPMENT_BATCH_PLAN.md`.
 | 02_UI_Rules | Frontend | Yes |
 | 03–07 | When touching BE/AI/security/perf | Yes as scoped |
 | 08_21st_Dev_MCP | Always | Yes — search-only |
+| 09_Design_Tooling_Governance | Always | Yes — Taste / Impeccable / Emil under MASTER |
 
 `01_Business_Rules.mdc` is currently dirty in git — do not overwrite during FE docs pass.

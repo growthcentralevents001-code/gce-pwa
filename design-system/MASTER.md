@@ -86,6 +86,22 @@ Entrance fade/slide 200–350ms, hover scale ~1.02, orange CTA hover. All motion
 - StatusBadge semantic tones only (no blue info default)
 - PartnerDataTable / Ops queues: desktop table, mobile stacked cards
 
+## AI Design Tool Governance
+
+MASTER is the final visual source of truth for GCE identity (palette, type, radius, elevation, glass, dark surface, no decorative blue).
+
+- **Taste Skill** — advisory for anti-slop composition and page hierarchy
+- **Impeccable** — advisory for critique, audit, and polish
+- **Emil Kowalski skills** — advisory for design-engineering and motion craft
+- **ui-ux-pro-max** — UX architecture and usability reasoning
+- **ui-styling** — Tailwind/CSS implementation consistency
+- **21st.dev** — search-only structural inspiration; not brand identity
+- **shadcn** — primitive / accessibility foundation
+
+External tools may propose improvements. Foundational brand tokens, fonts, glass recipes, and motion tokens require explicit Founder approval before change. Do not average conflicting skill advice; MASTER wins.
+
+See `.cursor/rules/09_Design_Tooling_Governance.mdc`.
+
 ## 21st.dev rule
 Search-only inspiration. Do not import marketplace themes or paid generation into product identity.
 

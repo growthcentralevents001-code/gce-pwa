@@ -65,9 +65,30 @@ Never duplicate UI components.
 
 Whenever building or modifying UI, automatically use the UI UX Pro Max AI Skill.
 
-The UI UX Pro Max skill is the primary design engine for the GCE platform.
+The UI UX Pro Max skill is the primary UX-architecture skill for the GCE platform. It is not the sole design engine. Visual identity remains \`design-system/MASTER.md\`. Taste, Impeccable, and Emil Kowalski skills are advisory craft tools and do not supersede MASTER.
 
 Always generate professional, modern, responsive interfaces that follow the documented GCE Design System.
+
+\---
+
+\#\# Approved Design Tooling
+
+Canonical visual authority is MASTER plus \`lib/frontend/design-language.ts\` and \`lib/frontend/motion.ts\`.
+
+Approved frontend design tooling:
+
+\- MASTER / design-language (visual identity)  
+\- ui-ux-pro-max (UX architecture, usability, responsive, accessibility)  
+\- ui-styling (Tailwind/CSS implementation)  
+\- Taste Skill (anti-slop composition and page hierarchy)  
+\- Impeccable (critique, audit, polish)  
+\- Emil Kowalski skills (motion and micro-interaction craft)  
+\- 21st.dev search-only (structural inspiration)  
+\- shadcn primitives (accessibility foundation)
+
+Taste, Impeccable, and Emil augment design judgment. They do not supersede MASTER.
+
+See \`.cursor/rules/09_Design_Tooling_Governance.mdc\`.
 
 \---
 

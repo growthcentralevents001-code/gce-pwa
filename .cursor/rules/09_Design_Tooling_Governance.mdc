@@ -1,0 +1,132 @@
+---
+description: Governs Taste, Impeccable, and Emil Kowalski skills as advisory design/craft tools under GCE MASTER authority. Always on.
+alwaysApply: true
+---
+
+# GCE Design Tooling Governance
+
+Taste Skill, Impeccable, and Emil Kowalski skills are **advisory**. They improve composition, critique, polish, and motion craft. They are **not** new brand, token, navigation, workspace, or business authorities.
+
+Canonical visual identity: `design-system/MASTER.md` plus `lib/frontend/design-language.ts` and `lib/frontend/motion.ts`.
+
+Do not average conflicting guidance. Higher authority wins.
+
+## Authority hierarchy
+
+1. Founder Decisions / latest Founder supersession
+2. Canonical GCE product/business rules
+3. `design-system/MASTER.md`
+4. Canonical design-language / motion tokens / components
+5. `.cursor/rules/02_UI_Rules.mdc`
+6. This rule (`.cursor/rules/09_Design_Tooling_Governance.mdc`)
+7. ui-ux-pro-max
+8. ui-styling
+9. Taste Skill (`design-taste-frontend`, `redesign-existing-projects`)
+10. Impeccable
+11. Emil Kowalski skills
+12. 21st.dev structural inspiration (search-only)
+13. Generic AI/design suggestions
+
+Examples:
+
+- Taste recommends Geist → keep Poppins + Righteous.
+- Impeccable recommends changing the palette or avoiding true black → MASTER wins (`#EA580C`, dark surface `#000000`).
+- Emil `pick-ui-library` recommends Base UI or Sonner → keep existing shadcn/Radix, Motion, Recharts, and the current toast/notification stack unless Founder separately approves a stack change.
+- `apple-design` suggests Apple visual identity / SF typography / iOS chrome → use transferable interaction and motion principles only. GCE visual identity remains.
+
+## Responsibility model
+
+### MASTER
+
+Final visual identity authority: palette, typography, radius, elevation, glass recipes, dark-mode surface, no decorative blue.
+
+### ui-ux-pro-max
+
+UX architecture, usability, interaction structure, responsive reasoning, accessibility.
+
+### ui-styling
+
+Implementation styling and Tailwind/CSS consistency with existing shadcn primitives.
+
+### Taste
+
+Anti-slop composition and page-level hierarchy.
+
+Use for: repetitive layouts, generic AI page structure, weak composition, excessive cards, predictable heroes, generic SaaS appearance.
+
+Do not use Taste to replace GCE brand tokens, fonts, or shells.
+
+### Impeccable
+
+Critique, audit, and polish.
+
+Use for: typography refinement, hierarchy, spacing, visual cleanup, responsive refinement, accessibility-oriented visual polish.
+
+Do not run `/impeccable init` as a free-form brand interview that invents a second `DESIGN.md` authority. Feed existing `PRODUCT.md`, `DESIGN.md`, and MASTER. Do not run global `/impeccable polish` unless the user explicitly authorises a redesign pass.
+
+### Emil Kowalski skills
+
+Craft-level interaction and motion. Purpose is **better** motion, not **more** motion.
+
+| Skill | Role | Constraint |
+| --- | --- | --- |
+| `emil-design-eng` | Primary design-engineering craft | Advisory; MASTER/tokens win |
+| `animate` | Motion implementation guidance when building a specific animation | Extend `lib/frontend/motion.ts`; do not fork per-page easing |
+| `review-animations` | Strict review/QA of existing motion | Review only unless user asks to implement |
+| `improve-animations` | Codebase motion audit and prioritized plans | Read-only/planning unless user asks to implement |
+| `find-animation-opportunities` | Identify where motion genuinely helps | Must not become “animate everything” |
+| `animation-vocabulary` | Naming motion patterns | Not a brand authority |
+| `apple-design` | Fluidity, physicality, gestures, springs, interruptibility, restraint | No Apple visual identity |
+| `pick-ui-library` | Advisory library lookup | Existing GCE stack wins |
+| `prototype` | Isolated variant comparison | Never on production pages unless separately authorised |
+| `ask-sonner` | **INSTALLED — NOT AUTHORISED FOR ACTIVE USE** | Do not add/swap Sonner |
+
+### 21st.dev
+
+Search-only component/pattern inspiration. `.cursor/rules/08_21st_Dev_MCP.mdc` remains in force. Taste, Impeccable, Emil, and `prototype` cannot bypass search-only.
+
+### shadcn
+
+Primitive and accessibility foundation. Reuse existing `components/ui` before creating new primitives.
+
+## Hard guardrails
+
+Taste / Impeccable / Emil must **not** independently:
+
+- Change GCE primary `#EA580C` or invent a second palette
+- Introduce decorative blue, cyan, sky, indigo, teal, or purple SaaS branding
+- Change fonts or introduce a second typography system (keep Poppins + Righteous)
+- Create a second radius, shadow, spacing, glass, or motion system
+- Replace navigation architecture or workspace architecture
+- Replace shadcn without approval
+- Replace Motion with GSAP or another animation library without approval
+- Introduce Base UI solely because a skill recommends it
+- Introduce Sonner solely because a skill recommends it
+- Change backend, RBAC, Finance, commissions, business terminology
+- Activate inactive/future features
+
+Semantic green/amber/red remain allowed for meaning. Info is remapped to orange, not blue.
+
+## Motion governance
+
+Emil guidance should later refine `lib/frontend/motion.ts` and canonical usage. It must not sprinkle arbitrary durations, cubic-beziers, springs, or transitions through components.
+
+Canonical motion today (`GCE_MOTION`): fast 180ms, normal 300ms, entrance 350ms, hover `y: -3`, easeOut, `prefers-reduced-motion` respected.
+
+If Emil recommends a value that conflicts with those tokens: **flag the mismatch**. Do not silently fork the motion language.
+
+Use motion only for feedback, spatial consistency, state indication, explanation, and preventing jarring changes. High-frequency dashboard navigation, keyboard commands, and dense Finance/Ops interactions should prioritize speed. Do not animate because it looks cool.
+
+Future motion audits (do not implement during tooling-only tasks): `transition: all`, `ease-in` on enter, `scale(0)`, long UI transitions, width/height/margin/padding animation, ignored reduced motion, wrong transform-origin, uninterruptible gestures, excessive stagger.
+
+## Dark mode
+
+FD-039 Layer A: system `prefers-color-scheme` plus optional shell `ThemeToggle`. Settings must **not** productize a theme/accent picker. Dark surface is true black `#000000`. External skills may not replace true-black with generic dark navy.
+
+## Figma
+
+Figma MCP is deferred. GCE does not use Figma as its canonical design source of truth. Do not install Figma MCP, Code Connect, or Figma source-of-truth files unless separately authorised.
+
+## Conflict rule
+
+When tools disagree, do not blend recommendations. Resolve through the hierarchy above.

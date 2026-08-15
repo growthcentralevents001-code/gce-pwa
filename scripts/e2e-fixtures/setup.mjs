@@ -20,6 +20,9 @@ import {
   upsertFixtureUser,
   upsertRoleAssignments,
 } from "./seed.mjs";
+import { upsertLifecycleFixtures } from "./lifecycle.mjs";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { resolve as resolvePath } from "node:path";
 
 async function main() {
   const repoRoot = resolve(process.cwd());
@@ -42,6 +45,9 @@ async function main() {
 
   const scopeIds = await upsertDomainFixtures(admin, userIds);
   console.log("  ✓ domain fixtures (org/venue/circle/event/offer)");
+
+  const lifecycle = await upsertLifecycleFixtures(admin, userIds, scopeIds);
+  console.log("  ✓ lifecycle fixtures (marketplace events/offers + enterprise)");
 
   const assignments = await upsertRoleAssignments(admin, userIds, scopeIds);
   console.log(`  ✓ role_assignments: ${assignments.length}`);
@@ -70,9 +76,17 @@ async function main() {
       `  ${a.fixture} | ${a.email} | ${a.role} | scope=${a.scopeType}:${a.scopeId ?? "-"}`
     );
   }
+  const allIds = { ...scopeIds, ...lifecycle, users: userIds };
+  const authDir = resolvePath(repoRoot, ".playwright");
+  mkdirSync(authDir, { recursive: true });
+  writeFileSync(
+    resolvePath(authDir, "fixture-ids.json"),
+    JSON.stringify(allIds, null, 2) + "\n"
+  );
+
   console.log("\nDomain IDs:");
-  for (const [k, v] of Object.entries(scopeIds)) {
-    console.log(`  ${k}: ${v}`);
+  for (const [k, v] of Object.entries(allIds)) {
+    if (typeof v === "string") console.log(`  ${k}: ${v}`);
   }
   console.log("\nNext: npm run e2e:fixtures:validate");
 }

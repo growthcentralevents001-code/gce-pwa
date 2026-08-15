@@ -14,6 +14,8 @@
     "test:e2e": "playwright test",
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:auth": "playwright test --project=setup --project=chromium-auth",
+    "test:e2e:deep": "playwright test --project=setup --project=chromium-deep",
+    "test:e2e:auth-matrix": "playwright test --project=setup --project=firefox-auth --project=webkit-auth --project=mobile-auth --project=tablet-auth --project=desktop-auth --project=chromium-a11y-auth",
     "e2e:fixtures:setup": "node scripts/e2e-fixtures/setup.mjs",
     "e2e:fixtures:reset": "node scripts/e2e-fixtures/reset.mjs",
     "e2e:fixtures:validate": "node scripts/e2e-fixtures/validate.mjs",

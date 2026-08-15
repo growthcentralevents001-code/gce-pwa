@@ -26,6 +26,12 @@ const ROLES: Array<{
     home: "/customer/profile",
   },
   {
+    name: "customer-b",
+    emailEnv: "E2E_CUSTOMER_B_EMAIL",
+    passwordEnv: "E2E_CUSTOMER_B_PASSWORD",
+    home: "/customer/profile",
+  },
+  {
     name: "connect-member",
     emailEnv: "E2E_CONNECT_MEMBER_EMAIL",
     passwordEnv: "E2E_CONNECT_MEMBER_PASSWORD",

@@ -11,6 +11,7 @@ import {
 import { createFixtureAdminClient } from "./client.mjs";
 import { loadFixtureEnv, fixtureUuid } from "./env.mjs";
 import { findAuthUserByEmail } from "./seed.mjs";
+import { lifecycleIds } from "./lifecycle.mjs";
 
 async function main() {
   const repoRoot = resolve(process.cwd());
@@ -38,6 +39,71 @@ async function main() {
     venueOrg: fixtureUuid("org:venue"),
     enterpriseOrg: fixtureUuid("org:enterprise"),
   };
+
+  const life = lifecycleIds();
+  const fam = `metadata=cs.${encodeURIComponent(
+    JSON.stringify({ fixture_family: FIXTURE_FAMILY })
+  )}`;
+
+  await admin.delete("marketplace_tickets", [`event_id=eq.${life.mkt_event_attr}`]);
+  await admin.delete("marketplace_tickets", [`event_id=eq.${life.mkt_event_unattr}`]);
+  await admin.delete("marketplace_bookings", [`event_id=eq.${life.mkt_event_attr}`]);
+  await admin.delete("marketplace_bookings", [`event_id=eq.${life.mkt_event_unattr}`]);
+  await admin.delete("marketplace_redemptions", [
+    `offer_event_id=eq.${life.mkt_offer}`,
+  ]);
+  await admin.delete("marketplace_redemptions", [
+    `offer_event_id=eq.${life.mkt_offer_expired}`,
+  ]);
+  await admin.delete("marketplace_offer_claims", [
+    `offer_event_id=eq.${life.mkt_offer}`,
+  ]);
+  await admin.delete("marketplace_offer_claims", [
+    `offer_event_id=eq.${life.mkt_offer_expired}`,
+  ]);
+  await admin.delete("marketplace_bdp_recovery_entries", [
+    `unit_id=eq.${life.mbdp_unit}`,
+  ]);
+  await admin.delete("stakeholder_entitlements", [fam]);
+  await admin.delete("revenue_components", [`id=eq.${life.rev_attr}`]);
+  await admin.delete("revenue_components", [`id=eq.${life.rev_unattr}`]);
+  await admin.delete("revenue_components", [`id=eq.${life.rev_payment}`]);
+  await admin.delete("marketplace_revenue_entitlements", [
+    `id=eq.${life.mkt_ent_attr}`,
+  ]);
+  await admin.delete("marketplace_revenue_entitlements", [
+    `id=eq.${life.mkt_ent_unattr}`,
+  ]);
+  await admin.delete("enterprise_milestones", [fam]);
+  await admin.delete("enterprise_project_components", [
+    `project_id=eq.${life.ent_project_a}`,
+  ]);
+  await admin.delete("enterprise_project_components", [
+    `project_id=eq.${life.ent_project_b}`,
+  ]);
+  await admin.delete("enterprise_revenue_entitlements", [
+    `id=eq.${life.ent_entitlement}`,
+  ]);
+  await admin.delete("enterprise_quotes", [`opportunity_id=eq.${life.ent_opp}`]);
+  await admin.delete("enterprise_projects", [`id=eq.${life.ent_project_a}`]);
+  await admin.delete("enterprise_projects", [`id=eq.${life.ent_project_b}`]);
+  await admin.delete("enterprise_opportunities", [`id=eq.${life.ent_opp}`]);
+  await admin.delete("enterprise_client_attributions", [`id=eq.${life.ent_attr}`]);
+  await admin.delete("enterprise_client_profiles", [`id=eq.${life.ent_client}`]);
+  await admin.delete("enterprise_bdp_packs", [`id=eq.${life.ebdp_pack}`]);
+  await admin.delete("marketplace_offer_events", [`id=eq.${life.mkt_offer}`]);
+  await admin.delete("marketplace_offer_events", [
+    `id=eq.${life.mkt_offer_expired}`,
+  ]);
+  await admin.delete("marketplace_events", [`id=eq.${life.mkt_event_attr}`]);
+  await admin.delete("marketplace_events", [`id=eq.${life.mkt_event_unattr}`]);
+  await admin.delete("marketplace_venue_attributions", [`id=eq.${life.mkt_attr}`]);
+  await admin.delete("marketplace_venues", [`id=eq.${life.mkt_venue}`]);
+  await admin.delete("marketplace_venues", [`id=eq.${life.mkt_venue_b}`]);
+  await admin.delete("marketplace_bdp_units", [`id=eq.${life.mbdp_unit}`]);
+  await admin.delete("organisation_memberships", [`id=eq.${life.org_mem_venue}`]);
+  await admin.delete("organisation_memberships", [`id=eq.${life.org_mem_ent}`]);
+  await admin.delete("organisations", [`id=eq.${life.venue_org_b}`]);
 
   await admin.delete("events", [`id=eq.${domainIds.event}`]);
   await admin.delete("offers", [`id=eq.${domainIds.offer}`]);

@@ -47,21 +47,47 @@ export async function loginViaUi(
   password: string,
   nextPath = "/dashboard/personal"
 ) {
-  await page.goto(`/login?next=${encodeURIComponent(nextPath)}`);
-  await page.locator("#email").fill(email);
-  await page.locator("#password").fill(password);
-  await page.getByRole("button", { name: /sign in/i }).click();
-  await page.waitForURL((url) => !url.pathname.startsWith("/login"), {
-    timeout: 45_000,
-  });
+  const attempt = async () => {
+    await page.goto(`/login?next=${encodeURIComponent(nextPath)}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 30_000,
+    });
+    await page.locator("#email").fill(email);
+    await page.locator("#password").fill(password);
+    await Promise.all([
+      page.waitForURL((url) => !url.pathname.startsWith("/login"), {
+        timeout: 45_000,
+      }),
+      page.getByRole("button", { name: /sign in/i }).click(),
+    ]);
+  };
+
+  let lastError: unknown;
+  for (let i = 0; i < 3; i++) {
+    try {
+      await attempt();
+      return;
+    } catch (err) {
+      lastError = err;
+      const body = await page.locator("body").innerText().catch(() => "");
+      if (!/database error granting user/i.test(body) && i === 0) {
+        // First failure that is not the known Supabase grant flake: still retry once.
+      }
+      await page.waitForTimeout(1_500 * (i + 1));
+    }
+  }
+  throw lastError;
 }
 
 export async function expectAccessDenied(page: Page, path: string) {
   await page.goto(path);
   await page.waitForLoadState("domcontentloaded");
+  const heading = page.getByRole("heading", { name: /access denied/i });
+  await heading.waitFor({ state: "visible", timeout: 8_000 }).catch(() => null);
   const url = page.url();
   const body = await page.locator("body").innerText();
   const denied =
+    (await heading.isVisible().catch(() => false)) ||
     url.includes("/unauthorized") ||
     url.includes("/login") ||
     /access denied|access required|access restricted|not authorized|forbidden|don't have permission|requires [\w.]+/i.test(

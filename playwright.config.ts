@@ -31,6 +31,15 @@ loadEnvFile(".env.test.local");
  */
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3010";
 
+/** Public/unauthenticated specs only — authenticated deep files have dedicated projects. */
+const publicIgnore = [
+  /auth\.setup\.ts/,
+  /authenticated-matrix\.spec\.ts/,
+  /authenticated-representative\.spec\.ts/,
+  /authenticated-a11y\.spec\.ts/,
+  /\/(customer|venue|offers|connect|marketplace|enterprise|finance|security)\//,
+];
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -42,13 +51,15 @@ export default defineConfig({
     baseURL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
+    navigationTimeout: 30_000,
+    actionTimeout: 15_000,
   },
   projects: [
     { name: "setup", testMatch: /auth\.setup\.ts/ },
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testIgnore: [/auth\.setup\.ts/, /authenticated-matrix\.spec\.ts/],
+      testIgnore: publicIgnore,
     },
     {
       name: "chromium-auth",
@@ -57,19 +68,71 @@ export default defineConfig({
       testMatch: /authenticated-matrix\.spec\.ts/,
     },
     {
+      name: "chromium-deep",
+      use: { ...devices["Desktop Chrome"] },
+      dependencies: ["setup"],
+      testMatch:
+        /\/(customer|venue|offers|connect|marketplace|enterprise|finance|security)\/.*\.spec\.ts/,
+    },
+    {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      testIgnore: [/auth\.setup\.ts/, /authenticated-matrix\.spec\.ts/],
+      testIgnore: publicIgnore,
+    },
+    {
+      name: "firefox-auth",
+      use: { ...devices["Desktop Firefox"] },
+      dependencies: ["setup"],
+      testMatch: /authenticated-representative\.spec\.ts/,
     },
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
-      testIgnore: [/auth\.setup\.ts/, /authenticated-matrix\.spec\.ts/],
+      testIgnore: publicIgnore,
+    },
+    {
+      name: "webkit-auth",
+      use: { ...devices["Desktop Safari"] },
+      dependencies: ["setup"],
+      testMatch: /authenticated-representative\.spec\.ts/,
     },
     {
       name: "mobile-chrome",
       use: { ...devices["Pixel 7"] },
-      testIgnore: [/auth\.setup\.ts/, /authenticated-matrix\.spec\.ts/],
+      testIgnore: publicIgnore,
+    },
+    {
+      name: "mobile-auth",
+      use: {
+        ...devices["Pixel 7"],
+        viewport: { width: 390, height: 844 },
+      },
+      dependencies: ["setup"],
+      testMatch: /authenticated-representative\.spec\.ts/,
+    },
+    {
+      name: "tablet-auth",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 768, height: 1024 },
+      },
+      dependencies: ["setup"],
+      testMatch: /authenticated-representative\.spec\.ts/,
+    },
+    {
+      name: "desktop-auth",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1366, height: 768 },
+      },
+      dependencies: ["setup"],
+      testMatch: /authenticated-representative\.spec\.ts/,
+    },
+    {
+      name: "chromium-a11y-auth",
+      use: { ...devices["Desktop Chrome"] },
+      dependencies: ["setup"],
+      testMatch: /authenticated-a11y\.spec\.ts/,
     },
   ],
   timeout: 45_000,

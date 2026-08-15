@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Phase 14B classified** (authenticated E2E blocked — BG-32) |
+| **Status** | **Phase 14B-F** — BG-32 **CLOSED**; authenticated shell matrix PASS |
 | **Date** | 2026-08-15 |
 | **Rule** | Missing UI ≠ backend gap |
 
@@ -18,7 +18,7 @@
 | BG-08 | Opportunity Desk filters | Convenience | PILOT P2 | Query params OK |
 | BG-09 | Finance dashboard summary | Aggregation | P1 | Prefer server aggregate |
 | BG-10 | Ops search redaction docs | Search | PILOT P2 | Document allowlists |
-| BG-11 | Ticket QR re-display | UX read-model | **P1** | Cannot deep-test without BG-32 |
+| BG-11 | Ticket QR re-display | UX read-model | **P1** | Fixtures available; deep re-display probe still pending |
 | BG-12 | Claim token re-display | UX read-model | **P1** | Same |
 | BG-13 | Circle transfer request | UX / Permission | P1 | FeatureGated |
 | BG-14 | Member Tag editor | UX | P1 | Display only |
@@ -39,7 +39,7 @@
 | BG-29 | Refund review join DTO | UX read-model | PILOT P2 | |
 | BG-30 | Ops queue cursor pagination | Pagination | P1 | Cap 100 |
 | BG-31 | Full compliance hold SM | UX read-model | P1 | |
-| BG-32 | Authenticated Playwright identities | Test infra | **P0 for Phase 14B auth completion / P1 Pilot** | **0 role_assignments in gce-dev; no E2E secrets** |
+| BG-32 | Authenticated Playwright identities | Test infra | **CLOSED** | gce-dev fixtures + auth.setup + chromium-auth matrix (36 passed) |
 | BG-33 | Session list / revoke | Security | P1 | FeatureGated |
 | BG-34 | Consent version history | Privacy | P1 | FeatureGated |
 | BG-35 | Avatar upload | UX | PILOT P2 | FeatureGated |
@@ -47,5 +47,6 @@
 ### Phase 14B severity note
 
 - No product **P0 security/finance** defects opened in unauthenticated pass.
-- **BG-32** blocks authenticated UAT completion and therefore Phase 15 readiness evidence.
+- **BG-32 CLOSED** after Phase 14B-F fixtures + authenticated shell matrix.
+- Deep authenticated lifecycle (booking/QR/check-in/Lead/Finance co-sign) remains open evidence work — not a missing fixture gate.
 - Money/execution flags remain OFF (intentional — not Pilot blockers by themselves).

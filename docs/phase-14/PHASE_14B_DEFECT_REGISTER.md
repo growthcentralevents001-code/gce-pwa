@@ -32,15 +32,29 @@
 
 | Field | Value |
 |-------|-------|
-| **Severity** | P1 (blocks Phase 14B authenticated UAT; Pilot readiness) |
+| **Severity** | P1 (was blocking authenticated UAT) |
 | **Category** | Test infrastructure |
 | **Reproduction** | Attempt authenticated E2E — no E2E env, 0 role_assignments |
-| **Expected** | Safe gce-dev fixtures for 14 role matrix |
-| **Actual** | BLOCKED |
-| **Root cause** | Fixtures never provisioned; gce-dev assignments empty |
-| **Fix** | Requires Founder-approved gce-dev seed (see validation report) |
-| **Status** | **BLOCKED** / OPEN |
-| **Pilot impact** | Cannot certify cross-role Pilot flows |
+| **Expected** | Safe gce-dev fixtures for role matrix |
+| **Actual (resolved)** | `npm run e2e:fixtures:setup` + validate; 16 identities; Playwright `.playwright/.auth/*` |
+| **Fix** | `scripts/e2e-fixtures/*`, `docs/phase-14/PHASE_14B_DEV_TEST_FIXTURE_SPEC.md` |
+| **Status** | **CLOSED** (BG-32 closed) |
+| **Pilot impact** | Authenticated shells testable; deep lifecycle still pending |
+
+---
+
+## DEF-14B-004 — Unauthorized Finance overview should hard-deny
+
+| Field | Value |
+|-------|-------|
+| **Severity** | P2 |
+| **Category** | RBAC UX / RSC stability |
+| **Route** | `/dashboard/finance` |
+| **Reproduction** | Customer (no finance.report.read) opened Finance; entitled BDP path could also hit PartnerShell action icon RSC errors |
+| **Expected** | Clear Access Denied / unauthorized without crash |
+| **Fix (partial)** | Unauthorized users `redirect(/unauthorized?reason=…)` when lacking finance workspace + finance.report.read |
+| **Status** | **PARTIAL** — hard deny for unauthorized; entitled Finance dashboard icon serialization may still error (track separately) |
+| **Test** | authenticated-matrix customer denies `/dashboard/finance` |
 
 ---
 
@@ -68,14 +82,14 @@
 | Paid Lead Assist OFF | Intentional |
 | Wishlist FeatureGated | Future / BG-06 |
 | Sessions/consent/avatar FeatureGated | BG-33–35 |
-| QR re-display API | BG-11 (backend) — cannot validate without auth |
+| QR re-display API | BG-11 (backend) — fixtures available; deep probe pending |
 
 ---
 
 ## Summary
 
-| Severity | Open | Fixed |
-|----------|-----:|------:|
+| Severity | Open | Fixed / Closed |
+|----------|-----:|---------------:|
 | P0 | 0 | 0 |
-| P1 | 1 (BG-32) | 1 (legacy venue blue routes) |
-| P2 | — | — |
+| P1 | 0 fixture-gate | 2 (legacy venue blue; BG-32) |
+| P2 | 1 partial (Finance RSC entitled path) | 1 (unauthorized Finance redirect) |

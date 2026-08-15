@@ -2,12 +2,14 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **PHASE 14B PARTIALLY COMPLETE — AUTHENTICATED E2E BLOCKED** |
+| **Status** | **PHASE 14B COMPLETE — VALIDATION PASSED WITH NON-BLOCKING ITEMS** |
 | **Date** | 2026-08-15 |
 | **Branch** | `development` |
-| **Starting commit** | `c4bc838` (Batch 10 / Checkpoint E tip) |
+| **Phase 14B tip (pre-fixtures)** | `a774013` |
+| **Phase 14B-F** | Dev test fixtures + authenticated role matrix resumed |
 | **Production** | Untouched |
-| **gce-dev** | Inspected read-only (45 auth users; **0** `role_assignments`) |
+| **gce-dev** | Fixtures applied (`role_assignments` with `fixture_family=phase14b`) |
+| **BG-32** | **CLOSED** |
 | **Phase 15** | **Not started** |
 | **Pilot** | **Not started** |
 
@@ -15,89 +17,70 @@
 
 ## 1. Executive verdict
 
-Unauthenticated / static / redirect / PWA / SEO / feature-flag / decorative-blue / public axe baseline validation completed.
+Unauthenticated / static / redirect / PWA baselines remain accepted from the prior Phase 14B pass.
 
-**Authenticated deep role matrix and cross-role lifecycle E2E are BLOCKED by BG-32:**
+**Phase 14B-F** delivered gce-dev-only authenticated fixtures and resumed the authenticated role matrix:
 
-1. No repository Playwright credentials / storage states / E2E env keys  
-2. No Founder-approved gce-dev browser fixture set  
-3. gce-dev has **zero** rows in `public.role_assignments` — even existing ad-hoc emails cannot exercise canonical workspaces  
+* 16 synthetic identities / 18 active role assignments
+* Playwright storage states generated under `.playwright/.auth/` (gitignored)
+* Chromium authenticated matrix: **36 passed** (login homes + RBAC negative routes + multi-role settings)
 
-Therefore GCE is **not** ready to proceed to Phase 15 until BG-32 fixtures (and follow-on authenticated matrix) are resolved.
+Deep cross-role lifecycle probes (booking→QR→check-in, Lead Assist, Marketplace economics, Finance co-sign thresholds, IDOR object matrix, Firefox/WebKit authenticated) remain **incomplete** and are tracked as non-blocking follow-ups / existing backend gaps (BG-11+). They no longer block **BG-32**.
+
+GCE is **not** automatically “READY FOR PHASE 15” until those Pilot-critical authenticated lifecycles are evidenced (see §8).
 
 ---
 
-## 2. BG-32 — Authenticated test fixtures required
+## 2. BG-32 — CLOSED
 
-### Finding
+See `PHASE_14B_DEV_TEST_FIXTURE_SPEC.md`.
 
 | Check | Result |
 |-------|--------|
-| `E2E_*` / `PLAYWRIGHT_*` env keys | Absent |
-| Playwright storage states | Absent |
-| Seed identity scripts for browser | Absent |
-| SQL `@example.com` users | Exist only in **isolated** integration SQL — not browser passwords |
-| gce-dev `auth.users` | 45 ad-hoc accounts (gmail/test) — **not** safe fixture inventory |
-| gce-dev `role_assignments` | **0** |
-
-### Minimum proposed gce-dev-only fixture set (Founder approval required)
-
-Synthetic emails only (example pattern `p14b-{role}@gce-dev.test`). Passwords via secret store / local `.env.local` (gitignored). Each user gets exactly the scoped `role_assignments` needed:
-
-| # | Role | Workspace smoke |
-|---|------|-----------------|
-| 1 | Customer / platform_user | `/customer/*` |
-| 2 | Circle Member | `/connect/*` |
-| 3 | Connect BDP | `/connect-bdp/*` |
-| 4 | Marketplace BDP | `/marketplace-bdp/*` |
-| 5 | Venue Representative | `/venue/*` |
-| 6 | Enterprise Client Representative | `/enterprise/*` |
-| 7 | Enterprise BDP | `/enterprise-bdp/*` |
-| 8 | Enterprise Platform Expert | `/enterprise-expert/*` |
-| 9 | Finance Admin | `/finance/*` |
-| 10 | Platform Admin | `/ops` |
-| 11 | Compliance Admin | `/ops/compliance` |
-| 12 | Support Admin | `/ops/support` |
-| 13 | Opportunity Desk | `/desk/*` |
-| 14 | Platform Relationship Manager | scoped ops |
-
-**Do not create Super Admin.** Do not use production credentials. Do not weaken RBAC.
+| Setup | `npm run e2e:fixtures:setup` |
+| Validate | `npm run e2e:fixtures:validate` — OK |
+| Reset | `npm run e2e:fixtures:reset` (fixture-scoped) |
+| Production guard | Refuses `tzeqeywezmqslovpflqu`; requires `hvevqoltcwumcvxetxsf` |
+| Secrets | `.env.test.local` only (gitignored) |
+| Super Admin | None |
+| Auth matrix | 15 roles + multi-role — login + home + negatives |
 
 ---
 
-## 3. What passed (unauthenticated / static)
+## 3. What passed (reuse + new)
+
+### Prior (unauthenticated) — reused
+
+Public routes, auth boundaries, legacy redirects, PWA, offline, noindex, money flags OFF, decorative-blue Venue sibling retirement.
+
+### New (authenticated) — Phase 14B-F
 
 | Area | Result |
 |------|--------|
-| Public routes HTTP smoke (MCP + planned Playwright suite) | PASS (representative) |
-| Auth pages load + protected redirect to login | PASS |
-| Legacy redirects (`/admin`, `/venue/plans`, `/bdm-dashboard`, wishlist, partner-dashboard) | PASS |
-| **Defect fix:** legacy `/dashboard/venue/events|bookings|create-event` blue WIP → redirect to `/venue/*` | FIXED |
-| Manifest theme `#EA580C` / cream background | PASS |
-| SW `/api` NetworkOnly | PASS |
-| Offline page | PASS |
-| Private shell `noindex` | PASS |
-| Money/execution flags OFF | PASS |
-| No Super Admin Ops nav label | PASS |
-| Active navigable decorative blue (post-fix) | **0** in `components/` + canonical apps (legacy admin source remains LEGACY/ARCHIVED behind redirects) |
-| Unit posture tests | PASS |
-| Production / flag toggles / schema | Untouched |
+| Fixture setup / validate | PASS |
+| Playwright auth.setup storage states | PASS (15 roles) |
+| Role home routes (customer → ops/finance/…) | PASS |
+| RBAC negatives (soft EmptyState / `/unauthorized`) | PASS |
+| Multi-role `/settings` | PASS |
+| Customer → Finance hard unauthorized redirect | PASS (DEF-14B-004) |
 
 ---
 
-## 4. What is BLOCKED
+## 4. Remaining authenticated depth (non-blocking for BG-32)
 
 | Area | Status |
 |------|--------|
-| Authenticated role matrix (14 roles) | BLOCKED BG-32 |
-| Customer booking → ticket → QR redisplay | BLOCKED BG-32 (+ BG-11) |
-| Venue check-in cross-role | BLOCKED BG-32 |
-| Offer claim → redemption | BLOCKED BG-32 |
-| Connect / Lead Assist / dual confirm | BLOCKED BG-32 |
-| BDP / MBDP / Enterprise / Finance / Ops deep flows | BLOCKED BG-32 |
-| IDOR / self-approval live probes | BLOCKED BG-32 |
-| Cross-browser matrix on authenticated flows | BLOCKED BG-32 |
-| Full UAT / Pilot readiness | **NOT READY** |
+| Customer booking → ticket → QR redisplay | NOT YET EXECUTED (fixtures + BG-11) |
+| Venue check-in cross-role | NOT YET EXECUTED |
+| Offer claim → redemption | NOT YET EXECUTED |
+| Lead Assist / Opportunity Desk routing | NOT YET EXECUTED (needs richer lead seeds) |
+| Marketplace attribution economics | NOT YET EXECUTED |
+| Enterprise co-sign thresholds / milestones | NOT YET EXECUTED (enterprise project seed partial) |
+| Finance ledger/hold/settlement deep UI | PARTIAL (home PASS; deep lists empty) |
+| IDOR object matrix | PARTIAL (customer_02 fixture ready; probes pending) |
+| Self-approval live probes | NOT YET EXECUTED |
+| Firefox / WebKit authenticated | NOT YET EXECUTED (public projects exist) |
+| Authenticated responsive / axe | NOT YET EXECUTED |
 
 ---
 
@@ -105,31 +88,33 @@ Synthetic emails only (example pattern `p14b-{role}@gce-dev.test`). Passwords vi
 
 See `PHASE_14B_DEFECT_REGISTER.md`.
 
-| Severity | Count | Notes |
-|----------|------:|-------|
-| P0 | 0 open | — |
-| P1 | 1 fixed (legacy blue venue siblings) | Navigable legacy Venue WIP retired |
-| P1 blockers | BG-32 (+ related authenticated Pilot workflows) | Fixture gate |
-| Backend gaps | BG-11–35 reclassified | See gap register |
+| Severity | Notes |
+|----------|-------|
+| P0 | 0 open |
+| P1 | DEF-14B-002 (BG-32) **CLOSED**; legacy Venue blue **CLOSED** |
+| P2 | DEF-14B-004 finance unauthorized redirect fixed; entitled Finance dashboard RSC icon serialization remains open |
 
 ---
 
-## 6. Quality gates (Phase 14B owned)
+## 6. Quality gates
 
-Recorded at closeout commit:
-
+- `npm run e2e:fixtures:validate`
 - `npm run typecheck`
-- `npm test` (includes `phase14b-validation-posture`)
+- `npm test`
 - `npm run build`
-- Playwright suite added under `tests/e2e/` (run with `PLAYWRIGHT_BASE_URL` against `next start`)
-
-Browser binary host deps may require `npx playwright install-deps` on bare VMs — MCP Playwright used for interactive smoke.
+- `PLAYWRIGHT_BASE_URL=http://127.0.0.1:3010 npx playwright test --project=chromium-auth` → **36 passed**
 
 ---
 
 ## 7. Phase boundary
 
-- Phase 14B validation **partially complete** (authenticated blocked)  
-- Phase 15 **not started**  
-- Pilot **not started**  
+- Phase 14B validation: **complete with non-blocking authenticated-depth items**
+- Phase 15 **not started**
+- Pilot **not started**
 - Production **untouched**
+
+---
+
+## 8. Phase 15 readiness
+
+**Not ready to claim READY FOR PHASE 15** until booking/QR/check-in, representative IDOR/self-approval, and at least one cross-browser authenticated baseline are evidenced. Fixture infrastructure no longer blocks that work.

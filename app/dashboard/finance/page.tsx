@@ -83,14 +83,11 @@ export default async function FinanceDashboardPage() {
   );
 
   if (!canRead && !identity.workspaces.includes("finance")) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
-        <PartnerPageHeader title={FINANCE_ROLE_LABEL} />
-        <EmptyState
-          title="Finance access required"
-          description="This workspace requires finance.report.read. Contact Platform Ops if you expect an assignment."
-        />
-      </main>
+    redirect(
+      "/unauthorized?reason=" +
+        encodeURIComponent(
+          "Finance access required. This workspace requires finance.report.read."
+        )
     );
   }
 

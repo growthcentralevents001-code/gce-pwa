@@ -67,9 +67,21 @@ describe("Phase 14B — safety posture (static)", () => {
   });
 });
 
-describe("Phase 14B — BG-32 fixture gate", () => {
-  it("documents that browser auth fixtures are not present in env", () => {
-    expect(process.env.E2E_CUSTOMER_EMAIL ?? "").toBe("");
-    expect(process.env.E2E_CUSTOMER_PASSWORD ?? "").toBe("");
+describe("Phase 14B — BG-32 fixture tooling", () => {
+  it("ships gce-dev-only fixture setup/reset/validate scripts", () => {
+    const setup = read("scripts/e2e-fixtures/setup.mjs");
+    const guard = read("scripts/e2e-fixtures/env.mjs");
+    const constants = read("scripts/e2e-fixtures/constants.mjs");
+    expect(setup).toMatch(/e2e:fixtures|fixture setup/i);
+    expect(constants).toMatch(/hvevqoltcwumcvxetxsf/);
+    expect(constants).toMatch(/tzeqeywezmqslovpflqu/);
+    expect(guard).toMatch(/REFUSED/);
+    expect(constants).not.toMatch(/super_admin/);
+  });
+
+  it("keeps Playwright auth storage under gitignored .playwright", () => {
+    const gi = read(".gitignore");
+    expect(gi).toMatch(/\.playwright\//);
+    expect(gi).toMatch(/\.env\.test\.local/);
   });
 });

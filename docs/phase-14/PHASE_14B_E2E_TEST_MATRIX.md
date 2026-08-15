@@ -3,10 +3,10 @@
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-08-15 |
-| **Environment** | development / gce-dev (read-only for auth) |
-| **Auth fixtures** | **ABSENT** (BG-32) |
+| **Environment** | development / gce-dev |
+| **Auth fixtures** | **PRESENT** (BG-32 CLOSED — see PHASE_14B_DEV_TEST_FIXTURE_SPEC.md) |
 
-Legend: PASS · FAIL · BLOCKED · N/A
+Legend: PASS · FAIL · BLOCKED · N/A · PENDING
 
 ---
 
@@ -29,7 +29,7 @@ Legend: PASS · FAIL · BLOCKED · N/A
 | P14B-AUTH-04 | Auth | anon | `/customer` | Redirect login | login | PASS | PASS | |
 | P14B-AUTH-05 | Auth | anon | `/ops` `/settings` `/dashboard/finance` | Redirect login | login | PASS | PASS | |
 | P14B-AUTH-06 | Auth | anon | `/login?redirectTo=https://evil.example` | No open redirect | Stay GCE | PASS | PASS | |
-| P14B-AUTH-07 | Auth | customer+ | signup/login/logout deep | Full auth cycle | — | — | **BLOCKED** | BG-32 |
+| P14B-AUTH-07 | Auth | fixture roles | login + storage state | Session | 15 roles | PASS | |
 
 ## Legacy redirects
 
@@ -53,14 +53,14 @@ Legend: PASS · FAIL · BLOCKED · N/A
 | P14B-A11Y-01 | login email labeling + home landmark | PASS | axe deferred (Playwright type mismatch); baseline manual/MCP |
 | P14B-A11Y-02 | Reduced motion CSS | PASS | globals |
 
-## Authenticated matrix (all BLOCKED)
+## Authenticated matrix
 
 | ID | Role | Status | Defect |
 |----|------|--------|--------|
-| P14B-ROLE-01…14 | Customer → PRM | **BLOCKED** | BG-32 |
-| P14B-XR-01…13 | Cross-role lifecycles | **BLOCKED** | BG-32 |
-| P14B-SEC-IDOR-* | Object IDOR | **BLOCKED** | BG-32 |
-| P14B-SEC-SELF-* | Self-approval | **BLOCKED** | BG-32 |
+| P14B-ROLE-01…15 | Customer → multi-role (homes + negatives) | **PASS** (Chromium) | BG-32 CLOSED |
+| P14B-XR-01…13 | Cross-role lifecycles (book/QR/check-in/Lead/…) | **PENDING** | Depth / BG-11+ |
+| P14B-SEC-IDOR-* | Object IDOR | **PENDING** | customer_02 ready |
+| P14B-SEC-SELF-* | Self-approval | **PENDING** | |
 
 ## Feature flags
 
@@ -72,12 +72,12 @@ Legend: PASS · FAIL · BLOCKED · N/A
 | P14B-FF-04 | wallet_cashout | OFF | PASS |
 | P14B-FF-05 | paid_lead_assist | OFF | PASS |
 
-## Browser matrix (public only)
+## Browser matrix
 
-| Browser | Public smoke | Auth deep | Status |
-|---------|--------------|-----------|--------|
-| Chromium | MCP + Playwright project | BLOCKED | Partial PASS |
-| Firefox | Playwright project (host deps permitting) | BLOCKED | Partial / host-deps |
-| WebKit | Playwright project (host deps permitting) | BLOCKED | Partial / host-deps |
+| Browser | Public smoke | Auth shell matrix | Status |
+|---------|--------------|-------------------|--------|
+| Chromium | PASS | **PASS** (36 tests) | PASS |
+| Firefox | Playwright project | PENDING | Partial |
+| WebKit | Playwright project | PENDING | Partial |
 
 Do not treat unexecuted authenticated browsers as PASS.

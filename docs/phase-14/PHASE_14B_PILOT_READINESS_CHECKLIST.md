@@ -4,29 +4,29 @@
 |-------|-------|
 | **Date** | 2026-08-15 |
 | **Pilot** | **NOT READY** |
-| **Phase 15** | **NOT STARTED** (also blocked on BG-32 for product UAT evidence) |
+| **Phase 15** | **NOT STARTED** |
 
-Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intentional
+Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intentional · ◐ partial
 
 | # | Item | Result | Notes |
 |---|------|--------|-------|
 | 1 | Environment = development only | ✅ | production untouched |
-| 2 | Auth testability (BG-32) | ❌ | fixtures required |
-| 3 | Authenticated role matrix | ❌ | blocked |
-| 4 | Customer Event lifecycle | ❌ | blocked |
-| 5 | Ticket / QR | ❌ | BG-32 + BG-11 |
-| 6 | Offer claim / redemption | ❌ | blocked |
-| 7 | Venue check-in | ❌ | blocked |
-| 8 | Connect / Lead Assist | ❌ | blocked |
-| 9 | Partner BDP flows | ❌ | blocked |
-| 10 | Enterprise + Finance co-sign | ❌ | blocked |
+| 2 | Auth testability (BG-32) | ✅ | fixtures + validate CLOSED |
+| 3 | Authenticated role matrix (shells) | ✅ | Chromium 36 passed |
+| 4 | Customer Event lifecycle | ❌ | depth pending |
+| 5 | Ticket / QR | ❌ | BG-11 + depth pending |
+| 6 | Offer claim / redemption | ❌ | depth pending |
+| 7 | Venue check-in | ❌ | depth pending |
+| 8 | Connect / Lead Assist | ❌ | richer seeds pending |
+| 9 | Partner BDP flows | ◐ | homes PASS; commercial depth pending |
+| 10 | Enterprise + Finance co-sign | ❌ | project seed partial |
 | 11 | Finance execution flags OFF | ✅ | verified |
-| 12 | Ops separation / no Super Admin | ✅ static | deep ops BLOCKED |
-| 13 | Self-approval live matrix | ❌ | blocked |
-| 14 | IDOR live matrix | ❌ | blocked |
+| 12 | Ops separation / no Super Admin | ✅ | shells PASS; no Super Admin fixture |
+| 13 | Self-approval live matrix | ❌ | pending |
+| 14 | IDOR live matrix | ❌ | peer fixture ready; probes pending |
 | 15 | PWA API NetworkOnly | ✅ | |
 | 16 | Private noindex | ✅ | |
-| 17 | Mobile public baseline | ✅ sample | auth mobile blocked |
+| 17 | Mobile public baseline | ✅ sample | auth mobile pending |
 | 18 | Accessibility baseline (public) | ✅ | not WCAG cert |
 | 19 | Decorative blue active = 0 | ✅ | post DEF-14B-001 |
 | 20 | Open P0 | ✅ none | |
@@ -37,8 +37,8 @@ Legend: ✅ ready · ❌ blocker · ⏭ deferred / Phase 15 · ⚪ N/A intention
 
 ## UAT readiness
 
-**NOT READY** — authenticated evidence missing (BG-32).
+**PARTIAL** — authenticated shells PASS; lifecycle depth still required for Pilot certification.
 
 ## Pilot readiness
 
-**NOT READY** — depends on UAT + Phase 15 professional sign-off + remaining P1 backend gaps as classified in gap register.
+**NOT READY** — depends on remaining authenticated depth + Phase 15 professional sign-off + remaining P1 backend gaps as classified in gap register.

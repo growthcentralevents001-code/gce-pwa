@@ -217,6 +217,7 @@ export async function upsertDomainFixtures(admin, userIds) {
   ]) {
     const mid = fixtureUuid(key);
     if (key === "membership:01") ids.membership = mid;
+    if (key === "membership:multi") ids.membershipMulti = mid;
     const { error } = await admin.upsert(
       "connect_memberships",
       {
@@ -230,6 +231,7 @@ export async function upsertDomainFixtures(admin, userIds) {
         activated_at: new Date().toISOString(),
         starts_at: new Date().toISOString(),
         pricing_rule_version: "phase14b-e2e",
+        specialisation_id: "9c442a98-3674-4d84-a6b3-8d56e42eaf0e",
         metadata: META(key),
       },
       "id"
@@ -237,6 +239,34 @@ export async function upsertDomainFixtures(admin, userIds) {
     if (error) {
       console.warn(
         `[fixture] connect_memberships upsert skipped for ${key}:`,
+        error.message
+      );
+    }
+  }
+
+  for (const [key, membershipKey] of [
+    ["seat:01", "membership:01"],
+    ["seat:multi", "membership:multi"],
+  ]) {
+    const seatId = fixtureUuid(key);
+    const membershipId = fixtureUuid(membershipKey);
+    const { error } = await admin.upsert(
+      "connect_circle_seats",
+      {
+        id: seatId,
+        circle_id: ids.circle,
+        membership_id: membershipId,
+        status: "allocated",
+        counts_toward_capacity: true,
+        allocated_at: new Date().toISOString(),
+        confirmed_at: new Date().toISOString(),
+        metadata: META(key),
+      },
+      "id"
+    );
+    if (error) {
+      console.warn(
+        `[fixture] connect_circle_seats upsert skipped for ${key}:`,
         error.message
       );
     }

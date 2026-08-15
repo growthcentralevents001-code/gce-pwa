@@ -16,11 +16,7 @@ export type FixtureIds = Record<string, string> & {
 };
 
 export function loadFixtureIds(): FixtureIds {
-  const path = resolve(process.cwd(), ".playwright/fixture-ids.json");
-  if (existsSync(path)) {
-    return JSON.parse(readFileSync(path, "utf8")) as FixtureIds;
-  }
-  return {
+  const defaults: FixtureIds = {
     mkt_event_attr: fixtureUuid("mkt:event:attributed"),
     mkt_event_unattr: fixtureUuid("mkt:event:unattributed"),
     mkt_offer: fixtureUuid("mkt:offer:01"),
@@ -28,9 +24,18 @@ export function loadFixtureIds(): FixtureIds {
     mkt_expired_claim: fixtureUuid("mkt:claim:expired"),
     mkt_venue: fixtureUuid("mkt:venue:01"),
     mkt_venue_b: fixtureUuid("mkt:venue:02"),
+    membership: fixtureUuid("membership:01"),
+    membershipMulti: fixtureUuid("membership:multi"),
+    circle: fixtureUuid("circle:01"),
     ent_client: fixtureUuid("ent:client:01"),
     ent_opp: fixtureUuid("ent:opp:01"),
     ent_project_a: fixtureUuid("ent:project:a"),
     ent_project_b: fixtureUuid("ent:project:b"),
   };
+  const path = resolve(process.cwd(), ".playwright/fixture-ids.json");
+  if (existsSync(path)) {
+    const parsed = JSON.parse(readFileSync(path, "utf8")) as FixtureIds;
+    return { ...defaults, ...parsed } as FixtureIds;
+  }
+  return defaults;
 }

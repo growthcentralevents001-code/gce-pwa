@@ -107,6 +107,12 @@ async function main() {
 
   await admin.delete("events", [`id=eq.${domainIds.event}`]);
   await admin.delete("offers", [`id=eq.${domainIds.offer}`]);
+  await admin.delete("connect_circle_seats", [
+    `id=eq.${fixtureUuid("seat:01")}`,
+  ]);
+  await admin.delete("connect_circle_seats", [
+    `id=eq.${fixtureUuid("seat:multi")}`,
+  ]);
   await admin.delete("connect_memberships", [`id=eq.${domainIds.membership}`]);
   await admin.delete("connect_memberships", [
     `id=eq.${domainIds.membershipMulti}`,

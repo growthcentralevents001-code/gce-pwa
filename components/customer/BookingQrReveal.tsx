@@ -1,38 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QrDisplay } from "@/components/customer/QrDisplay";
-import { FeatureGated } from "@/components/states/FeatureGated";
+import { OwnerCredentialReveal } from "@/components/customer/OwnerCredentialReveal";
 import { takeBookingQrTokens } from "@/lib/frontend/customer/format";
 
-/** Shows one-time sandbox QR tokens when present in session; otherwise gated note. */
+/**
+ * Confirmation-session tokens if still in memory; otherwise owner-authorized
+ * server redisplay. Session storage is never the source of truth.
+ */
 export function BookingQrReveal({ bookingId }: { bookingId: string }) {
-  const [tokens] = useState(() => takeBookingQrTokens(bookingId) ?? []);
+  const [sessionTokens] = useState(
+    () => takeBookingQrTokens(bookingId) ?? []
+  );
+  const [ticketIds, setTicketIds] = useState<string[] | null>(null);
 
-  if (tokens.length === 0) {
+  useEffect(() => {
+    if (sessionTokens.length > 0) return;
+    let cancelled = false;
+    fetch("/api/customer?view=tickets", {
+      cache: "no-store",
+      credentials: "same-origin",
+    })
+      .then(async (res) => {
+        const json = await res.json().catch(() => ({}));
+        const list = Array.isArray(json.tickets) ? json.tickets : [];
+        const ids = list
+          .filter(
+            (t: { booking_id?: string; status?: string; id?: string }) =>
+              t.booking_id === bookingId && t.id
+          )
+          .map((t: { id: string }) => t.id);
+        if (!cancelled) setTicketIds(ids);
+      })
+      .catch(() => {
+        if (!cancelled) setTicketIds([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [bookingId, sessionTokens.length]);
+
+  if (sessionTokens.length > 0) {
     return (
-      <FeatureGated
-        mode="unavailable"
-        title="QR shown at confirmation"
-        description="Ticket QR payloads are issued once by the server at confirmation and are not re-fetched from ticket history. Keep your confirmation screen or ticket reference for venue check-in."
-      />
+      <div className="space-y-4">
+        <p className="text-sm font-medium">
+          Present these codes at the venue. You can reopen them later from
+          Tickets.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {sessionTokens.map((t, i) => (
+            <QrDisplay
+              key={`${i}-${t.length}`}
+              value={t}
+              label={`Ticket ${i + 1} — present at venue`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (ticketIds === null) {
+    return (
+      <p className="text-sm text-muted-foreground" aria-busy="true">
+        Loading venue pass…
+      </p>
+    );
+  }
+
+  if (ticketIds.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground" role="status">
+        No tickets on this booking yet.
+      </p>
     );
   }
 
   return (
     <div className="space-y-4">
-      <p className="text-sm font-medium">
-        Save these QR codes now — shown once from the server response.
-      </p>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {tokens.map((t, i) => (
-          <QrDisplay
-            key={`${i}-${t.slice(0, 8)}`}
-            value={t}
-            label={`Ticket ${i + 1}`}
-          />
-        ))}
-      </div>
+      {ticketIds.map((id) => (
+        <OwnerCredentialReveal key={id} kind="ticket" id={id} />
+      ))}
     </div>
   );
 }

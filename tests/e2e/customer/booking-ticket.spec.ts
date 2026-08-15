@@ -89,7 +89,7 @@ test.describe("customer booking → ticket → QR", () => {
     }
   });
 
-  test("ticket list and detail load; QR is not redisplayed (BG-11)", async ({
+  test("ticket list and detail load; owner can redisplay QR", async ({
     page,
   }) => {
     test.skip(!existsSync(authStatePath("customer")), "no customer state");
@@ -102,11 +102,21 @@ test.describe("customer booking → ticket → QR", () => {
     await page.goto(`/customer/tickets/${ticket.id}`);
     await expect(page.getByRole("heading", { name: /ticket/i })).toBeVisible();
     await expect(page.getByText(/gce pass/i)).toBeVisible();
-    await expect(page.getByText(/qr issued at confirmation/i)).toBeVisible();
-    await expect(page.locator("img[alt*='QR' i]")).toHaveCount(0);
+    const cred = await getJson(
+      page.request,
+      `/api/customer?view=ticket_credential&id=${ticket.id}`
+    );
+    expect(cred.status).toBe(200);
+    if (cred.json.credential?.displayable) {
+      await expect(page.getByText(/present this code at the venue/i)).toBeVisible();
+    } else {
+      await expect(
+        page.getByText(/already been checked in|no longer valid|could not be loaded/i)
+      ).toBeVisible();
+    }
   });
 
-  test("new session cannot redisplay QR from ticket page", async ({
+  test("new session can redisplay QR from ticket page when issued", async ({
     browser,
   }) => {
     test.skip(!existsSync(authStatePath("customer")), "no customer state");
@@ -115,11 +125,15 @@ test.describe("customer booking → ticket → QR", () => {
     });
     const page = await ctx.newPage();
     const tickets = await getJson(page.request, "/api/customer?view=tickets");
-    const ticket = (tickets.json.tickets ?? [])[0];
-    test.skip(!ticket, "no ticket");
+    const ticket = (tickets.json.tickets ?? []).find(
+      (t: { status?: string }) => t.status === "issued"
+    );
+    test.skip(!ticket, "no issued ticket");
     await page.goto(`/customer/tickets/${ticket.id}`);
-    await expect(page.getByText(/qr issued at confirmation/i)).toBeVisible();
-    await expect(page.locator("canvas, img[alt*='QR' i]")).toHaveCount(0);
+    await expect(page.getByText(/present this code at the venue/i)).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect(page.locator("img[aria-hidden='true']")).toHaveCount(1);
     await ctx.close();
   });
 });

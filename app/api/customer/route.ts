@@ -1,4 +1,8 @@
-import { withAuthedRoute, jsonSuccess } from "@/lib/api/context";
+import { withAuthedRoute, jsonSuccess, jsonPrivateSuccess } from "@/lib/api/context";
+import {
+  getClaimDisplayCredential,
+  getTicketDisplayCredential,
+} from "@/lib/architecture/credentials";
 import {
   actorHasCxPermission,
   assertMoneyFlagsOff,
@@ -100,9 +104,35 @@ export const GET = withAuthedRoute(async (request, ctx) => {
     return jsonSuccess({ tickets }, ctx);
   }
 
+  if (view === "ticket_credential") {
+    const id = url.searchParams.get("id");
+    if (!id) {
+      throw new AppError("VALIDATION_ERROR", "id required", { status: 400 });
+    }
+    const credential = await getTicketDisplayCredential(admin, {
+      ticketId: id,
+      actorUserId: ctx.user.id,
+      correlationId: ctx.correlationId,
+    });
+    return jsonPrivateSuccess({ credential }, ctx);
+  }
+
   if (view === "claims") {
     const claims = await getMyClaims(admin, ctx.user.id);
     return jsonSuccess({ claims }, ctx);
+  }
+
+  if (view === "claim_credential") {
+    const id = url.searchParams.get("id");
+    if (!id) {
+      throw new AppError("VALIDATION_ERROR", "id required", { status: 400 });
+    }
+    const credential = await getClaimDisplayCredential(admin, {
+      claimId: id,
+      actorUserId: ctx.user.id,
+      correlationId: ctx.correlationId,
+    });
+    return jsonPrivateSuccess({ credential }, ctx);
   }
 
   if (view === "trust_rank") {

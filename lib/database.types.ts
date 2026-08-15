@@ -7859,6 +7859,42 @@ export type Database = {
           },
         ]
       }
+      marketplace_display_credentials: {
+        Row: {
+          ciphertext: string
+          created_at: string
+          id: string
+          issued_at: string
+          key_version: number
+          revoked_at: string | null
+          subject_id: string
+          subject_type: string
+          token_hash: string
+        }
+        Insert: {
+          ciphertext: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          key_version?: number
+          revoked_at?: string | null
+          subject_id: string
+          subject_type: string
+          token_hash: string
+        }
+        Update: {
+          ciphertext?: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          key_version?: number
+          revoked_at?: string | null
+          subject_id?: string
+          subject_type?: string
+          token_hash?: string
+        }
+        Relationships: []
+      }
       marketplace_venue_attributions: {
         Row: {
           approved_by: string | null

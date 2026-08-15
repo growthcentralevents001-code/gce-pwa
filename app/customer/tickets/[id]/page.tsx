@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
-import { FeatureGated } from "@/components/states/FeatureGated";
+import { OwnerCredentialReveal } from "@/components/customer/OwnerCredentialReveal";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { GlassPanel } from "@/components/marketing/GlassPanel";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
@@ -89,11 +89,11 @@ export default async function CustomerTicketDetailPage({
       </GlassPanel>
 
       <div className="mt-6">
-        <FeatureGated
-          mode="unavailable"
-          title="QR issued at confirmation"
-          description="Raw QR payloads are returned once by the server when tickets are issued. Ticket lists never expose qr_token_hash. Present your confirmation QR or ticket reference at the venue — check-in is venue-side."
-        />
+        <p className="mb-3 text-sm text-muted-foreground">
+          Venue check-in is verified by the server. This code is issued only to
+          you.
+        </p>
+        <OwnerCredentialReveal key={ticket.id} kind="ticket" id={ticket.id} />
       </div>
     </main>
   );

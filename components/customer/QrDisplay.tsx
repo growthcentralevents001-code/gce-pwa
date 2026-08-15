@@ -72,7 +72,8 @@ export function QrDisplay({
         // eslint-disable-next-line @next/next/no-img-element -- data URL QR
         <img
           src={dataUrl}
-          alt={label}
+          alt=""
+          aria-hidden="true"
           width={size}
           height={size}
           className="h-auto w-full max-w-[220px]"

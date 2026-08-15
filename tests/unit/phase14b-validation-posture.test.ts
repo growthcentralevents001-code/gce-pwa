@@ -60,6 +60,17 @@ describe("Phase 14B — safety posture (static)", () => {
     expect(cfg).toMatch(/destination:\s*"\/venue\/events"/);
   });
 
+  it("ticket list query omits hash and ciphertext columns", () => {
+    const src = read("lib/architecture/customer-cx/operations.ts");
+    expect(src).toMatch(/Never return qr_token_hash/);
+    expect(src).toMatch(
+      /id,ticket_ref,status,issued_at,checked_in_at,event_id,booking_id/
+    );
+    expect(src).not.toMatch(
+      /from\("marketplace_tickets"\)[\s\S]{0,80}select\(\s*"\*"/
+    );
+  });
+
   it("no Super Admin product nav entry in Ops nav", () => {
     const ops = read("lib/frontend/navigation/ops.ts");
     expect(ops).not.toMatch(/label:\s*["']Super Admin["']/);

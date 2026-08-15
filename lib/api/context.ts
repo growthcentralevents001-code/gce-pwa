@@ -84,6 +84,24 @@ export function jsonSuccess<T>(
   });
 }
 
+/** Owner-only secrets (QR / claim credentials) — never cache. */
+export function jsonPrivateSuccess<T>(
+  body: T,
+  ctx: { correlationId: string; requestId: string },
+  status = 200
+): NextResponse {
+  return NextResponse.json(body, {
+    status,
+    headers: {
+      "x-correlation-id": ctx.correlationId,
+      "x-request-id": ctx.requestId,
+      "Cache-Control": "private, no-store, no-cache, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    },
+  });
+}
+
 export function jsonError(error: unknown, ctx: { correlationId: string; requestId: string }) {
   const mapped = toPlatformErrorResponse(error, ctx.correlationId);
   logger.error("api_error", {

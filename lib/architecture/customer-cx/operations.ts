@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createHash, randomBytes } from "node:crypto";
 import { AppError } from "../errors";
 import { writeAuditEvent } from "../audit/write";
 import { assertFeatureEnabled, isFeatureEnabled } from "../feature-flags/flags";
@@ -10,6 +9,11 @@ import {
 } from "../marketplace/constants";
 import { issueTicketsForBooking } from "../marketplace/operations";
 import {
+  hashDisplayToken,
+  issueDisplayCredentialMaterial,
+  persistDisplayCredential,
+} from "../credentials";
+import {
   CX_RULE_VERSION,
   DEFAULT_TRUST_SCORE,
   MONEY_FLAGS_MUST_STAY_OFF,
@@ -17,7 +21,7 @@ import {
 } from "./constants";
 
 function tokenHash(raw: string): string {
-  return createHash("sha256").update(raw).digest("hex");
+  return hashDisplayToken(raw);
 }
 
 const OPS_CHECKIN_ROLES = new Set([
@@ -751,12 +755,13 @@ export async function claimCustomerOffer(
   await assertFeatureEnabled(client, "offer_claims");
   await getOfferDetail(client, input.offerEventId);
 
-  const raw = randomBytes(24).toString("base64url");
+  const material = issueDisplayCredentialMaterial();
+  const raw = material.rawToken;
   const expires = claimExpiresAt(new Date());
   const { data, error } = await client.rpc("gce_marketplace_claim_offer", {
     p_offer_id: input.offerEventId,
     p_claimant: input.claimantUserId,
-    p_token_hash: tokenHash(raw),
+    p_token_hash: material.tokenHash,
     p_expires_at: expires.toISOString(),
   });
   if (error || !data) {
@@ -774,6 +779,13 @@ export async function claimCustomerOffer(
     String(data.id),
     { isRevenue: false, expiresAt: expires.toISOString() }
   );
+  await persistDisplayCredential(client, {
+    subjectType: "offer_claim",
+    subjectId: String(data.id),
+    rawToken: raw,
+    tokenHash: material.tokenHash,
+  });
+
   await writeAuditEvent(client, {
     actorUserId: input.claimantUserId,
     action: "cx.offer.claim",

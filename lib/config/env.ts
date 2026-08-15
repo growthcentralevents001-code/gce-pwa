@@ -29,6 +29,8 @@ const serverEnvSchema = z.object({
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
+  GCE_CREDENTIAL_ENCRYPTION_KEY: z.string().min(16).optional(),
+  ENCRYPTION_KEY: z.string().min(16).optional(),
 });
 
 export type PublicConfig = {
@@ -109,6 +111,8 @@ export function getServerConfig(): ServerConfig {
     RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET,
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+    GCE_CREDENTIAL_ENCRYPTION_KEY: process.env.GCE_CREDENTIAL_ENCRYPTION_KEY,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
   });
 
   if (!parsed.success) {

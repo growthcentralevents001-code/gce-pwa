@@ -1,7 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { createHash, randomBytes } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { AppError } from "../errors";
 import { writeAuditEvent } from "../audit/write";
+import {
+  hashDisplayToken,
+  issueDisplayCredentialMaterial,
+  persistDisplayCredential,
+} from "../credentials";
 import {
   calculateMarketplaceSplit,
   validateOfferCampaign,
@@ -13,7 +18,7 @@ import {
 } from "./constants";
 
 function tokenHash(raw: string): string {
-  return createHash("sha256").update(raw).digest("hex");
+  return hashDisplayToken(raw);
 }
 
 export async function createMarketplaceVenue(
@@ -534,27 +539,48 @@ export async function issueTicketsForBooking(
   }
 
   const qty = Number(booking.quantity);
-  const rawTokens: string[] = [];
-  const rows = Array.from({ length: qty }, () => {
-    const raw = randomBytes(24).toString("base64url");
-    rawTokens.push(raw);
+  const issued = Array.from({ length: qty }, () => {
+    const material = issueDisplayCredentialMaterial();
     return {
-      booking_id: input.bookingId,
-      event_id: booking.event_id,
-      holder_user_id: booking.buyer_user_id,
-      ticket_ref: `TCK-${randomBytes(8).toString("hex").toUpperCase()}`,
-      qr_token_hash: tokenHash(raw),
-      status: "issued",
+      raw: material.rawToken,
+      row: {
+        booking_id: input.bookingId,
+        event_id: booking.event_id,
+        holder_user_id: booking.buyer_user_id,
+        ticket_ref: `TCK-${randomBytes(8).toString("hex").toUpperCase()}`,
+        qr_token_hash: material.tokenHash,
+        status: "issued",
+      },
     };
   });
+  const rawTokens = issued.map((item) => item.raw);
 
   const { data: tickets, error: tErr } = await client
     .from("marketplace_tickets")
-    .insert(rows)
+    .insert(issued.map((item) => item.row))
     .select("*");
   if (tErr || !tickets) {
     throw new AppError("INTERNAL_ERROR", "Failed to issue tickets", {
       cause: tErr,
+    });
+  }
+
+  for (const ticket of tickets) {
+    const match = issued.find(
+      (item) => item.row.qr_token_hash === ticket.qr_token_hash
+    );
+    if (!ticket?.id || !match) {
+      throw new AppError(
+        "INTERNAL_ERROR",
+        "Failed to persist ticket display credential",
+        { status: 500, expose: false }
+      );
+    }
+    await persistDisplayCredential(client, {
+      subjectType: "ticket",
+      subjectId: String(ticket.id),
+      rawToken: match.raw,
+      tokenHash: match.row.qr_token_hash,
     });
   }
 
@@ -604,14 +630,15 @@ export async function claimOffer(
     });
   }
 
-  const raw = randomBytes(24).toString("base64url");
+  const material = issueDisplayCredentialMaterial();
+  const raw = material.rawToken;
   const claimedAt = new Date();
   const { data, error: insErr } = await client
     .from("marketplace_offer_claims")
     .insert({
       offer_event_id: input.offerEventId,
       claimant_user_id: input.claimantUserId,
-      claim_token_hash: tokenHash(raw),
+      claim_token_hash: material.tokenHash,
       status: "claimed",
       claimed_at: claimedAt.toISOString(),
       expires_at: claimExpiresAt(claimedAt).toISOString(),
@@ -629,6 +656,13 @@ export async function claimOffer(
     .from("marketplace_offer_events")
     .update({ claims_count: Number(offer.claims_count) + 1 })
     .eq("id", input.offerEventId);
+
+  await persistDisplayCredential(client, {
+    subjectType: "offer_claim",
+    subjectId: String(data.id),
+    rawToken: raw,
+    tokenHash: material.tokenHash,
+  });
 
   await writeAuditEvent(client, {
     actorUserId: input.claimantUserId,

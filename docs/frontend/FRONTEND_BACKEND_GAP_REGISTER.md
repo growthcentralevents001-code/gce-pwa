@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Phase 14B-F** — BG-32 **CLOSED**; authenticated shell matrix PASS |
+| **Status** | **Phase 14B-R** — BG-32 **CLOSED**; QR redisplay **BG-11 P1 confirmed live** |
 | **Date** | 2026-08-15 |
 | **Rule** | Missing UI ≠ backend gap |
 
@@ -18,8 +18,8 @@
 | BG-08 | Opportunity Desk filters | Convenience | PILOT P2 | Query params OK |
 | BG-09 | Finance dashboard summary | Aggregation | P1 | Prefer server aggregate |
 | BG-10 | Ops search redaction docs | Search | PILOT P2 | Document allowlists |
-| BG-11 | Ticket QR re-display | UX read-model | **P1** | Fixtures available; deep re-display probe still pending |
-| BG-12 | Claim token re-display | UX read-model | **P1** | Same |
+| BG-11 | Ticket QR re-display | UX read-model | **P1** | **Confirmed live** (14B-R): SHA-256 hash only; plaintext once at sandbox confirm; ticket page FeatureGated; new session cannot redisplay. Schema/token policy required. |
+| BG-12 | Claim token re-display | UX read-model | **P1** | Same hash-once pattern as tickets; 14B-R redeemed with token from the claim response, not a later reopen |
 | BG-13 | Circle transfer request | UX / Permission | P1 | FeatureGated |
 | BG-14 | Member Tag editor | UX | P1 | Display only |
 | BG-15 | Directory display names | UX read-model | P1 | Placeholders |
@@ -47,6 +47,7 @@
 ### Phase 14B severity note
 
 - No product **P0 security/finance** defects opened in unauthenticated pass.
-- **BG-32 CLOSED** after Phase 14B-F fixtures + authenticated shell matrix.
-- Deep authenticated lifecycle (booking/QR/check-in/Lead/Finance co-sign) remains open evidence work — not a missing fixture gate.
+- **BG-32 CLOSED** after Phase 14B-F fixtures + authenticated shell matrix. Do not reopen because a lifecycle test fails.
+- **BG-11 confirmed** in Phase 14B-R with a real authenticated booking — Pilot-blocking P1.
+- Deep authenticated lifecycle otherwise executed (booking, check-in, redemption, economics, co-sign, Finance, IDOR, self-approval, Firefox/WebKit).
 - Money/execution flags remain OFF (intentional — not Pilot blockers by themselves).

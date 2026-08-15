@@ -82,7 +82,68 @@
 | Paid Lead Assist OFF | Intentional |
 | Wishlist FeatureGated | Future / BG-06 |
 | Sessions/consent/avatar FeatureGated | BG-33–35 |
-| QR re-display API | BG-11 (backend) — fixtures available; deep probe pending |
+| QR re-display API | BG-11 (backend) — **confirmed live** with authenticated booking; hash-only; FeatureGated |
+
+---
+
+## DEF-14B-005 — QR cannot be redisplayed after confirmation (BG-11)
+
+| Field | Value |
+|-------|-------|
+| **Severity** | P1 |
+| **Area** | Customer tickets / Marketplace CX |
+| **Roles** | Customer |
+| **Route/workflow** | Booking sandbox confirm → Tickets → reopen ticket in new storage-state session |
+| **Reproduction** | Authenticated Customer books fixture Event; `qrTokens` returned once on confirm; ticket page and `GET /api/customer?view=tickets` have no QR image/token; new context still FeatureGated “QR issued at confirmation” |
+| **Expected** | Owner can safely redisplay a server-authorized QR for Venue check-in |
+| **Actual** | Backend stores SHA-256 hash only; plaintext issued once; frontend does not mint a token |
+| **Root cause** | Canonical ticket model has no retrievable display-token column/API (BG-11). Not a frontend-only bug. |
+| **Fix** | None in 14B-R — schema/token policy required (Founder approval for migration) |
+| **Files** | `lib/architecture/customer-cx/operations.ts` (hash), ticket UI FeatureGated |
+| **Regression test** | `tests/e2e/customer/booking-ticket.spec.ts` |
+| **Retest** | FAIL recorded as evidence, not product PASS |
+| **Pilot impact** | Venue cannot check in from a reopened ticket without the original confirmation payload |
+| **Status** | **OPEN** — Backend Gap; no safe no-schema fix |
+
+---
+
+## DEF-14B-007 — Venue check-in lacked organisation scope (IDOR)
+
+| Field | Value |
+|-------|-------|
+| **Severity** | P1 (fixed) |
+| **Area** | Venue check-in / redemption |
+| **Roles** | Venue Representative |
+| **Reproduction** | Venue A presented Venue B ticket token to `check_in_ticket` |
+| **Expected** | 403 outside operating organisation |
+| **Actual (before)** | RPC `gce_marketplace_ticket_check_in` had no venue-ownership check |
+| **Fix** | `assertVenueStaffScope` via `organisation_memberships` → `marketplace_venues`; Ops roles retain platform scope; `submitted_by` is not authority |
+| **Files** | `lib/architecture/customer-cx/operations.ts` |
+| **Regression test** | `tests/e2e/venue/checkin.spec.ts` venue A vs B |
+| **Status** | **FIXED / RETEST PASSED** |
+| **Pilot impact** | Would have allowed cross-venue check-in |
+
+---
+
+## DEF-14B-008 — Settings notifications lacked a main landmark
+
+| Field | Value |
+|-------|-------|
+| **Severity** | P2 |
+| **Fix** | `SettingsShell` renders `<main id="main-content">` |
+| **Status** | **FIXED / RETEST PASSED** |
+
+---
+
+## DEF-14B-009 — Ops mobile header horizontal overflow
+
+| Field | Value |
+|-------|-------|
+| **Severity** | P2 |
+| **Route** | `/ops` at 390×844 |
+| **Fix** | Hide Workspaces CTA below `sm`; truncate title; tighter header gaps |
+| **Files** | `components/app-shell/OpsShell.tsx` |
+| **Status** | **FIXED / RETEST PASSED** |
 
 ---
 
@@ -91,5 +152,5 @@
 | Severity | Open | Fixed / Closed |
 |----------|-----:|---------------:|
 | P0 | 0 | 0 |
-| P1 | 0 fixture-gate | 2 (legacy venue blue; BG-32) |
-| P2 | 1 partial (Finance RSC entitled path) | 1 (unauthorized Finance redirect) |
+| P1 | 1 (BG-11 QR redisplay) | 3 (legacy venue blue; BG-32; venue-scope check-in) |
+| P2 | 0 blocking | Settings main; Ops overflow; Finance unauthorized redirect |

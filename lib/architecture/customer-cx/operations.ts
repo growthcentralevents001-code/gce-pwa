@@ -20,6 +20,57 @@ function tokenHash(raw: string): string {
   return createHash("sha256").update(raw).digest("hex");
 }
 
+const OPS_CHECKIN_ROLES = new Set([
+  "platform_admin",
+  "support_admin",
+  "finance_admin",
+]);
+
+/**
+ * Venue staff may only check in / redeem objects for venues in their
+ * organisation memberships. Ops roles retain platform scope.
+ * Does not use submitted_by as authority (that is an assistive listing fallback).
+ */
+async function assertVenueStaffScope(
+  client: SupabaseClient,
+  actorUserId: string,
+  venueId: string
+) {
+  const { data: assignments } = await client
+    .from("role_assignments")
+    .select("role_key,status")
+    .eq("user_id", actorUserId)
+    .eq("status", "active");
+  const roles = new Set((assignments ?? []).map((a) => String(a.role_key)));
+  if ([...roles].some((r) => OPS_CHECKIN_ROLES.has(r))) {
+    return;
+  }
+
+  const { data: mems } = await client
+    .from("organisation_memberships")
+    .select("organisation_id")
+    .eq("user_id", actorUserId)
+    .in("status", ["active"]);
+  const orgIds = (mems ?? [])
+    .map((m) => String(m.organisation_id ?? ""))
+    .filter(Boolean);
+  if (orgIds.length === 0) {
+    throw new AppError("FORBIDDEN", "Venue scope required", { status: 403 });
+  }
+
+  const { data: venues } = await client
+    .from("marketplace_venues")
+    .select("id")
+    .eq("id", venueId)
+    .in("organisation_id", orgIds)
+    .limit(1);
+  if (!venues?.length) {
+    throw new AppError("FORBIDDEN", "Outside this Venue's operating scope", {
+      status: 403,
+    });
+  }
+}
+
 async function emitCxEvent(
   client: SupabaseClient,
   eventType: string,
@@ -769,6 +820,20 @@ export async function redeemOffer(
     correlationId?: string;
   }
 ) {
+  const { data: claimRow } = await client
+    .from("marketplace_offer_claims")
+    .select("id,offer_event_id,marketplace_offer_events(venue_id)")
+    .eq("id", input.claimId)
+    .maybeSingle();
+  const offer = Array.isArray(claimRow?.marketplace_offer_events)
+    ? claimRow?.marketplace_offer_events[0]
+    : claimRow?.marketplace_offer_events;
+  const venueId = (offer as { venue_id?: string } | null)?.venue_id;
+  if (!venueId) {
+    throw new AppError("NOT_FOUND", "Claim not found", { status: 404 });
+  }
+  await assertVenueStaffScope(client, input.actorUserId, venueId);
+
   const hash = tokenHash(input.presentedToken);
   const { data, error } = await client.rpc("gce_marketplace_redeem_claim", {
     p_claim_id: input.claimId,
@@ -808,6 +873,20 @@ export async function checkInTicket(
     actorUserId: string;
   }
 ) {
+  const { data: ticketRow } = await client
+    .from("marketplace_tickets")
+    .select("id,event_id,marketplace_events(venue_id)")
+    .eq("id", input.ticketId)
+    .maybeSingle();
+  const event = Array.isArray(ticketRow?.marketplace_events)
+    ? ticketRow?.marketplace_events[0]
+    : ticketRow?.marketplace_events;
+  const venueId = (event as { venue_id?: string } | null)?.venue_id;
+  if (!venueId) {
+    throw new AppError("NOT_FOUND", "Ticket not found", { status: 404 });
+  }
+  await assertVenueStaffScope(client, input.actorUserId, venueId);
+
   const { data, error } = await client.rpc("gce_marketplace_ticket_check_in", {
     p_ticket_id: input.ticketId,
     p_presented_token_hash: tokenHash(input.presentedToken),

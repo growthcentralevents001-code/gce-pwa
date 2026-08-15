@@ -21,7 +21,10 @@ export function SettingsShell({
   primaryAction?: React.ReactNode;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-6xl px-4 py-8 sm:px-6", GCE_SPACING.section)}>
+    <main
+      id="main-content"
+      className={cn("mx-auto w-full max-w-6xl px-4 py-8 sm:px-6", GCE_SPACING.section)}
+    >
       <PageHeader
         title={title}
         description={description}
@@ -39,6 +42,6 @@ export function SettingsShell({
         </aside>
         <div className="min-w-0 flex-1 space-y-6">{children}</div>
       </div>
-    </div>
+    </main>
   );
 }

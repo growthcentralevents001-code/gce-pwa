@@ -113,6 +113,7 @@ export async function assertMoneyFlagsOff(client: SupabaseClient) {
 export async function discoverEvents(
   client: SupabaseClient,
   input: {
+    venueId?: string | null;
     city?: string | null;
     category?: string | null;
     q?: string | null;
@@ -138,6 +139,9 @@ export async function discoverEvents(
     .order("starts_at", { ascending: true })
     .range(offset, offset + limit - 1);
 
+  if (input.venueId) {
+    query = query.eq("venue_id", input.venueId);
+  }
   if (input.city) {
     query = query.ilike("marketplace_venues.city", input.city);
   }
@@ -229,6 +233,48 @@ export async function getEventDetail(client: SupabaseClient, eventId: string) {
       policyVersion: event.cancel_policy_version,
       note: "Refund economics pending OD-006 / professional validation",
     },
+  };
+}
+
+const PUBLIC_VENUE_UUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function isPublicVenueId(id: string): boolean {
+  return PUBLIC_VENUE_UUID.test(id);
+}
+
+/**
+ * Public Marketplace venue — active rows only.
+ * Omits payout, KYC, organisation, attribution, and other internal fields.
+ */
+export async function getPublicMarketplaceVenue(
+  client: SupabaseClient,
+  venueId: string
+) {
+  if (!isPublicVenueId(venueId)) {
+    throw new AppError("NOT_FOUND", "Venue not found", { status: 404 });
+  }
+
+  const { data, error } = await client
+    .from("marketplace_venues")
+    .select("id,display_name,city,state,address,category,status")
+    .eq("id", venueId)
+    .maybeSingle();
+
+  if (error || !data) {
+    throw new AppError("NOT_FOUND", "Venue not found", { status: 404 });
+  }
+  if (data.status !== "active") {
+    throw new AppError("NOT_FOUND", "Venue not available", { status: 404 });
+  }
+
+  return {
+    id: data.id,
+    displayName: data.display_name,
+    city: data.city,
+    state: data.state,
+    address: data.address,
+    category: data.category,
   };
 }
 

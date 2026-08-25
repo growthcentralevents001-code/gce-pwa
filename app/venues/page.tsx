@@ -61,11 +61,7 @@ export default async function PublicVenuesPage() {
             {venues.map((venue) => (
               <li key={venue.id}>
                 <Link
-                  href={
-                    venue.city
-                      ? `/events?city=${encodeURIComponent(venue.city)}`
-                      : "/events"
-                  }
+                  href={`/venues/${venue.id}`}
                   className={cn(
                     GCE_SURFACE.cardInteractive,
                     "block rounded-2xl p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -81,7 +77,7 @@ export default async function PublicVenuesPage() {
                     </p>
                   ) : null}
                   <p className="mt-3 text-sm font-medium text-primary">
-                    See events in this city
+                    View venue
                   </p>
                 </Link>
               </li>

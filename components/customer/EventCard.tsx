@@ -27,14 +27,17 @@ export type EventCardModel = {
  */
 export function EventCard({
   event,
+  href,
   className,
 }: {
   event: EventCardModel;
+  href?: string;
   className?: string;
 }) {
   const reduce = useReducedMotion();
   const venue = venueDisplayName(event.venue);
   const price = formatInrMinor(event.priceMinor, event.currency ?? "INR");
+  const to = href ?? `/customer/events/${event.id}`;
 
   return (
     <motion.article
@@ -49,7 +52,7 @@ export function EventCard({
       transition={{ type: "spring", stiffness: 380, damping: 28 }}
     >
       <Link
-        href={`/customer/events/${event.id}`}
+        href={to}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-orange-100 via-amber-50 to-orange-50 dark:from-orange-950/40 dark:via-neutral-900 dark:to-orange-950/20">

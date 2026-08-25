@@ -2,7 +2,8 @@ import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE } from "@/lib/frontend/design-language";
+import { cn } from "@/lib/utils";
 
 export const metadata = publicMetadata({
   title: "GCE Enterprise",
@@ -15,8 +16,7 @@ export default function EnterpriseLandingPage() {
   return (
     <>
       <MarketingHero
-        eyebrow="GCE Enterprise"
-        headline="Programmes designed with commercial clarity"
+        headline="Enterprise — programmes with commercial clarity"
         description="GCE Enterprise supports organisational engagements through quotations, milestones, and componentised settlement rules. GCE does not automatically physically execute every project."
         primaryCta={{ label: "Talk to us", href: "/contact" }}
         secondaryCta={{ label: "Partner pathways", href: "/for-partners" }}
@@ -36,10 +36,12 @@ export default function EnterpriseLandingPage() {
             },
           ].map((item, i) => (
             <AnimatedSection key={item.t} delay={i * 0.05}>
-              <GlassPanel className="h-full p-6">
+              <div className={cn(GCE_SURFACE.card, "h-full rounded-2xl p-6")}>
                 <h2 className="font-body text-lg font-semibold">{item.t}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{item.d}</p>
-              </GlassPanel>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {item.d}
+                </p>
+              </div>
             </AnimatedSection>
           ))}
         </div>

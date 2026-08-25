@@ -29,7 +29,7 @@ export function AuthPanel({
 }: AuthPanelProps) {
   return (
     <div className="relative mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-8 px-4 py-10 lg:grid-cols-2 lg:px-6">
-      <aside className="relative hidden overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/15 via-background to-info/10 p-10 lg:flex lg:min-h-[32rem] lg:flex-col lg:justify-between">
+      <aside className="relative hidden overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/15 via-background to-secondary/10 p-10 lg:flex lg:min-h-[32rem] lg:flex-col lg:justify-between">
         <div>
           <p className={typography.brandMark}>GCE Events</p>
           <h2 className="mt-6 font-body text-3xl font-semibold tracking-tight text-foreground">
@@ -37,15 +37,15 @@ export function AuthPanel({
           </h2>
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             The platform layer for curated networking, marketplace experiences,
-            and enterprise programmes — operated by Logixia Solutions Private
-            Limited.
+            and enterprise programmes. Intended operator: Logixia Solutions
+            Private Limited (incorporation pending).
           </p>
         </div>
         <ul className="space-y-3 text-sm text-foreground">
           {brandPoints.map((point) => (
             <li
               key={point}
-              className="flex items-start gap-2 rounded-xl border border-white/40 bg-white/50 px-3 py-2 backdrop-blur-sm"
+              className="flex items-start gap-2 rounded-xl border border-border bg-card/70 px-3 py-2 backdrop-blur-sm dark:bg-card/90"
             >
               <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
               {point}

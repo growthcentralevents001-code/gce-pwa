@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE } from "@/lib/frontend/design-language";
+import { cn } from "@/lib/utils";
 
 export const metadata = publicMetadata({
   title: "GCE Marketplace",
@@ -15,40 +17,52 @@ export default function MarketplaceLandingPage() {
   return (
     <>
       <MarketingHero
-        eyebrow="GCE Marketplace"
-        headline="Events, Offers, and venue experiences"
-        description="Browse published marketplace inventory publicly, then continue into the canonical customer journey for booking and claims. Marketplace Affiliate is not an active pathway."
+        headline="Marketplace — events, offers, venues"
+        description="Browse published marketplace inventory, then continue into the customer journey for booking and claims. Marketplace Affiliate is not an active pathway."
         primaryCta={{ label: "Browse Events", href: "/events" }}
         secondaryCta={{ label: "Browse Offers", href: "/offers" }}
         compact
       />
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2">
           {[
             {
               t: "Events",
-              d: "Public discovery and SEO wrappers share the same marketplace truth as Customer CX.",
+              d: "Public discovery shares the same published inventory as the customer experience.",
               href: "/events",
+              wide: true,
             },
             {
               t: "Offers",
-              d: "Offer listings lead into customer claim flows — no parallel redemption engine.",
+              d: "Offer listings lead into customer claim flows — claiming is not a purchase.",
               href: "/offers",
+              wide: false,
             },
             {
               t: "Venues",
-              d: "Explore published venues. Venue partner applications remain approval-based.",
+              d: "Explore active venues. Partner applications remain approval-based.",
               href: "/venues",
+              wide: false,
             },
           ].map((item, i) => (
-            <AnimatedSection key={item.t} delay={i * 0.05}>
-              <a href={item.href} className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <GlassPanel className="h-full p-5 transition-transform duration-300 hover:-translate-y-1">
-                  <h2 className="font-body text-lg font-semibold">{item.t}</h2>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.d}</p>
-                </GlassPanel>
-              </a>
+            <AnimatedSection
+              key={item.t}
+              delay={i * 0.05}
+              className={item.wide ? "md:col-span-2" : undefined}
+            >
+              <Link
+                href={item.href}
+                className={cn(
+                  GCE_SURFACE.cardInteractive,
+                  "block h-full rounded-2xl p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                )}
+              >
+                <h2 className="font-body text-lg font-semibold">{item.t}</h2>
+                <p className="mt-2 max-w-prose text-sm text-muted-foreground">
+                  {item.d}
+                </p>
+              </Link>
             </AnimatedSection>
           ))}
         </div>
@@ -58,7 +72,7 @@ export default function MarketplaceLandingPage() {
         title="Operate on the Marketplace"
         description="Venue and Marketplace BDP pathways start as applications. Privileged roles are assigned after review."
         primary={{ label: "For Partners", href: "/for-partners" }}
-        secondary={{ label: "Customer app", href: "/customer" }}
+        secondary={{ label: "Browse events", href: "/events" }}
       />
     </>
   );

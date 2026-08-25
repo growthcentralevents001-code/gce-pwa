@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
+import { PageAtmosphere } from "@/components/marketing/PageAtmosphere";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
-import { CtaBand } from "@/components/marketing/CtaBand";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { createServerSupabaseClient } from "@/lib/supabase/clients";
+import { resolveSignedInMembershipCta } from "@/lib/frontend/connect/membershipCta";
 
 export const metadata = publicMetadata({
   title: "GCE Connect",
@@ -18,45 +20,65 @@ export const metadata = publicMetadata({
   path: "/connect",
 });
 
-export default function ConnectLandingPage() {
+const FEATURES = [
+  {
+    t: "Circles",
+    d: "Capacity-managed Circles with clear membership lifecycle — activation and Circle allocation remain separate.",
+  },
+  {
+    t: "Specialisation & Tags",
+    d: "Business specialisation and limited Tags keep introductions relevant. Surprises are priced by canonical rules.",
+  },
+  {
+    t: "Lead Assist",
+    d: "In-app referral workflows for members. Paid Lead Assist commercial activation remains gated until Founder approval.",
+  },
+] as const;
+
+/**
+ * Connect landing — Zoom-style continuous atmosphere (brand orange wash).
+ */
+export default async function ConnectLandingPage() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const signedInCta = user
+    ? await resolveSignedInMembershipCta(user.id)
+    : null;
+
   return (
-    <>
+    <div className="relative isolate">
+      <PageAtmosphere />
+
       <MarketingHero
-        eyebrow="GCE Connect"
-        headline="Curated business networking that stays structured"
+        headline="Connect — curated business networking"
         description="Join Circles organised around geography and specialisation. Share referrals in-app, manage Tags, and grow through disciplined networking — not spam."
         primaryCta={{ label: "View memberships", href: "/memberships" }}
         secondaryCta={{ label: "How Circles work", href: "/the-circle" }}
         compact
+        seamless
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            {
-              t: "Circles",
-              d: "Capacity-managed Circles with clear membership lifecycle — activation and Circle allocation remain separate.",
-            },
-            {
-              t: "Specialisation & Tags",
-              d: "Business specialisation and limited Tags keep introductions relevant. Surprises are priced by canonical rules.",
-            },
-            {
-              t: "Lead Assist",
-              d: "In-app referral workflows for members. Paid Lead Assist commercial activation remains gated until Founder approval.",
-            },
-          ].map((item, i) => (
+      <section className="mx-auto max-w-7xl px-4 pb-6 pt-4 sm:px-6">
+        <div className="grid gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-[1.2fr_1fr_1fr]">
+          {FEATURES.map((item, i) => (
             <AnimatedSection key={item.t} delay={i * 0.05}>
-              <GlassPanel className="h-full p-5">
-                <h2 className="font-body text-lg font-semibold">{item.t}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{item.d}</p>
-              </GlassPanel>
+              <h2 className="font-body text-lg font-semibold text-foreground">
+                {item.t}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {item.d}
+              </p>
             </AnimatedSection>
           ))}
         </div>
 
-        <AnimatedSection className="mt-12">
-          <h2 className="font-body text-xl font-semibold">Good to know</h2>
+        <AnimatedSection className="mt-16">
+          <h2 className="font-body text-xl font-semibold text-foreground">
+            Good to know
+          </h2>
           <Accordion type="single" collapsible className="mt-4 max-w-2xl">
             <AccordionItem value="pricing">
               <AccordionTrigger>Membership pricing</AccordionTrigger>
@@ -84,18 +106,39 @@ export default function ConnectLandingPage() {
         </AnimatedSection>
       </section>
 
-      <CtaBand
-        title="Ready to join Connect?"
-        description="Create your GCE identity first, then start membership onboarding through approved flows."
-        primary={{ label: "Create account", href: "/signup" }}
-        secondary={{ label: "Partner pathways", href: "/for-partners" }}
-      />
-      <p className="pb-8 text-center text-sm text-muted-foreground">
-        Prefer Circles detail?{" "}
-        <Link href="/the-circle" className="text-primary hover:underline">
-          Read about Circles
-        </Link>
-      </p>
-    </>
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6">
+        <AnimatedSection>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-xl">
+              <h2 className="font-body text-2xl font-semibold text-foreground sm:text-3xl">
+                Ready to join Connect?
+              </h2>
+              <p className="mt-3 text-muted-foreground">
+                {signedInCta
+                  ? "Continue membership onboarding through approved flows. Online Associate purchase is not live yet — account, paid membership, and Circle seat stay separate."
+                  : "Create your GCE identity first, then start membership onboarding through approved flows."}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button asChild size="lg" className="min-h-11">
+                <Link href={signedInCta?.href ?? "/signup"}>
+                  {signedInCta ? signedInCta.heroLabel : "Create account"}
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="min-h-11">
+                <Link href="/for-partners">Partner pathways</Link>
+              </Button>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <p className="mt-10 pb-4 text-center text-sm text-muted-foreground">
+          Prefer Circles detail?{" "}
+          <Link href="/the-circle" className="text-primary hover:underline">
+            Read about Circles
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

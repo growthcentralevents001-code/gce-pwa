@@ -1,52 +1,221 @@
 "use client";
 
-import { useRef } from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import {
   motion,
   useMotionValue,
   useSpring,
   useTransform,
   useReducedMotion,
+  type MotionValue,
 } from "motion/react";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
-const COLORS = {
+const LIGHT = {
   primary: "#EA580C",
   secondary: "#F97316",
-  accent: "#2563EB",
   onPrimary: "#FFFFFF",
+  /** Same as body --background: 33 100% 97% */
+  background: "hsl(33 100% 97%)",
+  soft: "hsl(33 100% 92%)",
   foreground: "#0F172A",
+  muted: "rgba(15,23,42,0.72)",
+  veil: `
+    radial-gradient(ellipse 70% 55% at 50% 42%, hsl(33 100% 97% / 0.92) 0%, hsl(33 100% 97% / 0.55) 45%, hsl(33 100% 97% / 0.12) 70%, transparent 100%)
+  `,
+  bottomFade: `
+    linear-gradient(to bottom, transparent 0%, transparent 62%, hsl(33 100% 97% / 0.55) 82%, hsl(33 100% 97%) 100%)
+  `,
+  secondaryCtaBg: "#FFFFFF",
+  secondaryCtaHover: "#FFF7ED",
 } as const;
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2400&q=80";
+const DARK = {
+  primary: "#F97316",
+  secondary: "#FB923C",
+  onPrimary: "#FFFFFF",
+  /** Same as body --background: 0 0% 0% */
+  background: "hsl(0 0% 0%)",
+  soft: "hsl(0 0% 4%)",
+  foreground: "#F8FAFC",
+  muted: "rgba(248,250,252,0.72)",
+  veil: `
+    radial-gradient(ellipse 70% 55% at 50% 42%, hsl(0 0% 0% / 0.88) 0%, hsl(0 0% 0% / 0.5) 45%, hsl(0 0% 0% / 0.12) 70%, transparent 100%)
+  `,
+  bottomFade: `
+    linear-gradient(to bottom, transparent 0%, transparent 62%, hsl(0 0% 0% / 0.55) 82%, hsl(0 0% 0%) 100%)
+  `,
+  secondaryCtaBg: "transparent",
+  secondaryCtaHover: "rgba(249,115,22,0.12)",
+} as const;
 
 const SPRING = { stiffness: 90, damping: 22, mass: 0.35 };
+const BAR_COUNT = 15;
+
+type Palette = typeof LIGHT | typeof DARK;
+
+type GradientBarProps = {
+  index: number;
+  total: number;
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+  reduceMotion: boolean | null;
+  colors: Palette;
+};
+
+function GradientBar({
+  index,
+  total,
+  mouseX,
+  mouseY,
+  reduceMotion,
+  colors,
+}: GradientBarProps) {
+  const position = index / (total - 1);
+  const center = 0.5;
+  const distanceFromCenter = Math.abs(position - center);
+  const baseHeight =
+    0.32 + Math.pow(distanceFromCenter * 2, 1.15) * 0.68;
+  const pulseDelta = 0.08 + (index % 3) * 0.015;
+
+  const mouseScale = useTransform([mouseX, mouseY], ([x, y]) => {
+    if (reduceMotion) return 1;
+    const mx = typeof x === "number" ? x : 0;
+    const my = typeof y === "number" ? y : 0;
+    const cursorPos = mx + 0.5;
+    const proximity = 1 - Math.min(1, Math.abs(position - cursorPos) * 2.4);
+    const intensity = 0.55 + Math.abs(my) * 0.9;
+    const boost = proximity * proximity * intensity * 0.45;
+    return 1 + boost;
+  });
+
+  const opacity = useTransform(mouseScale, [1, 1.45], [0.7, 0.95]);
+
+  return (
+    <motion.div
+      aria-hidden
+      initial={reduceMotion ? false : { scaleY: 0.2, opacity: 0 }}
+      animate={
+        reduceMotion
+          ? { scaleY: baseHeight, opacity: 0.75 }
+          : {
+              scaleY: [
+                baseHeight,
+                Math.min(1.05, baseHeight + pulseDelta),
+                baseHeight,
+              ],
+              opacity: 1,
+            }
+      }
+      transition={
+        reduceMotion
+          ? { duration: 0.4 }
+          : {
+              scaleY: {
+                duration: 2.4 + (index % 4) * 0.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: index * 0.1,
+              },
+              opacity: { delay: index * 0.04, duration: 0.55, ease: "easeOut" },
+            }
+      }
+      style={{
+        flex: `1 0 calc(100% / ${total})`,
+        maxWidth: `calc(100% / ${total})`,
+        height: "100%",
+        transformOrigin: "bottom",
+        willChange: reduceMotion ? undefined : "transform",
+      }}
+    >
+      <motion.div
+        style={{
+          width: "100%",
+          height: "100%",
+          transformOrigin: "bottom",
+          scaleY: reduceMotion ? 1 : mouseScale,
+          opacity: reduceMotion ? 0.75 : opacity,
+          background: `linear-gradient(to top, ${colors.primary} 0%, ${colors.secondary} 42%, rgba(255,255,255,0) 100%)`,
+          willChange: reduceMotion ? undefined : "transform, opacity",
+        }}
+      />
+    </motion.div>
+  );
+}
+
+function GradientBars({
+  mouseX,
+  mouseY,
+  reduceMotion,
+  colors,
+}: {
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+  reduceMotion: boolean | null;
+  colors: Palette;
+}) {
+  const bars = useMemo(
+    () => Array.from({ length: BAR_COUNT }, (_, index) => index),
+    [],
+  );
+
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 0,
+        overflow: "hidden",
+        pointerEvents: "none",
+        maskImage:
+          "linear-gradient(to bottom, #000 0%, #000 55%, rgba(0,0,0,0.45) 78%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, #000 0%, #000 55%, rgba(0,0,0,0.45) 78%, transparent 100%)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+          transform: "translateZ(0)",
+          alignItems: "stretch",
+        }}
+      >
+        {bars.map((index) => (
+          <GradientBar
+            key={index}
+            index={index}
+            total={BAR_COUNT}
+            mouseX={mouseX}
+            mouseY={mouseY}
+            reduceMotion={reduceMotion}
+            colors={colors}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function HeroBanner() {
   const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const colors = mounted && resolvedTheme === "dark" ? DARK : LIGHT;
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, SPRING);
   const springY = useSpring(mouseY, SPRING);
-
-  const bgX = useTransform(springX, [-0.5, 0.5], ["5%", "-5%"]);
-  const bgY = useTransform(springY, [-0.5, 0.5], ["4%", "-4%"]);
-  const shapeX = useTransform(springX, [-0.5, 0.5], [-56, 56]);
-  const shapeY = useTransform(springY, [-0.5, 0.5], [-40, 40]);
-  const shapeRotate = useTransform(springX, [-0.5, 0.5], [-8, 8]);
-  const accentX = useTransform(springX, [-0.5, 0.5], [24, -24]);
-  const accentY = useTransform(springY, [-0.5, 0.5], [18, -18]);
-  const contentX = useTransform(springX, [-0.5, 0.5], [-14, 14]);
-  const contentY = useTransform(springY, [-0.5, 0.5], [-10, 10]);
-  const contentRotateX = useTransform(springY, [-0.5, 0.5], [5, -5]);
-  const contentRotateY = useTransform(springX, [-0.5, 0.5], [-6, 6]);
-  const glowX = useTransform(springX, [-0.5, 0.5], ["18%", "82%"]);
-  const glowY = useTransform(springY, [-0.5, 0.5], ["22%", "78%"]);
-  const stripeX = useTransform(springX, [-0.5, 0.5], [-18, 18]);
 
   const enter = (delay = 0) =>
     reduceMotion
@@ -81,142 +250,61 @@ export default function HeroBanner() {
         width: "100%",
         minHeight: "min(78vh, 720px)",
         display: "flex",
-        alignItems: "flex-end",
+        alignItems: "center",
+        justifyContent: "center",
         overflow: "hidden",
-        backgroundColor: COLORS.foreground,
-        perspective: reduceMotion ? undefined : 1200,
-        ["--color-primary" as string]: COLORS.primary,
-        ["--color-secondary" as string]: COLORS.secondary,
-        ["--color-accent" as string]: COLORS.accent,
+        backgroundColor: colors.background,
+        /* Soft atmosphere at top; solid page color by the bottom edge */
+        backgroundImage: `linear-gradient(180deg, ${colors.soft} 0%, ${colors.background} 72%, ${colors.background} 100%)`,
+        transition: reduceMotion
+          ? undefined
+          : "background-color 280ms ease, background-image 280ms ease",
+        ["--color-primary" as string]: colors.primary,
+        ["--color-secondary" as string]: colors.secondary,
       }}
     >
-      <motion.div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: "-8%",
-          x: reduceMotion ? 0 : bgX,
-          y: reduceMotion ? 0 : bgY,
-          backgroundImage: `
-            linear-gradient(115deg, rgba(15,23,42,0.82) 0%, rgba(234,88,12,0.55) 48%, rgba(15,23,42,0.45) 100%),
-            linear-gradient(to top, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.25) 42%, transparent 70%),
-            url(${HERO_IMAGE})
-          `,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          willChange: "transform",
-        }}
+      <GradientBars
+        mouseX={springX}
+        mouseY={springY}
+        reduceMotion={reduceMotion}
+        colors={colors}
       />
 
-      {!reduceMotion && (
-        <motion.div
-          aria-hidden
-          style={{
-            position: "absolute",
-            width: "min(55vw, 480px)",
-            height: "min(55vw, 480px)",
-            left: glowX,
-            top: glowY,
-            x: "-50%",
-            y: "-50%",
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${COLORS.secondary}55 0%, ${COLORS.accent}22 35%, transparent 70%)`,
-            pointerEvents: "none",
-            mixBlendMode: "screen",
-            willChange: "left, top",
-          }}
-        />
-      )}
-
-      <motion.div
+      {/* Readability veil over mid hero (does not create a hard bottom edge) */}
+      <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
+          zIndex: 1,
           pointerEvents: "none",
-          x: reduceMotion ? 0 : stripeX,
-          backgroundImage: `
-            linear-gradient(90deg, ${COLORS.primary} 0 12px, transparent 12px),
-            linear-gradient(0deg, ${COLORS.accent}22 0%, transparent 35%)
-          `,
-          opacity: 0.9,
+          background: colors.veil,
+          transition: reduceMotion ? undefined : "background 280ms ease",
         }}
       />
 
-      <motion.div
+      {/* Bottom dissolve into page background */}
+      <div
         aria-hidden
-        initial={reduceMotion ? false : { opacity: 0, scale: 0.9 }}
-        animate={
-          reduceMotion
-            ? { opacity: 0.55, scale: 1 }
-            : { opacity: [0.45, 0.65, 0.45], scale: 1 }
-        }
-        transition={
-          reduceMotion
-            ? { duration: 0.4 }
-            : {
-                opacity: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
-                duration: 0.5,
-                delay: 0.12,
-              }
-        }
         style={{
           position: "absolute",
-          right: "8%",
-          top: "18%",
-          width: "min(28vw, 220px)",
-          height: "min(28vw, 220px)",
-          x: reduceMotion ? 0 : shapeX,
-          y: reduceMotion ? 0 : shapeY,
-          rotate: reduceMotion ? 0 : shapeRotate,
-          background: `linear-gradient(145deg, ${COLORS.secondary}, ${COLORS.primary})`,
-          clipPath: "polygon(18% 0, 100% 0, 100% 82%, 0 100%)",
-          mixBlendMode: "screen",
-          willChange: "transform",
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          background: colors.bottomFade,
+          transition: reduceMotion ? undefined : "background 280ms ease",
         }}
       />
 
-      {!reduceMotion && (
-        <motion.div
-          aria-hidden
-          style={{
-            position: "absolute",
-            left: "62%",
-            bottom: "28%",
-            x: accentX,
-            y: accentY,
-            pointerEvents: "none",
-          }}
-        >
-          <motion.div
-            animate={{ y: [0, -14, 0], rotate: [12, 18, 12] }}
-            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              width: "min(12vw, 96px)",
-              height: "min(12vw, 96px)",
-              background: COLORS.accent,
-              opacity: 0.35,
-              clipPath: "polygon(0 18%, 100% 0, 82% 100%, 0 100%)",
-              mixBlendMode: "screen",
-            }}
-          />
-        </motion.div>
-      )}
-
-      <motion.div
+      <div
         style={{
           position: "relative",
-          zIndex: 1,
+          zIndex: 2,
           width: "100%",
-          maxWidth: "1280px",
+          maxWidth: "800px",
           margin: "0 auto",
-          padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 40px)",
-          x: reduceMotion ? 0 : contentX,
-          y: reduceMotion ? 0 : contentY,
-          rotateX: reduceMotion ? 0 : contentRotateX,
-          rotateY: reduceMotion ? 0 : contentRotateY,
-          transformStyle: "preserve-3d",
-          willChange: reduceMotion ? undefined : "transform",
+          padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 40px) clamp(64px, 10vw, 112px)",
+          textAlign: "center",
         }}
       >
         <motion.p
@@ -226,9 +314,9 @@ export default function HeroBanner() {
             fontSize: "clamp(2.75rem, 8vw, 5.5rem)",
             lineHeight: 0.95,
             letterSpacing: "0.02em",
-            color: COLORS.onPrimary,
+            color: colors.primary,
             margin: "0 0 20px",
-            textShadow: reduceMotion ? undefined : "0 12px 40px rgba(0,0,0,0.35)",
+            transition: reduceMotion ? undefined : "color 280ms ease",
           }}
         >
           GCE
@@ -238,15 +326,17 @@ export default function HeroBanner() {
           {...enter(0.08)}
           style={{
             fontFamily: "var(--font-body, Poppins, sans-serif)",
-            fontSize: "clamp(1.5rem, 3.6vw, 2.35rem)",
+            fontSize: "clamp(1.35rem, 3.4vw, 2.15rem)",
             fontWeight: 700,
-            lineHeight: 1.2,
-            color: COLORS.onPrimary,
-            maxWidth: "18ch",
-            margin: "0 0 14px",
+            lineHeight: 1.25,
+            color: colors.foreground,
+            maxWidth: "100%",
+            margin: "0 auto 14px",
+            textWrap: "balance",
+            transition: reduceMotion ? undefined : "color 280ms ease",
           }}
         >
-          Discover events that bring people together
+          (GCE) Growth Central Events — Connect. Discover. Collaborate. Grow.
         </motion.h1>
 
         <motion.p
@@ -255,13 +345,17 @@ export default function HeroBanner() {
             fontFamily: "var(--font-body, Poppins, sans-serif)",
             fontSize: "clamp(1rem, 2vw, 1.125rem)",
             fontWeight: 400,
-            lineHeight: 1.55,
-            color: "rgba(255,255,255,0.9)",
-            maxWidth: "36ch",
-            margin: "0 0 28px",
+            lineHeight: 1.6,
+            color: colors.muted,
+            maxWidth: "42em",
+            margin: "0 auto 28px",
+            transition: reduceMotion ? undefined : "color 280ms ease",
           }}
         >
-          Find networking, learning, and entertainment near you—built for India&apos;s event community.
+          Connect and grow your business with the right people through GCE
+          Connect, discover curated Marketplace and Offer Events through GCE
+          Marketplace, and explore bigger business growth opportunities through
+          GCE Enterprise.
         </motion.p>
 
         <motion.div
@@ -270,80 +364,32 @@ export default function HeroBanner() {
             display: "flex",
             flexWrap: "wrap",
             gap: "12px",
+            justifyContent: "center",
           }}
         >
           <motion.div
-            whileHover={reduceMotion ? undefined : { scale: 1.04, y: -2 }}
             whileTap={reduceMotion ? undefined : { scale: 0.97 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
           >
-            <Link
+            <InteractiveHoverButton
+              text="Explore Events"
               href="/events"
-              className="cursor-pointer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: COLORS.onPrimary,
-                color: COLORS.primary,
-                padding: "14px 26px",
-                textDecoration: "none",
-                fontFamily: "var(--font-body, Poppins, sans-serif)",
-                fontWeight: 600,
-                fontSize: "15px",
-                transition: "background-color 200ms ease, color 200ms ease",
-                outlineOffset: "3px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = COLORS.accent;
-                e.currentTarget.style.color = COLORS.onPrimary;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = COLORS.onPrimary;
-                e.currentTarget.style.color = COLORS.primary;
-              }}
-            >
-              Explore Events <ArrowRight size={16} aria-hidden />
-            </Link>
+              variant="primary"
+            />
           </motion.div>
 
           <motion.div
-            whileHover={reduceMotion ? undefined : { scale: 1.04, y: -2 }}
             whileTap={reduceMotion ? undefined : { scale: 0.97 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
           >
-            <Link
-              href="/signup"
-              className="cursor-pointer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "transparent",
-                color: COLORS.onPrimary,
-                padding: "14px 26px",
-                textDecoration: "none",
-                fontFamily: "var(--font-body, Poppins, sans-serif)",
-                fontWeight: 500,
-                fontSize: "15px",
-                border: "1.5px solid rgba(255,255,255,0.65)",
-                transition: "border-color 200ms ease, background-color 200ms ease",
-                outlineOffset: "3px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-                e.currentTarget.style.borderColor = COLORS.onPrimary;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.65)";
-              }}
-            >
-              Become a Member
-            </Link>
+            <InteractiveHoverButton
+              text="Become a Member"
+              href="/memberships"
+              variant="outline"
+            />
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

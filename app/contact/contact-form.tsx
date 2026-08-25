@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE } from "@/lib/frontend/design-language";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,9 +20,8 @@ export function ContactForm() {
   return (
     <>
       <MarketingHero
-        eyebrow="Contact"
         headline="Talk to the GCE team"
-        description="Questions about Connect, Marketplace, or Enterprise? Share a message — live intake API is not yet wired."
+        description="Questions about Connect, Marketplace, or Enterprise? Live contact intake is not wired yet — this form does not send a message."
         compact
       />
       <section className="mx-auto max-w-xl px-4 py-12 sm:px-6">
@@ -32,7 +31,7 @@ export function ContactForm() {
           description="A canonical support/contact API is not available yet. Your message is not sent from this browser form."
           className="mb-6"
         />
-        <GlassPanel className="p-6">
+        <div className={`${GCE_SURFACE.card} rounded-2xl p-6`}>
           <form
             className="space-y-4"
             onSubmit={(e) => {
@@ -71,7 +70,7 @@ export function ContactForm() {
               </AlertDescription>
             </Alert>
           ) : null}
-        </GlassPanel>
+        </div>
       </section>
     </>
   );

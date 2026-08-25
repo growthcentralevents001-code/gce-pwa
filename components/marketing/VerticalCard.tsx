@@ -28,10 +28,11 @@ type VerticalCardProps = {
   accent?: "connect" | "marketplace" | "enterprise";
 };
 
+/** Orange-only accent rings — intensity varies by vertical, not hue family. */
 const accentRing = {
-  connect: "from-orange-500/20 to-amber-400/10 hover:border-primary/40",
-  marketplace: "from-blue-500/15 to-orange-400/10 hover:border-info/40",
-  enterprise: "from-slate-500/15 to-orange-400/10 hover:border-foreground/20",
+  connect: "from-primary/25 to-secondary/10 hover:border-primary/50",
+  marketplace: "from-secondary/20 to-primary/10 hover:border-secondary/40",
+  enterprise: "from-primary/15 to-muted hover:border-primary/30",
 } as const;
 
 export function VerticalCard({
@@ -48,8 +49,8 @@ export function VerticalCard({
   const inner = (
     <GlassPanel
       className={cn(
-        "group relative h-full overflow-hidden p-6 transition-all duration-300",
-        "hover:-translate-y-1 hover:shadow-xl",
+        "group relative h-full overflow-hidden p-6 transition-colors duration-300",
+        "hover:-translate-y-0.5",
         "bg-gradient-to-br",
         accentRing[accent]
       )}

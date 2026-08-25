@@ -1,123 +1,76 @@
 import Link from "next/link";
-import { CalendarDays, Tag } from "lucide-react";
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
-import { MarketingHero } from "@/components/marketing/MarketingHero";
-import { VerticalCard } from "@/components/marketing/VerticalCard";
+import HeroBanner from "@/app/components/HeroBanner";
+import { VerticalShowcase } from "@/components/marketing/VerticalShowcase";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
-import { CtaBand } from "@/components/marketing/CtaBand";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { PageAtmosphere } from "@/components/marketing/PageAtmosphere";
+import { ParallaxLayer } from "@/components/marketing/ParallaxLayer";
+import { Button } from "@/components/ui/button";
+
+/**
+ * Dissolves the wash into the hero above and the footer below. The hero already
+ * resolves to `--background` at its bottom edge, so a transparent start here
+ * means the two meet on the same colour with no seam.
+ */
+const WASH_FEATHER =
+  "linear-gradient(to bottom, transparent 0%, black 26%, black 74%, transparent 100%)";
 
 export const metadata = publicMetadata({
   title: "GCE Events",
   description:
-    "Growth Central Events — curated business networking (Connect), marketplace experiences, and enterprise programmes.",
+    "Growth Central Events — Connect. Discover. Collaborate. Grow. Structured networking, Marketplace events and offers, and Enterprise programmes across India.",
   path: "/",
 });
 
 /**
- * PUB-01 Home — Batch 1 rebuild.
- * Replaces legacy Home + HeroBanner composition with MASTER-aligned marketing.
+ * PUB-01 Home — hero dissolving into one continuous brand wash.
+ * Homepage features the three GCE verticals only.
  */
 export default function HomePage() {
   return (
     <>
-      <MarketingHero
-        eyebrow="Growth Central Events"
-        headline="Where business networks meet marketplace experiences"
-        description="GCE connects curated Circles, discovers Events & Offers, and supports enterprise programmes — one platform under Logixia Solutions Private Limited."
-        primaryCta={{ label: "Explore Events", href: "/events" }}
-        secondaryCta={{ label: "Join GCE", href: "/signup" }}
-        showBrandHierarchy
-      />
+      <HeroBanner />
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <AnimatedSection>
-          <h2 className="font-body text-2xl font-semibold text-foreground sm:text-3xl">
-            Three verticals. One GCE.
-          </h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Sub-brands stay inside their parent vertical — never peer master
-            companies.
-          </p>
-        </AnimatedSection>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <AnimatedSection delay={0.05}>
-            <VerticalCard
-              eyebrow="Vertical 1"
-              title="GCE Connect"
-              description="Curated business networking Circles, structured referrals, and in-app Lead Assist for members."
-              href="/connect"
-              icon="users"
-              accent="connect"
-            />
-          </AnimatedSection>
-          <AnimatedSection delay={0.1}>
-            <VerticalCard
-              eyebrow="Vertical 2"
-              title="GCE Marketplace"
-              description="Discover Events, Offers, and venue experiences — booking continues in the customer journey."
-              href="/marketplace"
-              icon="store"
-              accent="marketplace"
-            />
-          </AnimatedSection>
-          <AnimatedSection delay={0.15}>
-            <VerticalCard
-              eyebrow="Vertical 3"
-              title="GCE Enterprise"
-              description="Programme design and commercial architecture for organisations — scoped engagements, not blank guarantees."
-              href="/enterprise"
-              icon="briefcase"
-              accent="enterprise"
-            />
-          </AnimatedSection>
+      <div className="relative">
+        {/* Full-bleed brand wash — edge to edge, feathered top and bottom.
+            The feather is anchored to the section; only the orbs drift. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{ maskImage: WASH_FEATHER, WebkitMaskImage: WASH_FEATHER }}
+        >
+          <ParallaxLayer className="absolute inset-x-0 -inset-y-20" distance={50}>
+            <PageAtmosphere heightClassName="h-full" className="z-0 opacity-80" />
+          </ParallaxLayer>
         </div>
-      </section>
 
-      <section className="border-y border-border bg-card/40 py-16">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-2">
+        <VerticalShowcase />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 sm:px-6">
           <AnimatedSection>
-            <GlassPanel className="h-full p-6 transition-transform duration-300 hover:-translate-y-0.5">
-              <CalendarDays className="h-6 w-6 text-primary" aria-hidden />
-              <h3 className="mt-3 font-body text-lg font-semibold">Events</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Browse published marketplace events. Ticket purchase and seat
-                truth live in the customer experience — not a second booking
-                engine.
-              </p>
-              <Link
-                href="/events"
-                className="mt-4 inline-block text-sm font-medium text-primary hover:underline"
-              >
-                View events
-              </Link>
-            </GlassPanel>
-          </AnimatedSection>
-          <AnimatedSection delay={0.08}>
-            <GlassPanel className="h-full p-6 transition-transform duration-300 hover:-translate-y-0.5">
-              <Tag className="h-6 w-6 text-info" aria-hidden />
-              <h3 className="mt-3 font-body text-lg font-semibold">Offers</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Discover marketplace offers and continue into the canonical
-                customer claim path when you are ready.
-              </p>
-              <Link
-                href="/offers"
-                className="mt-4 inline-block text-sm font-medium text-primary hover:underline"
-              >
-                View offers
-              </Link>
-            </GlassPanel>
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-xl">
+                <h2 className="font-body text-2xl font-semibold text-foreground sm:text-3xl">
+                  Build with GCE as a partner
+                </h2>
+                <p className="mt-3 text-muted-foreground">
+                  Connect BDP, Marketplace BDP, Venue, and Enterprise pathways
+                  start as applications — privileged roles are never
+                  self-granted.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild size="lg" className="min-h-11">
+                  <Link href="/for-partners">For Partners</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="min-h-11">
+                  <Link href="/memberships">Memberships</Link>
+                </Button>
+              </div>
+            </div>
           </AnimatedSection>
         </div>
-      </section>
-
-      <CtaBand
-        title="Build with GCE as a partner"
-        description="Connect BDP, Marketplace BDP, Venue, and Enterprise pathways start as applications — privileged roles are never self-granted."
-        primary={{ label: "For Partners", href: "/for-partners" }}
-        secondary={{ label: "Memberships", href: "/memberships" }}
-      />
+      </div>
     </>
   );
 }

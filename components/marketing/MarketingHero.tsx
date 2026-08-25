@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 import { GlassPanel } from "@/components/marketing/GlassPanel";
 
 type MarketingHeroProps = {
-  eyebrow?: string;
-  /** Main headline after the GCE brand mark */
+  /** Main headline after the optional GCE brand mark */
   headline: string;
   description: string;
   primaryCta?: { label: string; href: string };
@@ -13,14 +12,20 @@ type MarketingHeroProps = {
   align?: "left" | "center";
   compact?: boolean;
   showBrandHierarchy?: boolean;
+  showBrandMark?: boolean;
+  /**
+   * When true, omit border + local gradient so a parent PageAtmosphere
+   * can paint a continuous wash behind hero + body.
+   */
+  seamless?: boolean;
 };
 
 /**
  * Full-bleed brand hero — Batch 1.
  * Atmosphere via layered gradients (no fake stats).
+ * Soft-deprecated on homepage: PUB-01 uses app/components/HeroBanner (animated bars).
  */
 export function MarketingHero({
-  eyebrow,
   headline,
   description,
   primaryCta,
@@ -28,26 +33,29 @@ export function MarketingHero({
   align = "left",
   compact,
   showBrandHierarchy = false,
+  showBrandMark = true,
+  seamless = false,
 }: MarketingHeroProps) {
   return (
     <section
       className={cn(
-        "relative isolate overflow-hidden border-b border-border",
+        "relative isolate overflow-hidden",
+        !seamless && "border-b border-border",
         compact ? "py-14 sm:py-16" : "py-16 sm:py-24"
       )}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 10% 0%, hsl(21 90% 48% / 0.18), transparent 55%), radial-gradient(ellipse 60% 50% at 90% 20%, hsl(217 91% 60% / 0.12), transparent 50%), linear-gradient(180deg, hsl(33 100% 97%), hsl(33 100% 94%))",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl"
-      />
+      {!seamless ? (
+        <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-primary/10 via-background to-background dark:from-primary/15 dark:via-background dark:to-background"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 top-10 -z-10 h-72 w-72 rounded-full bg-secondary/15 blur-3xl dark:bg-primary/20"
+          />
+        </>
+      ) : null}
 
       <div
         className={cn(
@@ -55,21 +63,25 @@ export function MarketingHero({
           align === "center" && "text-center"
         )}
       >
-        {eyebrow ? (
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            {eyebrow}
-          </p>
-        ) : null}
         <h1
           className={cn(
-            "max-w-3xl text-foreground",
+            "max-w-3xl text-balance text-foreground",
             align === "center" && "mx-auto"
           )}
         >
-          <span className="font-display text-4xl tracking-wide text-primary md:text-5xl">
-            GCE
-          </span>
-          <span className="mt-2 block font-body text-3xl font-semibold tracking-tight md:text-4xl">
+          {showBrandMark ? (
+            <span className="font-display text-4xl tracking-wide text-primary md:text-5xl">
+              GCE
+            </span>
+          ) : null}
+          <span
+            className={cn(
+              "block font-body font-semibold tracking-tight",
+              showBrandMark
+                ? "mt-2 text-3xl md:text-4xl"
+                : "text-3xl md:text-4xl"
+            )}
+          >
             {headline}
           </span>
         </h1>
@@ -109,10 +121,12 @@ export function MarketingHero({
             )}
           >
             <span className="font-medium text-foreground">
-              Logixia Solutions Private Limited → GCE
+              Growth Central Events
             </span>
             <span>
-              Three verticals: Connect · Marketplace · Enterprise
+              Intended operator: Logixia Solutions Private Limited
+              (incorporation pending). Verticals: Connect · Marketplace ·
+              Enterprise.
             </span>
           </GlassPanel>
         ) : null}

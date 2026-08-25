@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { Button } from "@/components/ui/button";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE } from "@/lib/frontend/design-language";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const INTENTS = [
@@ -69,7 +69,7 @@ function ApplyRoleInner() {
       ) : null}
       <div className="space-y-3">
         {INTENTS.map((item) => (
-          <GlassPanel key={item.id} className="p-4">
+          <div key={item.id} className={`${GCE_SURFACE.card} rounded-2xl p-4`}>
             <h2 className="font-medium text-foreground">{item.title}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {item.description}
@@ -77,7 +77,7 @@ function ApplyRoleInner() {
             <Button asChild variant="outline" className="mt-3 min-h-10">
               <Link href={item.href}>Continue</Link>
             </Button>
-          </GlassPanel>
+          </div>
         ))}
       </div>
     </AuthPanel>

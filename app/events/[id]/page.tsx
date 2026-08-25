@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE, GCE_SPACING } from "@/lib/frontend/design-language";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getEventDetail } from "@/lib/architecture/customer-cx";
@@ -54,34 +55,38 @@ export default async function PublicEventDetailPage({
   return (
     <>
       <MarketingHero
-        eyebrow={event.category ?? "Marketplace"}
+        showBrandMark={false}
         headline={event.title}
         description={`${formatWhen(event.starts_at)}${venue ? ` · ${venue}` : ""}`}
         primaryCta={{
-          label: event.soldOut ? "View in customer CX" : "Book in customer CX",
+          label: event.soldOut ? "View event" : "Continue to booking",
           href: event.soldOut
             ? `/customer/events/${event.id}`
             : `/customer/events/${event.id}/book`,
         }}
-        secondaryCta={{ label: "All events", href: "/customer/events" }}
+        secondaryCta={{ label: "All events", href: "/events" }}
         compact
       />
-      <section className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-        <GlassPanel className="p-6">
-          <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+      <section className={cn(GCE_SPACING.pageNarrow, "pt-0")}>
+        <article className={cn(GCE_SURFACE.card, "rounded-2xl p-6 sm:p-8")}>
+          {event.category ? (
+            <p className="text-sm font-medium text-primary">{event.category}</p>
+          ) : null}
+          <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
             {event.description ?? "No description."}
           </p>
           <p className="mt-4 text-sm font-medium">
             From {formatInrMinor(event.price_minor, event.currency ?? "INR")}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Booking, tickets, and payments use the canonical customer experience.
-            Live ticket payments remain gated OFF.
+            Booking, tickets, and payments use the canonical customer
+            experience. Live ticket payments remain gated off until Founder
+            activation.
           </p>
           <Button asChild className="mt-6 min-h-11">
             <Link href={`/customer/events/${event.id}`}>Open customer detail</Link>
           </Button>
-        </GlassPanel>
+        </article>
       </section>
     </>
   );

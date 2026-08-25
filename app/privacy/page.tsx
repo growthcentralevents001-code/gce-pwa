@@ -1,6 +1,5 @@
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
 
 export const metadata = publicMetadata({
   title: "Privacy Policy",
@@ -12,31 +11,37 @@ export default function PrivacyPage() {
   return (
     <>
       <MarketingHero
-        eyebrow="Legal"
+        showBrandMark={false}
         headline="Privacy"
-        description="We handle identity and profile data under platform architecture rules. Aadhaar is not mandatory by default (FD-039)."
+        description="Identity and profile data follow platform architecture. Aadhaar is not mandatory by default."
         compact
       />
-      <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-        <GlassPanel className="space-y-4 p-6 text-sm text-muted-foreground sm:p-8">
-          <p className="text-foreground font-medium">Identity & profile</p>
-          <p>
+      <section className="mx-auto max-w-3xl space-y-8 px-4 pb-16 sm:px-6">
+        <div>
+          <h2 className="font-body text-lg font-semibold">Identity and profile</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Your base account is a permanent User identity. Profile fields
             support platform operation and do not themselves confer commercial
             entitlement.
           </p>
-          <p className="text-foreground font-medium">KYC posture</p>
-          <p>
+        </div>
+        <div>
+          <h2 className="font-body text-lg font-semibold">KYC posture</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Fit-for-purpose documents (for example PAN, driving licence,
             passport, GST, bank verification) are preferred. Aadhaar is not
             mandatory by default.
           </p>
-          <p className="text-foreground font-medium">Status</p>
-          <p>
-            Full privacy policy professional validation may remain pending.
-            This page presents canonical orientation, not invented clauses.
+        </div>
+        <div>
+          <h2 className="font-body text-lg font-semibold">Status</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Full privacy-policy professional validation may remain pending.
+            Grievance-officer and DPO details will be published when the
+            operating entity is incorporated. This page presents orientation,
+            not invented clauses.
           </p>
-        </GlassPanel>
+        </div>
       </section>
     </>
   );

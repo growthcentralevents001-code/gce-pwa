@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
+import { GCE_SURFACE } from "@/lib/frontend/design-language";
 import { cn } from "@/lib/utils";
 
 type CtaBandProps = {
@@ -20,8 +20,13 @@ export function CtaBand({
 }: CtaBandProps) {
   return (
     <section className={cn("mx-auto max-w-7xl px-4 py-12 sm:px-6", className)}>
-      <GlassPanel className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-white/60 to-info/10 p-8 sm:p-10">
-        <div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div
+        className={cn(
+          GCE_SURFACE.warmHero,
+          "rounded-2xl border border-border/70 p-8 sm:p-10"
+        )}
+      >
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-xl">
             <h2 className="font-body text-2xl font-semibold text-foreground">
               {title}
@@ -41,7 +46,7 @@ export function CtaBand({
             ) : null}
           </div>
         </div>
-      </GlassPanel>
+      </div>
     </section>
   );
 }

@@ -23,14 +23,17 @@ export type OfferCardModel = {
  */
 export function OfferCard({
   offer,
+  href,
   className,
 }: {
   offer: OfferCardModel;
+  href?: string;
   className?: string;
 }) {
   const reduce = useReducedMotion();
   const venue = venueDisplayName(offer.venue);
   const remaining = offer.remainingClaims;
+  const to = href ?? `/customer/offers/${offer.id}`;
 
   return (
     <motion.article
@@ -45,7 +48,7 @@ export function OfferCard({
       transition={{ type: "spring", stiffness: 380, damping: 28 }}
     >
       <Link
-        href={`/customer/offers/${offer.id}`}
+        href={to}
         className="block p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <div className="mb-3 flex flex-wrap items-center gap-2">

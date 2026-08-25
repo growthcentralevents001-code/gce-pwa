@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Bounded glass surface — MASTER-compatible, contrast-safe. */
+/** Bounded surface — token-driven for light/dark consistency. */
 export function GlassPanel({
   children,
   className,
@@ -13,8 +13,8 @@ export function GlassPanel({
   return (
     <Comp
       className={cn(
-        "rounded-2xl border border-white/40 bg-white/70 shadow-lg shadow-orange-950/5 backdrop-blur-md",
-        "dark:border-white/10 dark:bg-black/50",
+        "rounded-2xl border border-border bg-card/80 shadow-sm shadow-primary/5 backdrop-blur-md",
+        "dark:bg-card/90 dark:shadow-none",
         className
       )}
     >

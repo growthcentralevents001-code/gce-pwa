@@ -23,11 +23,7 @@ export default async function MarketplaceBdpLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="marketplace-bdp"
-      allowedWorkspaces={
-        allowed.includes("marketplace-bdp")
-          ? allowed
-          : [...allowed, "marketplace-bdp"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

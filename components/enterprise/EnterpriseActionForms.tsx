@@ -410,3 +410,109 @@ export function ProposeAttributionForm({
     </form>
   );
 }
+
+export function CreateOpportunityForm({
+  clients,
+  packId,
+  attributedBdpUserId,
+  className,
+}: {
+  clients: Array<{ id: string; label: string }>;
+  packId?: string | null;
+  attributedBdpUserId?: string | null;
+  className?: string;
+}) {
+  const router = useRouter();
+  const [clientId, setClientId] = useState(clients[0]?.id ?? "");
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <form
+      className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "space-y-3 p-4", className)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        setError(null);
+        startTransition(async () => {
+          try {
+            await postEnterprise({
+              action: "create_opportunity",
+              clientId,
+              title,
+              summary: summary || undefined,
+              packId: packId || undefined,
+              attributedBdpUserId: attributedBdpUserId || undefined,
+            });
+            setTitle("");
+            setSummary("");
+            router.refresh();
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed");
+          }
+        });
+      }}
+    >
+      <h3 className="text-sm font-semibold">Open opportunity</h3>
+      <p className="text-xs text-muted-foreground">
+        Creates a live pipeline record for an attributed client. Client
+        representatives cannot open opportunities.
+      </p>
+      <div className="space-y-1">
+        <Label htmlFor="opp-client">Client</Label>
+        {clients.length > 0 ? (
+          <select
+            id="opp-client"
+            className="flex h-11 w-full rounded-md border border-input bg-background px-3 text-sm"
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            required
+          >
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <Input
+            id="opp-client"
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            required
+            placeholder="Client ID"
+          />
+        )}
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="opp-title">Title</Label>
+        <Input
+          id="opp-title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          maxLength={300}
+        />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="opp-summary">Summary</Label>
+        <Textarea
+          id="opp-summary"
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          rows={3}
+          maxLength={5000}
+        />
+      </div>
+      {error ? (
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      ) : null}
+      <Button type="submit" className="min-h-11" disabled={pending || !clientId}>
+        {pending ? "Creating…" : "Create opportunity"}
+      </Button>
+    </form>
+  );
+}

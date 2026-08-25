@@ -21,6 +21,77 @@ function tokenHash(raw: string): string {
   return hashDisplayToken(raw);
 }
 
+async function enqueueMarketplaceReview(
+  client: SupabaseClient,
+  input: {
+    subjectType: "marketplace_venue" | "marketplace_event" | "marketplace_offer";
+    subjectId: string;
+    title: string;
+    requesterUserId: string;
+    domainAction: string;
+  }
+) {
+  try {
+    const { isFeatureEnabled } = await import("../feature-flags/flags");
+    if (!(await isFeatureEnabled(client, "ops_approval_queues" as never))) {
+      return;
+    }
+    const { enqueueApproval } = await import("../ops-admin/operations");
+    await enqueueApproval(client, {
+      queueKey: `${input.subjectType}:${input.subjectId}`,
+      subjectType: input.subjectType,
+      subjectId: input.subjectId,
+      vertical: "marketplace",
+      title: input.title,
+      requesterUserId: input.requesterUserId,
+      domainAction: input.domainAction,
+      idempotencyKey: `mkt-ops:${input.subjectType}:${input.subjectId}`,
+    });
+  } catch (err) {
+    if (err instanceof AppError && err.code === "FEATURE_DISABLED") return;
+    // Queue is assistive; domain create/submit must still persist.
+    return;
+  }
+}
+
+/** Domain fulfillment when Marketplace Ops approves a queued item. */
+export async function applyMarketplaceOpsApproval(
+  client: SupabaseClient,
+  input: {
+    subjectType: string;
+    subjectId: string;
+    domainAction?: string | null;
+    actorUserId: string;
+    reason: string;
+  }
+) {
+  const type = input.subjectType;
+  const action = input.domainAction ?? "";
+  if (!input.subjectId) return null;
+  if (type === "marketplace_venue" || action === "approve_venue") {
+    return approveMarketplaceVenue(client, {
+      venueId: input.subjectId,
+      actorUserId: input.actorUserId,
+      reason: input.reason,
+    });
+  }
+  if (type === "marketplace_event" || action === "approve_event") {
+    return approveMarketplaceEvent(client, {
+      eventId: input.subjectId,
+      actorUserId: input.actorUserId,
+      publish: true,
+    });
+  }
+  if (type === "marketplace_offer" || action === "approve_offer") {
+    return approveOfferEvent(client, {
+      offerId: input.subjectId,
+      actorUserId: input.actorUserId,
+      publish: true,
+    });
+  }
+  return null;
+}
+
 export async function createMarketplaceVenue(
   client: SupabaseClient,
   input: {
@@ -67,6 +138,13 @@ export async function createMarketplaceVenue(
     after: data,
     correlationId: input.correlationId,
   });
+  await enqueueMarketplaceReview(client, {
+    subjectType: "marketplace_venue",
+    subjectId: String(data.id),
+    title: `Venue recommendation: ${input.displayName}`,
+    requesterUserId: input.actorUserId,
+    domainAction: "approve_venue",
+  });
   return data;
 }
 
@@ -87,6 +165,9 @@ export async function approveMarketplaceVenue(
     .single();
   if (error || !venue) {
     throw new AppError("NOT_FOUND", "Venue not found", { status: 404 });
+  }
+  if (venue.status === "active") {
+    return venue;
   }
   if (venue.submitted_by === input.actorUserId) {
     throw new AppError("FORBIDDEN", "Venue submitter cannot self-approve", {
@@ -297,6 +378,13 @@ export async function submitMarketplaceEvent(
     after: data,
     correlationId: input.correlationId,
   });
+  await enqueueMarketplaceReview(client, {
+    subjectType: "marketplace_event",
+    subjectId: input.eventId,
+    title: `Event review: ${String(data.title ?? input.eventId)}`,
+    requesterUserId: input.actorUserId,
+    domainAction: "approve_event",
+  });
   return data;
 }
 
@@ -384,7 +472,7 @@ export async function createOfferEvent(
       campaign_ends_at: input.campaignEndsAt,
       customer_cap: input.customerCap ?? OFFER_CUSTOMER_CAP,
       claim_validity_hours: OFFER_CLAIM_VALIDITY_HOURS,
-      status: "draft",
+      status: "submitted",
       submitted_by: input.actorUserId,
     })
     .select("*")
@@ -401,6 +489,13 @@ export async function createOfferEvent(
     resourceId: String(data.id),
     after: data,
     correlationId: input.correlationId,
+  });
+  await enqueueMarketplaceReview(client, {
+    subjectType: "marketplace_offer",
+    subjectId: String(data.id),
+    title: `Offer review: ${input.title}`,
+    requesterUserId: input.actorUserId,
+    domainAction: "approve_offer",
   });
   return data;
 }

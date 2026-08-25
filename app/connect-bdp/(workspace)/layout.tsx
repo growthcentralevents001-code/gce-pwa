@@ -28,11 +28,7 @@ export default async function ConnectBdpLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="connect-bdp"
-      allowedWorkspaces={
-        allowed.includes("connect-bdp")
-          ? allowed
-          : [...allowed, "connect-bdp"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

@@ -86,5 +86,13 @@ describe("Batch 8 ops presentation safety", () => {
       false
     );
     expect(actorHasOpsAdminPermission(desk, "ops.finance")).toBe(false);
+    const expert = [assignment("enterprise_platform_expert")];
+    expect(actorHasOpsAdminPermission(expert, "ops.approvals.review")).toBe(
+      false
+    );
+    const support = [assignment("support_admin")];
+    expect(actorHasOpsAdminPermission(support, "ops.approvals.review")).toBe(
+      true
+    );
   });
 });

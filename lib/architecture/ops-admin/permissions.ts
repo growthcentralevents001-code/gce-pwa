@@ -53,7 +53,9 @@ export function actorHasOpsAdminPermission(
     case "ops.search":
       return platform || finance || compliance || support || rm || prm || expert;
     case "ops.approvals.review":
-      return platform || finance || compliance || expert;
+      // Marketplace/Connect Ops (support) must be able to decide queued domain items.
+      // Expert structures Enterprise work via /api/enterprise — not Marketplace SoD.
+      return platform || finance || compliance || support;
     case "ops.exceptions.resolve":
       return platform || finance || compliance || support;
     case "ops.cases.manage":

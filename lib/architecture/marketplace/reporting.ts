@@ -96,6 +96,8 @@ export async function buildVenueDashboard(
     displayName: String(venue.display_name),
     status: String(venue.status),
     city: String(venue.city),
+    organisationId: String(venue.organisation_id),
+    submittedBy: venue.submitted_by ? String(venue.submitted_by) : null,
     attributedMbdpUserId: attr?.bdp_user_id
       ? String(attr.bdp_user_id)
       : null,

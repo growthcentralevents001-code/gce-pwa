@@ -149,13 +149,22 @@ export const GET = withAuthedRoute(async (request, ctx) => {
   const unitId = url.searchParams.get("unitId");
   const units = await listConnectBdpUnitsForUser(ctx.supabase, ctx.user.id);
   if (unitId) {
-    const report = await buildConnectBdpDashboard(ctx.supabase, unitId);
-    if (!report || report.unitId !== unitId) {
-      // Allow platform admin via privileged read
-      const admin = createPrivilegedSupabaseClient();
-      const adminReport = await buildConnectBdpDashboard(admin, unitId);
-      return jsonSuccess({ units, report: adminReport }, ctx);
+    const owned = units.some((u) => String(u.id) === unitId);
+    const canOps = actorHasConnectBdpPermission(
+      ctx.entitlements.activeAssignments,
+      "connect_bdp.unit.approve"
+    );
+    if (!owned && !canOps) {
+      throw new AppError("FORBIDDEN", "Not allowed to read this unit", {
+        status: 403,
+      });
     }
+    const report = owned
+      ? await buildConnectBdpDashboard(ctx.supabase, unitId)
+      : await buildConnectBdpDashboard(
+          createPrivilegedSupabaseClient(),
+          unitId
+        );
     return jsonSuccess({ units, report }, ctx);
   }
   return jsonSuccess({ units }, ctx);

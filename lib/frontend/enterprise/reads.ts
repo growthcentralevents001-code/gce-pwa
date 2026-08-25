@@ -381,8 +381,7 @@ export async function loadEnterpriseExpertBundle(
   userId: string
 ): Promise<EnterpriseExpertBundle> {
   const db = adminClient;
-  const [report, oppRes, propRes, quoteRes, projectRes, vendorRes] =
-    await Promise.all([
+  const [report, oppRes, propRes, ownedProjectRes] = await Promise.all([
       buildExpertDashboard(db, userId),
       db
         .from("enterprise_opportunities")
@@ -397,29 +396,46 @@ export async function loadEnterpriseExpertBundle(
         .order("created_at", { ascending: false })
         .limit(60),
       db
+        .from("enterprise_projects")
+        .select("*")
+        .eq("owner_user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(60),
+    ]);
+
+  const opportunities = (oppRes.data as Record<string, unknown>[]) ?? [];
+  const proposals = (propRes.data as Record<string, unknown>[]) ?? [];
+  const oppIds = opportunities.map((o) => String(o.id)).filter(Boolean);
+
+  let quotes: Record<string, unknown>[] = [];
+  let projects: Record<string, unknown>[] = [];
+  if (oppIds.length) {
+    const [scopedQuotes, scopedProjects] = await Promise.all([
+      db
         .from("enterprise_quotes")
         .select("*")
+        .in("opportunity_id", oppIds)
         .order("created_at", { ascending: false })
         .limit(60),
       db
         .from("enterprise_projects")
         .select("*")
+        .in("opportunity_id", oppIds)
         .order("created_at", { ascending: false })
         .limit(60),
-      db
-        .from("enterprise_vendors")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(80),
     ]);
+    quotes = (scopedQuotes.data as Record<string, unknown>[]) ?? [];
+    projects = (scopedProjects.data as Record<string, unknown>[]) ?? [];
+  }
 
-  const opportunities = (oppRes.data as Record<string, unknown>[]) ?? [];
-  const proposals = (propRes.data as Record<string, unknown>[]) ?? [];
-  const quotes = (quoteRes.data as Record<string, unknown>[]) ?? [];
-  const projects = (projectRes.data as Record<string, unknown>[]) ?? [];
-  const vendors = (vendorRes.data as Record<string, unknown>[]) ?? [];
+  const ownedProjects = (ownedProjectRes.data as Record<string, unknown>[]) ?? [];
+  const seen = new Set(projects.map((p) => String(p.id)));
+  for (const p of ownedProjects) {
+    if (!seen.has(String(p.id))) projects.push(p);
+  }
 
-  const oppIds = opportunities.map((o) => String(o.id)).filter(Boolean);
+  const vendors: Record<string, unknown>[] = [];
+
   let requirements: Record<string, unknown>[] = [];
   if (oppIds.length) {
     const { data: reqRoots } = await db
@@ -472,6 +488,19 @@ export async function loadEnterpriseExpertBundle(
       amount_minor: c.commercial_amount_minor,
     }));
     vendorAssignments = (vaRes.data as Record<string, unknown>[]) ?? [];
+    const vendorIds = [
+      ...new Set(
+        vendorAssignments.map((a) => String(a.vendor_id ?? "")).filter(Boolean)
+      ),
+    ];
+    if (vendorIds.length) {
+      const { data } = await db
+        .from("enterprise_vendors")
+        .select("id, business_name, category, status")
+        .in("id", vendorIds)
+        .limit(80);
+      vendors.push(...((data as Record<string, unknown>[]) ?? []));
+    }
   }
 
   return {

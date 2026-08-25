@@ -35,6 +35,7 @@ export default async function ConnectBdpEntitlementsPage() {
         <PartnerPageHeader title="Entitlements" />
         <EmptyState
           title="No unit"
+          description={`Canonical commission is ${formatCommissionRateLabel()} of eligible attributed Connect subscription revenue. Recovery is separate (max ₹5,000 per cycle). Apply for a unit to see live entitlements.`}
           primaryAction={{ label: "Apply", href: "/connect-bdp/apply" }}
         />
       </main>

@@ -23,11 +23,7 @@ export default async function EnterpriseClientLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="enterprise-client"
-      allowedWorkspaces={
-        allowed.includes("enterprise-client")
-          ? allowed
-          : [...allowed, "enterprise-client"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

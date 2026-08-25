@@ -4,6 +4,7 @@ import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
 import { VenuePortfolioCard } from "@/components/marketplace/VenuePortfolioCard";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
+import { RecommendVenueForm } from "@/components/marketplace/RecommendVenueForm";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadMbdpBundle } from "@/lib/frontend/marketplace/reads";
@@ -69,7 +70,8 @@ export default async function MbdpVenuesPage() {
           empty={<EmptyState title="No venues in portfolio yet" />}
         />
       </div>
-      {rows.length === 0 ? <EmptyState title="No venues in portfolio yet" description="Propose attribution or assist onboarding from Attribution." /> : null}
+      {rows.length === 0 ? <EmptyState title="No venues in portfolio yet" description="Recommend a Venue or propose attribution. Marketplace Ops final-approves." /> : null}
+      <RecommendVenueForm unitId={bundle.unit.id} />
     </main>
   );
 }

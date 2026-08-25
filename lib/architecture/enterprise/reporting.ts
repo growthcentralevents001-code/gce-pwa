@@ -182,3 +182,33 @@ export async function listClientsForRepresentative(
   if (error) return [];
   return data ?? [];
 }
+
+export async function canActorReadEnterpriseClient(
+  client: SupabaseClient,
+  input: {
+    userId: string;
+    clientId: string;
+    packIds: string[];
+    isPlatformAdmin: boolean;
+  }
+): Promise<boolean> {
+  if (input.isPlatformAdmin) return true;
+  const reps = await listClientsForRepresentative(client, input.userId);
+  if (reps.some((c) => String(c.id) === input.clientId)) return true;
+  if (input.packIds.length) {
+    const { data } = await client
+      .from("enterprise_client_attributions")
+      .select("id")
+      .eq("client_id", input.clientId)
+      .in("pack_id", input.packIds)
+      .limit(1);
+    if (data && data.length > 0) return true;
+  }
+  const { data: assigned } = await client
+    .from("enterprise_opportunities")
+    .select("id")
+    .eq("client_id", input.clientId)
+    .eq("expert_user_id", input.userId)
+    .limit(1);
+  return Boolean(assigned && assigned.length > 0);
+}

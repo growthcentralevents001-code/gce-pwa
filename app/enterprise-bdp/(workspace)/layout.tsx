@@ -23,11 +23,7 @@ export default async function EnterpriseBdpLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="enterprise-bdp"
-      allowedWorkspaces={
-        allowed.includes("enterprise-bdp")
-          ? allowed
-          : [...allowed, "enterprise-bdp"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

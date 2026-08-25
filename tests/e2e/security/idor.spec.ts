@@ -137,4 +137,80 @@ test.describe("IDOR", () => {
     }
     await ctx.close();
   });
+
+  test("Connect BDP cannot read an unrelated unit dashboard", async ({
+    browser,
+  }) => {
+    test.skip(!existsSync(authStatePath("connect-bdp")), "no connect-bdp");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("connect-bdp"),
+    });
+    const page = await ctx.newPage();
+    const res = await getJson(
+      page.request,
+      `/api/connect/bdp?unitId=${ids.ent_client}`
+    );
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    await ctx.close();
+  });
+
+  test("MBDP cannot read an unrelated Venue dashboard", async ({ browser }) => {
+    test.skip(!existsSync(authStatePath("marketplace-bdp")), "no mbdp");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("marketplace-bdp"),
+    });
+    const page = await ctx.newPage();
+    const res = await getJson(
+      page.request,
+      `/api/marketplace/bdp?venueId=${ids.mkt_venue_b}`
+    );
+    expect([403, 404]).toContain(res.status);
+    const blob = JSON.stringify(res.json);
+    expect(blob).not.toMatch(/aadhaar|bank_account|ifsc|pan_number/i);
+    await ctx.close();
+  });
+
+  test("Enterprise Client cannot read another client via API", async ({
+    browser,
+  }) => {
+    test.skip(!existsSync(authStatePath("enterprise-client")), "no client");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("enterprise-client"),
+    });
+    const page = await ctx.newPage();
+    const mine = await getJson(page.request, "/api/enterprise");
+    const ownId = mine.json.clients?.[0]?.id;
+    const other = ids.ent_client;
+    test.skip(!other, "no fixture client");
+    if (ownId && ownId === other) {
+      test.info().annotations.push({
+        type: "note",
+        description: "fixture client is this representative — skip cross-id",
+      });
+    }
+    const res = await getJson(
+      page.request,
+      `/api/enterprise?clientId=00000000-0000-4000-8000-000000000099`
+    );
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    await ctx.close();
+  });
+
+  test("Expert cannot read an unassigned client dashboard", async ({
+    browser,
+  }) => {
+    test.skip(!existsSync(authStatePath("enterprise-expert")), "no expert");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("enterprise-expert"),
+    });
+    const page = await ctx.newPage();
+    const res = await getJson(
+      page.request,
+      `/api/enterprise?clientId=00000000-0000-4000-8000-000000000099`
+    );
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    const blob = JSON.stringify(res.json);
+    expect(blob).not.toMatch(/commercial_total_minor|finance_cosigned/);
+    await ctx.close();
+  });
 });

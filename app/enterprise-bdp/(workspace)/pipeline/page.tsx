@@ -1,5 +1,6 @@
 import { PartnerPageHeader, PartnerPipelineList } from "@/components/partner";
 import { OpportunityCard } from "@/components/enterprise/OpportunityProjectCards";
+import { CreateOpportunityForm } from "@/components/enterprise/EnterpriseActionForms";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -17,6 +18,10 @@ export default async function Page() {
   const bundle = await loadEnterpriseBdpBundle(supabase, admin, user.id).catch(() => null);
   const opps = bundle?.opportunities ?? [];
   const proposals = bundle?.proposals ?? [];
+  const clientOptions = (bundle?.clients ?? []).map((c) => ({
+    id: String(c.id),
+    label: String(c.display_name ?? c.id),
+  }));
   const stages = [
     { id: "open", label: "Open / qualifying", count: opps.filter((o) => ["open", "qualifying"].includes(String(o.status))).length },
     { id: "proposal", label: "Proposal in progress", count: opps.filter((o) => String(o.status) === "proposal_in_progress").length },
@@ -26,6 +31,13 @@ export default async function Page() {
   return (
     <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8 ${GCE_SPACING.section}`}>
       <PartnerPageHeader title="Opportunity & proposal pipeline" description="Visualization only — stages come from backend. No drag-to-mutate." />
+      {bundle?.pack ? (
+        <CreateOpportunityForm
+          clients={clientOptions}
+          packId={bundle.pack.id}
+          attributedBdpUserId={user.id}
+        />
+      ) : null}
       <PartnerPipelineList stages={stages} />
       {opps.length === 0 ? (
         <EmptyState title="No opportunities on attributed clients" />

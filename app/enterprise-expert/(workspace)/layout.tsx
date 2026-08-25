@@ -23,7 +23,7 @@ export default async function EnterpriseExpertLayout({
       a.roleKey === "enterprise_platform_expert" ||
       a.roleKey === "platform_admin"
   );
-  if (!isExpert && !allowed.includes("platform-ops")) {
+  if (!isExpert) {
     redirect("/unauthorized");
   }
 
@@ -34,11 +34,7 @@ export default async function EnterpriseExpertLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="platform-ops"
-      allowedWorkspaces={
-        allowed.includes("platform-ops")
-          ? allowed
-          : [...allowed, "platform-ops"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

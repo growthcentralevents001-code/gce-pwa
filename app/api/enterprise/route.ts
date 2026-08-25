@@ -29,6 +29,7 @@ import {
   issueQuote,
   listClientsForRepresentative,
   listEbdpPacksForUser,
+  canActorReadEnterpriseClient,
   openEnterpriseDispute,
   proposeClientAttribution,
   reassignEnterpriseClient,
@@ -47,16 +48,36 @@ export const GET = withAuthedRoute(async (request, ctx) => {
   const packs = await listEbdpPacksForUser(ctx.supabase, ctx.user.id);
   const admin = createPrivilegedSupabaseClient();
   const clients = await listClientsForRepresentative(ctx.supabase, ctx.user.id);
+  const isPlatformAdmin = ctx.entitlements.activeAssignments.some(
+    (a) => a.status === "active" && a.roleKey === "platform_admin"
+  );
 
   let ebdpReport = null;
   if (packId) {
+    const owned = packs.some((p) => String(p.id) === packId);
+    if (!owned && !isPlatformAdmin) {
+      throw new AppError("FORBIDDEN", "Not allowed to read this pack", {
+        status: 403,
+      });
+    }
     ebdpReport =
       (await buildEbdpDashboard(ctx.supabase, packId)) ??
-      (await buildEbdpDashboard(admin, packId));
+      (isPlatformAdmin ? await buildEbdpDashboard(admin, packId) : null);
   }
 
   let clientReport = null;
   if (clientId) {
+    const allowed = await canActorReadEnterpriseClient(admin, {
+      userId: ctx.user.id,
+      clientId,
+      packIds: packs.map((p) => String(p.id)),
+      isPlatformAdmin,
+    });
+    if (!allowed) {
+      throw new AppError("FORBIDDEN", "Not allowed to read this client", {
+        status: 403,
+      });
+    }
     clientReport =
       (await buildEnterpriseClientDashboard(ctx.supabase, clientId)) ??
       (await buildEnterpriseClientDashboard(admin, clientId));

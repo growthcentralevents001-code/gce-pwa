@@ -24,9 +24,7 @@ export default async function VenuePartnerLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="venue"
-      allowedWorkspaces={
-        allowed.includes("venue") ? allowed : [...allowed, "venue"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

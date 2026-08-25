@@ -302,6 +302,19 @@ export async function reviewApproval(
     return { item, alreadyDecided: true };
   }
 
+  if (input.decision === "approve") {
+    const { applyMarketplaceOpsApproval } = await import(
+      "../marketplace/operations"
+    );
+    await applyMarketplaceOpsApproval(client, {
+      subjectType: String(item.subject_type ?? ""),
+      subjectId: String(item.subject_id ?? ""),
+      domainAction: item.domain_action ? String(item.domain_action) : null,
+      actorUserId: input.actorUserId,
+      reason: input.decisionReason,
+    });
+  }
+
   const statusMap = {
     approve: "approved",
     reject: "rejected",

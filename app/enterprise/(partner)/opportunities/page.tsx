@@ -38,7 +38,7 @@ export default async function Page() {
     >
       <PartnerPageHeader
         title="Opportunities"
-        description="Organisation-scoped opportunities from the Enterprise pipeline."
+        description="Organisation-scoped opportunities. Client representatives can view and accept quotes — they cannot open opportunities (EBDP / Expert write)."
       />
       {rows.length === 0 ? (
         <EmptyState

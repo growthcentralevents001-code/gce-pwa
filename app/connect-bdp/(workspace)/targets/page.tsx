@@ -36,6 +36,7 @@ export default async function ConnectBdpTargetsPage() {
         <PartnerPageHeader title="Targets" />
         <EmptyState
           title="No unit"
+          description={`Target remains ${CONNECT_BDP_TARGET_CIRCLES} Circles in ${CONNECT_BDP_TARGET_MONTHS} months, max ${CONNECT_BDP_TARGET_CIRCLES} Circles per unit. Credit once at 15 approved + paid members.`}
           primaryAction={{ label: "Apply", href: "/connect-bdp/apply" }}
         />
       </main>

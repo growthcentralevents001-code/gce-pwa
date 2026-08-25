@@ -128,9 +128,10 @@ export function ApprovalActions({
                       <span className="text-foreground">{d.label}</span>
                     </p>
                     <p>
-                      Consequence: Domain approve services remain source of
-                      truth. This records an audited ops decision — it does not
-                      invent policy.
+                      Consequence: For Venue, Event, and Offer queue items this
+                      applies the canonical domain approve service (status
+                      becomes active/published). Other queue items record an
+                      audited ops decision only.
                     </p>
                     <p className="text-xs">Reason: {reason}</p>
                   </div>

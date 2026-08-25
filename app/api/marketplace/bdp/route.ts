@@ -29,6 +29,7 @@ import {
   submitMarketplaceEvent,
   suspendMarketplaceBdpUnit,
 } from "@/lib/architecture/marketplace";
+import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { AppError } from "@/lib/errors";
 import { z } from "zod";
@@ -39,18 +40,48 @@ export const GET = withAuthedRoute(async (request, ctx) => {
   const venueId = url.searchParams.get("venueId");
   const units = await listMbdpUnitsForUser(ctx.supabase, ctx.user.id);
   const admin = createPrivilegedSupabaseClient();
+  const assignments = ctx.entitlements.activeAssignments;
+  const canOps = actorHasMarketplacePermission(
+    assignments,
+    "marketplace.venue.approve"
+  );
 
   let mbdpReport = null;
   if (unitId) {
+    const owned = units.some((u) => String(u.id) === unitId);
+    if (!owned && !canOps) {
+      throw new AppError("FORBIDDEN", "Not allowed to read this unit", {
+        status: 403,
+      });
+    }
     mbdpReport =
       (await buildMbdpDashboard(ctx.supabase, unitId)) ??
-      (await buildMbdpDashboard(admin, unitId));
+      (canOps ? await buildMbdpDashboard(admin, unitId) : null);
   }
   let venueReport = null;
   if (venueId) {
-    venueReport =
-      (await buildVenueDashboard(ctx.supabase, venueId)) ??
-      (await buildVenueDashboard(admin, venueId));
+    const privileged = await buildVenueDashboard(admin, venueId);
+    if (!privileged) {
+      throw new AppError("NOT_FOUND", "Venue not found", { status: 404 });
+    }
+    if (!canOps) {
+      const orgs = await listUserOrganisations(ctx.supabase, ctx.user.id).catch(
+        () => []
+      );
+      const orgOk = orgs.some(
+        (o) => String(o.organisation_id) === privileged.organisationId
+      );
+      const unitOk = units.some(
+        (u) => String(u.id) === String(privileged.attributedUnitId ?? "")
+      );
+      const submitter = privileged.submittedBy === ctx.user.id;
+      if (!orgOk && !unitOk && !submitter) {
+        throw new AppError("FORBIDDEN", "Not allowed to read this Venue", {
+          status: 403,
+        });
+      }
+    }
+    venueReport = privileged;
   }
   return jsonSuccess({ units, mbdpReport, venueReport }, ctx);
 });
@@ -168,6 +199,13 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           legacyVenueId: z.string().uuid().optional().nullable(),
         })
         .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.create")
+      ) {
+        throw new AppError("FORBIDDEN", "Not allowed to create Venue", {
+          status: 403,
+        });
+      }
       const venue = await createMarketplaceVenue(admin, {
         organisationId: parsed.organisationId,
         displayName: parsed.displayName,
@@ -190,7 +228,13 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           reason: z.string().max(1000).optional(),
         })
         .parse(body);
-      assertPermission(ctx, "approve", { requirePlatformAdmin: true });
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
       const venue = await approveMarketplaceVenue(admin, {
         venueId: parsed.venueId,
         actorUserId: ctx.user.id,
@@ -280,7 +324,13 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           publish: z.boolean().optional(),
         })
         .parse(body);
-      assertPermission(ctx, "approve", { requirePlatformAdmin: true });
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.event.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
       const event = await approveMarketplaceEvent(admin, {
         eventId: parsed.eventId,
         actorUserId: ctx.user.id,
@@ -317,7 +367,13 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           publish: z.boolean().optional(),
         })
         .parse(body);
-      assertPermission(ctx, "approve", { requirePlatformAdmin: true });
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.offer.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
       const offer = await approveOfferEvent(admin, {
         offerId: parsed.offerId,
         actorUserId: ctx.user.id,

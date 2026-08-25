@@ -15,6 +15,8 @@ const PUBLIC_ROUTES = [
   "/the-circle",
   "/terms",
   "/privacy",
+  "/login",
+  "/signup",
 ] as const;
 
 test.describe("Phase 14B — public website", () => {

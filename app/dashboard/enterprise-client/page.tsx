@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  Briefcase,
-  CircleDollarSign,
-  FileCheck,
-  Scale,
-  Target,
-} from "lucide-react";
+import { CircleDollarSign, Scale, Target } from "lucide-react";
 import {
   PartnerPageHeader,
   KpiCard,
@@ -212,22 +206,22 @@ export default async function EnterpriseClientDashboardPage() {
         <KpiCard
           label="Opportunities"
           value={String(report.opportunities)}
-          icon={Target}
+          icon="target"
         />
         <KpiCard
           label="Quotes awaiting"
           value={String(report.quotesAwaitingAcceptance)}
-          icon={CircleDollarSign}
+          icon="circle-dollar"
         />
         <KpiCard
           label="Projects"
           value={String(report.projects)}
-          icon={Briefcase}
+          icon="briefcase"
         />
         <KpiCard
           label="Milestones due"
           value={String(report.milestonesDue)}
-          icon={FileCheck}
+          icon="file-check"
         />
       </div>
       <div className="mb-6 grid gap-4 lg:grid-cols-2">

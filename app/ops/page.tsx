@@ -1,17 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  AlertTriangle,
-  CheckSquare,
-  FolderOpen,
-  LifeBuoy,
-  Lock,
-  Shield,
-} from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { EmptyState } from "@/components/states/EmptyState";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
-import { OpsKpiStrip } from "@/components/ops/OpsKpiStrip";
+import { OpsKpiStrip, type OpsKpiItem } from "@/components/ops/OpsKpiStrip";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -73,56 +65,56 @@ export default async function OpsHomePage() {
   const admin = createPrivilegedSupabaseClient();
   const cards = await loadOpsDashboardCards(admin);
 
-  const kpiItems = cards
+  const kpiItems: OpsKpiItem[] = cards
     ? [
         {
           label: "Pending approvals",
           value: cards.pendingApprovals,
           href: canApprovals ? "/ops/approvals" : undefined,
-          icon: CheckSquare,
+          icon: "check-square" as const,
         },
         {
           label: "Open exceptions",
           value: cards.openExceptions,
           href: canExceptions ? "/ops/exceptions" : undefined,
-          icon: AlertTriangle,
+          icon: "alert-triangle" as const,
         },
         {
           label: "Open cases",
           value: cards.openCases,
           href: canCases ? "/ops/cases" : undefined,
-          icon: FolderOpen,
+          icon: "folder-open" as const,
         },
         {
           label: "Incidents",
           value: cards.openIncidents,
           href: canIncidents ? "/ops/incidents" : undefined,
-          icon: Shield,
+          icon: "shield" as const,
         },
         {
           label: "Risk signals",
           value: cards.openRiskSignals,
           href: canRisk ? "/ops/security?tab=risk" : undefined,
-          icon: AlertTriangle,
+          icon: "alert-triangle" as const,
           hint: "Review-only unless backend action exists",
         },
         {
           label: "Compliance holds",
           value: cards.activeComplianceHolds,
           href: canHolds || canCompliance ? "/compliance/holds" : undefined,
-          icon: Lock,
+          icon: "lock" as const,
         },
         {
           label: "Support signals",
           value: cards.supportSignalsQueued,
           href: canSupport ? "/ops/support" : undefined,
-          icon: LifeBuoy,
+          icon: "life-buoy" as const,
         },
         {
           label: "Privacy requests",
           value: cards.privacyRequests,
           href: canCompliance ? "/ops/privacy" : undefined,
-          icon: Lock,
+          icon: "lock" as const,
         },
       ]
     : [];

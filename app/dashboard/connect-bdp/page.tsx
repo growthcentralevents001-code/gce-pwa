@@ -1,12 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  CircleDollarSign,
-  GitBranch,
-  Scale,
-  Target,
-  Users,
-} from "lucide-react";
 import { EmptyState } from "@/components/states/EmptyState";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +9,7 @@ import {
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import type { PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 import { PartnerCommercialSummary } from "@/components/partner/PartnerCommercialSummary";
 import { TargetProgressCard } from "@/components/partner/TargetProgressCard";
 import { PartnerPipelineList } from "@/components/partner/PartnerPipelineList";
@@ -122,7 +116,7 @@ export default async function ConnectBdpDashboardPage() {
     },
   ];
 
-  const actions = [
+  const actions: PartnerActionItem[] = [
     ...(report.applicationStatus !== "active"
       ? [
           {
@@ -142,7 +136,7 @@ export default async function ConnectBdpDashboardPage() {
             description: "First-level Connect BDP handling required.",
             href: "/connect-bdp/disputes",
             severity: "critical" as const,
-            icon: Scale,
+            icon: "scale" as const,
           },
         ]
       : []),
@@ -163,7 +157,7 @@ export default async function ConnectBdpDashboardPage() {
       description: "Review pipeline and propose attribution.",
       href: "/connect-bdp/members",
       severity: "info" as const,
-      icon: Users,
+      icon: "users" as const,
     },
   ];
 
@@ -253,26 +247,26 @@ export default async function ConnectBdpDashboardPage() {
           value={`${report.creditedCircles}`}
           hint={`Target ${report.targetCircles} in ${report.targetMonths} months`}
           href="/connect-bdp/targets"
-          icon={Target}
+          icon="target"
         />
         <KpiCard
           label="Attributed members"
           value={`${report.attributedMemberships}`}
           href="/connect-bdp/members"
-          icon={Users}
+          icon="users"
         />
         <KpiCard
           label="Gross commission"
           value={formatMinorInr(report.grossEligibleCommissionMinor)}
           hint={`${formatCommissionRateLabel()} of attributed eligible revenue`}
           href="/connect-bdp/entitlements"
-          icon={CircleDollarSign}
+          icon="circle-dollar"
         />
         <KpiCard
           label="Active Circles"
           value={`${report.activeCirclePortfolio}`}
           href="/connect-bdp/circles"
-          icon={GitBranch}
+          icon="git-branch"
         />
       </div>
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Users, Target, Tag, Shield } from "lucide-react";
+import { Users, Shield } from "lucide-react";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { MembershipCard } from "@/components/connect/MembershipCard";
 import { CircleCard } from "@/components/connect/CircleCard";
@@ -103,12 +103,12 @@ export default async function ConnectMemberHomePage() {
           value={(primary?.allocationStatus ?? "—").replaceAll("_", " ")}
           href="/connect/waitlist"
         />
-        <KpiCard label="Tags" value={`${tags.length}/4`} href="/connect/tags" icon={Tag} />
+        <KpiCard label="Tags" value={`${tags.length}/4`} href="/connect/tags" icon="tag" />
         <KpiCard
           label="Leads"
           value={`${sent.length} / ${receivedCount}`}
           href="/connect/leads"
-          icon={Target}
+          icon="target"
           hint="sent / received"
         />
       </div>

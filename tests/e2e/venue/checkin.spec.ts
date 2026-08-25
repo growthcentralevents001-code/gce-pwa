@@ -28,6 +28,7 @@ test.describe("venue check-in", () => {
       storageState: authStatePath("customer"),
     });
     const page = await ctx.newPage();
+    await page.goto("/customer", { waitUntil: "domcontentloaded" });
     const created = await customerAction(page, {
       action: "create_booking",
       eventId: ids.mkt_event_attr,
@@ -119,6 +120,7 @@ test.describe("venue check-in", () => {
       storageState: authStatePath("customer"),
     });
     const customerPage = await customerCtx.newPage();
+    await customerPage.goto("/customer", { waitUntil: "domcontentloaded" });
     const created = await customerAction(customerPage, {
       action: "create_booking",
       eventId: ids.mkt_event_unattr,

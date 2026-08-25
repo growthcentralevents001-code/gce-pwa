@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
-  Briefcase,
-  CircleDollarSign,
-  Target,
-  Users,
-} from "lucide-react";
-import {
   PartnerPageHeader,
   KpiCard,
   Timeline,
@@ -238,22 +232,22 @@ export default async function EnterpriseBdpDashboardPage() {
         <KpiCard
           label="Attributed clients"
           value={String(report.attributedClients)}
-          icon={Users}
+          icon="users"
         />
         <KpiCard
           label="Opportunities"
           value={String(report.openOpportunities)}
-          icon={Target}
+          icon="target"
         />
         <KpiCard
           label="Active projects"
           value={String(report.activeProjects)}
-          icon={Briefcase}
+          icon="briefcase"
         />
         <KpiCard
           label="Entitlement"
           value={formatMinorInr(report.grossEligibleCommissionMinor)}
-          icon={CircleDollarSign}
+          icon="circle-dollar"
           hint="Backend-calculated"
         />
       </div>

@@ -3,25 +3,94 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import type { LucideIcon } from "lucide-react";
+import {
+  AlertTriangle,
+  Briefcase,
+  Building2,
+  Calendar,
+  CalendarDays,
+  CheckSquare,
+  CircleDollarSign,
+  FileCheck,
+  FolderOpen,
+  GitBranch,
+  LifeBuoy,
+  Lock,
+  Scale,
+  Shield,
+  Store,
+  Tag,
+  Target,
+  Ticket,
+  TicketCheck,
+  Users,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GCE_MOTION, GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
+
+/** Serializable names only — Lucide components cannot cross the RSC boundary. */
+export type KpiIconName =
+  | "alert-triangle"
+  | "briefcase"
+  | "building"
+  | "calendar"
+  | "calendar-days"
+  | "check-square"
+  | "circle-dollar"
+  | "file-check"
+  | "folder-open"
+  | "git-branch"
+  | "life-buoy"
+  | "lock"
+  | "scale"
+  | "shield"
+  | "store"
+  | "tag"
+  | "target"
+  | "ticket"
+  | "ticket-check"
+  | "users";
+
+const KPI_ICONS: Record<KpiIconName, LucideIcon> = {
+  "alert-triangle": AlertTriangle,
+  briefcase: Briefcase,
+  building: Building2,
+  calendar: Calendar,
+  "calendar-days": CalendarDays,
+  "check-square": CheckSquare,
+  "circle-dollar": CircleDollarSign,
+  "file-check": FileCheck,
+  "folder-open": FolderOpen,
+  "git-branch": GitBranch,
+  "life-buoy": LifeBuoy,
+  lock: Lock,
+  scale: Scale,
+  shield: Shield,
+  store: Store,
+  tag: Tag,
+  target: Target,
+  ticket: Ticket,
+  "ticket-check": TicketCheck,
+  users: Users,
+};
 
 export function KpiCard({
   label,
   value,
   href,
-  icon: Icon,
+  icon,
   hint,
   className,
 }: {
   label: string;
   value: string;
   href?: string;
-  icon?: LucideIcon;
+  icon?: KpiIconName;
   hint?: string;
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const Icon = icon ? KPI_ICONS[icon] : undefined;
   const inner = (
     <>
       <div className="flex items-center justify-between gap-2">

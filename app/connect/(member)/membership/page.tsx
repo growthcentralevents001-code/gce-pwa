@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Users, Target, Tag, CircleDollarSign } from "lucide-react";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { MembershipCard } from "@/components/connect/MembershipCard";
 import { CircleCard } from "@/components/connect/CircleCard";
@@ -77,7 +76,7 @@ export default async function ConnectMembershipPage() {
         <EmptyState
           title="No membership yet"
           description="Start with Associate Membership when purchase is available for your account."
-          primaryAction={{ label: "View plans", href: "/memberships" }}
+          primaryAction={{ label: "Start application", href: "/memberships/apply" }}
         />
       ) : (
         <div className="space-y-8">
@@ -118,25 +117,25 @@ export default async function ConnectMembershipPage() {
               label="Tags"
               value={`${tags.length}/4`}
               href="/connect/tags"
-              icon={Tag}
+              icon="tag"
             />
             <KpiCard
               label="Sent leads"
               value={String(sent.length)}
               href="/connect/leads/sent"
-              icon={Target}
+              icon="target"
             />
             <KpiCard
               label="Received"
               value={String(receivedCount)}
               href="/connect/leads/received"
-              icon={Users}
+              icon="users"
             />
             <KpiCard
               label="Plan"
               value="Associate"
               href="/connect/membership"
-              icon={CircleDollarSign}
+              icon="circle-dollar"
               hint="₹6,000 / quarter"
             />
           </div>

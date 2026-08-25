@@ -63,6 +63,20 @@ test.describe("self-approval", () => {
     await ctx.close();
   });
 
+  test("Enterprise Expert cannot finance-cosign", async ({ browser }) => {
+    test.skip(!existsSync(authStatePath("enterprise-expert")), "no expert");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("enterprise-expert"),
+    });
+    const page = await ctx.newPage();
+    const res = await postJson(page.request, "/api/enterprise", {
+      action: "finance_cosign",
+      quoteId: ids.ent_opp,
+    });
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    await ctx.close();
+  });
+
   test("Enterprise Client cannot finance-cosign", async ({ browser }) => {
     test.skip(!existsSync(authStatePath("enterprise-client")), "no client");
     const ctx = await browser.newContext({

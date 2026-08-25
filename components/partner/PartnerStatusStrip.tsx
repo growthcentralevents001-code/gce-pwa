@@ -36,7 +36,7 @@ export function PartnerStatusStrip({
         <div
           key={item.id}
           role="listitem"
-          className="flex min-w-[8.5rem] flex-1 flex-col gap-1 rounded-xl border border-border/60 bg-background/70 px-3 py-2"
+          className="flex min-w-0 flex-1 flex-col gap-1 rounded-xl border border-border/60 bg-background/70 px-3 py-2"
         >
           <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
             {item.label}

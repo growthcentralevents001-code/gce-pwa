@@ -1,14 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
-  CircleDollarSign,
-  FileCheck,
-  Scale,
-  Shield,
-  Target,
-  Users,
-} from "lucide-react";
-import {
   PartnerPageHeader,
   KpiCard,
   Timeline,
@@ -200,25 +192,25 @@ export default async function FinanceDashboardPage() {
         <KpiCard
           label="Recognised components"
           value={String(report.recognisedRevenueComponents)}
-          icon={CircleDollarSign}
+          icon="circle-dollar"
           href="/finance/revenue"
         />
         <KpiCard
           label="Pending entitlements"
           value={String(report.pendingEntitlements)}
-          icon={Users}
+          icon="users"
           href="/finance/entitlements"
         />
         <KpiCard
           label="Active holds"
           value={String(report.activeHolds)}
-          icon={Shield}
+          icon="shield"
           href="/finance/holds"
         />
         <KpiCard
           label="Payout-ready"
           value={String(report.payoutReadyItems)}
-          icon={Target}
+          icon="target"
           href="/finance/payout-readiness"
           hint="Execution gated"
         />
@@ -263,13 +255,13 @@ export default async function FinanceDashboardPage() {
         <KpiCard
           label="Settlement batches"
           value={String(report.settlementBatches)}
-          icon={FileCheck}
+          icon="file-check"
           href="/finance/settlements"
         />
         <KpiCard
           label="Recon exceptions"
           value={String(report.reconciliationExceptions)}
-          icon={Scale}
+          icon="scale"
           href="/finance/reconciliation"
         />
         <KpiCard

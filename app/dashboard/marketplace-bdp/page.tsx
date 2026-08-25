@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CircleDollarSign, Store, Target, Users } from "lucide-react";
 import {
   PartnerPageHeader,
   KpiCard,
@@ -8,6 +7,7 @@ import {
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import type { PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 import { PartnerCommercialSummary } from "@/components/partner/PartnerCommercialSummary";
 import { PartnerPipelineList } from "@/components/partner/PartnerPipelineList";
 import { MarketplaceUnitCard } from "@/components/marketplace/MarketplaceUnitCard";
@@ -103,7 +103,7 @@ export default async function MarketplaceBdpDashboardPage() {
     },
   ];
 
-  const actions = [
+  const actions: PartnerActionItem[] = [
     ...(report.applicationStatus !== "active"
       ? [
           {
@@ -132,7 +132,7 @@ export default async function MarketplaceBdpDashboardPage() {
       description: "Review onboarding and operational alerts.",
       href: "/marketplace-bdp/venues",
       severity: "info" as const,
-      icon: Store,
+      icon: "store" as const,
     },
   ];
 
@@ -184,26 +184,26 @@ export default async function MarketplaceBdpDashboardPage() {
           value={`${report.activeVenueCount}`}
           hint={`Capacity ${report.venueCapacity} / unit`}
           href="/marketplace-bdp/venues"
-          icon={Store}
+          icon="store"
         />
         <KpiCard
           label="Proposed"
           value={`${report.proposedAttributions}`}
           href="/marketplace-bdp/attribution"
-          icon={Users}
+          icon="users"
         />
         <KpiCard
           label="Gross MBDP entitlement"
           value={formatMinorInr(report.grossMbdpEntitlementMinor)}
           hint="Backend-calculated · attributed only"
           href="/marketplace-bdp/entitlements"
-          icon={CircleDollarSign}
+          icon="circle-dollar"
         />
         <KpiCard
           label="Portfolio venues"
           value={`${venues.length}`}
           href="/marketplace-bdp/recommendations"
-          icon={Target}
+          icon="target"
         />
       </div>
 

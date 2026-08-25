@@ -1,14 +1,13 @@
 "use client";
 
-import { KpiCard } from "@/components/connect/KpiCard";
-import type { LucideIcon } from "lucide-react";
+import { KpiCard, type KpiIconName } from "@/components/connect/KpiCard";
 import { cn } from "@/lib/utils";
 
 export type OpsKpiItem = {
   label: string;
   value: number | string;
   href?: string;
-  icon?: LucideIcon;
+  icon?: KpiIconName;
   hint?: string;
 };
 

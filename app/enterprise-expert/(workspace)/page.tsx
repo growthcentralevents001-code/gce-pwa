@@ -8,7 +8,6 @@ import { loadEnterpriseExpertBundle } from "@/lib/frontend/enterprise/reads";
 import { ENTERPRISE_EXPERT_ROLE_LABEL, EXPERT_NO_COMMISSION_COPY, FINANCE_COSIGN_COPY } from "@/lib/frontend/enterprise/format";
 import { redirect } from "next/navigation";
 import { GCE_SPACING } from "@/lib/frontend/design-language";
-import { Briefcase, FileCheck, Target } from "lucide-react";
 
 export const metadata = { robots: { index: false, follow: false }, title: "Enterprise Platform Expert · GCE" };
 
@@ -40,9 +39,9 @@ export default async function Page() {
         { id: "finance", label: "Finance authority", value: "Status only", tone: "warning" },
       ]} />
       <div className="grid gap-4 sm:grid-cols-3">
-        <KpiCard label="Assigned opportunities" value={String(report.assignedOpportunities)} icon={Target} />
-        <KpiCard label="Draft proposals" value={String(report.draftProposals)} icon={Briefcase} />
-        <KpiCard label="Pending Finance co-sign" value={String(report.quotesPendingFinanceCosign)} icon={FileCheck} hint={FINANCE_COSIGN_COPY} />
+        <KpiCard label="Assigned opportunities" value={String(report.assignedOpportunities)} icon="target" />
+        <KpiCard label="Draft proposals" value={String(report.draftProposals)} icon="briefcase" />
+        <KpiCard label="Pending Finance co-sign" value={String(report.quotesPendingFinanceCosign)} icon="file-check" hint={FINANCE_COSIGN_COPY} />
       </div>
       <PartnerActionCenter items={actions} />
       <p className="text-xs text-muted-foreground">{FINANCE_COSIGN_COPY}. Expert does not approve Finance co-sign.</p>

@@ -42,16 +42,16 @@ const publicIgnore = [
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  fullyParallel: true,
+  fullyParallel: process.env.PLAYWRIGHT_PARALLEL === "1",
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: Number(process.env.PLAYWRIGHT_WORKERS ?? 1),
   reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],
   use: {
     baseURL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    navigationTimeout: 30_000,
+    navigationTimeout: Number(process.env.PLAYWRIGHT_NAV_TIMEOUT_MS ?? 45_000),
     actionTimeout: 15_000,
   },
   projects: [

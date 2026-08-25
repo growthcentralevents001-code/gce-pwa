@@ -1,5 +1,6 @@
 export { ConnectPageHeader as PartnerPageHeader } from "@/components/connect/ConnectPageHeader";
 export { KpiCard } from "@/components/connect/KpiCard";
+export type { KpiIconName } from "@/components/connect/KpiCard";
 export { Timeline } from "@/components/connect/Timeline";
 export type { TimelineItem } from "@/components/connect/Timeline";
 export { CircleCard } from "@/components/connect/CircleCard";

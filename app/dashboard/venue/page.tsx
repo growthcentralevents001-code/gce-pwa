@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Calendar, CircleDollarSign, Store, TicketCheck } from "lucide-react";
 import {
   PartnerPageHeader,
   KpiCard,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import type { PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 import { PartnerCommercialSummary } from "@/components/partner/PartnerCommercialSummary";
 import { PartnerRelationshipCard } from "@/components/marketplace/PartnerRelationshipCard";
 import { EventManagementCard, OfferManagementCard } from "@/components/marketplace/EventOfferCards";
@@ -85,7 +85,7 @@ export default async function VenueDashboardPage() {
     0
   );
 
-  const actions = [
+  const actions: PartnerActionItem[] = [
     ...(report.status !== "active"
       ? [
           {
@@ -103,7 +103,7 @@ export default async function VenueDashboardPage() {
       description: "Handheld-first ticket verification",
       href: "/venue/check-in",
       severity: "info" as const,
-      icon: TicketCheck,
+      icon: "ticket-check" as const,
     },
     {
       id: "offers",
@@ -156,15 +156,15 @@ export default async function VenueDashboardPage() {
       />
 
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Events" value={`${report.eventCount}`} href="/venue/events" icon={Calendar} />
-        <KpiCard label="Offers" value={`${report.offerCount}`} href="/venue/offers" icon={Store} />
-        <KpiCard label="Claims" value={`${claims.length}`} href="/venue/redemptions" icon={TicketCheck} />
+        <KpiCard label="Events" value={`${report.eventCount}`} href="/venue/events" icon="calendar" />
+        <KpiCard label="Offers" value={`${report.offerCount}`} href="/venue/offers" icon="store" />
+        <KpiCard label="Claims" value={`${claims.length}`} href="/venue/redemptions" icon="ticket-check" />
         <KpiCard
           label="Venue entitlement"
           value={formatMinorInr(venueShare)}
           hint="Backend shares only"
           href="/venue/entitlements"
-          icon={CircleDollarSign}
+          icon="circle-dollar"
         />
       </div>
 

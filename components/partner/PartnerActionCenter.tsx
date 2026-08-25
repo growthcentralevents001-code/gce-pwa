@@ -3,8 +3,53 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { AlertTriangle, ArrowRight } from "lucide-react";
+import type { KpiIconName } from "@/components/connect/KpiCard";
+import {
+  Briefcase,
+  Building2,
+  Calendar,
+  CalendarDays,
+  CheckSquare,
+  CircleDollarSign,
+  FileCheck,
+  FolderOpen,
+  GitBranch,
+  LifeBuoy,
+  Lock,
+  Scale,
+  Shield,
+  Store,
+  Tag,
+  Target,
+  Ticket,
+  TicketCheck,
+  Users,
+} from "lucide-react";
 import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 import { cn } from "@/lib/utils";
+
+const ACTION_ICONS: Record<KpiIconName, LucideIcon> = {
+  "alert-triangle": AlertTriangle,
+  briefcase: Briefcase,
+  building: Building2,
+  calendar: Calendar,
+  "calendar-days": CalendarDays,
+  "check-square": CheckSquare,
+  "circle-dollar": CircleDollarSign,
+  "file-check": FileCheck,
+  "folder-open": FolderOpen,
+  "git-branch": GitBranch,
+  "life-buoy": LifeBuoy,
+  lock: Lock,
+  scale: Scale,
+  shield: Shield,
+  store: Store,
+  tag: Tag,
+  target: Target,
+  ticket: Ticket,
+  "ticket-check": TicketCheck,
+  users: Users,
+};
 
 export type PartnerActionItem = {
   id: string;
@@ -12,7 +57,7 @@ export type PartnerActionItem = {
   description?: string;
   href?: string;
   severity?: "info" | "warning" | "critical";
-  icon?: LucideIcon;
+  icon?: KpiIconName;
 };
 
 /**
@@ -45,7 +90,7 @@ export function PartnerActionCenter({
       ) : (
         <ul className="space-y-2">
           {items.map((item) => {
-            const Icon = item.icon;
+            const Icon = item.icon ? ACTION_ICONS[item.icon] : undefined;
             const border =
               item.severity === "critical"
                 ? "border-destructive/40"

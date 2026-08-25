@@ -17,6 +17,15 @@ import type { StatusTone } from "@/lib/frontend/status";
 
 export { CIRCLE_CAPACITY_MAX, ASSOCIATE_PRICE_MINOR, MAX_TAGS };
 
+export type CircleDirectoryCard = {
+  id: string;
+  name: string;
+  specialisation: string | null;
+  sectorLabel: string | null;
+  tagLabels: string[];
+  status: string | null;
+};
+
 export function membershipStatusTone(status: string): StatusTone {
   switch (status) {
     case "active":

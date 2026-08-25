@@ -21,15 +21,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { AccountMenu } from "@/components/app-shell/AccountMenu";
 import { typography } from "@/lib/frontend/typography";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -119,8 +111,15 @@ export function PartnerShell({
   const raw = typeof params?.workspaceKey === "string" ? params.workspaceKey : "";
   const fromUrl: WorkspaceKey | null = isCanonicalWorkspaceKey(raw) ? raw : null;
   const fromPath = workspaceFromPathname(pathname);
-  const current: WorkspaceKey | null =
+  let current: WorkspaceKey | null =
     forcedWorkspaceKey ?? fromUrl ?? fromPath;
+  if (
+    current &&
+    allowedWorkspaces.length > 0 &&
+    !allowedWorkspaces.includes(current)
+  ) {
+    current = allowedWorkspaces[0] ?? null;
+  }
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -131,10 +130,6 @@ export function PartnerShell({
         inactiveFeatureFlags,
       })
     : [];
-
-  const initials = (displayName || userEmail || "G")
-    .slice(0, 2)
-    .toUpperCase();
 
   const sidebar = (
     <div className="flex h-full flex-col gap-4">
@@ -210,58 +205,16 @@ export function PartnerShell({
 
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Notifications (coming soon)"
-              disabled
-            >
-              <Bell className="h-4 w-4" />
+            <Button asChild variant="ghost" size="icon" aria-label="Notifications">
+              <Link href="/settings/notifications">
+                <Bell className="h-4 w-4" />
+              </Link>
             </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative h-9 w-9 rounded-full"
-                  aria-label="User menu"
-                >
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>{initials}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span>{displayName || "Account"}</span>
-                    {userEmail ? (
-                      <span className="text-xs font-normal text-muted-foreground">
-                        {userEmail}
-                      </span>
-                    ) : null}
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/settings/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings">Settings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings/notifications">Notifications</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/customer">Customer app</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/ops">Operations</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/login">Sign out / switch account</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AccountMenu
+              displayName={displayName}
+              userEmail={userEmail}
+              variant="partner"
+            />
           </div>
         </header>
 

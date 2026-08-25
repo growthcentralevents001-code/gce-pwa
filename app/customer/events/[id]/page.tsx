@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { StickyBookingBar } from "@/components/customer/StickyBookingBar";
 import { GlassPanel } from "@/components/marketing/GlassPanel";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { getEventDetail } from "@/lib/architecture/customer-cx";
 import {
   formatInrMinor,
@@ -25,6 +26,14 @@ export default async function CustomerEventDetailPage({
   params: Params;
 }) {
   const { id } = await params;
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect(`/login?next=${encodeURIComponent(`/customer/events/${id}`)}`);
+  }
+
   const admin = createPrivilegedSupabaseClient();
   let event: Awaited<ReturnType<typeof getEventDetail>> | null = null;
   try {

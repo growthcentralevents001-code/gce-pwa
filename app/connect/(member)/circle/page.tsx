@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { CircleCard } from "@/components/connect/CircleCard";
-import { MemberCard } from "@/components/connect/MemberCard";
+import { CircleDirectory } from "@/components/connect/CircleDirectory";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
@@ -140,36 +140,7 @@ export default async function MyCirclePage() {
         <h2 className="mb-3 text-sm font-semibold">
           Member directory ({directory.length})
         </h2>
-        {directory.length === 0 ? (
-          <EmptyState title="No directory rows" description="Seats will appear when allocated." />
-        ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {directory.map((row) => {
-              const m = Array.isArray(row.connect_memberships)
-                ? row.connect_memberships[0]
-                : row.connect_memberships;
-              const label = m?.user_id
-                ? `Member ${String(m.user_id).slice(0, 8)}`
-                : "Member";
-              return (
-                <MemberCard
-                  key={row.id}
-                  name={label}
-                  specialisation={
-                    row.specialisation_id
-                      ? `Specialisation ${String(row.specialisation_id).slice(0, 8)}`
-                      : null
-                  }
-                  status={m?.status ?? row.status}
-                />
-              );
-            })}
-          </div>
-        )}
-        <p className="mt-3 text-xs text-muted-foreground">
-          Contact details are not shown without authorization. Names use
-          privacy-safe placeholders when profiles are not linked.
-        </p>
+        <CircleDirectory members={directory} />
       </section>
     </main>
   );

@@ -30,15 +30,12 @@ export default async function ConnectMemberLayout({
   }
 
   const primaryRole = entitlements.activeAssignments[0]?.roleKey;
+  const entitledConnect = allowed.includes("connect-member");
 
   return (
     <PartnerShell
-      forcedWorkspaceKey="connect-member"
-      allowedWorkspaces={
-        allowed.includes("connect-member")
-          ? allowed
-          : [...allowed, "connect-member"]
-      }
+      forcedWorkspaceKey={entitledConnect ? "connect-member" : undefined}
+      allowedWorkspaces={allowed.length ? allowed : ["personal"]}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

@@ -2,6 +2,7 @@ import {
   AlertTriangle,
   Building2,
   CircleDollarSign,
+  Home,
   LayoutDashboard,
   Users,
   Store,
@@ -44,6 +45,30 @@ export function workspaceNavSections(
   const byWorkspace: Partial<Record<WorkspaceKey, NavSection[]>> = {
     personal: [
       base,
+      {
+        id: "browse",
+        label: "Browse site",
+        items: [
+          {
+            id: "homepage",
+            label: "Homepage",
+            href: "/",
+            icon: Home,
+          },
+          {
+            id: "marketplace",
+            label: "Marketplace",
+            href: "/marketplace",
+            icon: Store,
+          },
+          {
+            id: "connect-public",
+            label: "Connect",
+            href: "/connect",
+            icon: Users,
+          },
+        ],
+      },
       {
         id: "account",
         label: "Account",
@@ -92,6 +117,12 @@ export function workspaceNavSections(
             label: "Lead Assist",
             href: "/connect/leads",
             icon: Target,
+          },
+          {
+            id: "specialisation",
+            label: "Specialisation",
+            href: "/connect/specialisation",
+            icon: Briefcase,
           },
           {
             id: "tags",

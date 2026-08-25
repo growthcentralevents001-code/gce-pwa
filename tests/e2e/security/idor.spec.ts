@@ -59,13 +59,10 @@ test.describe("IDOR", () => {
     });
     const page = await ctx.newPage();
     await page.goto("/dashboard/finance");
-    await page.waitForLoadState("domcontentloaded");
-    const url = page.url();
-    const body = await page.locator("body").innerText();
-    expect(
-      url.includes("/unauthorized") ||
-        /access denied|finance access required/i.test(body)
-    ).toBeTruthy();
+    await expect(page).toHaveURL(/unauthorized/);
+    await expect(
+      page.getByRole("heading", { name: /access denied/i })
+    ).toBeVisible({ timeout: 15_000 });
     await ctx.close();
   });
 

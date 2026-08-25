@@ -51,11 +51,6 @@ export default async function FinanceDashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/dashboard/finance");
 
-  const identity = await getCurrentIdentity(supabase, {
-    userId: user.id,
-    email: user.email,
-    requestedWorkspace: "finance",
-  });
   const entitlements = await resolveActiveEntitlements(supabase, user.id);
   const allowed = workspacesForAssignments(entitlements.activeAssignments);
   const canRead = actorHasFinancePermission(
@@ -63,12 +58,25 @@ export default async function FinanceDashboardPage() {
     "finance.report.read"
   );
 
+  if (!canRead && !allowed.includes("finance")) {
+    redirect(
+      "/unauthorized?reason=" +
+        encodeURIComponent(
+          "Finance access required. This workspace requires finance.report.read."
+        )
+    );
+  }
+
+  const identity = await getCurrentIdentity(supabase, {
+    userId: user.id,
+    email: user.email,
+    requestedWorkspace: "finance",
+  });
+
   const shell = (children: React.ReactNode) => (
     <PartnerShell
       forcedWorkspaceKey="finance"
-      allowedWorkspaces={
-        allowed.includes("finance") ? allowed : [...allowed, "finance"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

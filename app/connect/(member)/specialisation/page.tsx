@@ -4,6 +4,7 @@ import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { listMembershipsForUser } from "@/lib/architecture/connect/memberships";
+import { listActiveSpecialisations } from "@/lib/architecture/connect/specialisations";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
 
 export const metadata = {
@@ -22,6 +23,8 @@ export default async function SpecialisationPage() {
     () => []
   );
   const primary = memberships[0];
+  const specs = await listActiveSpecialisations(supabase).catch(() => []);
+  const spec = specs.find((s) => s.id === primary?.specialisationId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 pb-16">
@@ -34,7 +37,15 @@ export default async function SpecialisationPage() {
       {!primary ? (
         <EmptyState
           title="No membership"
-          primaryAction={{ label: "Membership", href: "/connect/membership" }}
+          description="Start an Associate application to choose geography, specialisation, and Tags."
+          primaryAction={{
+            label: "Start application",
+            href: "/memberships/apply",
+          }}
+          secondaryAction={{
+            label: "Membership status",
+            href: "/connect/membership",
+          }}
         />
       ) : (
         <div className="space-y-6">
@@ -47,11 +58,16 @@ export default async function SpecialisationPage() {
               />
             </div>
             <p className="mt-4 text-sm">
-              Specialisation ID:{" "}
-              <span className="font-mono text-xs">
-                {primary.specialisationId ?? "not set"}
+              Primary specialisation:{" "}
+              <span className="font-medium">
+                {spec?.label ?? (primary.specialisationId ? "Assigned" : "not set")}
               </span>
             </p>
+            {spec?.powerSector ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                GC Power Sector: {spec.powerSector}
+              </p>
+            ) : null}
             <p className="mt-2 text-xs text-muted-foreground">
               Change requests and conflict outcomes (alternative Circle, nearby,
               waitlist, formation, manual review) are server-driven.

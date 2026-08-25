@@ -49,16 +49,22 @@ export async function loginViaUi(
 ) {
   const attempt = async () => {
     await page.goto(`/login?next=${encodeURIComponent(nextPath)}`, {
-      waitUntil: "domcontentloaded",
+      waitUntil: "load",
       timeout: 30_000,
     });
-    await page.locator("#email").fill(email);
-    await page.locator("#password").fill(password);
+    const emailInput = page.locator("#email");
+    await expect(emailInput).toBeVisible({ timeout: 20_000 });
+    await emailInput.click();
+    await emailInput.fill(email);
+    await expect(emailInput).toHaveValue(email, { timeout: 10_000 });
+    const passwordInput = page.locator("#password");
+    await passwordInput.fill(password);
+    await expect(passwordInput).toHaveValue(password);
     await Promise.all([
       page.waitForURL((url) => !url.pathname.startsWith("/login"), {
         timeout: 45_000,
       }),
-      page.getByRole("button", { name: /sign in/i }).click(),
+      page.getByRole("button", { name: /^sign in$/i }).click(),
     ]);
   };
 

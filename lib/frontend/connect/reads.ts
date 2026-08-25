@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getCircle } from "@/lib/architecture/connect/circles";
 import { getSeatAvailability } from "@/lib/architecture/connect/allocation";
 import { CIRCLE_CAPACITY_MAX } from "@/lib/architecture/connect/types";
+import type { CircleDirectoryCard } from "@/lib/frontend/connect/format";
 
 /** Read helpers for member CX — never invent seats or capacity. */
 
@@ -38,6 +39,121 @@ export async function listCircleDirectory(
   return data ?? [];
 }
 
+function membershipFromSeat(row: {
+  connect_memberships?: unknown;
+}): {
+  id?: string;
+  user_id?: string;
+  status?: string;
+  specialisation_id?: string | null;
+} | null {
+  const raw = row.connect_memberships;
+  const m = Array.isArray(raw) ? raw[0] : raw;
+  return m && typeof m === "object"
+    ? (m as {
+        id?: string;
+        user_id?: string;
+        status?: string;
+        specialisation_id?: string | null;
+      })
+    : null;
+}
+
+/** Privacy-safe directory cards: display names only — no phone/email. */
+export async function presentCircleDirectory(
+  client: SupabaseClient,
+  seats: Awaited<ReturnType<typeof listCircleDirectory>>
+): Promise<CircleDirectoryCard[]> {
+  const memberships = seats.map(membershipFromSeat);
+  const userIds = [
+    ...new Set(
+      memberships.map((m) => m?.user_id).filter((id): id is string => Boolean(id))
+    ),
+  ];
+  const specIds = [
+    ...new Set(
+      seats
+        .map((s) => s.specialisation_id as string | null)
+        .concat(memberships.map((m) => m?.specialisation_id ?? null))
+        .filter((id): id is string => Boolean(id))
+    ),
+  ];
+  const membershipIds = [
+    ...new Set(
+      seats
+        .map((s) => s.membership_id as string | undefined)
+        .filter((id): id is string => Boolean(id))
+    ),
+  ];
+
+  const [{ data: profiles }, { data: specs }, { data: tags }] =
+    await Promise.all([
+      userIds.length
+        ? client
+            .from("profiles")
+            .select("user_id,display_name")
+            .in("user_id", userIds)
+        : Promise.resolve({ data: [] as Array<{ user_id: string; display_name: string | null }> }),
+      specIds.length
+        ? client
+            .from("business_specialisations")
+            .select("id,label,power_sector")
+            .in("id", specIds)
+        : Promise.resolve({
+            data: [] as Array<{
+              id: string;
+              label: string;
+              power_sector: string | null;
+            }>,
+          }),
+      membershipIds.length
+        ? client
+            .from("membership_tags")
+            .select("membership_id,tag_label,tag_slot,status")
+            .in("membership_id", membershipIds)
+            .eq("status", "active")
+        : Promise.resolve({
+            data: [] as Array<{
+              membership_id: string;
+              tag_label: string | null;
+              tag_slot: number;
+            }>,
+          }),
+    ]);
+
+  const nameByUser = new Map(
+    (profiles ?? []).map((p) => [p.user_id, p.display_name])
+  );
+  const specById = new Map(
+    (specs ?? []).map((s) => [
+      s.id,
+      { label: s.label, sector: s.power_sector },
+    ])
+  );
+  const tagsByMembership = new Map<string, string[]>();
+  for (const t of tags ?? []) {
+    const list = tagsByMembership.get(t.membership_id) ?? [];
+    if (t.tag_label) list.push(String(t.tag_label));
+    tagsByMembership.set(t.membership_id, list);
+  }
+
+  return seats.map((row) => {
+    const m = membershipFromSeat(row);
+    const specId =
+      (row.specialisation_id as string | null) ?? m?.specialisation_id ?? null;
+    const spec = specId ? specById.get(specId) : undefined;
+    const display = m?.user_id ? nameByUser.get(m.user_id) : null;
+    return {
+      id: String(row.id),
+      name: display?.trim() || "Circle member",
+      specialisation: spec?.label ?? null,
+      sectorLabel: spec?.sector ?? null,
+      tagLabels: m?.id ? tagsByMembership.get(m.id) ?? [] : [],
+      status: m?.status ?? (row.status as string | null),
+    };
+  });
+}
+
 export async function listCircleGovernance(
   client: SupabaseClient,
   circleId: string
@@ -55,7 +171,7 @@ export async function loadCircleBundle(
   client: SupabaseClient,
   circleId: string
 ) {
-  const [circle, availability, directory, governance] = await Promise.all([
+  const [circle, availability, directorySeats, governance] = await Promise.all([
     getCircle(client, circleId),
     getSeatAvailability(client, circleId),
     listCircleDirectory(client, circleId),
@@ -64,6 +180,7 @@ export async function loadCircleBundle(
   if (!circle) {
     throw new Error("Circle not found");
   }
+  const directory = await presentCircleDirectory(client, directorySeats);
   return {
     circle: {
       ...circle,
@@ -74,6 +191,7 @@ export async function loadCircleBundle(
       capacityMax: Math.min(availability.capacityMax, CIRCLE_CAPACITY_MAX),
     },
     directory,
+    directorySeats,
     governance,
   };
 }

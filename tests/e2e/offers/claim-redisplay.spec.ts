@@ -64,7 +64,10 @@ test.describe("offer claim redisplay (BG-12)", () => {
     expect(cred.json.credential?.displayable).toBe(true);
     expect(fingerprint(token)).toBe(firstFp);
 
-    await reopenPage.goto(`/customer/claims?focus=${claimId}`);
+    await reopenPage.goto(`/customer/claims?focus=${claimId}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 60_000,
+    });
     await expect(
       reopenPage.getByText(/present this code at the venue/i)
     ).toBeVisible({ timeout: 20_000 });

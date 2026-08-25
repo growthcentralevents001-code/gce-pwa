@@ -75,7 +75,11 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
   const campaignStart = new Date();
   campaignStart.setHours(campaignStart.getHours() - 1);
   const campaignEnd = new Date();
-  campaignEnd.setDate(campaignEnd.getDate() + 10);
+  campaignEnd.setDate(campaignEnd.getDate() + 13);
+  const expiredCampaignStart = new Date();
+  expiredCampaignStart.setDate(expiredCampaignStart.getDate() - 16);
+  const expiredCampaignEnd = new Date();
+  expiredCampaignEnd.setDate(expiredCampaignEnd.getDate() - 2);
 
   await upsert(admin, "organisations", {
     id: ids.venue_org_b,
@@ -259,8 +263,8 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
     title: `${FIXTURE_PREFIX} Expired Claim Offer`,
     description: "Synthetic offer used only for expired-claim redemption rejection.",
     planned_commercial_value_minor: 5_000_000,
-    campaign_starts_at: campaignStart.toISOString(),
-    campaign_ends_at: campaignEnd.toISOString(),
+    campaign_starts_at: expiredCampaignStart.toISOString(),
+    campaign_ends_at: expiredCampaignEnd.toISOString(),
     customer_cap: 100,
     claim_validity_hours: 72,
     status: "published",

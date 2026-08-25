@@ -117,10 +117,8 @@ export function LeadActions({
             Request contact reveal
           </Button>
         ) : null}
-        {(receiverActions || giverActions) &&
-        ["accepted", "contact_revealed", "in_follow_up", "outcome_pending"].includes(
-          workStatus
-        ) ? (
+        {receiverActions &&
+        ["accepted", "contact_revealed", "in_follow_up"].includes(workStatus) ? (
           <Button
             variant="secondary"
             className="min-h-11"
@@ -129,7 +127,7 @@ export function LeadActions({
             Record outcome
           </Button>
         ) : null}
-        {workStatus === "outcome_pending" ? (
+        {giverActions && workStatus === "outcome_pending" ? (
           <Button
             className="min-h-11"
             disabled={pending}

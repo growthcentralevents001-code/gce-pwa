@@ -1,3 +1,5 @@
+"use client";
+
 import { KpiCard } from "@/components/connect/KpiCard";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";

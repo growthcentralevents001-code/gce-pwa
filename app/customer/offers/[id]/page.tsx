@@ -1,9 +1,10 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { ClaimOfferFlow } from "@/components/customer/ClaimOfferFlow";
 import { GlassPanel } from "@/components/marketing/GlassPanel";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { getOfferDetail } from "@/lib/architecture/customer-cx";
 import {
   formatWhen,
@@ -23,6 +24,14 @@ export default async function CustomerOfferDetailPage({
   params: Params;
 }) {
   const { id } = await params;
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    redirect(`/login?next=${encodeURIComponent(`/customer/offers/${id}`)}`);
+  }
+
   const admin = createPrivilegedSupabaseClient();
   let offer: Awaited<ReturnType<typeof getOfferDetail>> | null = null;
   try {

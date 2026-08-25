@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { DiscoveryFilters } from "@/components/customer/DiscoveryFilters";
 import { EventCard } from "@/components/customer/EventCard";
@@ -8,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { discoverEvents } from "@/lib/architecture/customer-cx";
 
 export const metadata = {
@@ -22,6 +24,12 @@ export default async function CustomerEventsPage({
 }: {
   searchParams: SearchParams;
 }) {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login?next=/customer/events");
+
   const sp = await searchParams;
   const city = typeof sp.city === "string" ? sp.city : null;
   const q = typeof sp.q === "string" ? sp.q : null;

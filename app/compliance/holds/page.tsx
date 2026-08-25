@@ -41,9 +41,7 @@ export default async function ComplianceHoldsPage() {
   const shell = (children: React.ReactNode) => (
     <PartnerShell
       forcedWorkspaceKey="compliance"
-      allowedWorkspaces={
-        allowed.includes("compliance") ? allowed : [...allowed, "compliance"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

@@ -41,62 +41,74 @@ export async function loadFinanceBundle(
     buildFinanceDashboard(client),
     client
       .from("revenue_components")
-      .select("*")
+      .select(
+        "id, revenue_component_key, vertical, recognition_status, gross_amount_minor, eligible_base_minor, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("stakeholder_entitlements")
-      .select("*")
+      .select(
+        "id, stakeholder_type, source_vertical, status, revenue_component_key, gross_entitlement_minor, recovery_deduction_minor, reversal_amount_minor, net_settlement_eligible_minor, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("financial_holds")
-      .select("*")
+      .select("id, status, scope_type, reason, amount_minor, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("financial_reversals")
-      .select("*")
+      .select("id, amount_minor, reason, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("financial_corrections")
-      .select("*")
+      .select("id, amount_minor, reason, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("settlement_batches")
-      .select("*")
+      .select(
+        "id, status, vertical, batch_ref, period_start, period_end, net_total_minor, gross_total_minor, execution_blocked_reason, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("payout_items")
-      .select("*")
+      .select(
+        "id, status, stakeholder_type, gross_minor, net_minor, recovery_minor, deductions_minor, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("reconciliation_records")
-      .select("*")
+      .select(
+        "id, domain, status, amount_minor, exception_queue, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("offline_payment_records")
-      .select("*")
+      .select(
+        "id, source_domain, amount_minor, method, reconciliation_status, received_on, bank_reference, created_at"
+      )
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("customer_refund_requests")
-      .select("*")
+      .select("id, booking_id, status, amount_determination, reason, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("chargeback_cases")
-      .select("*")
+      .select("id, status, amount_minor, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
     client
       .from("ledger_entries")
-      .select("*")
+      .select("id, direction, amount_minor, ledger_account_id, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
   ]);

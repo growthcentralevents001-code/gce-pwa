@@ -9,8 +9,71 @@ import {
   CONNECT_BDP_RULE_VERSION,
   type ConnectBdpPackageOption,
 } from "./constants";
-import { createRoleAssignment, activateRoleAssignment, suspendRoleAssignment } from "../identity/assignments";
+import {
+  createRoleAssignment,
+  activateRoleAssignment,
+  suspendRoleAssignment,
+  listRoleAssignmentsForUser,
+} from "../identity/assignments";
 import type { RoleAssignment } from "../types";
+
+async function enqueueConnectBdpActivationReview(
+  client: SupabaseClient,
+  input: {
+    unitId: string;
+    requesterUserId: string;
+    title?: string;
+  }
+) {
+  try {
+    const { isFeatureEnabled } = await import("../feature-flags/flags");
+    if (!(await isFeatureEnabled(client, "ops_approval_queues" as never))) {
+      return;
+    }
+    const { enqueueApproval } = await import("../ops-admin/operations");
+    await enqueueApproval(client, {
+      queueKey: `connect_bdp_unit:${input.unitId}`,
+      subjectType: "connect_bdp_unit",
+      subjectId: input.unitId,
+      vertical: "connect",
+      title: input.title ?? "Connect BDP unit activation",
+      requesterUserId: input.requesterUserId,
+      domainAction: "activate_unit",
+      idempotencyKey: `connect-ops:activate:${input.unitId}`,
+    });
+  } catch (err) {
+    if (err instanceof AppError && err.code === "FEATURE_DISABLED") return;
+    return;
+  }
+}
+
+/** Domain fulfillment when Connect Ops approves a queued unit activation. */
+export async function applyConnectOpsApproval(
+  client: SupabaseClient,
+  input: {
+    subjectType: string;
+    subjectId: string;
+    domainAction?: string | null;
+    actorUserId: string;
+    reason: string;
+  }
+) {
+  const type = input.subjectType;
+  const action = input.domainAction ?? "";
+  if (!input.subjectId) return null;
+  if (type !== "connect_bdp_unit" && action !== "activate_unit") {
+    return null;
+  }
+  const actorAssignments = (
+    await listRoleAssignmentsForUser(client, input.actorUserId)
+  ).filter((a) => a.status === "active");
+  return activateConnectBdpUnit(client, {
+    unitId: input.subjectId,
+    actorUserId: input.actorUserId,
+    actorAssignments,
+    reason: input.reason,
+  });
+}
 
 export async function createConnectBdpApplication(
   client: SupabaseClient,
@@ -119,6 +182,14 @@ export async function recordConnectBdpPackPayment(
     after: data,
     correlationId: input.correlationId,
   });
+
+  if (data.application_status === "pending_approval") {
+    await enqueueConnectBdpActivationReview(client, {
+      unitId: input.unitId,
+      requesterUserId: String(data.user_id),
+      title: "Connect BDP pack paid — pending platform activation",
+    });
+  }
 
   return data;
 }

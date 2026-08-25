@@ -22,8 +22,9 @@ test.describe("marketplace economics", () => {
       storageState: authStatePath("marketplace-bdp"),
     });
     const page = await ctx.newPage();
-    await page.goto("/marketplace-bdp/entitlements");
-    await page.waitForLoadState("domcontentloaded");
+    await page.goto("/marketplace-bdp/entitlements", {
+      waitUntil: "domcontentloaded",
+    });
     const body = await page.locator("body").innerText();
     expect(body).toMatch(/Venue 80%/i);
     expect(body).toMatch(/Marketplace BDP 10%/i);
@@ -44,8 +45,9 @@ test.describe("marketplace economics", () => {
       storageState: authStatePath("enterprise-bdp"),
     });
     const page = await ctx.newPage();
-    await page.goto("/enterprise-bdp/entitlements");
-    await page.waitForLoadState("domcontentloaded");
+    await page.goto("/enterprise-bdp/entitlements", {
+      waitUntil: "domcontentloaded",
+    });
     const body = await page.locator("body").innerText();
     expect(body).toMatch(/not 25% of total project value/i);
     expect(body).toMatch(/₹5,000\.00|₹5,000/);

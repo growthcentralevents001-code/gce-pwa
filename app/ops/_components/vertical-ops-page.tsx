@@ -136,12 +136,12 @@ export async function VerticalOpsPage(props: {
             {
               label: "Approvals",
               value: cards.pendingApprovals,
-              href: "/ops/approvals",
+              href: `/ops/approvals?vertical=${props.vertical}`,
             },
             {
               label: "Exceptions",
               value: cards.openExceptions,
-              href: "/ops/exceptions",
+              href: `/ops/exceptions?vertical=${props.vertical}`,
             },
             {
               label: "Cases",
@@ -173,7 +173,7 @@ export async function VerticalOpsPage(props: {
         <h2 className="text-sm font-semibold">
           Open exceptions ({exceptions.length})
         </h2>
-        <ExceptionQueue items={exceptions.slice(0, 15)} dense />
+        <ExceptionQueue items={exceptions.slice(0, 15)} dense={false} showActions />
       </section>
     </main>
   );

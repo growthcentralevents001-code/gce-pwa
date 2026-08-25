@@ -76,4 +76,21 @@ test.describe("self-approval", () => {
     expect(res.status).toBeGreaterThanOrEqual(400);
     await ctx.close();
   });
+
+  test("user cannot self-grant privileged platform_admin", async ({
+    browser,
+  }) => {
+    test.skip(!existsSync(authStatePath("connect-member")), "no member");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("connect-member"),
+    });
+    const page = await ctx.newPage();
+    const res = await postJson(page.request, "/api/admin/role-assignments", {
+      userId: "00000000-0000-4000-8000-000000000001",
+      roleKey: "platform_admin",
+      scopeType: "platform",
+    });
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    await ctx.close();
+  });
 });

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { OpsShell } from "@/components/app-shell/OpsShell";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
@@ -22,28 +23,22 @@ export default async function OpsLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login?next=/ops");
 
-  let permissions: string[] | undefined;
   let canSearch = false;
-  if (user) {
-    try {
-      const entitlements = await resolveActiveEntitlements(supabase, user.id);
-      // Pass undefined so structural nav remains visible; pages gate access.
-      permissions = undefined;
-      canSearch = actorHasOpsAdminPermission(
-        entitlements.activeAssignments,
-        "ops.search"
-      );
-    } catch {
-      permissions = undefined;
-      canSearch = false;
-    }
+  try {
+    const entitlements = await resolveActiveEntitlements(supabase, user.id);
+    canSearch = actorHasOpsAdminPermission(
+      entitlements.activeAssignments,
+      "ops.search"
+    );
+  } catch {
+    canSearch = false;
   }
 
   return (
     <OpsShell
-      userEmail={user?.email ?? null}
-      permissions={permissions}
+      userEmail={user.email ?? null}
       canSearch={canSearch}
     >
       {children}

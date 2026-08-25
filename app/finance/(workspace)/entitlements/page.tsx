@@ -1,5 +1,6 @@
 import { PartnerPageHeader, PartnerDataTable, PartnerCommercialSummary } from "@/components/partner";
 import { EntitlementSummaryCard } from "@/components/finance/FinanceCards";
+import { FinanceVerticalFilter } from "@/components/finance/FinanceVerticalFilter";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -10,14 +11,18 @@ import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = { robots: { index: false, follow: false }, title: "Entitlements · Finance" };
 
-export default async function Page() {
+type PageProps = { searchParams: Promise<{ vertical?: string }> };
+
+export default async function Page({ searchParams }: PageProps) {
+  const { vertical: verticalRaw } = await searchParams;
   const supabase = await createServerSupabaseClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/finance/entitlements");
   const bundle = await loadFinanceBundle(createPrivilegedSupabaseClient()).catch(() => null);
-  const rows = (bundle?.entitlements ?? []).map((e) => ({
+  const allRows = (bundle?.entitlements ?? []).map((e) => ({
     id: String(e.id),
     stakeholder_type: e.stakeholder_type,
+    source_vertical: e.source_vertical,
     status: e.status,
     revenue_component_key: e.revenue_component_key,
     gross_entitlement_minor: e.gross_entitlement_minor,
@@ -25,13 +30,23 @@ export default async function Page() {
     reversal_amount_minor: e.reversal_amount_minor,
     net_settlement_eligible_minor: e.net_settlement_eligible_minor,
   }));
+  const vertical =
+    verticalRaw === "connect" ||
+    verticalRaw === "marketplace" ||
+    verticalRaw === "enterprise"
+      ? verticalRaw
+      : null;
+  const rows = vertical
+    ? allRows.filter((r) => r.source_vertical === vertical)
+    : allRows;
   const sample = rows[0];
   const reversals = bundle?.reversals ?? [];
   const corrections = bundle?.corrections ?? [];
   const ledger = bundle?.ledgerEntries ?? [];
   return (
     <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8 ${GCE_SPACING.section}`}>
-      <PartnerPageHeader title="Stakeholder entitlements" description={`${GROSS_IMMUTABLE_COPY} Backend-calculated only — no client commission math.`} />
+      <PartnerPageHeader title="Stakeholder entitlements" description={`${GROSS_IMMUTABLE_COPY} Backend-calculated only — no client commission math. Attributed Marketplace is 80/10/10; unattributed is 80/0/20 (missing 10% is not pending). Connect BDP is 20% of eligible attributed subscription. Enterprise BDP is 25% of GCE platform commission, not project value.`} />
+      <FinanceVerticalFilter basePath="/finance/entitlements" active={vertical} />
       {sample ? (
         <PartnerCommercialSummary
           title="Sample recovery breakdown (first row)"
@@ -52,6 +67,7 @@ export default async function Page() {
             <PartnerDataTable
               columns={[
                 { id: "stakeholder", header: "Stakeholder", cell: (r) => stakeholderTypeLabel(String(r.stakeholder_type ?? "")) },
+                { id: "vertical", header: "Vertical", cell: (r) => String(r.source_vertical ?? "—") },
                 { id: "component", header: "Revenue component", cell: (r) => String(r.revenue_component_key ?? "—") },
                 { id: "status", header: "Status", cell: (r) => entitlementStatusLabel(String(r.status ?? "")) },
                 { id: "gross", header: "Gross", cell: (r) => formatMinorInr(Number(r.gross_entitlement_minor ?? 0)) },

@@ -35,9 +35,7 @@ export default async function SupportDashboardPage() {
   const shell = (children: React.ReactNode) => (
     <PartnerShell
       forcedWorkspaceKey="support"
-      allowedWorkspaces={
-        allowed.includes("support") ? allowed : [...allowed, "support"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

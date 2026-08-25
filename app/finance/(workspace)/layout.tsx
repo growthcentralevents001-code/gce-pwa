@@ -35,9 +35,7 @@ export default async function FinanceLayout({
   return (
     <PartnerShell
       forcedWorkspaceKey="finance"
-      allowedWorkspaces={
-        allowed.includes("finance") ? allowed : [...allowed, "finance"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

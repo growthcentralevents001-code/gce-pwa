@@ -95,4 +95,19 @@ describe("Batch 8 ops presentation safety", () => {
       true
     );
   });
+
+  it("does not inject unauthorized workspaces in internal layouts", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    for (const rel of [
+      "app/finance/(workspace)/layout.tsx",
+      "app/dashboard/compliance/page.tsx",
+      "app/dashboard/support/page.tsx",
+      "app/dashboard/opportunity-desk/page.tsx",
+      "app/desk/queue/page.tsx",
+    ]) {
+      const src = readFileSync(resolve(process.cwd(), rel), "utf8");
+      expect(src).not.toMatch(/allowed\.includes\("[a-z-]+"\) \? allowed : \[\.\.\.allowed/);
+    }
+  });
 });

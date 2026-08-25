@@ -1,5 +1,6 @@
 import { EmptyState } from "@/components/states/EmptyState";
 import { OpsQueueCard } from "@/components/ops/OpsQueueCard";
+import { ExceptionResolveActions } from "@/components/ops/ExceptionResolveActions";
 import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { opsStatusTone } from "@/lib/frontend/ops/format";
@@ -17,9 +18,11 @@ export type ExceptionQueueItem = {
 export function ExceptionQueue({
   items,
   dense = false,
+  showActions = false,
 }: {
   items: ExceptionQueueItem[];
   dense?: boolean;
+  showActions?: boolean;
 }) {
   if (items.length === 0) {
     return (
@@ -69,6 +72,14 @@ export function ExceptionQueue({
             summary={item.summary}
             status={item.status}
             meta={`${item.exception_key} · ${item.severity ?? "n/a"} · ${item.vertical}`}
+            actions={
+              showActions ? (
+                <ExceptionResolveActions
+                  exceptionId={item.id}
+                  title={item.title}
+                />
+              ) : undefined
+            }
           />
         </li>
       ))}

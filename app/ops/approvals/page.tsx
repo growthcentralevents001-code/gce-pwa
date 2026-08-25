@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ApprovalQueue } from "@/components/ops/ApprovalQueue";
+import { OpsQueueFilter } from "@/components/ops/OpsQueueFilter";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
@@ -51,6 +52,7 @@ export default async function OpsApprovalsPage({ searchParams }: PageProps) {
           { label: "Approvals" },
         ]}
       />
+      <OpsQueueFilter basePath="/ops/approvals" active={verticalRaw} />
       <ApprovalQueue items={items} actorUserId={user.id} />
     </main>
   );

@@ -128,9 +128,9 @@ export function ApprovalActions({
                       <span className="text-foreground">{d.label}</span>
                     </p>
                     <p>
-                      Consequence: For Venue, Event, and Offer queue items this
-                      applies the canonical domain approve service (status
-                      becomes active/published). Other queue items record an
+                      Consequence: For Venue, Event, Offer, and Connect BDP
+                      unit queue items this applies the canonical domain
+                      approve/activate service. Other queue items record an
                       audited ops decision only.
                     </p>
                     <p className="text-xs">Reason: {reason}</p>

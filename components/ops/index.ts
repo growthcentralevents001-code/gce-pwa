@@ -6,6 +6,8 @@ export type { ApprovalQueueItem } from "./ApprovalQueue";
 export { ApprovalActions } from "./ApprovalActions";
 export { ExceptionQueue } from "./ExceptionQueue";
 export type { ExceptionQueueItem } from "./ExceptionQueue";
+export { ExceptionResolveActions } from "./ExceptionResolveActions";
+export { OpsQueueFilter } from "./OpsQueueFilter";
 export { ComplianceHoldCard } from "./ComplianceHoldCard";
 export type { ComplianceHoldRow } from "./ComplianceHoldCard";
 export {

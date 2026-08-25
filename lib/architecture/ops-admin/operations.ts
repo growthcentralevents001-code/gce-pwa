@@ -313,6 +313,14 @@ export async function reviewApproval(
       actorUserId: input.actorUserId,
       reason: input.decisionReason,
     });
+    const { applyConnectOpsApproval } = await import("../connect-bdp/units");
+    await applyConnectOpsApproval(client, {
+      subjectType: String(item.subject_type ?? ""),
+      subjectId: String(item.subject_id ?? ""),
+      domainAction: item.domain_action ? String(item.domain_action) : null,
+      actorUserId: input.actorUserId,
+      reason: input.decisionReason,
+    });
   }
 
   const statusMap = {

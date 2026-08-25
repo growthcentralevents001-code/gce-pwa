@@ -40,11 +40,7 @@ export default async function DeskQueuePage() {
   const shell = (children: React.ReactNode) => (
     <PartnerShell
       forcedWorkspaceKey="opportunity-desk"
-      allowedWorkspaces={
-        allowed.includes("opportunity-desk")
-          ? allowed
-          : [...allowed, "opportunity-desk"]
-      }
+      allowedWorkspaces={allowed}
       userEmail={user.email}
       displayName={
         (user.user_metadata?.full_name as string | undefined) ||

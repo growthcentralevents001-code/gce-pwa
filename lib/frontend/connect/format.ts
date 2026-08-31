@@ -14,6 +14,10 @@ import {
 } from "@/lib/architecture/connect/types";
 import { circleStatusesForCount, tagSurchargeForSlot } from "@/lib/architecture/connect/rules";
 import type { StatusTone } from "@/lib/frontend/status";
+import {
+  GC_POWER_SECTORS,
+  type GcPowerSectorId,
+} from "@/lib/frontend/design-language";
 
 export { CIRCLE_CAPACITY_MAX, ASSOCIATE_PRICE_MINOR, MAX_TAGS };
 
@@ -189,4 +193,61 @@ export function extractApiError(json: unknown, fallback: string): string {
 export function isPaidLeadAssistExposed(flags: Record<string, boolean> | null): boolean {
   if (!flags) return false;
   return Object.values(flags).some(Boolean);
+}
+
+/** Legacy seed keys (sector_a–d) → canonical GC Power Sector ids (FD-030). */
+const LEGACY_POWER_SECTOR_KEYS: Record<string, GcPowerSectorId> = {
+  sector_a: "real_estate",
+  sector_b: "industrial",
+  sector_c: "professional",
+  sector_d: "consumer",
+};
+
+export function normalizePowerSectorKey(
+  raw: string | null | undefined
+): GcPowerSectorId | null {
+  if (!raw?.trim()) return null;
+  const key = raw.trim().toLowerCase();
+  if (LEGACY_POWER_SECTOR_KEYS[key]) return LEGACY_POWER_SECTOR_KEYS[key];
+  const byId = GC_POWER_SECTORS.find((s) => s.id === key);
+  if (byId) return byId.id;
+  const needle = key.replaceAll("_", " ");
+  const byLabel = GC_POWER_SECTORS.find(
+    (s) =>
+      s.label.toLowerCase().includes(needle) ||
+      s.shortLabel.toLowerCase().includes(needle)
+  );
+  return byLabel?.id ?? null;
+}
+
+export function formatPowerSectorLabel(
+  raw: string | null | undefined
+): string | null {
+  const id = normalizePowerSectorKey(raw);
+  if (!id) return raw?.trim() || null;
+  return GC_POWER_SECTORS.find((s) => s.id === id)?.shortLabel ?? raw?.trim() ?? null;
+}
+
+export function countMembersByPowerSector(
+  members: CircleDirectoryCard[]
+): Record<GcPowerSectorId, number> {
+  const counts = Object.fromEntries(
+    GC_POWER_SECTORS.map((s) => [s.id, 0])
+  ) as Record<GcPowerSectorId, number>;
+  for (const member of members) {
+    const id = normalizePowerSectorKey(member.sectorLabel);
+    if (id) counts[id] += 1;
+  }
+  return counts;
+}
+
+export function circleRemainingSeatsLabel(
+  activeSeatCount: number,
+  capacityMax = CIRCLE_CAPACITY_MAX
+): string {
+  const max = Math.min(capacityMax, CIRCLE_CAPACITY_MAX);
+  const current = Math.min(Math.max(0, activeSeatCount), max);
+  const remaining = Math.max(0, max - current);
+  if (remaining === 0) return "Circle full — no seats remaining";
+  return `${remaining} seat${remaining === 1 ? "" : "s"} remaining`;
 }

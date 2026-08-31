@@ -19,6 +19,10 @@ function mapCircle(row: Record<string, unknown>): ConnectCircle {
       (row.platform_activation_granted_at as string | null) ?? null,
     bdpTargetCreditEventId:
       (row.bdp_target_credit_event_id as string | null) ?? null,
+    metadata:
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : null,
   };
 }
 

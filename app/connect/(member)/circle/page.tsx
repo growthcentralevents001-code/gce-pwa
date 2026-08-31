@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { CircleCard } from "@/components/connect/CircleCard";
 import { CircleDirectory } from "@/components/connect/CircleDirectory";
+import { CircleMeetingCadence } from "@/components/connect/CircleMeetingCadence";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
@@ -12,13 +13,18 @@ import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { listMembershipsForUser } from "@/lib/architecture/connect/memberships";
 import {
   findSeatForMembership,
+  getActiveConnectBdpForCircle,
   loadCircleBundle,
+  parseCircleMeetingFromMetadata,
 } from "@/lib/frontend/connect/reads";
 import {
   CIRCLE_CAPACITY_MAX,
+  countMembersByPowerSector,
+  circleRemainingSeatsLabel,
   formatConstitutionLabel,
   formatLifecycleLabel,
 } from "@/lib/frontend/connect/format";
+import { CONNECT_BDP_ROLE_LABEL } from "@/lib/frontend/partner/format";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -75,14 +81,21 @@ export default async function MyCirclePage() {
     );
   }
 
-  const bundle = await loadCircleBundle(admin, circleId);
+  const [bundle, connectBdp] = await Promise.all([
+    loadCircleBundle(admin, circleId),
+    getActiveConnectBdpForCircle(admin, circleId).catch(() => null),
+  ]);
   const { circle, availability, directory } = bundle;
+  const capacityMax = Math.min(circle.capacityMax, CIRCLE_CAPACITY_MAX);
+  const sectorCounts = countMembersByPowerSector(directory);
+  const meeting = parseCircleMeetingFromMetadata(circle.metadata);
+  const isFull = availability.remaining <= 0;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 pb-16">
       <ConnectPageHeader
         title={circle.name}
-        description={`${circle.city} · capacity ${availability.activeSeats} / ${Math.min(availability.capacityMax, CIRCLE_CAPACITY_MAX)}`}
+        description={`${circle.city} · ${availability.activeSeats} / ${capacityMax} members · ${circleRemainingSeatsLabel(availability.activeSeats, capacityMax)}`}
         backHref="/dashboard/connect-member"
         actions={
           <Button asChild variant="outline" className="min-h-11">
@@ -98,11 +111,11 @@ export default async function MyCirclePage() {
           lifecycleStatus={circle.lifecycleStatus}
           constitutionStatus={circle.constitutionStatus}
           activeSeatCount={circle.activeSeatCount}
-          capacityMax={Math.min(circle.capacityMax, CIRCLE_CAPACITY_MAX)}
+          capacityMax={capacityMax}
           href="/connect/circle"
         />
         <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <h2 className="text-sm font-semibold">Dual status model</h2>
+          <h2 className="text-sm font-semibold">Circle status</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             <StatusBadge
               label={`Lifecycle · ${formatLifecycleLabel(circle.lifecycleStatus)}`}
@@ -112,11 +125,24 @@ export default async function MyCirclePage() {
               label={`Constitution · ${formatConstitutionLabel(circle.constitutionStatus)}`}
               tone="neutral"
             />
+            {isFull ? (
+              <StatusBadge label="Circle full" tone="warning" />
+            ) : null}
           </div>
           <p className="mt-3 text-xs text-muted-foreground">
-            Formal activation event occurs once at 15 approved + paid members.
-            No extra target-credit display at 20 or 40. Hard cap 40 — no seat 41.
+            {availability.activeSeats} active seat
+            {availability.activeSeats === 1 ? "" : "s"} · {availability.remaining}{" "}
+            remaining · hard cap {CIRCLE_CAPACITY_MAX} (no seat 41).
           </p>
+          {connectBdp ? (
+            <p className="mt-3 text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">
+                {CONNECT_BDP_ROLE_LABEL}:
+              </span>{" "}
+              {connectBdp.partnerName?.trim() ||
+                "Assigned partner (name on file with platform)"}
+            </p>
+          ) : null}
           <div className="mt-4 flex flex-wrap gap-2">
             <Button asChild size="sm" className="min-h-11">
               <Link href="/connect/leads">Lead Assist</Link>
@@ -132,8 +158,12 @@ export default async function MyCirclePage() {
       </div>
 
       <section className="mt-10">
+        <CircleMeetingCadence meeting={meeting} />
+      </section>
+
+      <section className="mt-10">
         <h2 className="mb-3 text-sm font-semibold">GC Power Sectors</h2>
-        <PowerSectorGrid />
+        <PowerSectorGrid memberCounts={sectorCounts} />
       </section>
 
       <section className="mt-10">

@@ -95,4 +95,5 @@ export type ConnectCircle = {
   capacityMax: number;
   platformActivationGrantedAt: string | null;
   bdpTargetCreditEventId: string | null;
+  metadata?: Record<string, unknown> | null;
 };

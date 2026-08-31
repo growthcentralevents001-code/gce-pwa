@@ -2,7 +2,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getCircle } from "@/lib/architecture/connect/circles";
 import { getSeatAvailability } from "@/lib/architecture/connect/allocation";
 import { CIRCLE_CAPACITY_MAX } from "@/lib/architecture/connect/types";
-import type { CircleDirectoryCard } from "@/lib/frontend/connect/format";
+import {
+  formatPowerSectorLabel,
+  type CircleDirectoryCard,
+} from "@/lib/frontend/connect/format";
 
 /** Read helpers for member CX — never invent seats or capacity. */
 
@@ -143,11 +146,12 @@ export async function presentCircleDirectory(
       (row.specialisation_id as string | null) ?? m?.specialisation_id ?? null;
     const spec = specId ? specById.get(specId) : undefined;
     const display = m?.user_id ? nameByUser.get(m.user_id) : null;
+    const sectorRaw = spec?.sector ?? null;
     return {
       id: String(row.id),
       name: display?.trim() || "Circle member",
       specialisation: spec?.label ?? null,
-      sectorLabel: spec?.sector ?? null,
+      sectorLabel: formatPowerSectorLabel(sectorRaw),
       tagLabels: m?.id ? tagsByMembership.get(m.id) ?? [] : [],
       status: m?.status ?? (row.status as string | null),
     };
@@ -165,6 +169,76 @@ export async function listCircleGovernance(
     .eq("status", "active")
     .limit(20);
   return data ?? [];
+}
+
+export type CircleConnectBdpAssignment = {
+  unitId: string;
+  partnerName: string | null;
+};
+
+/** Active Connect BDP assignment for a Circle — read-only, privacy-safe label. */
+export async function getActiveConnectBdpForCircle(
+  client: SupabaseClient,
+  circleId: string
+): Promise<CircleConnectBdpAssignment | null> {
+  const { data: assignment } = await client
+    .from("connect_bdp_circle_assignments")
+    .select("unit_id, connect_bdp_units(role_assignment_id)")
+    .eq("circle_id", circleId)
+    .eq("status", "active")
+    .order("effective_from", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (!assignment?.unit_id) return null;
+
+  const unitRaw = assignment.connect_bdp_units;
+  const unit = Array.isArray(unitRaw) ? unitRaw[0] : unitRaw;
+  const roleAssignmentId =
+    unit && typeof unit === "object" && "role_assignment_id" in unit
+      ? (unit as { role_assignment_id?: string | null }).role_assignment_id
+      : null;
+
+  let partnerName: string | null = null;
+  if (roleAssignmentId) {
+    const { data: roleRow } = await client
+      .from("gce_role_assignments")
+      .select("user_id")
+      .eq("id", roleAssignmentId)
+      .maybeSingle();
+    if (roleRow?.user_id) {
+      const { data: profile } = await client
+        .from("profiles")
+        .select("display_name")
+        .eq("user_id", roleRow.user_id)
+        .maybeSingle();
+      partnerName = profile?.display_name?.trim() || null;
+    }
+  }
+
+  return {
+    unitId: String(assignment.unit_id),
+    partnerName,
+  };
+}
+
+export type CircleMeetingSnapshot = {
+  nextMeetingAt: string | null;
+  nextMeetingLocation: string | null;
+};
+
+/** Optional meeting hints from Circle metadata — never invented client-side. */
+export function parseCircleMeetingFromMetadata(
+  metadata: unknown
+): CircleMeetingSnapshot {
+  if (!metadata || typeof metadata !== "object") {
+    return { nextMeetingAt: null, nextMeetingLocation: null };
+  }
+  const m = metadata as Record<string, unknown>;
+  const nextMeetingAt =
+    typeof m.nextMeetingAt === "string" ? m.nextMeetingAt : null;
+  const nextMeetingLocation =
+    typeof m.nextMeetingLocation === "string" ? m.nextMeetingLocation : null;
+  return { nextMeetingAt, nextMeetingLocation };
 }
 
 export async function loadCircleBundle(

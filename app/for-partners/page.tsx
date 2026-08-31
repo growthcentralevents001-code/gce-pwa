@@ -17,7 +17,7 @@ const TRACKS = [
     id: "connect",
     title: "Connect BDP",
     body: "Grow Connect Circles commercially under approved Connect BDP rules. Application required — no self-grant.",
-    href: "/apply/role?intent=connect-bdp",
+    href: "/connect-bdp",
   },
   {
     id: "marketplace",

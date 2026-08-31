@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadConnectBdpBundle } from "@/lib/frontend/connect-bdp/reads";
+import { CONNECT_BDP_APPLICATION_JOURNEY } from "@/lib/architecture/connect-bdp/application";
 import {
   applicationStatusLabel,
   formatMinorInr,
@@ -145,26 +146,44 @@ export default async function ConnectBdpUnitPage() {
       ) : null}
 
       <section className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>
-        <h2 className="text-base font-semibold">Activation timeline</h2>
+        <h2 className="text-base font-semibold">Application journey</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Qualification and training are handled offline by Platform Ops after
+          submission. Status reflects platform records only.
+        </p>
         <div className="mt-4">
           <Timeline
             items={[
               {
-                id: "draft",
+                id: "created",
                 title: "Application created",
                 at: unit.created_at ? String(unit.created_at) : null,
               },
-              {
-                id: "status",
-                title: applicationStatusLabel(String(unit.application_status)),
-                tone:
-                  unit.application_status === "active" ? "success" : "pending",
-              },
+              ...CONNECT_BDP_APPLICATION_JOURNEY.map((stage) => {
+                const current = String(unit.application_status);
+                const stageIndex = CONNECT_BDP_APPLICATION_JOURNEY.indexOf(stage);
+                const currentIndex = CONNECT_BDP_APPLICATION_JOURNEY.indexOf(
+                  current as (typeof CONNECT_BDP_APPLICATION_JOURNEY)[number]
+                );
+                const reached =
+                  currentIndex >= 0
+                    ? stageIndex <= currentIndex
+                    : current === stage;
+                return {
+                  id: stage,
+                  title: applicationStatusLabel(stage),
+                  tone: reached
+                    ? stage === "active"
+                      ? ("success" as const)
+                      : ("pending" as const)
+                    : undefined,
+                };
+              }),
               ...(unit.activated_at
                 ? [
                     {
-                      id: "activated",
-                      title: "Platform activation",
+                      id: "activated-at",
+                      title: "Activated at",
                       at: String(unit.activated_at),
                       tone: "success" as const,
                     },

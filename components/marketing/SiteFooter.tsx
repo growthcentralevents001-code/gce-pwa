@@ -25,6 +25,7 @@ const COLUMNS = [
     links: [
       { href: "/about", label: "About" },
       { href: "/for-partners", label: "For Partners" },
+      { href: "/connect-bdp", label: "Connect BDP" },
       { href: "/contact", label: "Contact" },
       { href: "/terms", label: "Terms" },
       { href: "/privacy", label: "Privacy" },

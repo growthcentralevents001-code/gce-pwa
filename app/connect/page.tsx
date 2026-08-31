@@ -126,7 +126,7 @@ export default async function ConnectLandingPage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="min-h-11">
-                <Link href="/for-partners">Partner pathways</Link>
+                <Link href="/connect-bdp">Connect BDP opportunity</Link>
               </Button>
             </div>
           </div>

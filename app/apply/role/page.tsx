@@ -13,7 +13,7 @@ const INTENTS = [
     id: "connect-bdp",
     title: "Connect BDP",
     description: "Application interest for Connect BDP — not an instant role.",
-    href: "/contact",
+    href: "/login?next=/connect-bdp/apply",
   },
   {
     id: "marketplace-bdp",

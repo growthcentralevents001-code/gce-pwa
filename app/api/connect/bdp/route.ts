@@ -28,12 +28,14 @@ import {
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { AppError } from "@/lib/errors";
 import { z } from "zod";
+import { connectBdpApplicationFieldsSchema } from "@/lib/architecture/connect-bdp/application";
 
 const applySchema = z.object({
   action: z.literal("apply"),
   packageOption: z
     .enum(["direct_50000", "finance_recovery_60000"])
     .optional(),
+  application: connectBdpApplicationFieldsSchema,
 });
 
 const termsSchema = z.object({
@@ -181,6 +183,7 @@ export const POST = withAuthedRoute(async (request, ctx) => {
     const unit = await createConnectBdpApplication(ctx.supabase, {
       userId: ctx.user.id,
       packageOption: parsed.packageOption,
+      application: parsed.application,
       actorUserId: ctx.user.id,
       correlationId: ctx.correlationId,
     });

@@ -15,8 +15,7 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || "/";
   const isConnectMemberCx =
     pathname.startsWith("/connect/") && pathname !== "/connect";
-  const isConnectBdpCx =
-    pathname === "/connect-bdp" || pathname.startsWith("/connect-bdp/");
+  const isConnectBdpCx = pathname.startsWith("/connect-bdp/");
   const isMarketplaceBdpCx =
     pathname === "/marketplace-bdp" ||
     pathname.startsWith("/marketplace-bdp/");

@@ -8,6 +8,7 @@ const PUBLIC_EXACT = [
   '/manifest.json',
   // Marketing landings only — member CX under /connect/* requires auth
   '/connect',
+  '/connect-bdp',
   '/marketplace',
   '/enterprise',
 ]

@@ -11,7 +11,9 @@ import { loadConnectBdpBundle } from "@/lib/frontend/connect-bdp/reads";
 import {
   formatCommissionRateLabel,
   formatMinorInr,
+  CONNECT_BDP_EARNINGS_DISCLAIMER,
 } from "@/lib/frontend/partner/format";
+import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -66,6 +68,12 @@ export default async function ConnectBdpEntitlementsPage() {
         description={`Canonical Connect BDP commission rate: ${formatCommissionRateLabel()} of attributed eligible Connect subscription revenue. Display only — no settlement or payout.`}
         backHref="/dashboard/connect-bdp"
       />
+
+      <div className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {CONNECT_BDP_EARNINGS_DISCLAIMER}
+        </p>
+      </div>
 
       <PartnerCommercialSummary
         rows={[

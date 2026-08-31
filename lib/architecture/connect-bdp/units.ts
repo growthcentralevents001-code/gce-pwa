@@ -80,18 +80,23 @@ export async function createConnectBdpApplication(
   input: {
     userId: string;
     packageOption?: ConnectBdpPackageOption;
+    application?: import("./application").ConnectBdpApplicationFields;
     actorUserId: string;
     correlationId?: string;
   }
 ) {
   const option = input.packageOption ?? "finance_recovery_60000";
   const amounts = packageAmounts(option);
+  const now = new Date().toISOString();
+  const metadata = input.application
+    ? { application: input.application }
+    : {};
 
   const { data, error } = await client
     .from("connect_bdp_units")
     .insert({
       user_id: input.userId,
-      application_status: "draft",
+      application_status: input.application ? "submitted" : "draft",
       package_option: option,
       package_total_minor: amounts.packageTotalMinor,
       initial_payment_minor: amounts.initialPaymentMinor,
@@ -102,6 +107,8 @@ export async function createConnectBdpApplication(
       target_circles: CONNECT_BDP_TARGET_CIRCLES,
       circles_capacity_max: CONNECT_BDP_CIRCLES_PER_UNIT,
       pricing_rule_version: CONNECT_BDP_RULE_VERSION,
+      metadata,
+      ...(input.application ? { terms_accepted_at: now } : {}),
     })
     .select("*")
     .single();

@@ -33,6 +33,10 @@ export {
 /** Canonical role label — never BDM/ZBP. */
 export const CONNECT_BDP_ROLE_LABEL = "Connect BDP";
 
+/** Performance-based earnings disclaimer (FD-025/036). Display only. */
+export const CONNECT_BDP_EARNINGS_DISCLAIMER =
+  "Connect BDP commission is performance-based on eligible, collected, and validly attributed Connect subscription revenue — not a salary or guaranteed income. Organic memberships without valid attribution do not generate Connect BDP commission. Settlement and payout remain platform-governed.";
+
 export function formatMinorInr(minor: number): string {
   const rupees = Math.round(minor) / 100;
   return new Intl.NumberFormat("en-IN", {

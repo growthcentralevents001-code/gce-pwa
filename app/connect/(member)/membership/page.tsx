@@ -2,15 +2,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { MembershipCard } from "@/components/connect/MembershipCard";
+import { MembershipSubmitButton } from "@/components/connect/MembershipSubmitButton";
 import { CircleCard } from "@/components/connect/CircleCard";
 import { KpiCard } from "@/components/connect/KpiCard";
 import { LeadCard } from "@/components/connect/LeadCard";
+import { Timeline } from "@/components/connect/Timeline";
 import { EmptyState } from "@/components/states/EmptyState";
 import { FeatureGated } from "@/components/states/FeatureGated";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
-import { listMembershipsForUser } from "@/lib/architecture/connect/memberships";
+import { listMembershipsForUser, listMembershipEvents } from "@/lib/architecture/connect/memberships";
+import { membershipStatusLabel } from "@/lib/frontend/connect/format";
+import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 import { listMembershipTags } from "@/lib/architecture/connect/tags";
 import {
   getMyReceivedLeads,
@@ -40,6 +44,9 @@ export default async function ConnectMembershipPage() {
   const primary = memberships[0] ?? null;
   const tags = primary
     ? await listMembershipTags(supabase, primary.id).catch(() => [])
+    : [];
+  const events = primary
+    ? await listMembershipEvents(supabase, primary.id).catch(() => [])
     : [];
   const seat = primary
     ? await findSeatForMembership(admin, primary.id).catch(() => null)
@@ -86,6 +93,20 @@ export default async function ConnectMembershipPage() {
               allocationStatus={primary.allocationStatus}
               tagCount={tags.length}
             />
+            {primary.status === "draft" ? (
+              <div className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>
+                <h2 className="text-sm font-semibold">Complete your application</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Your draft is saved. Submit when ready, or continue editing.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <MembershipSubmitButton membershipId={primary.id} />
+                  <Button asChild variant="outline" className="min-h-11">
+                    <Link href="/memberships/apply">Edit application</Link>
+                  </Button>
+                </div>
+              </div>
+            ) : null}
             {circle ? (
               <CircleCard
                 name={String(circle.name)}
@@ -145,6 +166,28 @@ export default async function ConnectMembershipPage() {
             title="Paid Lead Assist inactive"
             description="Stage 1 Lead Assist is unpaid. Escrow, ₹500 fees, and success fees stay OFF."
           />
+
+          {events.length > 0 ? (
+            <section className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>
+              <h2 className="text-base font-semibold">Application history</h2>
+              <div className="mt-4">
+                <Timeline
+                  items={events.map((ev) => ({
+                    id: String(ev.id),
+                    title:
+                      ev.to_status
+                        ? membershipStatusLabel(String(ev.to_status))
+                        : String(ev.event_type ?? "Event"),
+                    at: ev.created_at ? String(ev.created_at) : null,
+                    tone:
+                      ev.to_status === "active"
+                        ? ("success" as const)
+                        : ("pending" as const),
+                  }))}
+                />
+              </div>
+            </section>
+          ) : null}
 
           {sent.length > 0 ? (
             <section>

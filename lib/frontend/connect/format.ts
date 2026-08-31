@@ -26,6 +26,26 @@ export type CircleDirectoryCard = {
   status: string | null;
 };
 
+export function membershipStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    draft: "Draft",
+    applied: "Applied — awaiting review",
+    pending_payment: "Payment pending",
+    pending_verification: "Pending verification",
+    pending_approval: "Pending platform approval",
+    active: "Active",
+    grace_period: "Grace period",
+    frozen: "Frozen",
+    restricted: "Restricted",
+    suspended: "Suspended",
+    expired: "Expired",
+    terminated: "Terminated",
+    rejoining_review: "Rejoining review",
+    archived: "Archived",
+  };
+  return map[status] ?? status.replaceAll("_", " ");
+}
+
 export function membershipStatusTone(status: string): StatusTone {
   switch (status) {
     case "active":

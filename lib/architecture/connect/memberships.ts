@@ -59,18 +59,28 @@ async function appendMembershipEvent(
 export async function getAssociatePlanId(client: SupabaseClient): Promise<string> {
   const { data, error } = await client
     .from("membership_plans")
-    .select("id, is_purchasable")
+    .select("id, is_active")
     .eq("plan_key", "associate")
     .single();
-  if (error || !data) {
+  if (error || !data || !data.is_active) {
     throw new AppError("NOT_FOUND", "Associate plan not configured", { status: 404 });
   }
-  if (!data.is_purchasable) {
+  return String(data.id);
+}
+
+export async function assertAssociatePurchaseEnabled(
+  client: SupabaseClient
+): Promise<void> {
+  const { data, error } = await client
+    .from("membership_plans")
+    .select("is_purchasable")
+    .eq("plan_key", "associate")
+    .single();
+  if (error || !data?.is_purchasable) {
     throw new AppError("FEATURE_DISABLED", "Associate purchase disabled", {
       status: 403,
     });
   }
-  return String(data.id);
 }
 
 export async function createMembershipDraft(
@@ -85,6 +95,7 @@ export async function createMembershipDraft(
     preferredLocality?: string | null;
     connectBdpUserId?: string | null;
     attributionProvenance?: string | null;
+    metadata?: Record<string, unknown>;
     actorUserId: string;
     correlationId?: string;
   }
@@ -106,6 +117,7 @@ export async function createMembershipDraft(
       connect_bdp_user_id: input.connectBdpUserId ?? null,
       attribution_provenance: input.attributionProvenance ?? null,
       pricing_rule_version: PRICING_RULE_VERSION,
+      metadata: input.metadata ?? {},
     })
     .select("*")
     .single();
@@ -215,15 +227,150 @@ export async function submitMembership(
   client: SupabaseClient,
   input: { membershipId: string; actorUserId: string; correlationId?: string }
 ) {
-  return transitionMembership(client, {
-    ...input,
+  return submitMembershipApplication(client, input);
+}
+
+/** Member application submit — draft → applied; pending_payment only when purchase flag ON. */
+export async function submitMembershipApplication(
+  client: SupabaseClient,
+  input: { membershipId: string; actorUserId: string; correlationId?: string }
+): Promise<ConnectMembership> {
+  const { data: existing, error } = await client
+    .from("connect_memberships")
+    .select("*")
+    .eq("id", input.membershipId)
+    .single();
+  if (error || !existing) {
+    throw new AppError("NOT_FOUND", "Membership not found", { status: 404 });
+  }
+  if (String(existing.user_id) !== input.actorUserId) {
+    throw new AppError("FORBIDDEN", "Not your membership application", {
+      status: 403,
+    });
+  }
+  if (existing.status !== "draft") {
+    throw new AppError(
+      "INVALID_TRANSITION",
+      "Only draft applications can be submitted",
+      { status: 409 }
+    );
+  }
+
+  const applied = await transitionMembership(client, {
+    membershipId: input.membershipId,
     transition: "submit",
-  }).then((m) =>
-    transitionMembership(client, {
-      ...input,
+    actorUserId: input.actorUserId,
+    correlationId: input.correlationId,
+  });
+
+  try {
+    await assertAssociatePurchaseEnabled(client);
+    return transitionMembership(client, {
+      membershipId: input.membershipId,
       transition: "require_payment",
-    }).catch(() => m)
-  );
+      actorUserId: input.actorUserId,
+      correlationId: input.correlationId,
+    });
+  } catch (err) {
+    if (err instanceof AppError && err.code === "FEATURE_DISABLED") {
+      return applied;
+    }
+    throw err;
+  }
+}
+
+export async function updateMembershipDraft(
+  client: SupabaseClient,
+  input: {
+    membershipId: string;
+    actorUserId: string;
+    specialisationId?: string | null;
+    preferredCity?: string | null;
+    preferredState?: string | null;
+    preferredDistrict?: string | null;
+    preferredLocality?: string | null;
+    metadata?: Record<string, unknown>;
+    correlationId?: string;
+  }
+): Promise<ConnectMembership> {
+  const { data: existing, error } = await client
+    .from("connect_memberships")
+    .select("*")
+    .eq("id", input.membershipId)
+    .single();
+  if (error || !existing) {
+    throw new AppError("NOT_FOUND", "Membership not found", { status: 404 });
+  }
+  if (String(existing.user_id) !== input.actorUserId) {
+    throw new AppError("FORBIDDEN", "Not your membership application", {
+      status: 403,
+    });
+  }
+  if (existing.status !== "draft") {
+    throw new AppError(
+      "INVALID_TRANSITION",
+      "Only draft applications can be edited",
+      { status: 409 }
+    );
+  }
+
+  const patch: Record<string, unknown> = {};
+  if (input.specialisationId !== undefined) {
+    patch.specialisation_id = input.specialisationId;
+  }
+  if (input.preferredCity !== undefined) patch.preferred_city = input.preferredCity;
+  if (input.preferredState !== undefined) patch.preferred_state = input.preferredState;
+  if (input.preferredDistrict !== undefined) {
+    patch.preferred_district = input.preferredDistrict;
+  }
+  if (input.preferredLocality !== undefined) {
+    patch.preferred_locality = input.preferredLocality;
+  }
+  if (input.metadata !== undefined) patch.metadata = input.metadata;
+
+  const { data, error: upErr } = await client
+    .from("connect_memberships")
+    .update({ ...patch, updated_at: new Date().toISOString() })
+    .eq("id", input.membershipId)
+    .select("*")
+    .single();
+
+  if (upErr || !data) {
+    throw new AppError("INTERNAL_ERROR", "Failed to update draft", {
+      cause: upErr,
+    });
+  }
+
+  await writeAuditEvent(client, {
+    actorUserId: input.actorUserId,
+    action: "membership.draft_update",
+    resourceType: "connect_membership",
+    resourceId: input.membershipId,
+    before: existing,
+    after: data,
+    correlationId: input.correlationId,
+  });
+
+  return mapMembership(data as Record<string, unknown>);
+}
+
+export async function listMembershipEvents(
+  client: SupabaseClient,
+  membershipId: string,
+  limit = 20
+) {
+  const { data, error } = await client
+    .from("connect_membership_events")
+    .select("*")
+    .eq("membership_id", membershipId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load membership events", {
+      cause: error,
+    });
+  }
+  return data ?? [];
 }
 
 export async function recordMembershipPaymentSuccess(
@@ -254,6 +401,7 @@ export async function recordMembershipPaymentSuccess(
   }
 
   if (status === "draft" || status === "applied") {
+    await assertAssociatePurchaseEnabled(client);
     await transitionMembership(client, {
       membershipId: input.membershipId,
       transition: status === "draft" ? "submit" : "require_payment",

@@ -18,11 +18,17 @@ export function LeadActions({
   workStatus,
   contactAvailable,
   role,
+  outcome,
 }: {
   leadId: string;
   workStatus: string;
   contactAvailable?: boolean;
   role: "receiver" | "giver" | "both";
+  outcome?: {
+    status: string;
+    giverStatus: string | null;
+    receiverStatus: string | null;
+  } | null;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -83,6 +89,14 @@ export function LeadActions({
       {error ? (
         <p className="text-sm text-destructive" role="alert">
           {error}
+        </p>
+      ) : null}
+
+      {outcome && workStatus === "outcome_pending" ? (
+        <p className="rounded-xl border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+          Giver: {outcome.giverStatus ?? "pending"} · Receiver:{" "}
+          {outcome.receiverStatus ?? "pending"} — both must confirm before final
+          close.
         </p>
       ) : null}
 

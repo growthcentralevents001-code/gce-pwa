@@ -6,7 +6,12 @@ import { StatusBadge } from "@/components/states/StatusBadge";
 import { FeatureGated } from "@/components/states/FeatureGated";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
+import { listActiveSpecialisations } from "@/lib/architecture/connect/specialisations";
+import { findAssociateTag } from "@/lib/architecture/connect/tagCatalog";
 import {
+  getLatestLeadRequirement,
+  getLeadDomainTimeline,
+  getLeadOutcomeConfirmation,
   getMyReceivedLeads,
   getMySentLeads,
   presentLeadPrivacySafe,
@@ -31,10 +36,15 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
   }
 
   const admin = createPrivilegedSupabaseClient();
-  const [sent, received] = await Promise.all([
-    getMySentLeads(admin, user.id).catch(() => []),
-    getMyReceivedLeads(admin, user.id).catch(() => []),
-  ]);
+  const [sent, received, requirement, timeline, outcome, specialisations] =
+    await Promise.all([
+      getMySentLeads(admin, user.id).catch(() => []),
+      getMyReceivedLeads(admin, user.id).catch(() => []),
+      getLatestLeadRequirement(admin, id).catch(() => null),
+      getLeadDomainTimeline(admin, id).catch(() => []),
+      getLeadOutcomeConfirmation(admin, id).catch(() => null),
+      listActiveSpecialisations(admin).catch(() => []),
+    ]);
 
   const sentLead = sent.find((l) => l.id === id);
   const receivedRow = received.find((r) => {
@@ -56,27 +66,33 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
   const role =
     sentLead && receivedLead ? "both" : sentLead ? "giver" : "receiver";
 
-  const timeline = [
-    {
-      id: "created",
-      title: "Lead created",
-      at: lead.created_at ?? null,
-      tone: "pending" as const,
-    },
-    {
-      id: "status",
-      title: `Status · ${safe.workStatus.replaceAll("_", " ")}`,
-      description: "Routing is Circle-first → cross-Circle → wider → Opportunity Desk",
-      tone: "neutral" as const,
-    },
-    {
-      id: "contact",
-      title: safe.contactAvailable
-        ? "Contact revealed"
-        : "Contact hidden until server authorization",
-      tone: safe.contactAvailable ? ("success" as const) : ("warning" as const),
-    },
-  ];
+  const spec = specialisations.find(
+    (s) =>
+      s.id ===
+      (requirement?.specialisationId ?? lead.specialisation_id ?? "")
+  );
+  const tagLabels = (requirement?.tagCodes ?? [])
+    .map((code) => findAssociateTag(code)?.label ?? code)
+    .filter(Boolean);
+
+  const timelineItems =
+    timeline.length > 0
+      ? timeline
+      : [
+          {
+            id: "created",
+            title: "Referral created",
+            at: lead.created_at ?? null,
+            tone: "pending" as const,
+          },
+          {
+            id: "status",
+            title: `Current status · ${safe.workStatus.replaceAll("_", " ")}`,
+            description:
+              "Routing is Circle-first → cross-Circle → wider → Opportunity Desk",
+            tone: "neutral" as const,
+          },
+        ];
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 pb-16">
@@ -100,24 +116,74 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
         className="mb-6"
         mode="unavailable"
         title="AI assist is advisory"
-        description="If classification/ranking appears later, it never overrides eligibility, RBAC, or privacy. Deterministic backend rules remain authoritative."
+        description="Classification and ranking never override eligibility, RBAC, or privacy. Deterministic backend rules remain authoritative."
       />
 
       <section className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <h2 className="text-sm font-semibold">Summary</h2>
+        <h2 className="text-sm font-semibold">Requirement</h2>
         <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
-          {lead.requirement_summary ?? "—"}
+          {requirement?.requirementSummary ?? "—"}
         </p>
-        {lead.requirement_details ? (
+        {requirement?.requirementDetails ? (
           <p className="mt-3 whitespace-pre-wrap text-sm text-muted-foreground">
-            {String(lead.requirement_details)}
+            {requirement.requirementDetails}
           </p>
         ) : null}
+        <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+          {spec ? (
+            <>
+              <div>
+                <dt className="text-muted-foreground">GC Power Sector</dt>
+                <dd className="font-medium">
+                  {spec.powerSector?.replaceAll("_", " ") ?? "—"}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground">Specialisation</dt>
+                <dd className="font-medium">{spec.label}</dd>
+              </div>
+            </>
+          ) : null}
+          {tagLabels.length > 0 ? (
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">Tags</dt>
+              <dd className="font-medium">{tagLabels.join(" · ")}</dd>
+            </div>
+          ) : null}
+        </dl>
       </section>
 
+      {outcome ? (
+        <section className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
+          <h2 className="text-sm font-semibold">Dual confirmation</h2>
+          <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-muted-foreground">Giver</dt>
+              <dd className="font-medium">
+                {outcome.giverStatus ?? "pending"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Receiver</dt>
+              <dd className="font-medium">
+                {outcome.receiverStatus ?? "pending"}
+              </dd>
+            </div>
+            <div className="sm:col-span-2">
+              <dt className="text-muted-foreground">Outcome status</dt>
+              <dd className="font-medium">{outcome.status}</dd>
+            </div>
+          </dl>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Dual confirmation does not create GCE revenue, commission, settlement,
+            or payout.
+          </p>
+        </section>
+      ) : null}
+
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold">Activity</h2>
-        <Timeline items={timeline} />
+        <h2 className="mb-3 text-sm font-semibold">Journey</h2>
+        <Timeline items={timelineItems} />
       </section>
 
       <section>
@@ -127,6 +193,7 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
           workStatus={safe.workStatus}
           contactAvailable={safe.contactAvailable}
           role={role}
+          outcome={outcome}
         />
       </section>
     </main>

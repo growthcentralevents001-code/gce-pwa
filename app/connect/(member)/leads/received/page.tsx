@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
-import { LeadCard } from "@/components/connect/LeadCard";
+import { FilteredLeadList } from "@/components/connect/FilteredLeadList";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -26,6 +26,28 @@ export default async function ReceivedLeadsPage() {
     rows = [];
   }
 
+  const items = rows
+    .map((row) => {
+      const lead = Array.isArray(row.assist_leads)
+        ? row.assist_leads[0]
+        : row.assist_leads;
+      if (!lead) return null;
+      return {
+        id: String(lead.id),
+        title: String(lead.title),
+        workStatus: String(lead.work_status ?? row.status ?? "offered"),
+        city: lead.city ? String(lead.city) : null,
+        urgency: lead.urgency ? String(lead.urgency) : null,
+      };
+    })
+    .filter(Boolean) as Array<{
+    id: string;
+    title: string;
+    workStatus: string;
+    city: string | null;
+    urgency: string | null;
+  }>;
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-8 pb-16">
       <ConnectPageHeader
@@ -35,27 +57,13 @@ export default async function ReceivedLeadsPage() {
         backLabel="Lead Assist"
       />
 
-      {rows.length === 0 ? (
+      {items.length === 0 ? (
         <EmptyState title="No received assignments" />
       ) : (
-        <div className="grid gap-3">
-          {rows.map((row) => {
-            const lead = Array.isArray(row.assist_leads)
-              ? row.assist_leads[0]
-              : row.assist_leads;
-            if (!lead) return null;
-            return (
-              <LeadCard
-                key={row.id}
-                id={String(lead.id)}
-                title={String(lead.title)}
-                workStatus={String(lead.work_status ?? row.status ?? "offered")}
-                city={lead.city ? String(lead.city) : null}
-                urgency={lead.urgency ? String(lead.urgency) : null}
-              />
-            );
-          })}
-        </div>
+        <FilteredLeadList
+          items={items}
+          emptyTitle="No assignments match this filter"
+        />
       )}
     </main>
   );

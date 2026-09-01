@@ -144,7 +144,10 @@ export default function TheCirclePage() {
         <div className="grid gap-6 md:grid-cols-2">
           {SECTIONS.map((section, i) => (
             <AnimatedSection key={section.id} delay={i * 0.03}>
-              <div className={`${GCE_SURFACE.card} h-full rounded-2xl p-6`}>
+              <div
+                id={section.id}
+                className={`${GCE_SURFACE.card} h-full scroll-mt-24 rounded-2xl p-6`}
+              >
                 <h2 className="font-body text-lg font-semibold text-foreground">
                   {section.title}
                 </h2>

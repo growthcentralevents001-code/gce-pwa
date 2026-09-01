@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
-import { LeadCard } from "@/components/connect/LeadCard";
+import { FilteredLeadList } from "@/components/connect/FilteredLeadList";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -44,18 +44,11 @@ export default async function SentLeadsPage() {
           primaryAction={{ label: "Compose", href: "/connect/leads" }}
         />
       ) : (
-        <div className="grid gap-3">
-          {sent.map((l) => (
-            <LeadCard
-              key={l.id}
-              id={l.id}
-              title={l.title}
-              workStatus={l.workStatus}
-              city={l.city}
-              urgency={l.urgency}
-            />
-          ))}
-        </div>
+        <FilteredLeadList
+          items={sent}
+          emptyTitle="No referrals match this filter"
+          emptyAction={{ label: "Compose", href: "/connect/leads" }}
+        />
       )}
     </main>
   );

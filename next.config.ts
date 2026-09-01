@@ -12,8 +12,19 @@ const nextConfig: NextConfig = {
       { source: "/admin/:path*", destination: "/ops", permanent: false },
       { source: "/admin-events", destination: "/ops", permanent: false },
       { source: "/admin-partners", destination: "/ops", permanent: false },
-      // Legacy partner entry
-      { source: "/partner-dashboard", destination: "/dashboard/venue", permanent: false },
+      // Legacy partner entry — canonical Marketplace BDP workspace (FD-039)
+      {
+        source: "/partner-dashboard",
+        destination: "/dashboard/marketplace-bdp",
+        permanent: false,
+      },
+      // Legacy mock dashboards — do not present as live product
+      { source: "/dashboard/user", destination: "/customer", permanent: false },
+      { source: "/dashboard/user/:path*", destination: "/customer", permanent: false },
+      { source: "/dashboard/franchisee", destination: "/for-partners", permanent: false },
+      { source: "/dashboard/franchisee/:path*", destination: "/for-partners", permanent: false },
+      { source: "/dashboard/bdm", destination: "/for-partners", permanent: false },
+      { source: "/dashboard/bdm/:path*", destination: "/for-partners", permanent: false },
       // Booking single truth
       { source: "/booking", destination: "/customer/events", permanent: false },
       { source: "/booking/:path*", destination: "/customer/events", permanent: false },

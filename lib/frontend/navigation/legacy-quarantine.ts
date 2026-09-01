@@ -16,11 +16,20 @@ export const LEGACY_NAV_HREF_FRAGMENTS = [
   "/dashboard/bdm",
   "/dashboard/affiliate",
   "/dashboard/franchisee",
+  "/dashboard/user",
   "/admin/zbp",
   "/admin/affiliates",
   "/admin/franchisees",
+  "/admin/dashboard",
+  "/admin/analytics",
+  "/admin/bookings",
+  "/admin/logs",
+  "/admin/leads",
+  "/admin/ratings",
+  "/admin/thecircle",
   "/affiliate",
   "/bdm-dashboard",
+  "/partner-dashboard",
 ] as const;
 
 export const FUTURE_INACTIVE_NAV_IDS = [

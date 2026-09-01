@@ -13,13 +13,14 @@ import {
 type UserRole = { role: string };
 
 const rolePaths: Record<string, string> = {
-  member: '/dashboard/member',
-  venue: '/dashboard/venue',
-  affiliate: '/dashboard/affiliate',
-  zbp: '/dashboard/zbp',
-  bdm: '/dashboard/bdm',
-  enterprise: '/dashboard/enterprise',
-  admin: '/admin',
+  member: "/dashboard/connect-member",
+  venue: "/venue",
+  affiliate: "/for-partners",
+  zbp: "/for-partners",
+  bdm: "/for-partners",
+  enterprise: "/dashboard/enterprise-bdp",
+  admin: "/ops",
+  marketplace_bdp: "/dashboard/marketplace-bdp",
 };
 
 const roleLabels: Record<string, string> = {

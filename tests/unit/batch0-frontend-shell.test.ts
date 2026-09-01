@@ -23,6 +23,8 @@ describe("Batch 0 navigation", () => {
     expect(isLegacyNavHref("/dashboard/affiliate")).toBe(true);
     expect(isLegacyNavHref("/dashboard/bdm")).toBe(true);
     expect(isLegacyNavHref("/dashboard/franchisee")).toBe(true);
+    expect(isLegacyNavHref("/partner-dashboard")).toBe(true);
+    expect(isLegacyNavHref("/admin/dashboard")).toBe(true);
     expect(isLegacyNavHref("/dashboard/personal")).toBe(false);
   });
 

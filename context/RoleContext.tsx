@@ -61,15 +61,16 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     setActiveRole(role);
     localStorage.setItem("gce_active_role", role);
     const dashboardMap: Record<string, string> = {
-      member: "/dashboard/member",
-      venue: "/dashboard/venue/events",
-      zbp: "/dashboard/zbp",
-      affiliate: "/dashboard/affiliate",
-      bdm: "/dashboard/bdm",
-      enterprise: "/dashboard/enterprise",
-      admin: "/admin",
+      member: "/dashboard/connect-member",
+      venue: "/venue",
+      zbp: "/for-partners",
+      affiliate: "/for-partners",
+      bdm: "/for-partners",
+      enterprise: "/dashboard/enterprise-bdp",
+      admin: "/ops",
+      marketplace_bdp: "/dashboard/marketplace-bdp",
     };
-    router.push(dashboardMap[role] || "/dashboard/member");
+    router.push(dashboardMap[role] || "/customer");
   };
 
   return (

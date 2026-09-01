@@ -151,6 +151,7 @@ describe("Batch 10 — legacy route retirement config", () => {
     expect(cfg).toMatch(/\/admin\/:path\*/);
     expect(cfg).toMatch(/\/venue\/plans/);
     expect(cfg).toMatch(/\/partner-dashboard/);
+    expect(cfg).toMatch(/\/dashboard\/marketplace-bdp/);
     expect(cfg).toMatch(/destination:\s*"\/ops"/);
   });
 

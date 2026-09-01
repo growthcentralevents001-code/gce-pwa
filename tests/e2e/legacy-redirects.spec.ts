@@ -13,10 +13,34 @@ test.describe("Phase 14B — legacy redirects", () => {
     expect(res.headers()["location"]).toMatch(/\/venue\/apply/);
   });
 
-  test("/partner-dashboard redirects to venue workspace", async ({ request }) => {
+  test("/partner-dashboard redirects to Marketplace BDP workspace", async ({ request }) => {
     const res = await request.get("/partner-dashboard", { maxRedirects: 0 });
     expect([301, 302, 307, 308]).toContain(res.status());
-    expect(res.headers()["location"]).toMatch(/\/dashboard\/venue/);
+    expect(res.headers()["location"]).toMatch(/\/dashboard\/marketplace-bdp/);
+  });
+
+  test("/dashboard/user redirects to customer workspace", async ({ request }) => {
+    const res = await request.get("/dashboard/user", { maxRedirects: 0 });
+    expect([301, 302, 307, 308]).toContain(res.status());
+    expect(res.headers()["location"]).toMatch(/\/customer/);
+  });
+
+  test("/dashboard/franchisee redirects to for-partners", async ({ request }) => {
+    const res = await request.get("/dashboard/franchisee", { maxRedirects: 0 });
+    expect([301, 302, 307, 308]).toContain(res.status());
+    expect(res.headers()["location"]).toMatch(/\/for-partners/);
+  });
+
+  test("/admin/dashboard redirects to ops", async ({ request }) => {
+    const res = await request.get("/admin/dashboard", { maxRedirects: 0 });
+    expect([301, 302, 307, 308]).toContain(res.status());
+    expect(res.headers()["location"]).toMatch(/\/ops/);
+  });
+
+  test("/admin/analytics redirects to ops", async ({ request }) => {
+    const res = await request.get("/admin/analytics", { maxRedirects: 0 });
+    expect([301, 302, 307, 308]).toContain(res.status());
+    expect(res.headers()["location"]).toMatch(/\/ops/);
   });
 
   test("/bdm-dashboard redirects to for-partners", async ({ request }) => {

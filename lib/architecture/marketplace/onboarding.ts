@@ -29,11 +29,15 @@ export const VENUE_DOCUMENT_REVIEW_STATUSES = [
 export type VenueDocumentReviewStatus =
   (typeof VENUE_DOCUMENT_REVIEW_STATUSES)[number];
 
-/** Manifest entry — reference metadata only; no binary upload in Phase 7. */
+/** Manifest entry — reference and/or private storage object metadata. */
 export type VenueDocumentManifestEntry = {
   id: string;
   label: string;
-  referenceNote: string;
+  referenceNote?: string | null;
+  storagePath?: string | null;
+  fileName?: string | null;
+  mimeType?: string | null;
+  sizeBytes?: number | null;
   submittedAt: string;
   submittedByUserId: string;
   reviewStatus: VenueDocumentReviewStatus;
@@ -204,7 +208,7 @@ export function buildOnboardingProgress(input: {
             : "pending",
       detail: docsSubmitted
         ? `${onboarding.documents!.filter((d) => d.reviewStatus === "accepted").length}/${onboarding.documents!.length} accepted`
-        : "Document manifest (reference metadata) — secure upload not live",
+        : "Upload a governed document or record a secure reference",
     },
     {
       id: "recommendation",

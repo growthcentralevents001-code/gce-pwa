@@ -6,3 +6,4 @@ export * from "./permissions";
 export * from "./relationship";
 export * from "./engagement";
 export * from "./onboarding";
+export * from "./documents";

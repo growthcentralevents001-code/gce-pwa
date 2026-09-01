@@ -97,13 +97,38 @@ test.describe("venue partner onboarding", () => {
       notes: "E2E eligibility assist",
     });
 
-    await postJson(mbdpPage.request, "/api/marketplace/bdp", {
-      action: "record_venue_documents",
-      venueId,
-      documents: [
-        { label: "Business registration", referenceNote: "E2E-REF-001" },
-      ],
+    const pdfBody = Buffer.from("%PDF-1.4\n%E2E test document\n");
+    const upload = await mbdpPage.request.post("/api/marketplace/venue-documents", {
+      multipart: {
+        venueId,
+        label: "Business registration",
+        file: {
+          name: "e2e-registration.pdf",
+          mimeType: "application/pdf",
+          buffer: pdfBody,
+        },
+      },
     });
+    expect(upload.status()).toBeLessThan(300);
+    const uploadJson = await upload.json();
+    const documentId = String(
+      uploadJson?.document?.id ?? uploadJson?.data?.document?.id ?? ""
+    );
+    expect(documentId).toBeTruthy();
+
+    if (existsSync(authStatePath("customer-b"))) {
+      const foreign = await browser.newContext({
+        storageState: authStatePath("customer-b"),
+      });
+      const foreignPage = await foreign.newPage();
+      const deniedDoc = await postJson(foreignPage.request, "/api/marketplace/venue-documents", {
+        action: "signed_url",
+        venueId,
+        documentId,
+      });
+      expect(deniedDoc.status).toBeGreaterThanOrEqual(400);
+      await foreign.close();
+    }
 
     const denied = await postJson(mbdpPage.request, "/api/marketplace/bdp", {
       action: "approve_venue",
@@ -131,6 +156,17 @@ test.describe("venue partner onboarding", () => {
     await opsPage.goto(`/ops/marketplace/venues/${venueId}`);
     await expect(opsPage.locator("body")).toContainText(venueName);
     await expect(opsPage.locator("body")).toContainText(/Eligibility review/i);
+    await expect(opsPage.locator("body")).toContainText(/e2e-registration\.pdf|Stored file/i);
+
+    const opsDoc = await postJson(opsPage.request, "/api/marketplace/venue-documents", {
+      action: "signed_url",
+      venueId,
+      documentId,
+    });
+    expect(opsDoc.status).toBeLessThan(300);
+    expect(String(opsDoc.json?.signedUrl ?? opsDoc.json?.data?.signedUrl ?? "")).toContain(
+      "http"
+    );
 
     const approved = await postJson(opsPage.request, "/api/marketplace/bdp", {
       action: "approve_venue",

@@ -48,6 +48,34 @@ export function OpsVenueReviewPanel({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
+  function openDocument(documentId: string) {
+    setError(null);
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/marketplace/venue-documents", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "signed_url",
+            venueId,
+            documentId,
+          }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(
+            json?.error?.message || json?.message || "Download failed"
+          );
+        }
+        const url = String(json?.signedUrl ?? json?.data?.signedUrl ?? "");
+        if (!url) throw new Error("Signed URL missing");
+        window.open(url, "_blank", "noopener,noreferrer");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Download failed");
+      }
+    });
+  }
+
   function act(action: string, payload: Record<string, unknown>) {
     setError(null);
     setMsg(null);
@@ -155,7 +183,24 @@ export function OpsVenueReviewPanel({
                   <span className="font-medium">{d.label}</span>
                   <StatusBadge label={d.reviewStatus} tone="info" />
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{d.referenceNote}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {d.referenceNote ||
+                    (d.fileName
+                      ? `Stored file: ${d.fileName} (${d.mimeType ?? "file"})`
+                      : "No reference note")}
+                </p>
+                {d.storagePath ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className="mt-2"
+                    disabled={pending}
+                    onClick={() => openDocument(d.id)}
+                  >
+                    Open secure copy
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -46,6 +46,7 @@ export function RecommendVenueForm({
   const [recommendationNotes, setRecommendationNotes] = useState("");
   const [docLabel, setDocLabel] = useState("Business registration");
   const [docRef, setDocRef] = useState("");
+  const [docFile, setDocFile] = useState<File | null>(null);
   const [eligibilityNotes, setEligibilityNotes] = useState("");
   const [createdVenueId, setCreatedVenueId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -101,6 +102,25 @@ export function RecommendVenueForm({
             venueId,
             documents: [{ label: docLabel, referenceNote: docRef.trim() }],
           });
+        }
+
+        if (docFile) {
+          const form = new FormData();
+          form.set("venueId", venueId);
+          form.set("label", docLabel);
+          form.set("file", docFile);
+          const uploadRes = await fetch("/api/marketplace/venue-documents", {
+            method: "POST",
+            body: form,
+          });
+          const uploadJson = await uploadRes.json().catch(() => ({}));
+          if (!uploadRes.ok) {
+            throw new Error(
+              uploadJson?.error?.message ||
+                uploadJson?.message ||
+                "Document upload failed"
+            );
+          }
         }
 
         setCreatedVenueId(venueId);
@@ -261,13 +281,27 @@ export function RecommendVenueForm({
             />
           </div>
           <div>
-            <Label htmlFor="rec-doc-ref">Document reference</Label>
+            <Label htmlFor="rec-doc-file">Document file (private upload)</Label>
+            <Input
+              id="rec-doc-file"
+              className="mt-1 min-h-11"
+              type="file"
+              accept=".pdf,image/jpeg,image/png,image/webp"
+              onChange={(e) => setDocFile(e.target.files?.[0] ?? null)}
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              PDF or image up to 10MB. Stored in private bucket — Ops reviews via
+              signed URL.
+            </p>
+          </div>
+          <div>
+            <Label htmlFor="rec-doc-ref">Or reference note (optional)</Label>
             <Input
               id="rec-doc-ref"
               className="mt-1 min-h-11"
               value={docRef}
               onChange={(e) => setDocRef(e.target.value)}
-              placeholder="Secure reference / case ID — not a file upload"
+              placeholder="Secure reference / case ID when file not attached"
             />
           </div>
         </div>

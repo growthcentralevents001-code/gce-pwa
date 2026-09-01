@@ -31,14 +31,43 @@ export type VenueEngagementMetrics = {
     views: number;
     bookings: number;
   }>;
+  totalRedemptions: number;
   offerPerformance: Array<{
     offerId: string;
     title: string;
     views: number;
     claims: number;
+    activeClaims: number;
+    expiredClaims: number;
+    redemptions: number;
     conversionRate: number | null;
+    redemptionRate: number | null;
   }>;
 };
+
+/** Classify persisted claim rows for venue offer activity metrics. */
+export function classifyOfferClaimCounts(
+  claims: Array<{ status: string; expires_at: string | null }>,
+  nowMs = Date.now()
+): { total: number; active: number; expired: number; redeemed: number } {
+  let active = 0;
+  let expired = 0;
+  let redeemed = 0;
+  for (const c of claims) {
+    if (c.status === "redeemed") {
+      redeemed += 1;
+      continue;
+    }
+    const pastExpiry =
+      c.expires_at != null && new Date(c.expires_at).getTime() < nowMs;
+    if (c.status === "expired" || pastExpiry) {
+      expired += 1;
+    } else if (c.status === "claimed") {
+      active += 1;
+    }
+  }
+  return { total: claims.length, active, expired, redeemed };
+}
 
 export async function recordMarketplaceEngagement(
   client: SupabaseClient,
@@ -153,18 +182,40 @@ export async function buildVenueEngagementMetrics(
     totalBookings = bookingRows?.length ?? 0;
   }
 
-  const claimsByOffer = new Map<string, number>();
+  const claimsByOffer = new Map<
+    string,
+    Array<{ status: string; expires_at: string | null }>
+  >();
   let totalClaims = 0;
   if (offerIds.length > 0) {
     const { data: claimRows } = await client
       .from("marketplace_offer_claims")
-      .select("offer_event_id")
+      .select("offer_event_id,status,expires_at")
       .in("offer_event_id", offerIds);
     for (const c of claimRows ?? []) {
       const oid = String(c.offer_event_id);
-      claimsByOffer.set(oid, (claimsByOffer.get(oid) ?? 0) + 1);
+      const bucket = claimsByOffer.get(oid) ?? [];
+      bucket.push({
+        status: String(c.status),
+        expires_at: c.expires_at ? String(c.expires_at) : null,
+      });
+      claimsByOffer.set(oid, bucket);
     }
     totalClaims = claimRows?.length ?? 0;
+  }
+
+  const redemptionsByOffer = new Map<string, number>();
+  let totalRedemptions = 0;
+  if (offerIds.length > 0) {
+    const { data: redemptionRows } = await client
+      .from("marketplace_redemptions")
+      .select("offer_event_id")
+      .in("offer_event_id", offerIds);
+    for (const r of redemptionRows ?? []) {
+      const oid = String(r.offer_event_id);
+      redemptionsByOffer.set(oid, (redemptionsByOffer.get(oid) ?? 0) + 1);
+    }
+    totalRedemptions = redemptionRows?.length ?? 0;
   }
 
   const eventViewsTotal = [...eventViews.values()].reduce((s, n) => s + n, 0);
@@ -176,12 +227,14 @@ export async function buildVenueEngagementMetrics(
     offerViews: offerViewsTotal,
     totalBookings,
     totalClaims,
+    totalRedemptions,
     totalCustomerActions:
       (venueViewRes.count ?? 0) +
       eventViewsTotal +
       offerViewsTotal +
       totalBookings +
-      totalClaims,
+      totalClaims +
+      totalRedemptions,
     eventPerformance: eventRows.map((e) => {
       const id = String(e.id);
       return {
@@ -194,14 +247,23 @@ export async function buildVenueEngagementMetrics(
     offerPerformance: offerRows.map((o) => {
       const id = String(o.id);
       const views = offerViews.get(id) ?? 0;
-      const claims = claimsByOffer.get(id) ?? 0;
+      const claimRows = claimsByOffer.get(id) ?? [];
+      const counts = classifyOfferClaimCounts(claimRows);
+      const redemptions = redemptionsByOffer.get(id) ?? 0;
       return {
         offerId: id,
         title: String(o.title ?? "Offer"),
         views,
-        claims,
+        claims: counts.total,
+        activeClaims: counts.active,
+        expiredClaims: counts.expired,
+        redemptions,
         conversionRate:
-          views > 0 ? Math.round((claims / views) * 1000) / 10 : null,
+          views > 0 ? Math.round((counts.total / views) * 1000) / 10 : null,
+        redemptionRate:
+          counts.total > 0
+            ? Math.round((redemptions / counts.total) * 1000) / 10
+            : null,
       };
     }),
   };

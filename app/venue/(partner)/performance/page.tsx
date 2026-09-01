@@ -42,6 +42,7 @@ export default async function VenuePerformancePage() {
         <KpiCard label="Offers" value={`${bundle.report.offerCount}`} />
         <KpiCard label="Bookings" value={`${engagement?.totalBookings ?? 0}`} />
         <KpiCard label="Claims" value={`${engagement?.totalClaims ?? 0}`} />
+        <KpiCard label="Redemptions" value={`${engagement?.totalRedemptions ?? 0}`} />
       </div>
 
       <section className="space-y-3">
@@ -75,8 +76,32 @@ export default async function VenuePerformancePage() {
               { id: "views", header: "Views", cell: (r) => String(r.views) },
               { id: "claims", header: "Claims", cell: (r) => String(r.claims) },
               {
+                id: "active",
+                header: "Active",
+                cell: (r) => String(r.activeClaims),
+                hideOnMobile: true,
+              },
+              {
+                id: "expired",
+                header: "Expired",
+                cell: (r) => String(r.expiredClaims),
+                hideOnMobile: true,
+              },
+              {
+                id: "redemptions",
+                header: "Redemptions",
+                cell: (r) => String(r.redemptions),
+              },
+              {
+                id: "redeemRate",
+                header: "Redemption rate",
+                cell: (r) =>
+                  r.redemptionRate != null ? `${r.redemptionRate}%` : "—",
+                hideOnMobile: true,
+              },
+              {
                 id: "conv",
-                header: "Claim rate",
+                header: "View→claim",
                 cell: (r) =>
                   r.conversionRate != null ? `${r.conversionRate}%` : "—",
                 hideOnMobile: true,

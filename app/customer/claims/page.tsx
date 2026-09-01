@@ -8,7 +8,7 @@ import { StatusBadge } from "@/components/states/StatusBadge";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getMyClaims } from "@/lib/architecture/customer-cx";
-import { claimStatusTone, formatWhen } from "@/lib/frontend/customer/format";
+import { claimStatusTone, formatWhen, venueDisplayName } from "@/lib/frontend/customer/format";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -53,21 +53,35 @@ export default async function CustomerClaimsPage({
 
       {focused ? (
         <section className="mb-8 rounded-2xl border border-border bg-card p-4">
+          {(() => {
+            const offer = Array.isArray(focused.marketplace_offer_events)
+              ? focused.marketplace_offer_events[0]
+              : focused.marketplace_offer_events;
+            const venue = offer?.marketplace_venues
+              ? Array.isArray(offer.marketplace_venues)
+                ? offer.marketplace_venues[0]
+                : offer.marketplace_venues
+              : null;
+            return (
+              <>
           <div className="mb-3 flex items-center justify-between gap-2">
             <h2 className="text-sm font-semibold">
-              {(Array.isArray(focused.marketplace_offer_events)
-                ? focused.marketplace_offer_events[0]
-                : focused.marketplace_offer_events
-              )?.title ?? "Claim"}
+              {offer?.title ?? "Claim"}
             </h2>
             <StatusBadge
               label={focused.expired ? "expired" : focused.status}
               tone={claimStatusTone(focused.status, focused.expired)}
             />
           </div>
+          <p className="mb-1 text-xs text-muted-foreground">
+            Venue: {venueDisplayName(venue) || "—"}
+          </p>
           <p className="mb-3 text-xs text-muted-foreground">
             Claimed {formatWhen(focused.claimed_at)} · expires{" "}
             {formatWhen(focused.expires_at)}
+            {focused.status === "redeemed" && focused.redeemed_at
+              ? ` · redeemed ${formatWhen(focused.redeemed_at)}`
+              : null}
           </p>
           <ClaimTokenReveal
             claimId={focused.id}
@@ -78,6 +92,9 @@ export default async function CustomerClaimsPage({
             claimId={focused.id}
             offerEventId={focused.offer_event_id}
           />
+              </>
+            );
+          })()}
         </section>
       ) : null}
 

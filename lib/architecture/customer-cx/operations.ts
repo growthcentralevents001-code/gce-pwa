@@ -1194,7 +1194,7 @@ export async function getMyClaims(client: SupabaseClient, userId: string) {
   const { data, error } = await client
     .from("marketplace_offer_claims")
     .select(
-      "id,status,claimed_at,expires_at,offer_event_id,marketplace_offer_events(id,title)"
+      "id,status,claimed_at,expires_at,redeemed_at,offer_event_id,marketplace_offer_events(id,title,marketplace_venues(display_name,city))"
     )
     .eq("claimant_user_id", userId)
     .order("claimed_at", { ascending: false })

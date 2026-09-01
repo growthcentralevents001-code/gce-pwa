@@ -31,6 +31,8 @@ const PUBLIC_PREFIXES = [
   '/offline',
   '/the-circle',
   '/memberships',
+  '/how-membership-works',
+  '/how-referrals',
   '/apply',
   '/onboarding',
   '/affiliate',

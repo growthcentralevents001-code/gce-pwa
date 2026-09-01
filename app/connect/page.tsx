@@ -80,6 +80,40 @@ export default async function ConnectLandingPage() {
             Good to know
           </h2>
           <Accordion type="single" collapsible className="mt-4 max-w-2xl">
+            <AccordionItem value="journey">
+              <AccordionTrigger>How Membership works</AccordionTrigger>
+              <AccordionContent>
+                Apply → review → activation → Circle eligibility → allocation →
+                structured Circle experience → professional discovery → app-based
+                referrals. Account, payment, activation, and Circle seat are
+                separate governed steps.{" "}
+                <Link href="/memberships" className="text-primary hover:underline">
+                  Full membership guide
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="referrals">
+              <AccordionTrigger>How referrals work</AccordionTrigger>
+              <AccordionContent>
+                Official referrals are created and managed through GCE Lead Assist
+                in the app — not via WhatsApp or verbal exchange. Referrals are
+                not guaranteed.{" "}
+                <Link
+                  href="/the-circle#referrals"
+                  className="text-primary hover:underline"
+                >
+                  Referral details
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="discovery">
+              <AccordionTrigger>Professional discovery</AccordionTrigger>
+              <AccordionContent>
+                Allocated members use the Circle directory with GC Power Sector,
+                specialisation, and Tag filters. Discovery is scoped to your
+                Circle — not unrestricted nationwide access.
+              </AccordionContent>
+            </AccordionItem>
             <AccordionItem value="pricing">
               <AccordionTrigger>Membership pricing</AccordionTrigger>
               <AccordionContent>
@@ -121,8 +155,13 @@ export default async function ConnectLandingPage() {
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="min-h-11">
-                <Link href={signedInCta?.href ?? "/signup"}>
-                  {signedInCta ? signedInCta.heroLabel : "Create account"}
+                <Link
+                  href={
+                    signedInCta?.href ??
+                    "/login?next=/memberships/apply"
+                  }
+                >
+                  {signedInCta ? signedInCta.heroLabel : "Apply for membership"}
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="min-h-11">

@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { AppError } from "../errors";
+import { isFeatureEnabled } from "../feature-flags/flags";
 import { writeAuditEvent } from "../audit/write";
 import { membershipMachine } from "./rules";
 import type {
@@ -71,6 +72,12 @@ export async function getAssociatePlanId(client: SupabaseClient): Promise<string
 export async function assertAssociatePurchaseEnabled(
   client: SupabaseClient
 ): Promise<void> {
+  const flagOn = await isFeatureEnabled(client, "membership_associate_purchase");
+  if (!flagOn) {
+    throw new AppError("FEATURE_DISABLED", "Associate purchase disabled", {
+      status: 403,
+    });
+  }
   const { data, error } = await client
     .from("membership_plans")
     .select("is_purchasable")

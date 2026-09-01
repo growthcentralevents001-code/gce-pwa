@@ -89,6 +89,8 @@ export const INACTIVE_FEATURE_FLAGS = [
   "marketplace_affiliate",
   "zbp_commercial",
   "core_direct_purchase",
+  "membership_associate_purchase",
+  "membership_core_purchase",
   "paid_lead_assist",
   "wallet_cashout",
   "vendor_self_service",

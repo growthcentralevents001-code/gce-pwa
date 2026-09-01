@@ -19,6 +19,16 @@ export async function getJson(
   return { res, json, status: res.status() };
 }
 
+export async function patchJson(
+  request: APIRequestContext,
+  path: string,
+  body: Record<string, unknown>
+) {
+  const res = await request.patch(path, { data: body });
+  const json = await res.json().catch(() => ({}));
+  return { res, json, status: res.status() };
+}
+
 export async function customerAction(
   page: Page,
   body: Record<string, unknown>

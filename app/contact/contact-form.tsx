@@ -8,40 +8,87 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { FeatureGated } from "@/components/states/FeatureGated";
 
-/**
- * PUB-03 Contact — Batch 1.
- * Backend GAP: no canonical contact API — form does not fake-submit.
- */
+type SubmitState = "idle" | "submitting" | "success" | "error";
+
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [enquiryId, setEnquiryId] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitState("submitting");
+    setErrorMessage(null);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok) {
+        setSubmitState("error");
+        setErrorMessage(
+          body?.error?.message ??
+            "We could not send your message. Please try again shortly."
+        );
+        return;
+      }
+      setEnquiryId(body?.enquiryId ? String(body.enquiryId) : null);
+      setSubmitState("success");
+      form.reset();
+    } catch {
+      setSubmitState("error");
+      setErrorMessage("Network error — please check your connection and try again.");
+    }
+  }
 
   return (
     <>
       <MarketingHero
         headline="Talk to the GCE team"
-        description="Questions about Connect, Marketplace, or Enterprise? Live contact intake is not wired yet — this form does not send a message."
+        description="Questions about GCE Connect, GCE Marketplace, or GCE Enterprise? Send us a message — this is general contact and support, not a Marketplace BDP application."
         compact
       />
       <section className="mx-auto max-w-xl px-4 py-12 sm:px-6">
-        <FeatureGated
-          mode="coming_later"
-          title="Contact intake coming soon"
-          description="A canonical support/contact API is not available yet. Your message is not sent from this browser form."
-          className="mb-6"
-        />
         <div className={`${GCE_SURFACE.card} rounded-2xl p-6`}>
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubmitted(true);
-            }}
-          >
+          {submitState === "success" ? (
+            <Alert className="mb-4">
+              <AlertTitle>Message received</AlertTitle>
+              <AlertDescription>
+                Your enquiry has been queued for our support team.
+                {enquiryId ? (
+                  <>
+                    {" "}
+                    Reference:{" "}
+                    <span className="font-mono text-xs">{enquiryId.slice(0, 8)}</span>
+                  </>
+                ) : null}
+              </AlertDescription>
+            </Alert>
+          ) : null}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" autoComplete="name" required />
+              <Input
+                id="name"
+                name="name"
+                autoComplete="name"
+                required
+                maxLength={120}
+                disabled={submitState === "submitting"}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -51,25 +98,45 @@ export function ContactForm() {
                 type="email"
                 autoComplete="email"
                 required
+                maxLength={254}
+                disabled={submitState === "submitting"}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="message">Message</Label>
-              <Textarea id="message" name="message" required />
+              <Textarea
+                id="message"
+                name="message"
+                required
+                minLength={10}
+                maxLength={4000}
+                rows={5}
+                disabled={submitState === "submitting"}
+              />
             </div>
-            <Button type="submit" className="min-h-11 w-full" disabled>
-              Submit (unavailable)
+            <Button
+              type="submit"
+              className="min-h-11 w-full"
+              disabled={submitState === "submitting"}
+            >
+              {submitState === "submitting" ? "Sending…" : "Send message"}
             </Button>
           </form>
-          {submitted ? (
-            <Alert className="mt-4" variant="warning">
-              <AlertTitle>Not sent</AlertTitle>
-              <AlertDescription>
-                Contact API is a documented backend gap. Please use an approved
-                support channel when available.
-              </AlertDescription>
+
+          {submitState === "error" && errorMessage ? (
+            <Alert className="mt-4" variant="destructive">
+              <AlertTitle>Could not send</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
             </Alert>
           ) : null}
+
+          <p className="mt-4 text-xs text-muted-foreground">
+            Applying to become a Marketplace BDP? Use the{" "}
+            <a href="/marketplace-bdp" className="underline underline-offset-2">
+              Marketplace BDP opportunity page
+            </a>{" "}
+            — not this form.
+          </p>
         </div>
       </section>
     </>

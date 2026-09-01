@@ -11,6 +11,7 @@ import {
   createRoleAssignment,
   activateRoleAssignment,
   suspendRoleAssignment,
+  listRoleAssignmentsForUser,
 } from "../identity/assignments";
 import type { RoleAssignment } from "../types";
 
@@ -175,7 +176,19 @@ export async function activateMarketplaceBdpUnit(
     });
   }
 
-  if (input.secondUnitApproved) {
+  const { data: otherActiveUnits } = await client
+    .from("marketplace_bdp_units")
+    .select("id")
+    .eq("user_id", unit.user_id)
+    .eq("application_status", "active")
+    .neq("id", input.unitId)
+    .limit(1);
+
+  const secondUnitApproved =
+    input.secondUnitApproved === true ||
+    (otherActiveUnits?.length ?? 0) > 0;
+
+  if (secondUnitApproved) {
     await client
       .from("marketplace_bdp_units")
       .update({
@@ -189,28 +202,41 @@ export async function activateMarketplaceBdpUnit(
       .eq("id", input.unitId);
   }
 
-  const assignment = await createRoleAssignment(
+  const subjectAssignments = await listRoleAssignmentsForUser(
     client,
-    {
-      userId: String(unit.user_id),
-      roleKey: "marketplace_bdp",
-      status: "pending",
-      scopeType: "platform",
-      reason: input.reason ?? "Marketplace BDP activation",
-    },
-    {
-      userId: input.actorUserId,
-      assignments: input.actorAssignments,
-      correlationId: input.correlationId,
-    }
+    String(unit.user_id)
   );
-  const activated = await activateRoleAssignment(client, {
-    assignmentId: assignment.id,
-    actorUserId: input.actorUserId,
-    actorAssignments: input.actorAssignments,
-    reason: input.reason ?? "Activate Marketplace BDP role",
-    correlationId: input.correlationId,
-  });
+  const existingMbdpRole = subjectAssignments.find(
+    (a) => a.roleKey === "marketplace_bdp" && a.status === "active"
+  );
+
+  let activated: RoleAssignment;
+  if (existingMbdpRole) {
+    activated = existingMbdpRole;
+  } else {
+    const assignment = await createRoleAssignment(
+      client,
+      {
+        userId: String(unit.user_id),
+        roleKey: "marketplace_bdp",
+        status: "pending",
+        scopeType: "platform",
+        reason: input.reason ?? "Marketplace BDP activation",
+      },
+      {
+        userId: input.actorUserId,
+        assignments: input.actorAssignments,
+        correlationId: input.correlationId,
+      }
+    );
+    activated = await activateRoleAssignment(client, {
+      assignmentId: assignment.id,
+      actorUserId: input.actorUserId,
+      actorAssignments: input.actorAssignments,
+      reason: input.reason ?? "Activate Marketplace BDP role",
+      correlationId: input.correlationId,
+    });
+  }
 
   const { data, error: upErr } = await client
     .from("marketplace_bdp_units")

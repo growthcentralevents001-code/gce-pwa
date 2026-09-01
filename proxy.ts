@@ -54,6 +54,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/check-referral',
   '/api/affiliate/track',
   '/api/webhooks/payments',
+  '/api/contact',
 ]
 
 function isPublicPath(pathname: string): boolean {

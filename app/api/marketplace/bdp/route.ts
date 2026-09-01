@@ -28,6 +28,8 @@ import {
   setVenueInactive,
   submitMarketplaceEvent,
   suspendMarketplaceBdpUnit,
+  updateVenueRelationship,
+  venueRelationshipUpdateSchema,
 } from "@/lib/architecture/marketplace";
 import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -493,6 +495,29 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         correlationId: ctx.correlationId,
       });
       return jsonSuccess({ handover }, ctx);
+    }
+    case "update_venue_relationship": {
+      const parsed = venueRelationshipUpdateSchema
+        .extend({ action: z.literal("update_venue_relationship") })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(
+          assignments,
+          "marketplace.attribution.propose"
+        )
+      ) {
+        throw new AppError("FORBIDDEN", "Not allowed to update venue relationship", {
+          status: 403,
+        });
+      }
+      const { attributionId, action: _action, ...patch } = parsed;
+      const result = await updateVenueRelationship(admin, {
+        attributionId,
+        actorUserId: ctx.user.id,
+        patch,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx);
     }
     default:
       throw new AppError("VALIDATION_ERROR", `Unknown action: ${action}`, {

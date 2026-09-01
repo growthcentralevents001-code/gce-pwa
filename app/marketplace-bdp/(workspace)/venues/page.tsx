@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PartnerPageHeader } from "@/components/partner";
 import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
@@ -5,6 +6,7 @@ import { VenuePortfolioCard } from "@/components/marketplace/VenuePortfolioCard"
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { RecommendVenueForm } from "@/components/marketplace/RecommendVenueForm";
+import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadMbdpBundle } from "@/lib/frontend/marketplace/reads";
@@ -32,6 +34,7 @@ export default async function MbdpVenuesPage() {
     const v = (Array.isArray(vRaw) ? vRaw[0] : vRaw) as Record<string, unknown> | null;
     return {
       id: String(a.id),
+      venueId: String(v?.id ?? a.venue_id ?? ""),
       venueName: String(v?.display_name ?? a.venue_id ?? "Venue"),
       city: v?.city ? String(v.city) : "—",
       venueStatus: String(v?.status ?? "—"),
@@ -54,6 +57,7 @@ export default async function MbdpVenuesPage() {
             city={r.city}
             status={r.venueStatus}
             attributionLabel={attributionStatusLabel(r.attrStatus)}
+            href={r.venueId ? `/marketplace-bdp/venues/${r.venueId}` : undefined}
           />
         ))}
       </div>
@@ -66,6 +70,20 @@ export default async function MbdpVenuesPage() {
             { id: "city", header: "City", cell: (r) => r.city },
             { id: "vstatus", header: "Venue status", cell: (r) => <StatusBadge label={venueStatusLabel(r.venueStatus)} /> },
             { id: "attr", header: "Attribution", cell: (r) => <StatusBadge label={attributionStatusLabel(r.attrStatus)} tone="info" /> },
+            {
+              id: "rel",
+              header: "Relationship",
+              cell: (r) =>
+                r.venueId ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/marketplace-bdp/venues/${r.venueId}`}>
+                      Manage
+                    </Link>
+                  </Button>
+                ) : (
+                  "—"
+                ),
+            },
           ]}
           empty={<EmptyState title="No venues in portfolio yet" />}
         />

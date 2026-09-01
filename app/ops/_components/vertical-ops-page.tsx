@@ -39,6 +39,9 @@ const VERTICAL_COPY: Partial<
   marketplace: {
     boundary:
       "Marketplace Ops final Venue approval. MBDP recommend ≠ approve. Unattributed economics not altered here.",
+    extraLinks: [
+      { href: "/ops/marketplace/units", label: "MBDP unit applications" },
+    ],
   },
   enterprise: {
     boundary:

@@ -34,7 +34,7 @@ export default async function SupportOpsPage() {
   const admin = createPrivilegedSupabaseClient();
   const { data: signals } = await admin
     .from("customer_support_signals")
-    .select("id, user_id, message, status, created_at")
+    .select("id, user_id, message, status, metadata, created_at")
     .eq("status", "queued_for_phase13")
     .order("created_at", { ascending: true })
     .limit(50);
@@ -61,17 +61,30 @@ export default async function SupportOpsPage() {
         />
       ) : (
         <ul className="space-y-3">
-          {(signals ?? []).map((s) => (
+          {(signals ?? []).map((s) => {
+            const meta =
+              s.metadata && typeof s.metadata === "object"
+                ? (s.metadata as Record<string, unknown>)
+                : {};
+            const isPublicContact = meta.source === "public_contact";
+            const title = isPublicContact
+              ? `Public contact — ${String(meta.name ?? "Anonymous")}`
+              : "Support signal";
+            const summary = isPublicContact
+              ? `${String(meta.email ?? "")} · ${s.message}`
+              : s.message;
+            return (
             <li key={s.id}>
               <OpsQueueCard
-                title="Support signal"
-                summary={s.message}
+                title={title}
+                summary={summary}
                 status={s.status}
                 meta={s.created_at}
                 actions={<PromoteSignalButton signalId={s.id} />}
               />
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </main>

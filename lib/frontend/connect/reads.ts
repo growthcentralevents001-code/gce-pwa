@@ -19,7 +19,7 @@ export async function findSeatForMembership(
       "id,circle_id,membership_id,specialisation_id,status,counts_toward_capacity,connect_circles(id,name,city,lifecycle_status,constitution_status,active_seat_count,capacity_max)"
     )
     .eq("membership_id", membershipId)
-    .in("status", ["active", "reserved", "protected_grace", "allocated"])
+    .in("status", ["reserved", "protected_grace", "allocated"])
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
@@ -36,7 +36,7 @@ export async function listCircleDirectory(
       "id,membership_id,specialisation_id,status,connect_memberships(id,user_id,status,allocation_status,specialisation_id)"
     )
     .eq("circle_id", circleId)
-    .in("status", ["active", "protected_grace", "allocated"])
+    .in("status", ["reserved", "protected_grace", "allocated"])
     .limit(40);
   if (error) return [];
   return data ?? [];

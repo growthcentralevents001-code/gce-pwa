@@ -21,6 +21,7 @@ import {
   upsertRoleAssignments,
 } from "./seed.mjs";
 import { upsertLifecycleFixtures } from "./lifecycle.mjs";
+import { purgePublicUserByEmail } from "./users.mjs";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
 
@@ -32,6 +33,11 @@ async function main() {
 
   console.log(`Phase 14B-F fixture setup → gce-dev (${GCE_DEV_PROJECT_REF})`);
   console.log("Passwords are written only to .env.test.local (gitignored).");
+
+  console.log("  repairing orphan public.users rows for fixture emails…");
+  for (const identity of FIXTURE_IDENTITIES) {
+    await purgePublicUserByEmail(admin, fixtureEmail(identity));
+  }
 
   const userIds = {};
   const emailMap = {};

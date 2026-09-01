@@ -10,8 +10,9 @@ import {
 } from "./constants.mjs";
 import { createFixtureAdminClient } from "./client.mjs";
 import { loadFixtureEnv, fixtureUuid } from "./env.mjs";
-import { findAuthUserByEmail } from "./seed.mjs";
 import { lifecycleIds } from "./lifecycle.mjs";
+import { purgeFixtureIdentity, deleteAssistGraphForCircle, clearUserReferencingRows } from "./users.mjs";
+import { findAuthUserByEmail } from "./seed.mjs";
 
 async function main() {
   const repoRoot = resolve(process.cwd());
@@ -45,8 +46,10 @@ async function main() {
     JSON.stringify({ fixture_family: FIXTURE_FAMILY })
   )}`;
 
+  await admin.delete("marketplace_tickets", [`event_id=eq.${life.mkt_event_checkin}`]);
   await admin.delete("marketplace_tickets", [`event_id=eq.${life.mkt_event_attr}`]);
   await admin.delete("marketplace_tickets", [`event_id=eq.${life.mkt_event_unattr}`]);
+  await admin.delete("marketplace_bookings", [`event_id=eq.${life.mkt_event_checkin}`]);
   await admin.delete("marketplace_bookings", [`event_id=eq.${life.mkt_event_attr}`]);
   await admin.delete("marketplace_bookings", [`event_id=eq.${life.mkt_event_unattr}`]);
   await admin.delete("marketplace_redemptions", [
@@ -59,6 +62,12 @@ async function main() {
     `offer_event_id=eq.${life.mkt_offer}`,
   ]);
   await admin.delete("marketplace_offer_claims", [
+    `offer_event_id=eq.${life.mkt_offer_expired}`,
+  ]);
+  await admin.delete("marketplace_offer_visits", [
+    `offer_event_id=eq.${life.mkt_offer}`,
+  ]);
+  await admin.delete("marketplace_offer_visits", [
     `offer_event_id=eq.${life.mkt_offer_expired}`,
   ]);
   await admin.delete("marketplace_bdp_recovery_entries", [
@@ -95,6 +104,7 @@ async function main() {
   await admin.delete("marketplace_offer_events", [
     `id=eq.${life.mkt_offer_expired}`,
   ]);
+  await admin.delete("marketplace_events", [`id=eq.${life.mkt_event_checkin}`]);
   await admin.delete("marketplace_events", [`id=eq.${life.mkt_event_attr}`]);
   await admin.delete("marketplace_events", [`id=eq.${life.mkt_event_unattr}`]);
   await admin.delete("marketplace_venue_attributions", [`id=eq.${life.mkt_attr}`]);
@@ -104,6 +114,8 @@ async function main() {
   await admin.delete("organisation_memberships", [`id=eq.${life.org_mem_venue}`]);
   await admin.delete("organisation_memberships", [`id=eq.${life.org_mem_ent}`]);
   await admin.delete("organisations", [`id=eq.${life.venue_org_b}`]);
+  await admin.delete("organisations", [`id=eq.${life.venue_org_onboard}`]);
+  await admin.delete("organisations", [fam]);
 
   await admin.delete("events", [`id=eq.${domainIds.event}`]);
   await admin.delete("offers", [`id=eq.${domainIds.offer}`]);
@@ -112,6 +124,10 @@ async function main() {
   ]);
   await admin.delete("connect_circle_seats", [
     `id=eq.${fixtureUuid("seat:multi")}`,
+  ]);
+  await deleteAssistGraphForCircle(admin, domainIds.circle);
+  await admin.delete("connect_circle_meetings", [
+    `circle_id=eq.${domainIds.circle}`,
   ]);
   await admin.delete("connect_memberships", [`id=eq.${domainIds.membership}`]);
   await admin.delete("connect_memberships", [
@@ -127,15 +143,13 @@ async function main() {
   for (const identity of FIXTURE_IDENTITIES) {
     const email = fixtureEmail(identity);
     const user = await findAuthUserByEmail(admin, email);
-    if (!user) continue;
-    await admin.delete("profiles", [`user_id=eq.${user.id}`]);
-    await admin.delete("users", [`id=eq.${user.id}`]);
-    const del = await admin.auth.admin.deleteUser(user.id);
-    if (del.error) {
-      console.warn(`  warn delete auth ${email}:`, del.error.message);
-    } else {
-      console.log(`  deleted auth user ${email}`);
-    }
+    if (!user?.id) continue;
+    await clearUserReferencingRows(admin, user.id);
+  }
+
+  for (const identity of FIXTURE_IDENTITIES) {
+    const email = fixtureEmail(identity);
+    await purgeFixtureIdentity(admin, email);
   }
 
   console.log("Reset complete (fixture-scoped only).");

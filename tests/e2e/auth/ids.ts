@@ -19,6 +19,7 @@ export function loadFixtureIds(): FixtureIds {
   const defaults: FixtureIds = {
     mkt_event_attr: fixtureUuid("mkt:event:attributed"),
     mkt_event_unattr: fixtureUuid("mkt:event:unattributed"),
+    mkt_event_checkin: fixtureUuid("mkt:event:checkin"),
     mkt_offer: fixtureUuid("mkt:offer:01"),
     mkt_offer_expired: fixtureUuid("mkt:offer:expired"),
     mkt_expired_claim: fixtureUuid("mkt:claim:expired"),

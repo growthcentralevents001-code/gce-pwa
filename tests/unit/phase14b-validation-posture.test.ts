@@ -90,6 +90,14 @@ describe("Phase 14B — BG-32 fixture tooling", () => {
     expect(constants).not.toMatch(/super_admin/);
   });
 
+  it("reset purges fixture identities by email and clears orphan public.users", () => {
+    const reset = read("scripts/e2e-fixtures/reset.mjs");
+    const users = read("scripts/e2e-fixtures/users.mjs");
+    expect(reset).toMatch(/purgeFixtureIdentity/);
+    expect(users).toMatch(/purgePublicUserByEmail/);
+    expect(users).toMatch(/removeOrphanPublicUsersForEmail/);
+  });
+
   it("keeps Playwright auth storage under gitignored .playwright", () => {
     const gi = read(".gitignore");
     expect(gi).toMatch(/\.playwright\//);

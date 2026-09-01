@@ -6,6 +6,7 @@ import {
   fixtureEmail,
 } from "./constants.mjs";
 import { fixtureUuid } from "./env.mjs";
+import { removeOrphanPublicUsersForEmail, purgePublicUserByEmail } from "./users.mjs";
 
 const META = (key, extra = {}) => ({
   fixture_family: FIXTURE_FAMILY,
@@ -90,6 +91,8 @@ export async function upsertFixtureUser(admin, identity, password) {
     user = updated.data.user;
   }
 
+  await removeOrphanPublicUsersForEmail(admin, email, user.id);
+
   const { error: userErr } = await admin.upsert(
     "users",
     {
@@ -101,7 +104,23 @@ export async function upsertFixtureUser(admin, identity, password) {
     },
     "id"
   );
-  if (userErr) throw userErr;
+  if (userErr && /users_email_key|duplicate key/i.test(userErr.message)) {
+    await purgePublicUserByEmail(admin, email);
+    const retry = await admin.upsert(
+      "users",
+      {
+        id: user.id,
+        email,
+        name: identity.displayName,
+        city: "Bengaluru",
+        role: "member",
+      },
+      "id"
+    );
+    if (retry.error) throw retry.error;
+  } else if (userErr) {
+    throw userErr;
+  }
 
   const { error: profileErr } = await admin.upsert(
     "profiles",

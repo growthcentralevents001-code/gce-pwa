@@ -31,7 +31,7 @@ test.describe("venue check-in", () => {
     await page.goto("/customer", { waitUntil: "domcontentloaded" });
     const created = await customerAction(page, {
       action: "create_booking",
-      eventId: ids.mkt_event_attr,
+      eventId: ids.mkt_event_checkin,
       quantity: 1,
       acceptPolicyVersion: "fd039-48h-default-v1",
       idempotencyKey: `e2e-checkin-${Date.now()}`,

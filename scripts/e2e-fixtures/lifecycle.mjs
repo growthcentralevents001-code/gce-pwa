@@ -29,6 +29,7 @@ export function lifecycleIds(scopeIds = {}) {
     mkt_attr: fixtureUuid("mkt:attr:01"),
     mkt_event_attr: fixtureUuid("mkt:event:attributed"),
     mkt_event_unattr: fixtureUuid("mkt:event:unattributed"),
+    mkt_event_checkin: fixtureUuid("mkt:event:checkin"),
     mkt_offer: fixtureUuid("mkt:offer:01"),
     mkt_offer_expired: fixtureUuid("mkt:offer:expired"),
     mkt_expired_claim: fixtureUuid("mkt:claim:expired"),
@@ -245,6 +246,27 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
     submitted_by: venueUserId,
     published_at: new Date().toISOString(),
     metadata: META("mkt:event:attributed", { attributed: true }),
+  });
+
+  await upsert(admin, "marketplace_events", {
+    id: ids.mkt_event_checkin,
+    venue_id: ids.mkt_venue,
+    title: `${FIXTURE_PREFIX} Check-in Only Evening`,
+    description:
+      "Dedicated attributed Marketplace Event for venue check-in E2E (isolated capacity).",
+    category: "Networking",
+    starts_at: starts.toISOString(),
+    ends_at: ends.toISOString(),
+    capacity: 40,
+    price_minor: 0,
+    currency: "INR",
+    status: "published",
+    cancel_cutoff_hours: 48,
+    cancel_policy_version: "fd039-48h-default-v1",
+    attribution_id: ids.mkt_attr,
+    submitted_by: venueUserId,
+    published_at: new Date().toISOString(),
+    metadata: META("mkt:event:checkin", { checkin_only: true }),
   });
 
   await upsert(admin, "marketplace_events", {

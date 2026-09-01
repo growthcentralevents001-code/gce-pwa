@@ -6,7 +6,6 @@ import {
   normalizePowerSectorKey,
   type CircleDirectoryCard,
 } from "@/lib/frontend/connect/format";
-import { parseCircleMeetingFromMetadata } from "@/lib/frontend/connect/reads";
 
 describe("Connect Circle directory helpers", () => {
   it("maps legacy sector keys to canonical GC Power Sector ids", () => {
@@ -54,21 +53,5 @@ describe("Connect Circle directory helpers", () => {
     expect(circleRemainingSeatsLabel(40, 40)).toBe(
       "Circle full — no seats remaining"
     );
-  });
-
-  it("parses optional meeting metadata without inventing dates", () => {
-    expect(parseCircleMeetingFromMetadata(null)).toEqual({
-      nextMeetingAt: null,
-      nextMeetingLocation: null,
-    });
-    expect(
-      parseCircleMeetingFromMetadata({
-        nextMeetingAt: "2026-09-15T10:00:00.000Z",
-        nextMeetingLocation: "Hyderabad",
-      })
-    ).toEqual({
-      nextMeetingAt: "2026-09-15T10:00:00.000Z",
-      nextMeetingLocation: "Hyderabad",
-    });
   });
 });

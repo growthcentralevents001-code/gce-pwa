@@ -221,26 +221,6 @@ export async function getActiveConnectBdpForCircle(
   };
 }
 
-export type CircleMeetingSnapshot = {
-  nextMeetingAt: string | null;
-  nextMeetingLocation: string | null;
-};
-
-/** Optional meeting hints from Circle metadata — never invented client-side. */
-export function parseCircleMeetingFromMetadata(
-  metadata: unknown
-): CircleMeetingSnapshot {
-  if (!metadata || typeof metadata !== "object") {
-    return { nextMeetingAt: null, nextMeetingLocation: null };
-  }
-  const m = metadata as Record<string, unknown>;
-  const nextMeetingAt =
-    typeof m.nextMeetingAt === "string" ? m.nextMeetingAt : null;
-  const nextMeetingLocation =
-    typeof m.nextMeetingLocation === "string" ? m.nextMeetingLocation : null;
-  return { nextMeetingAt, nextMeetingLocation };
-}
-
 export async function loadCircleBundle(
   client: SupabaseClient,
   circleId: string

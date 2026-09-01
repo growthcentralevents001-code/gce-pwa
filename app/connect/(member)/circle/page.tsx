@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { CircleCard } from "@/components/connect/CircleCard";
 import { CircleDirectory } from "@/components/connect/CircleDirectory";
-import { CircleMeetingCadence } from "@/components/connect/CircleMeetingCadence";
+import { CircleMeetingsPanel } from "@/components/connect/CircleMeetingsPanel";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
@@ -15,8 +15,11 @@ import {
   findSeatForMembership,
   getActiveConnectBdpForCircle,
   loadCircleBundle,
-  parseCircleMeetingFromMetadata,
 } from "@/lib/frontend/connect/reads";
+import {
+  listCircleMeetings,
+  partitionCircleMeetings,
+} from "@/lib/architecture/connect/meetings";
 import {
   CIRCLE_CAPACITY_MAX,
   countMembersByPowerSector,
@@ -81,14 +84,15 @@ export default async function MyCirclePage() {
     );
   }
 
-  const [bundle, connectBdp] = await Promise.all([
+  const [bundle, connectBdp, meetings] = await Promise.all([
     loadCircleBundle(admin, circleId),
     getActiveConnectBdpForCircle(admin, circleId).catch(() => null),
+    listCircleMeetings(admin, circleId).catch(() => []),
   ]);
   const { circle, availability, directory } = bundle;
   const capacityMax = Math.min(circle.capacityMax, CIRCLE_CAPACITY_MAX);
   const sectorCounts = countMembersByPowerSector(directory);
-  const meeting = parseCircleMeetingFromMetadata(circle.metadata);
+  const meetingPartition = partitionCircleMeetings(meetings);
   const isFull = availability.remaining <= 0;
 
   return (
@@ -158,7 +162,10 @@ export default async function MyCirclePage() {
       </div>
 
       <section className="mt-10">
-        <CircleMeetingCadence meeting={meeting} />
+        <CircleMeetingsPanel
+          upcoming={meetingPartition.upcoming}
+          previous={meetingPartition.previous}
+        />
       </section>
 
       <section className="mt-10">

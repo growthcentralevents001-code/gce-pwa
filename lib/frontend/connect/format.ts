@@ -241,6 +241,27 @@ export function countMembersByPowerSector(
   return counts;
 }
 
+/** Unique specialisation labels represented per GC Power Sector. */
+export function specialisationsByPowerSector(
+  members: CircleDirectoryCard[]
+): Record<GcPowerSectorId, string[]> {
+  const result = Object.fromEntries(
+    GC_POWER_SECTORS.map((s) => [s.id, [] as string[]])
+  ) as Record<GcPowerSectorId, string[]>;
+  for (const member of members) {
+    const id = normalizePowerSectorKey(member.sectorLabel);
+    if (!id || !member.specialisation?.trim()) continue;
+    const list = result[id];
+    if (!list.includes(member.specialisation)) {
+      list.push(member.specialisation);
+    }
+  }
+  for (const sector of GC_POWER_SECTORS) {
+    result[sector.id].sort((a, b) => a.localeCompare(b));
+  }
+  return result;
+}
+
 export function circleRemainingSeatsLabel(
   activeSeatCount: number,
   capacityMax = CIRCLE_CAPACITY_MAX

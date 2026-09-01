@@ -16,10 +16,13 @@ const ICONS = [Building2, Factory, Briefcase, HeartHandshake] as const;
 export function PowerSectorGrid({
   className,
   memberCounts,
+  specialisationsBySector,
 }: {
   className?: string;
   /** Backend-derived member counts per sector id — omit to hide counts. */
   memberCounts?: Partial<Record<GcPowerSectorId, number>>;
+  /** Backend-derived specialisation labels per sector — omit to hide. */
+  specialisationsBySector?: Partial<Record<GcPowerSectorId, string[]>>;
 }) {
   return (
     <div className={cn("grid gap-3 sm:grid-cols-2", className)}>
@@ -41,6 +44,11 @@ export function PowerSectorGrid({
             {memberCounts ? (
               <p className="mt-2 text-xs font-medium tabular-nums text-foreground">
                 {count ?? 0} member{(count ?? 0) === 1 ? "" : "s"}
+              </p>
+            ) : null}
+            {specialisationsBySector?.[sector.id]?.length ? (
+              <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+                {specialisationsBySector[sector.id]!.join(" · ")}
               </p>
             ) : null}
           </article>

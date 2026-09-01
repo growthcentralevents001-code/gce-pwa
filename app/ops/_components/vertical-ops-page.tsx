@@ -33,6 +33,7 @@ const VERTICAL_COPY: Partial<
       "System proposes → Connect BDP assists → Platform confirms. No self-approval. Treasurer legacy absent.",
     extraLinks: [
       { href: "/ops/connect/meetings", label: "Circle meeting schedule" },
+      { href: "/ops/connect/circles", label: "Circle structure & capacity" },
     ],
   },
   marketplace: {

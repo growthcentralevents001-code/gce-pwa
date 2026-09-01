@@ -21,7 +21,8 @@ for (const vp of VIEWPORTS) {
       await page.goto("/the-circle");
       const body = page.locator("body");
       await expect(body).toContainText("How GCE Connect Circle works");
-      await expect(body).toContainText("40");
+      await expect(body).toContainText("40 Members · 4 GC Power Sectors");
+      await expect(body).toContainText("maximum of 40");
       await expect(body).toContainText("15 days");
       await expect(body).toContainText("Lead Assist");
       await expect(body).toContainText("GC Power Sector");

@@ -6,6 +6,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { listMembershipsForUser } from "@/lib/architecture/connect/memberships";
 import { listActiveSpecialisations } from "@/lib/architecture/connect/specialisations";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
+import { formatPowerSectorLabel } from "@/lib/frontend/connect/format";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -65,7 +66,8 @@ export default async function SpecialisationPage() {
             </p>
             {spec?.powerSector ? (
               <p className="mt-1 text-xs text-muted-foreground">
-                GC Power Sector: {spec.powerSector}
+                GC Power Sector:{" "}
+                {formatPowerSectorLabel(spec.powerSector) ?? spec.powerSector}
               </p>
             ) : null}
             <p className="mt-2 text-xs text-muted-foreground">

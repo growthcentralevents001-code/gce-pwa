@@ -26,6 +26,7 @@ import {
   circleRemainingSeatsLabel,
   formatConstitutionLabel,
   formatLifecycleLabel,
+  specialisationsByPowerSector,
 } from "@/lib/frontend/connect/format";
 import { CONNECT_BDP_ROLE_LABEL } from "@/lib/frontend/partner/format";
 
@@ -92,6 +93,7 @@ export default async function MyCirclePage() {
   const { circle, availability, directory } = bundle;
   const capacityMax = Math.min(circle.capacityMax, CIRCLE_CAPACITY_MAX);
   const sectorCounts = countMembersByPowerSector(directory);
+  const sectorSpecs = specialisationsByPowerSector(directory);
   const meetingPartition = partitionCircleMeetings(meetings);
   const isFull = availability.remaining <= 0;
 
@@ -170,7 +172,10 @@ export default async function MyCirclePage() {
 
       <section className="mt-10">
         <h2 className="mb-3 text-sm font-semibold">GC Power Sectors</h2>
-        <PowerSectorGrid memberCounts={sectorCounts} />
+        <PowerSectorGrid
+          memberCounts={sectorCounts}
+          specialisationsBySector={sectorSpecs}
+        />
       </section>
 
       <section className="mt-10">

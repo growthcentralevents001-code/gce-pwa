@@ -19,7 +19,7 @@ const INTENTS = [
     id: "marketplace-bdp",
     title: "Marketplace BDP",
     description: "Application interest for Marketplace BDP units.",
-    href: "/contact",
+    href: "/marketplace-bdp",
   },
   {
     id: "venue",

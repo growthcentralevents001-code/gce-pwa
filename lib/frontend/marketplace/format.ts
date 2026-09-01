@@ -119,3 +119,7 @@ export function containsStaleMarketplaceTerm(text: string): boolean {
 /** Venue relationship — MBDP that onboarded/attributed is the Marketplace RM (FD-033). */
 export const VENUE_MBDP_RELATIONSHIP_COPY =
   "Your Marketplace BDP is your Marketplace relationship manager. There is no separate generic Venue RM column.";
+
+/** Public / partner copy — performance-linked, not guaranteed (FD-033 / FD-029). */
+export const MBDP_EARNINGS_DISCLAIMER =
+  "Marketplace BDP commission is earned only on eligible attributed Marketplace Event revenue where valid Venue attribution exists — not on Offer Claims alone. Unattributed revenue uses 80/0/20 (the missing 10% is not pending MBDP commission). Earnings vary with Venue activity; no fixed income, guaranteed ROI, or passive income is promised.";

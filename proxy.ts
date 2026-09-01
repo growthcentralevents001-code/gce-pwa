@@ -9,6 +9,7 @@ const PUBLIC_EXACT = [
   // Marketing landings only — member CX under /connect/* requires auth
   '/connect',
   '/connect-bdp',
+  '/marketplace-bdp',
   '/marketplace',
   '/enterprise',
 ]

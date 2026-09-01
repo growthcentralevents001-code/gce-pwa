@@ -23,7 +23,7 @@ const TRACKS = [
     id: "marketplace",
     title: "Marketplace BDP",
     body: "Marketplace BDP units operate under FD-033 / FD-037. Affiliate tracks are inactive.",
-    href: "/apply/role?intent=marketplace-bdp",
+    href: "/marketplace-bdp",
   },
   {
     id: "venue",

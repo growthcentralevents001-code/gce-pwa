@@ -12,6 +12,7 @@ import {
   discoverEvents,
   getPublicMarketplaceVenue,
 } from "@/lib/architecture/customer-cx";
+import { MarketplaceEngagementBeacon } from "@/components/marketplace/MarketplaceEngagementBeacon";
 
 type Params = Promise<{ id: string }>;
 
@@ -84,6 +85,11 @@ export default async function PublicVenueDetailPage({
 
   return (
     <>
+      <MarketplaceEngagementBeacon
+        engagementType="marketplace_venue_view"
+        subjectId={venue.id}
+        venueId={venue.id}
+      />
       <MarketingHero
         showBrandMark={false}
         headline={venue.displayName}

@@ -19,7 +19,6 @@ import { getCurrentIdentity } from "@/lib/architecture/identity/current";
 import { loadVenueBundle } from "@/lib/frontend/marketplace/reads";
 import {
   VENUE_PARTNER_ROLE_LABEL,
-  formatMinorInr,
   venueStatusLabel,
   OFFER_CLAIM_VALIDITY_HOURS,
 } from "@/lib/frontend/marketplace/format";
@@ -78,7 +77,7 @@ export default async function VenueDashboardPage() {
     );
   }
 
-  const { report, venue, events, offers, bookings, claims, entitlements } =
+  const { report, venue, events, offers, bookings, claims, entitlements, engagement } =
     bundle;
   const venueShare = entitlements.reduce(
     (s, e) => s + Number(e.venue_share_minor ?? 0),
@@ -147,25 +146,25 @@ export default async function VenueDashboardPage() {
             tone: "neutral",
           },
           {
+            id: "engagement",
+            label: "Customer actions",
+            value: String(engagement?.totalCustomerActions ?? 0),
+            tone: "neutral",
+          },
+          {
             id: "bookings",
-            label: "Bookings (loaded)",
-            value: String(bookings.length),
+            label: "Bookings",
+            value: String(engagement?.totalBookings ?? bookings.length),
             tone: "neutral",
           },
         ]}
       />
 
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Events" value={`${report.eventCount}`} href="/venue/events" icon="calendar" />
-        <KpiCard label="Offers" value={`${report.offerCount}`} href="/venue/offers" icon="store" />
-        <KpiCard label="Claims" value={`${claims.length}`} href="/venue/redemptions" icon="ticket-check" />
-        <KpiCard
-          label="Venue entitlement"
-          value={formatMinorInr(venueShare)}
-          hint="Backend shares only"
-          href="/venue/entitlements"
-          icon="circle-dollar"
-        />
+        <KpiCard label="Profile views" value={`${engagement?.venueViews ?? 0}`} href="/venue/performance" icon="building" />
+        <KpiCard label="Event views" value={`${engagement?.eventViews ?? 0}`} href="/venue/performance" icon="calendar" />
+        <KpiCard label="Offer views" value={`${engagement?.offerViews ?? 0}`} href="/venue/performance" icon="store" />
+        <KpiCard label="Claims" value={`${engagement?.totalClaims ?? claims.length}`} href="/venue/redemptions" icon="ticket-check" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">

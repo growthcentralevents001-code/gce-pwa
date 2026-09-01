@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { PartnerPageHeader, KpiCard } from "@/components/partner";
+import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
 import { EmptyState } from "@/components/states/EmptyState";
 import { FeatureGated } from "@/components/states/FeatureGated";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
@@ -18,25 +19,75 @@ export default async function VenuePerformancePage() {
     return (
       <main className="mx-auto max-w-3xl px-4 py-8">
         <PartnerPageHeader title="Performance" />
-        <EmptyState title="No Venue" primaryAction={{ label: "Apply", href: "/venue/apply" }} />
+        <EmptyState title="No Venue" primaryAction={{ label: "Join", href: "/venue/apply" }} />
       </main>
     );
   }
+
+  const engagement = bundle.engagement;
+
   return (
-    <main className="mx-auto max-w-4xl px-4 py-8 pb-16 space-y-8">
+    <main className="mx-auto max-w-5xl px-4 py-8 pb-16 space-y-8">
       <PartnerPageHeader
         title="Performance"
-        description="Backend-approved operational counts only. No invented Venue Performance Rank."
+        description="Backend-derived engagement from first-party views, bookings, and claims. No invented rank scores."
         backHref="/dashboard/venue"
       />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard label="Venue profile views" value={`${engagement?.venueViews ?? 0}`} />
+        <KpiCard label="Event views" value={`${engagement?.eventViews ?? 0}`} />
+        <KpiCard label="Offer views" value={`${engagement?.offerViews ?? 0}`} />
+        <KpiCard label="Total customer actions" value={`${engagement?.totalCustomerActions ?? 0}`} />
         <KpiCard label="Events" value={`${bundle.report.eventCount}`} />
         <KpiCard label="Offers" value={`${bundle.report.offerCount}`} />
-        <KpiCard label="Bookings loaded" value={`${bundle.bookings.length}`} />
-        <KpiCard label="Claims loaded" value={`${bundle.claims.length}`} />
+        <KpiCard label="Bookings" value={`${engagement?.totalBookings ?? 0}`} />
+        <KpiCard label="Claims" value={`${engagement?.totalClaims ?? 0}`} />
       </div>
+
+      <section className="space-y-3">
+        <h2 className="text-base font-semibold">Event performance</h2>
+        {(engagement?.eventPerformance.length ?? 0) === 0 ? (
+          <EmptyState title="No Events yet" primaryAction={{ label: "Create", href: "/venue/events/new" }} />
+        ) : (
+          <PartnerDataTable
+            rows={engagement!.eventPerformance.map((r) => ({ ...r, id: r.eventId }))}
+            mobileTitle={(r) => r.title}
+            columns={[
+              { id: "title", header: "Event", cell: (r) => r.title },
+              { id: "views", header: "Views", cell: (r) => String(r.views) },
+              { id: "bookings", header: "Bookings", cell: (r) => String(r.bookings) },
+            ]}
+            empty={null}
+          />
+        )}
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-base font-semibold">Offer performance</h2>
+        {(engagement?.offerPerformance.length ?? 0) === 0 ? (
+          <EmptyState title="No Offers yet" primaryAction={{ label: "Offers", href: "/venue/offers" }} />
+        ) : (
+          <PartnerDataTable
+            rows={engagement!.offerPerformance.map((r) => ({ ...r, id: r.offerId }))}
+            mobileTitle={(r) => r.title}
+            columns={[
+              { id: "title", header: "Offer", cell: (r) => r.title },
+              { id: "views", header: "Views", cell: (r) => String(r.views) },
+              { id: "claims", header: "Claims", cell: (r) => String(r.claims) },
+              {
+                id: "conv",
+                header: "Claim rate",
+                cell: (r) =>
+                  r.conversionRate != null ? `${r.conversionRate}%` : "—",
+                hideOnMobile: true,
+              },
+            ]}
+            empty={null}
+          />
+        )}
+      </section>
+
       <FeatureGated mode="disabled_in_environment" title="Venue Performance Rank" description="Rank weights remain unresolved / inactive. Do not invent scores." />
-      <FeatureGated mode="coming_later" title="Aggregated non-purchase feedback" description="Customer non-purchase reasons may surface as aggregates when a redacted read-model is available." />
     </main>
   );
 }

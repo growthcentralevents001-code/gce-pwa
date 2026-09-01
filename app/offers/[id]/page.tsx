@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { GCE_SURFACE, GCE_SPACING } from "@/lib/frontend/design-language";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getOfferDetail } from "@/lib/architecture/customer-cx";
+import { MarketplaceEngagementBeacon } from "@/components/marketplace/MarketplaceEngagementBeacon";
 import { formatWhen, venueDisplayName } from "@/lib/frontend/customer/format";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +48,15 @@ export default async function PublicOfferDetailPage({
 
   return (
     <>
+      <MarketplaceEngagementBeacon
+        engagementType="marketplace_offer_view"
+        subjectId={offer.id}
+        venueId={
+          offer.venue && typeof offer.venue === "object" && "id" in offer.venue
+            ? String((offer.venue as { id: string }).id)
+            : null
+        }
+      />
       <MarketingHero
         showBrandMark={false}
         headline={offer.title}

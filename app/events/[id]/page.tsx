@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getEventDetail } from "@/lib/architecture/customer-cx";
+import { MarketplaceEngagementBeacon } from "@/components/marketplace/MarketplaceEngagementBeacon";
 import {
   formatInrMinor,
   formatWhen,
@@ -54,6 +55,11 @@ export default async function PublicEventDetailPage({
 
   return (
     <>
+      <MarketplaceEngagementBeacon
+        engagementType="marketplace_event_view"
+        subjectId={event.id}
+        venueId={event.venue_id ? String(event.venue_id) : null}
+      />
       <MarketingHero
         showBrandMark={false}
         headline={event.title}

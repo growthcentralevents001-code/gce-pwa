@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   buildMbdpDashboard,
   buildVenueDashboard,
+  buildVenueEngagementMetrics,
   listMbdpUnitsForUser,
 } from "@/lib/architecture/marketplace";
 import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
@@ -24,6 +25,7 @@ export type VenueBundle = {
   venues: Record<string, unknown>[];
   venue: Record<string, unknown> | null;
   report: Awaited<ReturnType<typeof buildVenueDashboard>>;
+  engagement: Awaited<ReturnType<typeof buildVenueEngagementMetrics>> | null;
   events: Record<string, unknown>[];
   offers: Record<string, unknown>[];
   bookings: Record<string, unknown>[];
@@ -176,6 +178,7 @@ export async function loadVenueBundle(
       venues,
       venue: null,
       report: null,
+      engagement: null,
       events: [],
       offers: [],
       bookings: [],
@@ -187,11 +190,13 @@ export async function loadVenueBundle(
   const venueId = String(venue.id);
   const [
     report,
+    engagement,
     { data: events },
     { data: offers },
     { data: entitlements },
   ] = await Promise.all([
     buildVenueDashboard(adminClient, venueId),
+    buildVenueEngagementMetrics(adminClient, venueId).catch(() => null),
     adminClient
       .from("marketplace_events")
       .select("*")
@@ -245,6 +250,7 @@ export async function loadVenueBundle(
     venues,
     venue,
     report,
+    engagement,
     events: (events as Record<string, unknown>[]) ?? [],
     offers: (offers as Record<string, unknown>[]) ?? [],
     bookings,

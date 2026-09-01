@@ -234,6 +234,38 @@ export async function loadVenueBundle(
   const offerIds = ((offers as Record<string, unknown>[]) ?? []).map((o) =>
     String(o.id)
   );
+  const visitByClaim = new Map<string, { confirmedAt: string | null }>();
+  const redemptionByClaim = new Map<string, { createdAt: string | null }>();
+  if (offerIds.length > 0) {
+    const claimIds = ((await adminClient
+      .from("marketplace_offer_claims")
+      .select("id")
+      .in("offer_event_id", offerIds)) as { data: { id: string }[] | null }).data ?? [];
+    const ids = claimIds.map((c) => String(c.id));
+    if (ids.length > 0) {
+      const [{ data: visits }, { data: reds }] = await Promise.all([
+        adminClient
+          .from("marketplace_offer_visits")
+          .select("claim_id,confirmed_at")
+          .in("claim_id", ids),
+        adminClient
+          .from("marketplace_redemptions")
+          .select("claim_id,created_at")
+          .in("claim_id", ids),
+      ]);
+      for (const v of visits ?? []) {
+        visitByClaim.set(String(v.claim_id), {
+          confirmedAt: v.confirmed_at ? String(v.confirmed_at) : null,
+        });
+      }
+      for (const r of reds ?? []) {
+        redemptionByClaim.set(String(r.claim_id), {
+          createdAt: r.created_at ? String(r.created_at) : null,
+        });
+      }
+    }
+  }
+
   let claims: Record<string, unknown>[] = [];
   if (offerIds.length > 0) {
     const { data } = await adminClient
@@ -242,7 +274,11 @@ export async function loadVenueBundle(
       .in("offer_event_id", offerIds)
       .order("created_at", { ascending: false })
       .limit(50);
-    claims = (data as Record<string, unknown>[]) ?? [];
+    claims = ((data as Record<string, unknown>[]) ?? []).map((c) => ({
+      ...c,
+      visitConfirmedAt: visitByClaim.get(String(c.id))?.confirmedAt ?? null,
+      redeemedAt: redemptionByClaim.get(String(c.id))?.createdAt ?? c.redeemed_at,
+    }));
   }
 
   return {

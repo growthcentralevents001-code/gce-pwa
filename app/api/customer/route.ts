@@ -25,6 +25,7 @@ import {
   getOfferDetail,
   getVenuePerformanceRank,
   redeemOffer,
+  confirmOfferVisit,
   requestRefund,
   submitFeedback,
   submitNonPurchaseReason,
@@ -277,6 +278,22 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         correlationId: ctx.correlationId,
       });
       return jsonSuccess(result, ctx, 201);
+    }
+    case "confirm_offer_visit": {
+      requirePerm("cx.check_in.venue");
+      const parsed = z
+        .object({
+          action: z.literal("confirm_offer_visit"),
+          claimId: z.string().uuid(),
+          presentedToken: z.string().min(8),
+        })
+        .parse(body);
+      const result = await confirmOfferVisit(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx);
     }
     case "redeem_offer": {
       requirePerm("cx.redeem.venue");

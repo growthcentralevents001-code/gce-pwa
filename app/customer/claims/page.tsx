@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { ActiveClaimCard } from "@/components/customer/ActiveClaimCard";
+import { ClaimTimeline } from "@/components/customer/ClaimTimeline";
 import { ClaimTokenReveal } from "@/components/customer/ClaimTokenReveal";
 import { NonPurchaseFeedback } from "@/components/customer/NonPurchaseFeedback";
 import { EmptyState } from "@/components/states/EmptyState";
@@ -87,6 +88,21 @@ export default async function CustomerClaimsPage({
             claimId={focused.id}
             expiresAt={focused.expires_at}
           />
+          <div className="mt-6">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Journey
+            </h3>
+            <ClaimTimeline
+              claim={{
+                status: focused.status,
+                claimedAt: focused.claimed_at,
+                expiresAt: focused.expires_at,
+                visitedAt: focused.visitedAt,
+                redeemedAt: focused.redeemed_at,
+                expired: focused.expired,
+              }}
+            />
+          </div>
           <NonPurchaseFeedback
             className="mt-6"
             claimId={focused.id}

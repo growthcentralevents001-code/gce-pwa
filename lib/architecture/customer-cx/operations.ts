@@ -867,6 +867,74 @@ export async function claimCustomerOffer(
   return { claim: data, rawClaimToken: raw, isRevenue: false as const };
 }
 
+export async function confirmOfferVisit(
+  client: SupabaseClient,
+  input: {
+    claimId: string;
+    presentedToken: string;
+    actorUserId: string;
+    correlationId?: string;
+  }
+) {
+  const { data: claimRow } = await client
+    .from("marketplace_offer_claims")
+    .select("id,offer_event_id,marketplace_offer_events(venue_id)")
+    .eq("id", input.claimId)
+    .maybeSingle();
+  const offer = Array.isArray(claimRow?.marketplace_offer_events)
+    ? claimRow?.marketplace_offer_events[0]
+    : claimRow?.marketplace_offer_events;
+  const venueId = (offer as { venue_id?: string } | null)?.venue_id;
+  if (!venueId) {
+    throw new AppError("NOT_FOUND", "Claim not found", { status: 404 });
+  }
+  await assertVenueStaffScope(client, input.actorUserId, venueId);
+
+  const hash = tokenHash(input.presentedToken);
+  const { data: existing } = await client
+    .from("marketplace_offer_visits")
+    .select("id")
+    .eq("claim_id", input.claimId)
+    .maybeSingle();
+
+  const { data, error } = await client.rpc("gce_marketplace_confirm_offer_visit", {
+    p_claim_id: input.claimId,
+    p_presented_token_hash: hash,
+    p_actor: input.actorUserId,
+  });
+  if (error || !data) {
+    throw new AppError("CONFLICT", error?.message || "Visit confirmation failed", {
+      status: 409,
+      cause: error,
+    });
+  }
+
+  if (!existing) {
+    await emitCxEvent(
+      client,
+      "offer_visit_confirmed",
+      input.actorUserId,
+      "marketplace_offer_visit",
+      String(data.id),
+      {
+        claimId: input.claimId,
+        venueId,
+        isRevenue: false,
+      }
+    );
+    await writeAuditEvent(client, {
+      actorUserId: input.actorUserId,
+      action: "marketplace_offer.visit_confirm",
+      resourceType: "marketplace_offer_visit",
+      resourceId: String(data.id),
+      after: { ...data, note: "visit_is_not_revenue" },
+      correlationId: input.correlationId,
+    });
+  }
+
+  return { visit: data, createsRevenue: false as const, idempotent: Boolean(existing) };
+}
+
 export async function redeemOffer(
   client: SupabaseClient,
   input: {
@@ -1194,7 +1262,7 @@ export async function getMyClaims(client: SupabaseClient, userId: string) {
   const { data, error } = await client
     .from("marketplace_offer_claims")
     .select(
-      "id,status,claimed_at,expires_at,redeemed_at,offer_event_id,marketplace_offer_events(id,title,marketplace_venues(display_name,city))"
+      "id,status,claimed_at,expires_at,redeemed_at,offer_event_id,marketplace_offer_events(id,title,marketplace_venues(display_name,city)),marketplace_offer_visits(id,confirmed_at,status,confirmed_by_staff_user_id)"
     )
     .eq("claimant_user_id", userId)
     .order("claimed_at", { ascending: false })
@@ -1204,13 +1272,20 @@ export async function getMyClaims(client: SupabaseClient, userId: string) {
       cause: error,
     });
   }
-  return (data ?? []).map((c) => ({
-    ...c,
-    isRevenue: false,
-    expired:
+  return (data ?? []).map((c) => {
+    const visitRaw = c.marketplace_offer_visits;
+    const visit = Array.isArray(visitRaw) ? visitRaw[0] : visitRaw;
+    const expired =
       c.status === "expired" ||
-      (c.expires_at ? new Date(c.expires_at).getTime() < Date.now() : false),
-  }));
+      (c.expires_at ? new Date(c.expires_at).getTime() < Date.now() : false);
+    return {
+      ...c,
+      isRevenue: false,
+      expired,
+      visitedAt: visit?.confirmed_at ?? null,
+      visitId: visit?.id ?? null,
+    };
+  });
 }
 
 export async function getCustomerDashboard(

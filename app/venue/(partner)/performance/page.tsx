@@ -43,6 +43,7 @@ export default async function VenuePerformancePage() {
         <KpiCard label="Bookings" value={`${engagement?.totalBookings ?? 0}`} />
         <KpiCard label="Claims" value={`${engagement?.totalClaims ?? 0}`} />
         <KpiCard label="Redemptions" value={`${engagement?.totalRedemptions ?? 0}`} />
+        <KpiCard label="Visits" value={`${engagement?.totalVisits ?? 0}`} />
       </div>
 
       <section className="space-y-3">
@@ -85,6 +86,12 @@ export default async function VenuePerformancePage() {
                 id: "expired",
                 header: "Expired",
                 cell: (r) => String(r.expiredClaims),
+                hideOnMobile: true,
+              },
+              {
+                id: "visits",
+                header: "Visits",
+                cell: (r) => String(r.visits),
                 hideOnMobile: true,
               },
               {

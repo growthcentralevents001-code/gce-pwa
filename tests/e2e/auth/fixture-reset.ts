@@ -42,11 +42,15 @@ async function deleteFiltered(table: string, filter: string) {
   }
 }
 
-/** Clear live claims/redemptions on the reusable fixture offer so claim→redeem can re-run. */
+/** Clear live claims/redemptions/visits on the reusable fixture offer so claim→visit→redeem can re-run. */
 export async function resetFixtureOfferClaims(offerEventId: string) {
   if (!offerEventId) throw new Error("offerEventId required");
   await deleteFiltered(
     "marketplace_redemptions",
+    `offer_event_id=eq.${offerEventId}`
+  );
+  await deleteFiltered(
+    "marketplace_offer_visits",
     `offer_event_id=eq.${offerEventId}`
   );
   await deleteFiltered(

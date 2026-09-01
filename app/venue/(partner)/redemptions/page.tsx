@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { PartnerPageHeader } from "@/components/partner";
 import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
 import { RedemptionPanel } from "@/components/marketplace/RedemptionPanel";
+import { VisitConfirmationPanel } from "@/components/marketplace/VisitConfirmationPanel";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
@@ -29,13 +30,15 @@ export default async function VenueRedemptionsPage() {
     id: String(c.id),
     status: String(c.status ?? ""),
     expiresAt: c.expires_at ? String(c.expires_at) : null,
+    visitAt: c.visitConfirmedAt ? String(c.visitConfirmedAt) : null,
+    redeemedAt: c.redeemedAt ? String(c.redeemedAt) : null,
     offerId: String(c.offer_event_id ?? "").slice(0, 8),
   }));
   return (
     <main className="mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8">
       <PartnerPageHeader
         title="Claims & redemptions"
-        description={`Claim ≠ redemption ≠ conversion ≠ revenue. Default claim validity ${OFFER_CLAIM_VALIDITY_HOURS}h where backend records it.`}
+        description={`Claim ≠ visit ≠ redemption ≠ revenue. Default claim validity ${OFFER_CLAIM_VALIDITY_HOURS}h.`}
         backHref="/dashboard/venue"
       />
       <PartnerDataTable
@@ -45,10 +48,13 @@ export default async function VenueRedemptionsPage() {
           { id: "id", header: "Claim", cell: (r) => r.id.slice(0, 8) },
           { id: "offer", header: "Offer", cell: (r) => r.offerId },
           { id: "status", header: "Status", cell: (r) => <StatusBadge label={r.status.replace(/_/g, " ")} /> },
+          { id: "visit", header: "Visit", cell: (r) => (r.visitAt ? new Date(r.visitAt).toLocaleString("en-IN") : "—"), hideOnMobile: true },
+          { id: "redeemed", header: "Redeemed", cell: (r) => (r.redeemedAt ? new Date(r.redeemedAt).toLocaleString("en-IN") : "—"), hideOnMobile: true },
           { id: "exp", header: "Expires", cell: (r) => (r.expiresAt ? new Date(r.expiresAt).toLocaleString("en-IN") : "—") },
         ]}
         empty={<EmptyState title="No claims loaded" />}
       />
+      <VisitConfirmationPanel />
       <RedemptionPanel />
     </main>
   );

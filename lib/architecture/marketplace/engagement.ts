@@ -32,6 +32,7 @@ export type VenueEngagementMetrics = {
     bookings: number;
   }>;
   totalRedemptions: number;
+  totalVisits: number;
   offerPerformance: Array<{
     offerId: string;
     title: string;
@@ -40,6 +41,7 @@ export type VenueEngagementMetrics = {
     activeClaims: number;
     expiredClaims: number;
     redemptions: number;
+    visits: number;
     conversionRate: number | null;
     redemptionRate: number | null;
   }>;
@@ -206,6 +208,8 @@ export async function buildVenueEngagementMetrics(
 
   const redemptionsByOffer = new Map<string, number>();
   let totalRedemptions = 0;
+  const visitsByOffer = new Map<string, number>();
+  let totalVisits = 0;
   if (offerIds.length > 0) {
     const { data: redemptionRows } = await client
       .from("marketplace_redemptions")
@@ -216,6 +220,16 @@ export async function buildVenueEngagementMetrics(
       redemptionsByOffer.set(oid, (redemptionsByOffer.get(oid) ?? 0) + 1);
     }
     totalRedemptions = redemptionRows?.length ?? 0;
+
+    const { data: visitRows } = await client
+      .from("marketplace_offer_visits")
+      .select("offer_event_id")
+      .in("offer_event_id", offerIds);
+    for (const v of visitRows ?? []) {
+      const oid = String(v.offer_event_id);
+      visitsByOffer.set(oid, (visitsByOffer.get(oid) ?? 0) + 1);
+    }
+    totalVisits = visitRows?.length ?? 0;
   }
 
   const eventViewsTotal = [...eventViews.values()].reduce((s, n) => s + n, 0);
@@ -228,13 +242,15 @@ export async function buildVenueEngagementMetrics(
     totalBookings,
     totalClaims,
     totalRedemptions,
+    totalVisits,
     totalCustomerActions:
       (venueViewRes.count ?? 0) +
       eventViewsTotal +
       offerViewsTotal +
       totalBookings +
       totalClaims +
-      totalRedemptions,
+      totalRedemptions +
+      totalVisits,
     eventPerformance: eventRows.map((e) => {
       const id = String(e.id);
       return {
@@ -250,6 +266,7 @@ export async function buildVenueEngagementMetrics(
       const claimRows = claimsByOffer.get(id) ?? [];
       const counts = classifyOfferClaimCounts(claimRows);
       const redemptions = redemptionsByOffer.get(id) ?? 0;
+      const visits = visitsByOffer.get(id) ?? 0;
       return {
         offerId: id,
         title: String(o.title ?? "Offer"),
@@ -258,6 +275,7 @@ export async function buildVenueEngagementMetrics(
         activeClaims: counts.active,
         expiredClaims: counts.expired,
         redemptions,
+        visits,
         conversionRate:
           views > 0 ? Math.round((counts.total / views) * 1000) / 10 : null,
         redemptionRate:

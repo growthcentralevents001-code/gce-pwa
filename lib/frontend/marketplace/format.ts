@@ -58,12 +58,18 @@ export function venueStatusLabel(status: string): string {
   const map: Record<string, string> = {
     draft: "Draft",
     submitted: "Submitted",
+    pending_mbdp_recommendation: "Pending MBDP recommendation",
+    pending_platform_approval: "Pending Platform approval",
+    review_required: "Changes requested",
     recommended: "Recommended by Marketplace BDP",
     under_review: "Platform review",
     active: "Active",
+    temporarily_inactive: "Temporarily inactive",
+    suspended: "Suspended",
+    terminated: "Rejected / terminated",
+    archived: "Archived",
     rejected: "Rejected",
     needs_action: "Needs action",
-    suspended: "Suspended",
     inactive: "Inactive",
   };
   return map[status] ?? status.replace(/_/g, " ");

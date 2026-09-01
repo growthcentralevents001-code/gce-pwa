@@ -5,3 +5,4 @@ export * from "./reporting";
 export * from "./permissions";
 export * from "./relationship";
 export * from "./engagement";
+export * from "./onboarding";

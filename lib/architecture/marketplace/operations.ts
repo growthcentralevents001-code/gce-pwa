@@ -16,6 +16,11 @@ import {
   OFFER_CLAIM_VALIDITY_HOURS,
   OFFER_CUSTOMER_CAP,
 } from "./constants";
+import {
+  assertVenueOperationalForCommerce,
+  mergeVenueOnboardingMetadata,
+  type VenueBusinessProfile,
+} from "./onboarding";
 
 function tokenHash(raw: string): string {
   return hashDisplayToken(raw);
@@ -101,27 +106,46 @@ export async function createMarketplaceVenue(
     state?: string | null;
     address?: string | null;
     category?: string | null;
+    legalName?: string | null;
+    businessProfile?: VenueBusinessProfile | null;
+    recommendationNotes?: string | null;
     legacyVenueId?: string | null;
     actorUserId: string;
     recommendUnitId?: string | null;
     correlationId?: string;
   }
 ) {
+  const recommended = Boolean(input.recommendUnitId);
+  const now = new Date().toISOString();
+  const metadata = mergeVenueOnboardingMetadata({}, {
+    business: input.businessProfile ?? undefined,
+    recommendation: recommended
+      ? {
+          notes: input.recommendationNotes ?? null,
+          recommendedAt: now,
+          recommendedByUserId: input.actorUserId,
+          recommendedByUnitId: input.recommendUnitId ?? null,
+        }
+      : undefined,
+  });
+
   const { data, error } = await client
     .from("marketplace_venues")
     .insert({
       organisation_id: input.organisationId,
       display_name: input.displayName,
+      legal_name: input.legalName ?? null,
       city: input.city,
       state: input.state ?? null,
       address: input.address ?? null,
       category: input.category ?? null,
       legacy_venue_id: input.legacyVenueId ?? null,
-      status: "submitted",
+      status: recommended ? "pending_platform_approval" : "submitted",
       submitted_by: input.actorUserId,
       recommended_by_unit_id: input.recommendUnitId ?? null,
-      recommended_by_user_id: input.recommendUnitId ? input.actorUserId : null,
-      recommended_at: input.recommendUnitId ? new Date().toISOString() : null,
+      recommended_by_user_id: recommended ? input.actorUserId : null,
+      recommended_at: recommended ? now : null,
+      metadata,
     })
     .select("*")
     .single();
@@ -130,6 +154,19 @@ export async function createMarketplaceVenue(
       cause: error,
     });
   }
+
+  if (input.recommendUnitId) {
+    await proposeVenueAttribution(client, {
+      venueId: String(data.id),
+      unitId: input.recommendUnitId,
+      bdpUserId: input.actorUserId,
+      actorUserId: input.actorUserId,
+      provenance: "sourced",
+      basis: input.recommendationNotes ?? "MBDP venue onboarding recommendation",
+      correlationId: input.correlationId,
+    });
+  }
+
   await writeAuditEvent(client, {
     actorUserId: input.actorUserId,
     action: "marketplace_venue.create",
@@ -168,6 +205,19 @@ export async function approveMarketplaceVenue(
   }
   if (venue.status === "active") {
     return venue;
+  }
+  const approvable = new Set([
+    "submitted",
+    "pending_platform_approval",
+    "pending_mbdp_recommendation",
+    "review_required",
+  ]);
+  if (!approvable.has(String(venue.status))) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      `Venue cannot be approved from status ${String(venue.status)}`,
+      { status: 400 }
+    );
   }
   if (venue.submitted_by === input.actorUserId) {
     throw new AppError("FORBIDDEN", "Venue submitter cannot self-approve", {
@@ -322,6 +372,7 @@ export async function createMarketplaceEvent(
     correlationId?: string;
   }
 ) {
+  await assertVenueOperationalForCommerce(client, input.venueId);
   const { data, error } = await client
     .from("marketplace_events")
     .insert({
@@ -359,6 +410,17 @@ export async function submitMarketplaceEvent(
   client: SupabaseClient,
   input: { eventId: string; actorUserId: string; correlationId?: string }
 ) {
+  const { data: existing } = await client
+    .from("marketplace_events")
+    .select("venue_id")
+    .eq("id", input.eventId)
+    .single();
+  if (existing?.venue_id) {
+    await assertVenueOperationalForCommerce(
+      client,
+      String(existing.venue_id)
+    );
+  }
   const { data, error } = await client
     .from("marketplace_events")
     .update({ status: "submitted" })
@@ -461,6 +523,7 @@ export async function createOfferEvent(
   if (!validation.ok) {
     throw new AppError("VALIDATION_ERROR", validation.reason, { status: 400 });
   }
+  await assertVenueOperationalForCommerce(client, input.venueId);
   const { data, error } = await client
     .from("marketplace_offer_events")
     .insert({

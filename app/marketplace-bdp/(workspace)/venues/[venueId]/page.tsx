@@ -1,6 +1,7 @@
 import { redirect, notFound } from "next/navigation";
 import { PartnerPageHeader } from "@/components/partner";
 import { VenueRelationshipPanel } from "@/components/marketplace/VenueRelationshipPanel";
+import { VenueOnboardingProgress } from "@/components/marketplace/VenueOnboardingProgress";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -10,6 +11,10 @@ import {
   venueStatusLabel,
 } from "@/lib/frontend/marketplace/format";
 import { parseVenueRelationship } from "@/lib/architecture/marketplace/relationship";
+import {
+  buildOnboardingProgress,
+  parseVenueOnboarding,
+} from "@/lib/architecture/marketplace/onboarding";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -62,6 +67,12 @@ export default async function MbdpVenueRelationshipPage({ params }: PageProps) {
   >;
   const venueName = String(venue?.display_name ?? "Venue");
   const relationship = parseVenueRelationship(attribution.metadata);
+  const onboarding = parseVenueOnboarding(venue?.metadata);
+  const progress = buildOnboardingProgress({
+    status: String(venue?.status ?? ""),
+    onboarding,
+    hasRecommendation: Boolean(venue?.recommended_by_user_id),
+  });
 
   const recentActivity = [
     ...bundle.events
@@ -98,6 +109,10 @@ export default async function MbdpVenueRelationshipPage({ params }: PageProps) {
         relationship={relationship}
         recentActivity={recentActivity}
       />
+      <section>
+        <h2 className="mb-3 text-base font-semibold">Onboarding progress</h2>
+        <VenueOnboardingProgress steps={progress} />
+      </section>
     </main>
   );
 }

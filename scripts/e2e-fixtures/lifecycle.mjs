@@ -23,6 +23,7 @@ export function lifecycleIds(scopeIds = {}) {
     mbdp_unit: scopeIds.marketplace_bdp_unit ?? fixtureUuid("unit:marketplace_bdp"),
     ebdp_pack: scopeIds.enterprise_bdp_unit ?? fixtureUuid("unit:enterprise_bdp"),
     venue_org_b: fixtureUuid("org:venue_b"),
+    venue_org_onboard: fixtureUuid("org:venue_onboard"),
     mkt_venue: fixtureUuid("mkt:venue:01"),
     mkt_venue_b: fixtureUuid("mkt:venue:02"),
     mkt_attr: fixtureUuid("mkt:attr:01"),
@@ -81,6 +82,10 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
   const expiredCampaignEnd = new Date();
   expiredCampaignEnd.setDate(expiredCampaignEnd.getDate() - 2);
 
+  await admin.delete("marketplace_venues", [
+    `organisation_id=eq.${ids.venue_org_onboard}`,
+  ]);
+
   await upsert(admin, "organisations", {
     id: ids.venue_org_b,
     kind: "venue_partner",
@@ -93,6 +98,18 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
     created_by: venueUserId,
   });
 
+  await upsert(admin, "organisations", {
+    id: ids.venue_org_onboard,
+    kind: "venue_partner",
+    status: "active",
+    legal_name: `${FIXTURE_PREFIX} Venue Onboard Org`,
+    trading_name: `${FIXTURE_PREFIX} Onboard Test Co`,
+    country_code: "IN",
+    primary_city: "Bengaluru",
+    metadata: META("org:venue_onboard", { kind: "venue_partner", e2e_onboarding: true }),
+    created_by: venueUserId,
+  });
+
   if (venueOrg && venueUserId) {
     await upsert(admin, "organisation_memberships", {
       id: ids.org_mem_venue,
@@ -102,6 +119,17 @@ export async function upsertLifecycleFixtures(admin, userIds, scopeIds) {
       status: "active",
       is_primary: true,
       metadata: META("orgmem:venue"),
+    });
+  }
+  if (venueUserId) {
+    await upsert(admin, "organisation_memberships", {
+      id: fixtureUuid("orgmem:venue_onboard"),
+      organisation_id: ids.venue_org_onboard,
+      user_id: venueUserId,
+      membership_role: "representative",
+      status: "active",
+      is_primary: false,
+      metadata: META("orgmem:venue_onboard"),
     });
   }
   if (enterpriseOrg && clientUserId) {

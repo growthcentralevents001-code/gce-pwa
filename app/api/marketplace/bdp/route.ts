@@ -30,6 +30,15 @@ import {
   suspendMarketplaceBdpUnit,
   updateVenueRelationship,
   venueRelationshipUpdateSchema,
+  recordVenueEligibility,
+  recordVenueDocumentManifest,
+  reviewVenueDocument,
+  rejectMarketplaceVenue,
+  requestVenueChanges,
+  venueEligibilitySchema,
+  venueDocumentManifestSchema,
+  reviewVenueDocumentSchema,
+  businessProfileSchema,
 } from "@/lib/architecture/marketplace";
 import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -197,6 +206,9 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           state: z.string().max(120).optional().nullable(),
           address: z.string().max(500).optional().nullable(),
           category: z.string().max(120).optional().nullable(),
+          legalName: z.string().max(200).optional().nullable(),
+          businessProfile: businessProfileSchema.optional().nullable(),
+          recommendationNotes: z.string().max(2000).optional().nullable(),
           recommendUnitId: z.string().uuid().optional().nullable(),
           legacyVenueId: z.string().uuid().optional().nullable(),
         })
@@ -215,6 +227,9 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         state: parsed.state,
         address: parsed.address,
         category: parsed.category,
+        legalName: parsed.legalName,
+        businessProfile: parsed.businessProfile,
+        recommendationNotes: parsed.recommendationNotes,
         recommendUnitId: parsed.recommendUnitId,
         legacyVenueId: parsed.legacyVenueId,
         actorUserId: ctx.user.id,
@@ -241,6 +256,113 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         venueId: parsed.venueId,
         actorUserId: ctx.user.id,
         reason: parsed.reason,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ venue }, ctx);
+    }
+    case "reject_venue": {
+      const parsed = z
+        .object({
+          action: z.literal("reject_venue"),
+          venueId: z.string().uuid(),
+          reason: z.string().min(3).max(1000),
+        })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
+      const venue = await rejectMarketplaceVenue(admin, {
+        venueId: parsed.venueId,
+        actorUserId: ctx.user.id,
+        reason: parsed.reason,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ venue }, ctx);
+    }
+    case "request_venue_changes": {
+      const parsed = z
+        .object({
+          action: z.literal("request_venue_changes"),
+          venueId: z.string().uuid(),
+          note: z.string().min(3).max(2000),
+        })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
+      const venue = await requestVenueChanges(admin, {
+        venueId: parsed.venueId,
+        actorUserId: ctx.user.id,
+        note: parsed.note,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ venue }, ctx);
+    }
+    case "record_venue_eligibility": {
+      const parsed = venueEligibilitySchema
+        .extend({ action: z.literal("record_venue_eligibility") })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.create")
+      ) {
+        throw new AppError("FORBIDDEN", "Not allowed to record eligibility", {
+          status: 403,
+        });
+      }
+      const venue = await recordVenueEligibility(admin, {
+        venueId: parsed.venueId,
+        actorUserId: ctx.user.id,
+        result: parsed.result,
+        notes: parsed.notes,
+        missingRequirements: parsed.missingRequirements,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ venue }, ctx);
+    }
+    case "record_venue_documents": {
+      const parsed = venueDocumentManifestSchema
+        .extend({ action: z.literal("record_venue_documents") })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.create")
+      ) {
+        throw new AppError("FORBIDDEN", "Not allowed to record documents", {
+          status: 403,
+        });
+      }
+      const venue = await recordVenueDocumentManifest(admin, {
+        venueId: parsed.venueId,
+        actorUserId: ctx.user.id,
+        documents: parsed.documents,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ venue }, ctx);
+    }
+    case "review_venue_document": {
+      const parsed = reviewVenueDocumentSchema
+        .extend({ action: z.literal("review_venue_document") })
+        .parse(body);
+      if (
+        !actorHasMarketplacePermission(assignments, "marketplace.venue.approve")
+      ) {
+        throw new AppError("FORBIDDEN", "Marketplace Ops approval required", {
+          status: 403,
+        });
+      }
+      const venue = await reviewVenueDocument(admin, {
+        venueId: parsed.venueId,
+        documentId: parsed.documentId,
+        actorUserId: ctx.user.id,
+        reviewStatus: parsed.reviewStatus,
+        rejectionNote: parsed.rejectionNote,
         correlationId: ctx.correlationId,
       });
       return jsonSuccess({ venue }, ctx);

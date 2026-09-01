@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { PartnerPageHeader } from "@/components/partner";
 import { PartnerRelationshipCard } from "@/components/marketplace/PartnerRelationshipCard";
+import { VenueOnboardingProgress } from "@/components/marketplace/VenueOnboardingProgress";
 import { EmptyState } from "@/components/states/EmptyState";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { FeatureGated } from "@/components/states/FeatureGated";
@@ -8,6 +9,10 @@ import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadVenueBundle } from "@/lib/frontend/marketplace/reads";
 import { venueStatusLabel } from "@/lib/frontend/marketplace/format";
+import {
+  buildOnboardingProgress,
+  parseVenueOnboarding,
+} from "@/lib/architecture/marketplace/onboarding";
 import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 
 export const metadata = { robots: { index: false, follow: false }, title: "Profile · Venue" };
@@ -27,6 +32,12 @@ export default async function VenueProfilePage() {
     );
   }
   const v = bundle.venue;
+  const onboarding = parseVenueOnboarding(v.metadata);
+  const progress = buildOnboardingProgress({
+    status: String(v.status),
+    onboarding,
+    hasRecommendation: Boolean(v.recommended_by_user_id),
+  });
   return (
     <main className="mx-auto max-w-4xl px-4 py-8 pb-16 space-y-8">
       <PartnerPageHeader title="Venue profile" description="Onboarding and profile status. Venues cannot self-approve." backHref="/dashboard/venue" />
@@ -44,6 +55,10 @@ export default async function VenueProfilePage() {
         <p className="mt-4 text-xs text-muted-foreground">
           Form submission ≠ Platform approval. MBDP recommendation and Marketplace Ops approval are separate steps.
         </p>
+      </section>
+      <section>
+        <h2 className="mb-3 text-base font-semibold">Onboarding progress</h2>
+        <VenueOnboardingProgress steps={progress} />
       </section>
       <PartnerRelationshipCard mbdpUserId={bundle.report.attributedMbdpUserId} unitId={bundle.report.attributedUnitId} />
       <FeatureGated mode="coming_later" title="Representative management" description="Invite/remove Venue representatives uses identity/RBAC services. Full self-serve console lands when organisation membership APIs are exposed for this workspace." />

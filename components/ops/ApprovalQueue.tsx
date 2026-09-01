@@ -3,6 +3,8 @@ import { OpsQueueCard } from "@/components/ops/OpsQueueCard";
 import { ApprovalActions } from "@/components/ops/ApprovalActions";
 import { PartnerDataTable } from "@/components/partner/PartnerDataTable";
 import { StatusBadge } from "@/components/states/StatusBadge";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { opsStatusTone } from "@/lib/frontend/ops/format";
 
 export type ApprovalQueueItem = {
@@ -85,12 +87,21 @@ export function ApprovalQueue({
             meta={`${item.queue_key} · ${item.vertical} · ${item.subject_type}:${item.subject_id.slice(0, 8)}…`}
             actions={
               showActions ? (
-                <ApprovalActions
-                  approvalId={item.id}
-                  title={item.title}
-                  actorUserId={actorUserId}
-                  requesterUserId={item.requester_user_id}
-                />
+                <div className="flex flex-col gap-2 sm:items-end">
+                  {item.subject_type === "marketplace_venue" ? (
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/ops/marketplace/venues/${item.subject_id}`}>
+                        Open venue review
+                      </Link>
+                    </Button>
+                  ) : null}
+                  <ApprovalActions
+                    approvalId={item.id}
+                    title={item.title}
+                    actorUserId={actorUserId}
+                    requesterUserId={item.requester_user_id}
+                  />
+                </div>
               ) : undefined
             }
           />

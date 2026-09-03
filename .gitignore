@@ -21,6 +21,10 @@
 
 # next.js
 /.next/
+/.next.prev/
+/.next.prev.bak/
+/.next.bad/
+/.next.selftest-incoming/
 /out/
 
 # production

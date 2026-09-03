@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Add SSH key
         run: |
@@ -18,9 +19,13 @@ jobs:
 
       - name: Deploy development branch
         run: |
-          ssh -i ~/.ssh/id_ed25519 "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" 'bash -lc "cd /root/gce-pwa-dev && ./scripts/deploy-dev.sh"'
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=40 \
+            -i ~/.ssh/id_ed25519 \
+            "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" \
+            'bash -lc "systemctl reset-failed gce-dev-deploy.service 2>/dev/null || true; systemd-run --wait --collect --unit=gce-dev-deploy /root/gce-pwa-dev/scripts/deploy-dev.sh"'
 
       - name: Debug SSH
+        if: failure()
         run: |
           echo "Testing SSH connection..."
           ssh -v -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} "echo 'SSH works'"

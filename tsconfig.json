@@ -23,13 +23,10 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "typeRoots": ["./node_modules/@types"],
     "types": ["node"],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [

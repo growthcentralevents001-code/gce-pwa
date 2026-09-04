@@ -5,6 +5,8 @@ export const ENTERPRISE_PERMISSIONS = [
   "enterprise.client.write",
   "enterprise.opportunity.read",
   "enterprise.opportunity.write",
+  "enterprise.requirement.submit",
+  "enterprise.requirement.respond",
   "enterprise.requirement.structure",
   "enterprise.proposal.draft",
   "enterprise.quote.create",
@@ -25,6 +27,8 @@ const ROLE_PERMS: Record<string, readonly EnterprisePermission[]> = {
   enterprise_client_representative: [
     "enterprise.client.read",
     "enterprise.opportunity.read",
+    "enterprise.requirement.submit",
+    "enterprise.requirement.respond",
     "enterprise.quote.accept",
     "enterprise.project.read",
     "enterprise.dispute.open",

@@ -56,7 +56,7 @@ export default async function EnterpriseClientDashboardPage() {
         <EmptyState
           title="No Enterprise Client organisation linked"
           description="Ask Platform Ops to link your representative assignment, or start an Enterprise enquiry."
-          primaryAction={{ label: "Enterprise signup", href: "/enterprise/signup" }}
+          primaryAction={{ label: "Submit requirement", href: "/enterprise/intake" }}
         />
       </div>
     );
@@ -69,7 +69,7 @@ export default async function EnterpriseClientDashboardPage() {
         <EmptyState
           title="Organisation profile pending"
           description="Your representative account is active, but no client organisation is linked yet."
-          primaryAction={{ label: "Signup", href: "/enterprise/signup" }}
+          primaryAction={{ label: "Submit requirement", href: "/enterprise/intake" }}
         />
       </div>
     );

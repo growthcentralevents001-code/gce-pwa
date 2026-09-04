@@ -35,6 +35,17 @@ import {
   reassignEnterpriseClient,
   recordEbdpPackPayment,
   suspendEnterpriseBdpPack,
+  submitClientRequirement,
+  startRequirementReview,
+  requestRequirementInformation,
+  respondRequirementInformation,
+  qualifyEnterpriseRequirement,
+  assignExpertToOpportunity,
+  closeEnterpriseOpportunity,
+  publishProposalToClient,
+  updateProjectMilestoneStatus,
+  activateEnterpriseProject,
+  assertClientRepresentativeForClient,
 } from "@/lib/architecture/enterprise";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { AppError } from "@/lib/errors";
@@ -570,6 +581,171 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         correlationId: ctx.correlationId,
       });
       return jsonSuccess({ entitlement }, ctx, 201);
+    }
+    case "submit_client_requirement": {
+      requirePerm("enterprise.requirement.submit");
+      const parsed = z
+        .object({
+          action: z.literal("submit_client_requirement"),
+          clientId: z.string().uuid(),
+          title: z.string().min(1).max(300),
+          rawRequirement: z.string().min(1).max(20000),
+          summary: z.string().max(5000).optional().nullable(),
+          category: z.string().max(200).optional().nullable(),
+          locations: z.string().max(2000).optional().nullable(),
+          timelineNotes: z.string().max(5000).optional().nullable(),
+          budgetGuidanceMinor: z.number().int().nonnegative().optional().nullable(),
+        })
+        .parse(body);
+      await assertClientRepresentativeForClient(admin, ctx.user.id, parsed.clientId);
+      const result = await submitClientRequirement(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx, 201);
+    }
+    case "start_requirement_review": {
+      requirePerm("enterprise.requirement.structure");
+      const parsed = z
+        .object({
+          action: z.literal("start_requirement_review"),
+          opportunityId: z.string().uuid(),
+        })
+        .parse(body);
+      const requirement = await startRequirementReview(admin, {
+        opportunityId: parsed.opportunityId,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ requirement }, ctx);
+    }
+    case "request_requirement_info": {
+      requirePerm("enterprise.requirement.structure");
+      const parsed = z
+        .object({
+          action: z.literal("request_requirement_info"),
+          opportunityId: z.string().uuid(),
+          message: z.string().min(1).max(5000),
+        })
+        .parse(body);
+      const requirement = await requestRequirementInformation(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ requirement }, ctx);
+    }
+    case "respond_requirement_info": {
+      requirePerm("enterprise.requirement.respond");
+      const parsed = z
+        .object({
+          action: z.literal("respond_requirement_info"),
+          opportunityId: z.string().uuid(),
+          clientId: z.string().uuid(),
+          response: z.string().min(1).max(20000),
+        })
+        .parse(body);
+      const result = await respondRequirementInformation(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx);
+    }
+    case "qualify_requirement": {
+      requirePerm("enterprise.requirement.structure");
+      const parsed = z
+        .object({
+          action: z.literal("qualify_requirement"),
+          opportunityId: z.string().uuid(),
+        })
+        .parse(body);
+      const result = await qualifyEnterpriseRequirement(admin, {
+        opportunityId: parsed.opportunityId,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx);
+    }
+    case "assign_expert": {
+      requirePerm("enterprise.opportunity.write");
+      const parsed = z
+        .object({
+          action: z.literal("assign_expert"),
+          opportunityId: z.string().uuid(),
+          expertUserId: z.string().uuid(),
+        })
+        .parse(body);
+      const opportunity = await assignExpertToOpportunity(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ opportunity }, ctx);
+    }
+    case "close_opportunity": {
+      requirePerm("enterprise.opportunity.write");
+      const parsed = z
+        .object({
+          action: z.literal("close_opportunity"),
+          opportunityId: z.string().uuid(),
+          outcome: z.enum(["lost", "cancelled"]),
+          reason: z.string().max(1000).optional().nullable(),
+        })
+        .parse(body);
+      const opportunity = await closeEnterpriseOpportunity(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ opportunity }, ctx);
+    }
+    case "publish_proposal": {
+      requirePerm("enterprise.proposal.draft");
+      const parsed = z
+        .object({
+          action: z.literal("publish_proposal"),
+          proposalId: z.string().uuid(),
+        })
+        .parse(body);
+      const proposal = await publishProposalToClient(admin, {
+        proposalId: parsed.proposalId,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ proposal }, ctx);
+    }
+    case "update_milestone_status": {
+      requirePerm("enterprise.project.write");
+      const parsed = z
+        .object({
+          action: z.literal("update_milestone_status"),
+          milestoneId: z.string().uuid(),
+          status: z.enum(["submitted", "accepted", "disputed"]),
+        })
+        .parse(body);
+      const milestone = await updateProjectMilestoneStatus(admin, {
+        ...parsed,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ milestone }, ctx);
+    }
+    case "activate_project": {
+      requirePerm("enterprise.project.write");
+      const parsed = z
+        .object({
+          action: z.literal("activate_project"),
+          projectId: z.string().uuid(),
+        })
+        .parse(body);
+      const project = await activateEnterpriseProject(admin, {
+        projectId: parsed.projectId,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess({ project }, ctx);
     }
     default:
       throw new AppError("VALIDATION_ERROR", `Unknown action: ${action}`, {

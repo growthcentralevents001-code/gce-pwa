@@ -1,12 +1,14 @@
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
+import Link from "next/link";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { CtaBand } from "@/components/marketing/CtaBand";
+import { Button } from "@/components/ui/button";
 
 export const metadata = publicMetadata({
   title: "GCE Enterprise",
   description:
-    "GCE Enterprise programmes for organisations — scoped commercial architecture, not blank execution guarantees.",
+    "GCE Enterprise handles corporate and B2B requirements through structured review, expert coordination, proposals, quotations, and project-status visibility.",
   path: "/enterprise",
 });
 
@@ -14,10 +16,10 @@ export default function EnterpriseLandingPage() {
   return (
     <>
       <MarketingHero
-        headline="Enterprise — project and milestone programmes"
-        description="GCE Enterprise is a Project Command Center: opportunities, quotations, milestones, and componentised commercial rules. Settlement lives in Finance. GCE does not automatically physically execute every project."
-        primaryCta={{ label: "Talk to us", href: "/contact" }}
-        secondaryCta={{ label: "Partner pathways", href: "/for-partners" }}
+        headline="Enterprise Problems → GCE Solutions"
+        description="GCE Enterprise is a governed B2B workflow: submit a requirement, receive structured GCE review, work with appropriate experts, move through proposal and quotation, then track project execution — without guaranteed outcomes or invented case studies."
+        primaryCta={{ label: "Submit a requirement", href: "/enterprise/intake" }}
+        secondaryCta={{ label: "Client workspace", href: "/dashboard/enterprise-client" }}
         compact
         showBrandMark={false}
       />
@@ -26,35 +28,40 @@ export default function EnterpriseLandingPage() {
         <div className="grid gap-10 md:grid-cols-12">
           <AnimatedSection className="md:col-span-7">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-              What Enterprise is
+              Structured process
             </p>
             <h2 className="mt-2 font-body text-xl font-semibold">
-              A vertical for client programmes
+              One canonical Enterprise client workflow
             </h2>
-            <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted-foreground">
-              Enterprise Client organisations, Enterprise BDP representation, and
-              structured commercial operating rules under Founder Decisions.
-              Delivery structure is project-specific.
-            </p>
+            <ol className="mt-4 space-y-2 text-sm leading-relaxed text-muted-foreground">
+              <li>1. Submit a real Enterprise requirement</li>
+              <li>2. GCE review and qualification</li>
+              <li>3. Appropriate expert / delivery team assignment</li>
+              <li>4. Proposal and quotation (distinct commercial steps)</li>
+              <li>5. Project execution with status visibility</li>
+            </ol>
           </AnimatedSection>
           <AnimatedSection className="md:col-span-5" delay={0.05}>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               What we do not claim
             </p>
             <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted-foreground">
-              We do not invent case studies, client logos, or promises that GCE
-              physically delivers every workstream. Scope is engagement-specific.
-              Interest is an inquiry — not automatic entitlement.
+              No guaranteed project success, delivery, cost savings, or business results.
+              Scope and commercial terms remain engagement-specific. Settlement execution
+              remains governed separately in Finance.
             </p>
+            <Button asChild className="mt-4 min-h-11">
+              <Link href="/enterprise/intake">Start requirement intake</Link>
+            </Button>
           </AnimatedSection>
         </div>
       </section>
 
       <CtaBand
-        title="Explore an Enterprise conversation"
-        description="Interest is an inquiry — not automatic Enterprise Client or BDP entitlement."
-        primary={{ label: "Contact", href: "/contact" }}
-        secondary={{ label: "Apply pathway", href: "/apply/role" }}
+        title="Ready to describe your Enterprise requirement?"
+        description="Authenticated Enterprise Client representatives submit requirements through one intake flow — not a separate marketing lead form."
+        primary={{ label: "Submit requirement", href: "/enterprise/intake" }}
+        secondary={{ label: "Partner pathways", href: "/for-partners" }}
       />
     </>
   );

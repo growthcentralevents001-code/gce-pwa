@@ -55,6 +55,7 @@ export default async function Page() {
                 title={String(o.title ?? "Opportunity")}
                 status={String(o.status ?? "")}
                 summary={typeof o.summary === "string" ? o.summary : null}
+                href={`/enterprise/opportunities/${o.id}`}
               />
             ))}
           </div>

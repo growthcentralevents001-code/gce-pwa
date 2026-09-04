@@ -23,7 +23,7 @@ export default async function Page() {
       <CreateOpportunityForm clients={[]} />
       {rows.length === 0 ? <EmptyState title="No assigned opportunities" /> : (
         <div className="grid gap-3 sm:grid-cols-2">{rows.map((o) => (
-          <OpportunityCard key={String(o.id)} id={String(o.id)} title={String(o.title ?? "Opportunity")} status={String(o.status ?? "")} summary={typeof o.summary === "string" ? o.summary : null} />
+          <OpportunityCard key={String(o.id)} id={String(o.id)} title={String(o.title ?? "Opportunity")} status={String(o.status ?? "")} summary={typeof o.summary === "string" ? o.summary : null} href={`/enterprise-expert/opportunities/${String(o.id)}`} />
         ))}</div>
       )}
     </main>

@@ -933,6 +933,20 @@ export async function createProjectFromAcceptedQuote(
     });
   }
 
+  const { data: existingOppProject } = await client
+    .from("enterprise_projects")
+    .select("id")
+    .eq("opportunity_id", quote.opportunity_id)
+    .in("status", ["setup", "approved", "active", "on_hold"])
+    .maybeSingle();
+  if (existingOppProject) {
+    throw new AppError(
+      "CONFLICT",
+      "An active project already exists for this opportunity",
+      { status: 409 }
+    );
+  }
+
   const { data: existing } = await client
     .from("enterprise_projects")
     .select("id")

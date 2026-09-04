@@ -515,3 +515,62 @@ export async function loadEnterpriseExpertBundle(
     vendorAssignments,
   };
 }
+
+export async function loadEnterpriseOpportunityDetail(
+  adminClient: SupabaseClient,
+  opportunityId: string,
+  clientId: string
+) {
+  const { data: opportunity, error } = await adminClient
+    .from("enterprise_opportunities")
+    .select("*")
+    .eq("id", opportunityId)
+    .eq("client_id", clientId)
+    .maybeSingle();
+  if (error || !opportunity) return null;
+
+  const { data: requirement } = await adminClient
+    .from("enterprise_requirements")
+    .select("*")
+    .eq("opportunity_id", opportunityId)
+    .maybeSingle();
+
+  let latestVersion: Record<string, unknown> | null = null;
+  if (requirement) {
+    const { data: versions } = await adminClient
+      .from("enterprise_requirement_versions")
+      .select("*")
+      .eq("requirement_id", requirement.id)
+      .order("version_no", { ascending: false })
+      .limit(1);
+    latestVersion = (versions?.[0] as Record<string, unknown>) ?? null;
+  }
+
+  const [{ data: proposals }, { data: quotes }, { data: projects }] =
+    await Promise.all([
+      adminClient
+        .from("enterprise_solution_proposals")
+        .select("*")
+        .eq("opportunity_id", opportunityId)
+        .order("version_no", { ascending: false }),
+      adminClient
+        .from("enterprise_quotes")
+        .select("*")
+        .eq("opportunity_id", opportunityId)
+        .order("created_at", { ascending: false }),
+      adminClient
+        .from("enterprise_projects")
+        .select("*")
+        .eq("opportunity_id", opportunityId)
+        .order("created_at", { ascending: false }),
+    ]);
+
+  return {
+    opportunity,
+    requirement,
+    latestVersion,
+    proposals: (proposals as Record<string, unknown>[]) ?? [],
+    quotes: (quotes as Record<string, unknown>[]) ?? [],
+    projects: (projects as Record<string, unknown>[]) ?? [],
+  };
+}

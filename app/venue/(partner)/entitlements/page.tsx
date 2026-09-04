@@ -34,6 +34,9 @@ export default async function VenueEntitlementsPage() {
     id: String(e.id),
     state: String(e.state ?? ""),
     venue: Number(e.venue_share_minor ?? 0),
+    gross: Number(e.eligible_revenue_minor ?? 0),
+    attributed: Boolean(e.has_valid_attribution),
+    source: String(e.source_type ?? "—"),
     key: String(e.earning_event_key ?? "—"),
   }));
   return (
@@ -59,6 +62,23 @@ export default async function VenueEntitlementsPage() {
         mobileTitle={(r) => r.key}
         columns={[
           { id: "key", header: "Earning event", cell: (r) => r.key },
+          {
+            id: "source",
+            header: "Source",
+            cell: (r) => r.source,
+            hideOnMobile: true,
+          },
+          {
+            id: "attr",
+            header: "Attribution",
+            cell: (r) => (r.attributed ? "Attributed" : "Unattributed"),
+            hideOnMobile: true,
+          },
+          {
+            id: "gross",
+            header: "Eligible value",
+            cell: (r) => formatMinorInr(r.gross),
+          },
           { id: "state", header: "State", cell: (r) => <StatusBadge label={r.state.replace(/_/g, " ")} /> },
           { id: "venue", header: "Venue share", cell: (r) => formatMinorInr(r.venue) },
         ]}

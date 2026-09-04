@@ -8,3 +8,4 @@ export * from "./engagement";
 export * from "./onboarding";
 export * from "./documents";
 export * from "./insights";
+export * from "./allocation";

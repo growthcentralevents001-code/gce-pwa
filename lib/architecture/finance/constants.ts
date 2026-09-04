@@ -1,5 +1,10 @@
 /** Phase 9 Finance commercial constants — FD-020/021/025/028/029/033/037/038. */
 
+import {
+  calculateMarketplaceSplit as calculateMarketplaceSplitCanonical,
+  MARKETPLACE_RULE_VERSION,
+} from "../marketplace/constants";
+
 export const CONNECT_BDP_COMMISSION_BPS = 2000; // 20% attributed subscription
 export const MARKETPLACE_VENUE_BPS = 8000;
 export const MARKETPLACE_BDP_ATTRIBUTED_BPS = 1000;
@@ -67,31 +72,16 @@ export function calculateMarketplaceSplit(input: {
   eligibleEventRevenueMinor: number;
   hasValidMbdpAttribution: boolean;
 }) {
-  const venue = applyBps(input.eligibleEventRevenueMinor, MARKETPLACE_VENUE_BPS);
-  if (input.hasValidMbdpAttribution) {
-    return {
-      venueShareMinor: venue,
-      mbdpShareMinor: applyBps(
-        input.eligibleEventRevenueMinor,
-        MARKETPLACE_BDP_ATTRIBUTED_BPS
-      ),
-      gceShareMinor: applyBps(
-        input.eligibleEventRevenueMinor,
-        MARKETPLACE_GCE_ATTRIBUTED_BPS
-      ),
-      entitledMbdp: true,
-      ruleVersion: "fd029-fd037-v1",
-    };
-  }
+  const split = calculateMarketplaceSplitCanonical(
+    input.eligibleEventRevenueMinor,
+    input.hasValidMbdpAttribution
+  );
   return {
-    venueShareMinor: venue,
-    mbdpShareMinor: 0,
-    gceShareMinor: applyBps(
-      input.eligibleEventRevenueMinor,
-      MARKETPLACE_GCE_UNATTRIBUTED_BPS
-    ),
-    entitledMbdp: false,
-    ruleVersion: "fd029-fd037-v1",
+    venueShareMinor: split.venueShareMinor,
+    mbdpShareMinor: split.mbdpShareMinor,
+    gceShareMinor: split.gceShareMinor,
+    entitledMbdp: split.entitledMbdp,
+    ruleVersion: MARKETPLACE_RULE_VERSION,
   };
 }
 

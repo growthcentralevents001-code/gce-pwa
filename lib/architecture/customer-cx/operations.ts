@@ -8,6 +8,7 @@ import {
   claimExpiresAt,
 } from "../marketplace/constants";
 import { issueTicketsForBooking } from "../marketplace/operations";
+import { isEligibleMarketplaceBookingStatus } from "../marketplace/allocation";
 import {
   hashDisplayToken,
   issueDisplayCredentialMaterial,
@@ -552,6 +553,15 @@ export async function confirmBookingSandbox(
     correlationId: input.correlationId,
   });
 
+  const { allocateMarketplaceBookingRevenue } = await import(
+    "../marketplace/allocation"
+  );
+  await allocateMarketplaceBookingRevenue(client, {
+    bookingId: input.bookingId,
+    actorUserId: input.buyerUserId,
+    correlationId: input.correlationId,
+  });
+
   await emitCxEvent(
     client,
     "booking_confirmed",
@@ -711,6 +721,18 @@ export async function cancelBooking(
     eligibleUnderCutoff: true,
     correlationId: input.correlationId,
   });
+
+  if (isEligibleMarketplaceBookingStatus(String(booking.status))) {
+    const { reverseMarketplaceBookingAllocation } = await import(
+      "../marketplace/allocation"
+    );
+    await reverseMarketplaceBookingAllocation(client, {
+      bookingId: input.bookingId,
+      actorUserId: input.buyerUserId,
+      reason: input.reason,
+      correlationId: input.correlationId,
+    });
+  }
 
   return { booking: updated, eligibility, refund };
 }

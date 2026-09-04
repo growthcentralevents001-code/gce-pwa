@@ -23,6 +23,8 @@ import {
 } from "@/lib/architecture/lead-assist";
 import { findSeatForMembership } from "@/lib/frontend/connect/reads";
 import { CIRCLE_CAPACITY_MAX } from "@/lib/frontend/connect/format";
+import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import type { PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -88,11 +90,52 @@ export default async function ConnectMemberHomePage() {
     <main className="mx-auto max-w-5xl px-4 py-8 pb-16">
       <ConnectPageHeader
         title="Connect overview"
-        description="Membership, Circle, Tags, and Lead Assist — Stage 1 unpaid."
+        description="What needs your attention in the network today — membership, Circle, and Lead Assist."
         actions={
           <Button asChild className="min-h-11">
             <Link href="/connect/leads">Send a lead</Link>
           </Button>
+        }
+      />
+
+      <PartnerActionCenter
+        className="mb-8"
+        items={
+          [
+            receivedCount > 0
+              ? {
+                  id: "recv",
+                  title: `${receivedCount} received lead(s) need a response`,
+                  href: "/connect/leads/received",
+                  severity: "warning" as const,
+                  icon: "target" as const,
+                }
+              : null,
+            primary && primary.allocationStatus !== "allocated"
+              ? {
+                  id: "alloc",
+                  title: "Circle allocation is not complete",
+                  description: String(primary.allocationStatus).replaceAll("_", " "),
+                  href: "/connect/waitlist",
+                  severity: "warning" as const,
+                }
+              : null,
+            !primary
+              ? {
+                  id: "join",
+                  title: "No membership on file",
+                  href: "/memberships",
+                  severity: "info" as const,
+                }
+              : null,
+            {
+              id: "compose",
+              title: "Share a governed referral",
+              description: "In-app Lead Assist — not WhatsApp, not a Kanban board.",
+              href: "/connect/leads",
+              severity: "info" as const,
+            },
+          ].filter(Boolean) as PartnerActionItem[]
         }
       />
 

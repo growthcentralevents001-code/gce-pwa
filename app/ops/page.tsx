@@ -188,13 +188,13 @@ export default async function OpsHomePage() {
         Phase 9 boundaries. Root / emergency admin is not productized here.
       </div>
 
-      {kpiItems.length > 0 ? <OpsKpiStrip items={kpiItems} /> : null}
-
       <PartnerActionCenter
-        title="Action center"
+        title="Needs your attention"
         items={actions}
         emptyLabel="No authorized actions for your current assignments."
       />
+
+      {kpiItems.length > 0 ? <OpsKpiStrip items={kpiItems} /> : null}
 
       <section className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "p-4")}>
         <h2 className="text-sm font-semibold">Vertical scopes</h2>

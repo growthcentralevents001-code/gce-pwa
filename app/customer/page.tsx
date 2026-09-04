@@ -2,13 +2,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CalendarDays, Tag, Ticket } from "lucide-react";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
-import { GlassPanel } from "@/components/marketing/GlassPanel";
 import { ActiveClaimCard } from "@/components/customer/ActiveClaimCard";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { EventCard } from "@/components/customer/EventCard";
 import { TicketPassCard } from "@/components/customer/TicketPassCard";
 import { EmptyState } from "@/components/states/EmptyState";
-import { FeatureGated } from "@/components/states/FeatureGated";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
@@ -49,8 +47,8 @@ export default async function CustomerHomePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
       <CxPageHeader
-        title="Your Marketplace"
-        description="Bookings, tickets, and offers — powered by canonical customer APIs."
+        title="Your activity"
+        description="Tickets, bookings, and claims — what needs you today."
         actions={
           <div className="flex flex-wrap gap-2">
             <Button asChild size="sm" className="min-h-11">
@@ -92,32 +90,6 @@ export default async function CustomerHomePage() {
                 value={String(dashboard.activeClaims.length)}
               />
             </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.05}>
-            <GlassPanel className="p-4">
-              <h2 className="text-sm font-semibold">Trust Rank</h2>
-              {dashboard.trustRank.enabled ? (
-                <>
-                  <p className="mt-2 text-2xl font-semibold tabular-nums">
-                    {dashboard.trustRank.score}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Level label from server: {dashboard.trustRank.levelLabel}
-                  </p>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {dashboard.trustRank.note}
-                  </p>
-                </>
-              ) : (
-                <FeatureGated
-                  className="mt-3"
-                  mode="disabled_in_environment"
-                  title="Trust Rank display gated"
-                  description="Rank formula remains unresolved. No client-side score inventing."
-                />
-              )}
-            </GlassPanel>
           </AnimatedSection>
 
           <section>

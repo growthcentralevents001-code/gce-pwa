@@ -146,12 +146,6 @@ export default async function VenueDashboardPage() {
             tone: "neutral",
           },
           {
-            id: "engagement",
-            label: "Customer actions",
-            value: String(engagement?.totalCustomerActions ?? 0),
-            tone: "neutral",
-          },
-          {
             id: "bookings",
             label: "Bookings",
             value: String(engagement?.totalBookings ?? bookings.length),
@@ -159,6 +153,10 @@ export default async function VenueDashboardPage() {
           },
         ]}
       />
+
+      <div className="mb-8">
+        <PartnerActionCenter items={actions} />
+      </div>
 
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="Profile views" value={`${engagement?.venueViews ?? 0}`} href="/venue/performance" icon="building" />
@@ -225,7 +223,6 @@ export default async function VenueDashboardPage() {
           </section>
         </div>
         <div className="space-y-6 lg:col-span-2">
-          <PartnerActionCenter items={actions} />
           <PartnerCommercialSummary
             title="Venue entitlement summary"
             rows={[

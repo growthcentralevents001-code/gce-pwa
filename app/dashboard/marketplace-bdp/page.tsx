@@ -178,6 +178,10 @@ export default async function MarketplaceBdpDashboardPage() {
         ]}
       />
 
+      <div className="mb-8">
+        <PartnerActionCenter items={actions} />
+      </div>
+
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Active venues"
@@ -224,7 +228,6 @@ export default async function MarketplaceBdpDashboardPage() {
           />
         </div>
         <div className="space-y-6 lg:col-span-2">
-          <PartnerActionCenter items={actions} />
           <PartnerCommercialSummary
             rows={[
               {

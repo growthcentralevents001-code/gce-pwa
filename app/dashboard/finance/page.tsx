@@ -188,6 +188,9 @@ export default async function FinanceDashboardPage() {
           },
         ]}
       />
+      <div className="mb-6">
+        <PartnerActionCenter items={actions} />
+      </div>
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard
           label="Recognised components"
@@ -215,7 +218,7 @@ export default async function FinanceDashboardPage() {
           hint="Execution gated"
         />
       </div>
-      <div className="mb-6 grid gap-4 lg:grid-cols-2">
+      <div className="mb-6">
         <PartnerCommercialSummary
           title="Entitlement totals (backend)"
           rows={[
@@ -249,7 +252,6 @@ export default async function FinanceDashboardPage() {
           ]}
           footerNote="Totals from stakeholder_entitlements. Not client-side commission calculation."
         />
-        <PartnerActionCenter items={actions} />
       </div>
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard

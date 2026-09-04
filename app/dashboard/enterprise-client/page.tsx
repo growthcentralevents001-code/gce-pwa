@@ -172,7 +172,7 @@ export default async function EnterpriseClientDashboardPage() {
         description={`${ENTERPRISE_CLIENT_ROLE_LABEL} · ${ORG_VS_REP_COPY}`}
         actions={
           <Button asChild variant="outline" className="min-h-11">
-            <Link href="/enterprise/projects">View projects</Link>
+            <Link href="/enterprise/projects">Project Command Center</Link>
           </Button>
         }
       />
@@ -197,6 +197,9 @@ export default async function EnterpriseClientDashboardPage() {
           },
         ]}
       />
+      <div className="mb-6">
+        <PartnerActionCenter items={actions} />
+      </div>
       <EnterpriseRelationshipCard
         organisationName={report.displayName}
         representativeNote={ORG_VS_REP_COPY}
@@ -225,7 +228,6 @@ export default async function EnterpriseClientDashboardPage() {
         />
       </div>
       <div className="mb-6 grid gap-4 lg:grid-cols-2">
-        <PartnerActionCenter items={actions} />
         <PartnerPipelineList title="Opportunity stages" stages={stages} />
       </div>
       <p className="mb-6 text-xs text-muted-foreground">{GCE_EXECUTION_ROLE_COPY}</p>

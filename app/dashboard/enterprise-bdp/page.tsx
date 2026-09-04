@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   PartnerPageHeader,
-  KpiCard,
   Timeline,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
@@ -19,7 +18,6 @@ import { loadEnterpriseBdpBundle } from "@/lib/frontend/enterprise/reads";
 import {
   EBDP_ENTITLEMENT_COPY,
   ENTERPRISE_BDP_ROLE_LABEL,
-  formatMinorInr,
 } from "@/lib/frontend/enterprise/format";
 import { GCE_SPACING } from "@/lib/frontend/design-language";
 import { PartnerShell } from "@/components/app-shell/PartnerShell";
@@ -196,6 +194,12 @@ export default async function EnterpriseBdpDashboardPage() {
           },
         ]}
       />
+      <div className="mb-6">
+        <PartnerActionCenter items={actions} />
+      </div>
+      <div className="mb-6">
+        <PartnerPipelineList title="Pipeline snapshot" stages={stages} />
+      </div>
       <div className="mb-6 grid gap-4 lg:grid-cols-2">
         <EbdpPackCard
           packageOption={report.packageOption}
@@ -227,33 +231,6 @@ export default async function EnterpriseBdpDashboardPage() {
           ]}
           footerNote={EBDP_ENTITLEMENT_COPY}
         />
-      </div>
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard
-          label="Attributed clients"
-          value={String(report.attributedClients)}
-          icon="users"
-        />
-        <KpiCard
-          label="Opportunities"
-          value={String(report.openOpportunities)}
-          icon="target"
-        />
-        <KpiCard
-          label="Active projects"
-          value={String(report.activeProjects)}
-          icon="briefcase"
-        />
-        <KpiCard
-          label="Entitlement"
-          value={formatMinorInr(report.grossEligibleCommissionMinor)}
-          icon="circle-dollar"
-          hint="Backend-calculated"
-        />
-      </div>
-      <div className="mb-6 grid gap-4 lg:grid-cols-2">
-        <PartnerActionCenter items={actions} />
-        <PartnerPipelineList title="Pipeline snapshot" stages={stages} />
       </div>
       <Timeline
         items={opportunities.slice(0, 5).map((o) => ({

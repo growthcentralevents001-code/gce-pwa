@@ -216,13 +216,15 @@ Business documentation always overrides assumptions.
 
 \# User Interface
 
-Whenever modifying frontend:
+Whenever creating or modifying anything with UI impact:
 
-Follow the project's UI design standards.
+Follow \`.cursor/rules/02_UI_Rules.mdc\` and living \`docs/ui-ux/\` (GCE UI/UX Architecture 2.0).
 
-Maintain visual consistency.
+That framework is permanent. It governs existing canonical UI and all future UI, including later feature/PDF work. The Founder does not need to repeat it.
 
-Never introduce inconsistent components or layouts.
+UI/UX 2.0 must never override Founder Decisions, business rules, backend/state-machine/security truth, or approved feature architecture.
+
+Maintain visual consistency (MASTER tokens). Never introduce inconsistent components or layouts. Never use RETIRE routes as templates.
 
 \---
 

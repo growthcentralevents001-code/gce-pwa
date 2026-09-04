@@ -34,17 +34,19 @@ Before generating or modifying code, always follow this order:
 
 1. `docs/founder-decisions/` (Founder Decisions — highest business authority)
 2. Founder Approved Business Specification (if present)
-3. `docs/core/` (canonical living documentation)
-4. `docs/phase-*/` and `docs/phase-2/adrs/` (implementation-readiness plans and technical ADRs)
-5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
-6. `.cursor/rules/*.mdc`
-7. `docs/engineering/`
-8. `docs/ui-ux/` (UI/UX Architecture 2.0 — target UX; must never override Founder Decisions)
-9. `design-system/MASTER.md` (visual identity)
-10. `.cursor/skills/`
+3. `docs/core/` (canonical living **business** documentation)
+4. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (backend / security truth)
+5. `docs/phase-*/` and `docs/phase-2/adrs/` (approved feature architecture; ADRs are not Founder business law)
+6. `docs/ui-ux/` (GCE UI/UX Architecture 2.0 — target UX for **existing and future** UI; must never override layers 1–5)
+7. `design-system/MASTER.md` plus `lib/frontend/design-language.ts` / `motion.ts` (visual identity)
+8. `.cursor/rules/*.mdc` (enforcement, including permanent UI rule `02_UI_Rules.mdc`)
+9. `docs/engineering/`
+10. `.cursor/skills/` (advisory craft; ui-ux-pro-max does not own IA/shells)
 11. Official Next.js documentation (`node_modules/next/dist/docs/`)
 
-If documents overlap, higher-priority sources win. **Never change a Founder Decision to match older documentation.** When a lower-level document conflicts with a Founder Decision, update the lower-level document.
+If documents overlap, higher-priority sources win. **Never change a Founder Decision to match older documentation.** When a lower-level document conflicts with a higher layer, update the **lower-authority** document.
+
+UI/UX Architecture 2.0 is **permanent, retroactive, and prospective**. Future feature/PDF work must enter through Architecture 2.0 shells and patterns automatically (`.cursor/rules/02_UI_Rules.mdc`). The Founder does not need to repeat UI governance in each prompt.
 
 Anything marked Unresolved, Proposed, Future, Pending Founder Approval, Pending Technical Design, or Pending Legal/Accounting Review must remain unresolved — do not invent final rules. Technical ADRs are implementation defaults, not Founder business law (FD-039).
 
@@ -120,7 +122,7 @@ Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP
 
 ### `docs/ui-ux/`
 
-Living UI/UX Architecture 2.0 — **target** product UX (shells, IA, workspace patterns, responsive rules, route audit). Must never override Founder Decisions. Visual identity remains `design-system/MASTER.md`.
+Living UI/UX Architecture 2.0 — **target** product UX for **existing and future** UI (shells, IA, workspace patterns, responsive rules, route audit). Must never override Founder Decisions, business rules, or backend/security truth. Enforced by `.cursor/rules/02_UI_Rules.mdc` (always on). Visual identity remains `design-system/MASTER.md`.
 
 | Document | Owns |
 |----------|------|
@@ -159,8 +161,10 @@ Installed Cursor skills (including UI UX Pro Max and related design skills). Use
    Inspect existing architecture, routes, components, hooks, libs, and patterns. Reuse and extend before creating anything new.
 
 2. **Frontend UI**
-   Follow living UI/UX Architecture 2.0 in `docs/ui-ux/` (target UX). Visual identity remains `design-system/MASTER.md`. Also follow the **UI UX Pro Max** skill, `docs/engineering/28_UI_UX_Pro_Max_Expert.md`, and `.cursor/rules/02_UI_Rules.mdc`. `docs/core/13_UI_Guidelines.md` is historical only.
-   If a feature materially changes navigation, workspaces, IA, shared UI patterns, responsive rules, or vertical UX, update the relevant `docs/ui-ux/` document in the same task.
+   GCE UI/UX Architecture 2.0 (`docs/ui-ux/` + `.cursor/rules/02_UI_Rules.mdc`) is permanent governance for **existing canonical UI and all future UI**. Visual identity remains `design-system/MASTER.md`.
+   Internally: understand the governed feature → correct vertical/workspace/shell → reuse Architecture 2.0 pattern → implement → check responsive/a11y, nav/routes, and inactive flags. Do not use RETIRE routes as templates. Do not recreate KPI-wall, Kanban-referral, settlement-first Enterprise, or generic Wallet patterns.
+   ui-ux-pro-max / `docs/engineering/28_UI_UX_Pro_Max_Expert.md` are advisory craft under Architecture 2.0. `docs/core/13_UI_Guidelines.md` is historical only.
+   If a feature materially changes navigation, workspaces, IA, shared UI patterns, responsive rules, or vertical UX, update the relevant `docs/ui-ux/` document in the same task. If architecture did not change, do not create documentation churn.
 
 3. **Animations**
    Always follow Motion / animation documentation for frontend animations (`docs/engineering/27_Frontend_Animations.md` and related Cursor Rules). Prefer the project’s installed `motion` package patterns.

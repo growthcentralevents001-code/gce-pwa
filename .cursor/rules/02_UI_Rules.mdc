@@ -1,464 +1,150 @@
-\---  
-description: UI and UX development rules for the GCE platform. Automatically follow the GCE Design System, Component Library, Motion animations, and UI UX Pro Max standards whenever creating or modifying frontend code.  
-globs:  
-  \- "app/\*\*/\*.tsx"  
-  \- "components/\*\*/\*.tsx"  
-  \- "components/\*\*/\*.ts"  
-  \- "app/\*\*/\*.ts"  
-alwaysApply: false  
-\---
+---
+description: Permanent GCE UI/UX Architecture 2.0 governance. Applies to existing canonical UI migration and all future UI-affecting work (pages, routes, shells, workspaces, components, navigation, responsive/a11y). Does not override Founder Decisions or business/security truth.
+alwaysApply: true
+---
 
-\# GCE UI Rules
+# GCE UI Rules — Architecture 2.0 (permanent)
 
-\#\# Purpose
+This is the **canonical Cursor UI governance rule**. It applies to:
 
-This rule governs every frontend implementation across the GCE platform.
+1. Existing canonical GCE UI (Architecture 2.0 is the **migration target**)
+2. **All future** GCE development that creates or materially changes UI — including later feature/PDF implementation — without the Founder repeating these instructions
 
-Whenever creating or modifying:
+Do not treat `docs/ui-ux/` as migration-only documentation.
 
-\- Pages  
-\- Components  
-\- Dashboards  
-\- Forms  
-\- Layouts  
-\- Navigation  
-\- Cards  
-\- Modals  
-\- Tables  
-\- Lists
+## Authority (never invert)
 
-always follow the official UI documentation before writing code.
+```text
+Founder Decisions / explicit Founder supersession
+  → canonical Business Rules
+  → Backend / State Machines / Security truth
+  → Approved Feature Architecture (phase plans / ADRs)
+  → GCE UI/UX Architecture 2.0          ← docs/ui-ux/
+  → canonical Design System / frontend language
+  → page / component implementation
+```
 
-\---
+UI/UX Architecture **must never** override higher-authority product, business, economic, security, or legal truth.
 
-\# Documentation Priority
+If a conflict is found: update the **lower-authority** artifact. Do not silently change higher-authority product behavior.
 
-Read the following documentation before implementing frontend features.
+Visual tokens: `design-system/MASTER.md` + `lib/frontend/design-language.ts` + `lib/frontend/motion.ts`. MASTER wins on palette, type, radius, glass, dark surface.
 
-\#\# Primary UI Documentation
+Advisory only (cannot replace IA, shells, workspaces, or MASTER): ui-ux-pro-max, ui-styling, Taste, Impeccable, Emil, 21st.dev search-only. See `.cursor/rules/09_Design_Tooling_Governance.mdc`.
 
-Living UI/UX Architecture 2.0 (target UX — must not override Founder Decisions):
+### Living Architecture 2.0 (read before UI work)
 
-\`\`\`
-docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md
-docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md
-docs/ui-ux/GCE_DESIGN_SYSTEM.md
-docs/ui-ux/GCE_WORKSPACE_PATTERNS.md
-docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md
-docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md
-\`\`\`
+- `docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md`
+- `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md`
+- `docs/ui-ux/GCE_DESIGN_SYSTEM.md`
+- `docs/ui-ux/GCE_WORKSPACE_PATTERNS.md`
+- `docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md`
+- `docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md`
 
-Visual tokens remain \`design-system/MASTER.md\` plus \`lib/frontend/design-language.ts\` and \`lib/frontend/motion.ts\`.
+### Not living UI/IA authority (do not treat as equal)
 
-\`docs/core/13_UI_Guidelines.md\` is historical narrative only (stale palette). Do not treat it as the design system.
+- `docs/core/13_UI_Guidelines.md` — historical; stale palette
+- `docs/core/12_Dashboards.md` — business module inventory; **not** UX composition
+- `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` and other Batch 0–10 frontend plans — historical / evidence
 
-When a feature materially changes navigation, workspaces, IA, shared UI patterns, responsive rules, or vertical UX, update the relevant \`docs/ui-ux/\` file in the same task.
+## Automatic architectural fit check
 
-\---
+For every UI-affecting implementation, run this sequence internally (no extra Founder prompt):
 
-\#\# Component Library
+1. **Understand** the governed feature (FDs, state machines, flags)
+2. **Identify** the correct vertical / workspace / shell
+3. **Check** current UI/UX 2.0 docs (especially IA, workspace patterns, roadmap class)
+4. **Reuse** canonical shell / component / pattern
+5. **Implement**
+6. **Check** responsive + accessibility (390 / 768 / 1366)
+7. **Check** navigation / route consistency (public vertical nav ≠ workspace switcher)
+8. **Check** inactive features were **not** exposed as live
+9. **Update** living `docs/ui-ux/` **only if** a legitimate architectural change occurred
 
-\`\`\`  
-34\_Component\_Library.md  
-\`\`\`
+Do not broadly redesign unrelated screens because one component was touched.
 
-Always search for an existing reusable component before creating a new one.
+## Retroactive (existing UI)
 
-Never duplicate UI components.
+Use stored classifications in `GCE_UI_IMPLEMENTATION_ROADMAP.md`:
 
-\---
+| Class | Do |
+|-------|-----|
+| **KEEP** | Preserve the correct experience; align only where required |
+| **IMPROVE** | Preserve functionality; improve hierarchy, consistency, navigation, responsive fit, architectural fit |
+| **REDESIGN** | Preserve governed backend/workflow semantics; replace the wrong UI metaphor with the Architecture 2.0 pattern |
+| **RETIRE** | Do **not** redesign or extend. Preserve redirects. **Never use RETIRE routes as templates** for new development |
 
-\#\# UI UX Pro Max
+## Prospective (future features)
 
-\`\`\`  
-28\_UI\_UX\_Pro\_Max\_Expert.md  
-\`\`\`
+Every future feature — including remaining feature PDFs — must enter through the correct Architecture 2.0 **shell, workspace, navigation, components, responsive rules, and vertical metaphor**.
 
-Whenever building or modifying UI, automatically use the UI UX Pro Max AI Skill.
+Do **not** recreate superseded patterns: generic KPI-wall dashboards, bento-everywhere, Trello/Kanban for Connect referrals, settlement-first Enterprise, generic consumer Wallet, decorative blue, Super Admin chrome, Affiliate/ZBP product UI, live inactive payments/rank.
 
-The UI UX Pro Max skill is the primary UX-architecture skill for the GCE platform. It is not the sole design engine. Visual identity remains \`design-system/MASTER.md\`. Taste, Impeccable, and Emil Kowalski skills are advisory craft tools and do not supersede MASTER.
+## Target product model (must use)
 
-Always generate professional, modern, responsive interfaces that follow the documented GCE Design System.
+```text
+GCE
+├── Connect      = Network + Workflow
+├── Marketplace  = Discovery + Transaction
+└── Enterprise   = Project + Milestone
+```
 
-\---
+Shared platform (not a fourth vertical): identity, `role_assignments`, workspace switching, notifications, documents, support, audit, analytics, RBAC/RLS, Ops, Finance.
 
-\#\# Approved Design Tooling
+- **PublicShell** + public vertical navigation
+- **WorkspaceShell** + authenticated workspace switcher
+- Workspace homes: **What needs my attention today?**
+- Connect referrals: **governed timeline**, not Kanban
+- Marketplace: Events / Offers / Venues; desktop master–detail allowed; mobile list → full detail
+- Enterprise: **Project Command Center**, not settlement-first
+- Customer: activity / bookings / claims — no generic Wallet
+- Venue: operational workspace
+- Ops: queues / review
+- Finance: ledger / reconciliation
 
-Canonical visual authority is MASTER plus \`lib/frontend/design-language.ts\` and \`lib/frontend/motion.ts\`.
+## Living architecture (no silent drift)
 
-Approved frontend design tooling:
+If an approved change legitimately alters IA, workspace structure, routes/nav, shared shells, product metaphor, canonical component pattern, or responsive/a11y architecture: update the relevant `docs/ui-ux/` file **in the same task**.
 
-\- MASTER / design-language (visual identity)  
-\- ui-ux-pro-max (UX architecture, usability, responsive, accessibility)  
-\- ui-styling (Tailwind/CSS implementation)  
-\- Taste Skill (anti-slop composition and page hierarchy)  
-\- Impeccable (critique, audit, polish)  
-\- Emil Kowalski skills (motion and micro-interaction craft)  
-\- 21st.dev search-only (structural inspiration)  
-\- shadcn primitives (accessibility foundation)
+If implementation does not materially change architecture: do not create documentation churn. Do not add new UI/UX governance docs for individual features.
 
-Taste, Impeccable, and Emil augment design judgment. They do not supersede MASTER.
+## Reuse and shells
 
-See \`.cursor/rules/09_Design_Tooling_Governance.mdc\`.
+Search existing components first. Reuse or extend. Never duplicate.
 
-\---
+Canonical shells: `PublicShell`, `PartnerShell`, `CustomerShell`, `OpsShell`, `SettingsShell`. Singular `WorkspaceSwitcher`. Domain cards in `components/connect|customer|marketplace|enterprise|partner|ops|finance`.
 
-\#\# Frontend Animations
+Do not extend `components/admin/*`, legacy `/admin/*`, `/dashboard/zbp`, `/dashboard/affiliate`, `/dashboard/member`, or other **RETIRE** trees.
 
-\`\`\`  
-27\_Frontend\_Animations.md  
-\`\`\`
+## Dashboards / homes
 
-Use Motion wherever appropriate.
+Do **not** default to bento grids, KPI walls, three-card heroes, or generic SaaS Overview.
 
-Animations should be:
+Workspace homes follow `GCE_WORKSPACE_PATTERNS.md`: attention list → in-flight work → status strip → optional real triage counts.
 
-\- Smooth  
-\- Minimal  
-\- Professional  
-\- Performance Friendly
+`docs/core/12_Dashboards.md` may list **which business modules exist**. It does not prescribe UX layout.
 
-\---
+## Navigation
 
-\# UI Philosophy
+Keep **public vertical navigation** and **authenticated workspace switching** separate. Do not mix marketing verticals into partner sidebars as if they were roles. Customer bottom nav is an activity specialization, not a fourth vertical.
 
-Every interface should be:
+## Responsive and accessibility
 
-\- Modern  
-\- Premium  
-\- Clean  
-\- Consistent  
-\- Mobile First  
-\- Responsive  
-\- Accessible  
-\- Fast
+Mobile-first: 390 / 768 / 1366. Never desktop-only. Marketplace mobile = list → full detail. Forms: labels, validation, errors, loading, success. Empty/error/loading states required. `prefers-reduced-motion` via `lib/frontend/motion.ts`. Focus rings brand orange, not blue.
 
-Never create inconsistent UI.
+## Motion, color, type
 
-\---
+Tokenised motion only. Restrained. No decorative blue. Primary `#EA580C`, secondary `#F97316`, cream `#FFF7ED`, text `#0F172A`, dark surface `#000000`. Poppins UI; Righteous brand mark only.
 
-\# Existing Components First
+## Inactive features
 
-Before creating any component:
+Never present as live: ticket payments, BDP pack checkout, settlement/payout execution, wallet cash-out, paid Lead Assist, Affiliate, ZBP, Core direct purchase, referral rewards, vendor self-serve, rank ladders, Super Admin as ordinary role. Use `FeatureGated` / nav filters / `INACTIVE_FEATURE_FLAGS`.
 
-Search the project.
+## Before writing UI
 
-If an existing component exists:
-
-Reuse it.
-
-If it is similar:
-
-Extend it.
-
-Never duplicate UI.
-
-\---
-
-\# Component Rules
-
-All components should be:
-
-\- Reusable  
-\- Modular  
-\- Typed  
-\- Configurable  
-\- Responsive
-
-Avoid hardcoded values.
-
-Use props.
-
-\---
-
-\# UI UX Pro Max Usage
-
-Whenever generating UI:
-
-Automatically use the UI UX Pro Max AI Skill.
-
-The skill should guide:
-
-\- Layout  
-\- Typography  
-\- Spacing  
-\- Color  
-\- Visual Hierarchy  
-\- User Experience  
-\- Interaction Design
-
-Do not create custom styling that conflicts with the project design system.
-
-\---
-
-\# Motion Usage
-
-Whenever appropriate:
-
-Use Motion for:
-
-\- Hover  
-\- Tap  
-\- Page Transition  
-\- Modal Animation  
-\- Card Animation  
-\- List Animation  
-\- Loading State
-
-Do not overuse animations.
-
-Animations should enhance usability.
-
-\---
-
-\# Responsive Design
-
-Always design for:
-
-1\. Mobile  
-2\. Tablet  
-3\. Desktop
-
-Never create desktop-only layouts.
-
-\---
-
-\# Design Consistency
-
-Maintain consistency across:
-
-\- Buttons  
-\- Cards  
-\- Forms  
-\- Tables  
-\- Navigation  
-\- Typography  
-\- Colors  
-\- Icons  
-\- Spacing
-
-The application should feel like one unified product.
-
-\---
-
-\# Forms
-
-Forms should always include:
-
-\- Validation  
-\- Error States  
-\- Loading State  
-\- Success Feedback  
-\- Accessible Labels
-
-Never create incomplete forms.
-
-\---
-
-\# Dashboards
-
-Whenever creating dashboards:
-
-Read:
-
-\`\`\`  
-12\_Dashboards.md  
-\`\`\`
-
-Use:
-
-\- Bento Grid Layout  
-\- KPI Cards  
-\- Statistics  
-\- Charts  
-\- Quick Actions
-
-Dashboards should be clean and information-rich.
-
-\---
-
-\# Navigation
-
-Navigation should be:
-
-\- Simple  
-\- Predictable  
-\- Mobile Friendly
-
-Support:
-
-\- Sidebar  
-\- Navbar  
-\- Bottom Navigation  
-\- Breadcrumbs
-
-\---
-
-\# Accessibility
-
-Every UI should support:
-
-\- Keyboard Navigation  
-\- Screen Readers  
-\- Focus States  
-\- ARIA Labels  
-\- Sufficient Contrast
-
-Accessibility is mandatory.
-
-\---
-
-\# Performance
-
-Do not create heavy UI.
-
-Prefer:
-
-\- Lazy Loading  
-\- Optimized Images  
-\- Efficient Rendering  
-\- Small Components
-
-Avoid unnecessary re-renders.
-
-\---
-
-\# Tailwind Standards
-
-Use Tailwind CSS consistently.
-
-Avoid inline styles unless absolutely necessary.
-
-Use reusable utility patterns.
-
-\---
-
-\# Icons
-
-Maintain a consistent icon library throughout the project.
-
-Do not mix multiple icon styles.
-
-\---
-
-\# Colors
-
-Always follow the official GCE Design System.
-
-Never introduce random colors.
-
-Use semantic colors for:
-
-\- Success  
-\- Warning  
-\- Error  
-\- Information
-
-\---
-
-\# Typography
-
-Maintain a consistent typography hierarchy.
-
-Do not randomly change:
-
-\- Font Sizes  
-\- Font Weights  
-\- Line Heights  
-\- Letter Spacing
-
-\---
-
-\# Spacing
-
-Maintain a consistent spacing system.
-
-Avoid arbitrary margins and paddings.
-
-\---
-
-\# Empty States
-
-Every empty page should include:
-
-\- Illustration (optional)  
-\- Helpful Message  
-\- Primary Action
-
-Never leave blank screens.
-
-\---
-
-\# Loading States
-
-Always provide:
-
-\- Skeleton Loaders  
-\- Spinners  
-\- Progress Indicators
-
-Never leave users waiting without feedback.
-
-\---
-
-\# Error States
-
-Every error should:
-
-\- Explain the problem  
-\- Suggest the next step  
-\- Match the GCE UI style
-
-\---
-
-\# Before Writing UI
-
-Always verify:
-
-✓ Existing component searched
-
-✓ Component can be reused
-
-✓ UI UX Pro Max applied
-
-✓ Motion considered
-
-✓ Mobile responsive
-
-✓ Accessible
-
-✓ Consistent with Design System
-
-✓ Matches Component Library
-
-\---
-
-\# Forbidden Practices
-
-Never:
-
-\- Duplicate Components  
-\- Ignore UI Guidelines  
-\- Ignore Component Library  
-\- Ignore Motion Standards  
-\- Ignore UI UX Pro Max  
-\- Hardcode Colors  
-\- Hardcode Spacing  
-\- Create Inconsistent UI  
-\- Build Desktop-Only Interfaces  
-\- Use Excessive Animations
-
-\---
-
-\# Final Rule
-
-Every frontend feature should look and behave as if it was designed by the same product design team.
-
-Before generating any frontend code:
-
-1\. Read the relevant UI documentation.  
-2\. Search for existing reusable components.  
-3\. Apply the UI UX Pro Max AI Skill.  
-4\. Follow the Component Library.  
-5\. Use Motion where appropriate.  
-6\. Produce production-ready, responsive, reusable, and accessible UI.  
+- Architecture 2.0 docs consulted for vertical, shell, pattern, and roadmap class
+- RETIRE routes not used as templates
+- Existing canonical component reused where possible
+- Inactive flags not exposed
+- Responsive + a11y checked
+- Living docs updated only if architecture actually changed

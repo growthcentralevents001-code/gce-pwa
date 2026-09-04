@@ -80,7 +80,7 @@ Location: `docs/core/`
 | 09 | `09_Venue_Partner.md` | Venue Partner workflow |
 | 10 | `10_AI_Lead_Assist.md` | AI Lead Assist workflow |
 | 11 | `11_Database.md` | Database schema and relationships |
-| 12 | `12_Dashboards.md` | Dashboard specifications |
+| 12 | `12_Dashboards.md` | Business dashboard modules (UX composition is `docs/ui-ux/`) |
 | 13 | `13_UI_Guidelines.md` | Historical UI narrative (superseded by `docs/ui-ux/` + MASTER) |
 | 14 | `14_Business_Rules.md` | Complete business rules |
 | 15 | `15_API_Workflows.md` | Backend API workflows |
@@ -142,7 +142,7 @@ Location: `.cursor/skills/`
 
 | Skill | Purpose |
 |-------|---------|
-| `ui-ux-pro-max` | Primary UI/UX design intelligence skill. Use when creating or modifying frontend UI. |
+| `ui-ux-pro-max` | Advisory usability/responsive craft. Product UX architecture is `docs/ui-ux/` + `02_UI_Rules.mdc`. |
 | `ui-styling` | Tailwind / shadcn / styling references and helpers for UI implementation. |
 | `design` | Comprehensive design skill (brand identity, logos, CIP, banners, icons, slides). |
 | `design-system` | Design tokens, component specs, and token validation tooling. |
@@ -166,13 +166,13 @@ Cursor must always follow this order before generating or modifying code:
 
 1. `docs/founder-decisions/` (Founder Decisions — highest business authority)
 2. Founder Approved Business Specification (if present)
-3. `docs/core/` (canonical living documentation)
-4. `docs/phase-*/` and `docs/phase-2/adrs/` (implementation-readiness plans and technical ADRs)
-5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
-6. `.cursor/rules/`
-7. `docs/engineering/`
-8. `docs/ui-ux/` (UI/UX Architecture 2.0 — target UX; must not override FDs)
-9. `design-system/MASTER.md`
+3. `docs/core/` (canonical living business documentation)
+4. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (backend / security truth)
+5. `docs/phase-*/` and `docs/phase-2/adrs/` (approved feature architecture; ADRs are not Founder business law)
+6. `docs/ui-ux/` (GCE UI/UX Architecture 2.0 — existing and future UI; must not override layers 1–5)
+7. `design-system/MASTER.md` plus frontend design-language / motion
+8. `.cursor/rules/` (includes always-on `02_UI_Rules.mdc`)
+9. `docs/engineering/`
 10. `.cursor/skills/`
 11. Official Next.js Documentation (`node_modules/next/dist/docs/`)
 

@@ -1,5 +1,7 @@
 # Dashboards
 
+> **UX composition is not owned here.** Workspace homes, shells, and metaphors: `docs/ui-ux/GCE_WORKSPACE_PATTERNS.md` and `.cursor/rules/02_UI_Rules.mdc`. This file inventories **business modules** by role. Do not implement its implied generic dashboard/KPI layout over Architecture 2.0 attention-first homes.
+
 ## Authority
 
 **Roles / workspaces:** FD-023 / `35_Role_Taxonomy.md` · **Identity model:** FD-001 · **Connect BDP commercial / Franchise Unit performance:** FD-025 · **GCE Enterprise / Franchise Pack / Platform Expert:** FD-026 · **Revenue recognition:** FD-028 · **Commission Engine / entitlement states:** FD-029 · **Circle governance / attendance / verification:** FD-030 / `38_Circle_Architecture.md` · **AI Lead Assist / Opportunity Desk:** FD-031 / `39_AI_Lead_Assist_Spec.md`

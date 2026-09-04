@@ -464,12 +464,16 @@ Authority order (matches `AGENTS.md`):
 
 1. Founder Decisions (`docs/founder-decisions/`)
 2. Founder Approved Business Specification (if present)
-3. Canonical core documentation (`docs/core/`)
-4. Cursor Rules (`.cursor/rules/`)
-5. Engineering documentation (`docs/engineering/`)
-6. Application implementation
+3. Canonical core business documentation (`docs/core/`)
+4. Backend / state machines / security (`docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/`)
+5. Approved feature architecture (`docs/phase-*`, ADRs)
+6. GCE UI/UX Architecture 2.0 (`docs/ui-ux/`) — permanent; existing + future UI
+7. Design system (`design-system/MASTER.md`)
+8. Cursor Rules (`.cursor/rules/`, especially always-on `02_UI_Rules.mdc`)
+9. Engineering documentation (`docs/engineering/`)
+10. Application implementation
 
-When lower-level documentation conflicts with a Founder Decision, update the lower-level document. **Never change a Founder Decision to match older documentation.**
+When lower-level documentation conflicts with a higher layer, update the **lower-authority** document. **Never change a Founder Decision to match older documentation.** UI/UX 2.0 must not override business, security, or legal truth.
 
 Do not invent Unresolved / Proposed / Future / Pending items.
 

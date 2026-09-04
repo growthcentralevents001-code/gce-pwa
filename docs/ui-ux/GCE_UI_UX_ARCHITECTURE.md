@@ -47,6 +47,8 @@ Sibling living documents in this folder:
 
 **Living-document rule:** any later feature that materially changes navigation, roles/workspaces, IA, shared UI patterns, responsive rules, or vertical UX must update the relevant file in this folder in the same task.
 
+**Permanent Cursor enforcement:** `.cursor/rules/02_UI_Rules.mdc` (always on). Architecture 2.0 is retroactive (existing canonical UI is the migration target) and prospective (future features, including remaining PDFs, must enter through these shells and patterns). RETIRE routes are not templates.
+
 ---
 
 ## Target product model

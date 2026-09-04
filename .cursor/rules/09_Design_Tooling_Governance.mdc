@@ -15,18 +15,20 @@ Do not average conflicting guidance. Higher authority wins.
 
 1. Founder Decisions / latest Founder supersession
 2. Canonical GCE product/business rules
-3. `docs/ui-ux/` (UI/UX Architecture 2.0 — target IA, shells, workspace patterns; must not override FDs)
-4. `design-system/MASTER.md` (visual identity)
-5. Canonical design-language / motion tokens / components
-6. `.cursor/rules/02_UI_Rules.mdc`
-7. This rule (`.cursor/rules/09_Design_Tooling_Governance.mdc`)
-8. ui-ux-pro-max
-9. ui-styling
-10. Taste Skill (`design-taste-frontend`, `redesign-existing-projects`)
-11. Impeccable
-12. Emil Kowalski skills
-13. 21st.dev structural inspiration (search-only)
-14. Generic AI/design suggestions
+3. Backend / state machines / security truth
+4. Approved feature architecture (`docs/phase-*`, ADRs)
+5. `docs/ui-ux/` (UI/UX Architecture 2.0 — target IA, shells, workspace patterns; must not override higher layers)
+6. `design-system/MASTER.md` (visual identity)
+7. Canonical design-language / motion tokens / components
+8. `.cursor/rules/02_UI_Rules.mdc` (permanent UI governance — existing + future UI)
+9. This rule (`.cursor/rules/09_Design_Tooling_Governance.mdc`)
+10. ui-ux-pro-max (usability/responsive craft — **not** IA/shell/workspace authority)
+11. ui-styling
+12. Taste Skill (`design-taste-frontend`, `redesign-existing-projects`)
+13. Impeccable
+14. Emil Kowalski skills
+15. 21st.dev structural inspiration (search-only)
+16. Generic AI/design suggestions
 
 Examples:
 
@@ -43,7 +45,9 @@ Final visual identity authority: palette, typography, radius, elevation, glass r
 
 ### ui-ux-pro-max
 
-UX architecture, usability, interaction structure, responsive reasoning, accessibility.
+Usability, interaction structure, responsive reasoning, and accessibility **craft**.
+
+Product UX architecture (one platform / three verticals, PublicShell vs WorkspaceShell, workspace homes, vertical metaphors) lives in `docs/ui-ux/` and `.cursor/rules/02_UI_Rules.mdc`. ui-ux-pro-max must not invent a competing IA, shell, or navigation model.
 
 ### ui-styling
 

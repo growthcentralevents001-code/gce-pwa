@@ -51,7 +51,7 @@ Cursor Rules live separately in `.cursor/rules/`.
 
 Location: `docs/ui-ux/`
 
-Target UX framework (does **not** override Founder Decisions). Visual tokens remain `design-system/MASTER.md`.
+Target UX framework (does **not** override Founder Decisions). Permanent governance for **existing and future** UI via `.cursor/rules/02_UI_Rules.mdc`. Visual tokens remain `design-system/MASTER.md`.
 
 | File | Owns |
 |------|------|
@@ -105,7 +105,7 @@ Location: `docs/core/`
 | 09_Venue_Partner.md | Venue Partner workflow |
 | 10_AI_Lead_Assist.md | AI Lead Assist workflow |
 | 11_Database.md | Database schema and relationships |
-| 12_Dashboards.md | Dashboard specifications |
+| 12_Dashboards.md | Business dashboard **modules** (UX composition is `docs/ui-ux/`) |
 | 13_UI_Guidelines.md | Historical UI narrative (superseded by `docs/ui-ux/` + MASTER) |
 | 14_Business_Rules.md | Complete business rules |
 | 15_API_Workflows.md | Backend API workflows |
@@ -306,6 +306,10 @@ Database
 ↓
 
 API
+
+↓
+
+UI/UX Architecture 2.0 (`docs/ui-ux/` + `02_UI_Rules.mdc`)
 
 ↓
 

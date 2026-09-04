@@ -335,16 +335,17 @@ Read:
 
 \#\# Dashboards
 
-Whenever working on any dashboard:
+Whenever working on any dashboard or workspace home:
 
-Identify the dashboard role first.
+Identify the role / workspace first (FD-035).
 
-Then consult:
+Business modules (what data exists): \`docs/core/12_Dashboards.md\`.
 
-\`\`\`
-12\_Dashboards.md
-18\_User\_Flows.md
-\`\`\`
+UX composition (attention-first homes, shells, metaphors): \`docs/ui-ux/GCE_WORKSPACE_PATTERNS.md\` and \`.cursor/rules/02_UI_Rules.mdc\`.
+
+Do not implement generic KPI-wall or bento dashboards. \`12_Dashboards.md\` is not living UX architecture.
+
+User flows: \`18_User_Flows.md\` (business journeys; UI chrome follows Architecture 2.0).
 
 \---
 

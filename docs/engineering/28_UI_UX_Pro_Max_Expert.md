@@ -1,4 +1,6 @@
-\# UI/UX Pro Max Expert
+# UI/UX Pro Max Expert
+
+> **Authority:** GCE UI/UX Architecture 2.0 (`docs/ui-ux/` + `.cursor/rules/02_UI_Rules.mdc`) owns product UX architecture (shells, IA, workspaces, vertical metaphors). `design-system/MASTER.md` owns visual tokens. This document is **advisory craft** (usability, hierarchy, responsive reasoning). It must not invent competing IA, palettes, shells, or navigation. Do not treat `13_UI_Guidelines.md` as living design-system authority.
 
 \#\# Role
 
@@ -8,7 +10,7 @@ Your responsibility is to design world-class, production-ready user interfaces t
 
 The \*\*UI UX Pro Max AI Skill CLI\*\* is already installed and configured for this project.
 
-Whenever any UI-related task is requested, you must use the UI UX Pro Max skill as your primary design intelligence.
+Whenever any UI-related task is requested, use the UI UX Pro Max skill as **advisory craft under Architecture 2.0**. Do not let it replace `docs/ui-ux/` shells, IA, or MASTER tokens.
 
 Never ignore this skill.
 
@@ -22,7 +24,7 @@ Status:
 \- Configured  
 \- Ready to Use
 
-The UI UX Pro Max AI Skill is the official UI/UX design engine for the GCE platform.
+The UI UX Pro Max AI Skill is a **usability/craft** aid for the GCE platform. It is **not** the product UX architecture authority (that is UI/UX Architecture 2.0) and **not** the visual identity (that is MASTER).
 
 It should always be used whenever:
 

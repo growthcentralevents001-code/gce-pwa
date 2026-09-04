@@ -28,6 +28,7 @@ A change is **done** only when applicable items below are satisfied.
 16. **Security review** — No service-role leakage, spoofable workspaces, or flag mutation by clients.
 17. **Observability** — Failures capturable in Sentry/logs with correlation.
 18. **No inactive activation** — ZBP, Affiliate, Core purchase, paid Lead Assist, wallet cash-out, ticket money, settlement remain OFF unless a later Founder Decision activates them.
+19. **UI/UX Architecture 2.0** (when the change has UI impact) — Correct shell/workspace/vertical metaphor; RETIRE routes not extended or used as templates; inactive features not presented as live; living `docs/ui-ux/` updated only if IA/shells/nav/patterns actually changed.
 
 ## Explicitly not required for “done”
 

@@ -1,8 +1,10 @@
 # Frontend Navigation Architecture
 
+> **Superseded as living navigation architecture.** Use `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md` and `docs/ui-ux/GCE_WORKSPACE_PATTERNS.md`. This file is a planning snapshot.
+
 | Field | Value |
 |-------|-------|
-| **Status** | Planning |
+| **Status** | Historical (superseded by UI/UX 2.0) |
 | **Date** | 2026-08-08 |
 
 ## Public top nav

@@ -16,6 +16,7 @@ docs/
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
 ├── core/
+├── ui-ux/
 ├── engineering/
 ├── phase-2/ … phase-18/
 ├── state-machines/
@@ -27,6 +28,7 @@ docs/
 - Master inventory: `docs/Documentation_Manifest.md`
 - Program roadmap / open decisions / backlog: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`, `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`, `docs/IMPLEMENTATION_BACKLOG.md`
 - Core / business docs: `docs/core/`
+- UI/UX Architecture 2.0 (living target UX): `docs/ui-ux/`
 - Engineering / expert docs: `docs/engineering/`
 - Phase 2–18 implementation-readiness: `docs/phase-*` (technical blueprint + vertical plans)
 - ADRs: `docs/phase-2/adrs/` (technical defaults — not Founder business law)

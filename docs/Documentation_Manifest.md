@@ -27,6 +27,7 @@ docs/
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
 ├── core/
+├── ui-ux/
 ├── engineering/
 ├── phase-2/ … phase-18/
 ├── state-machines/
@@ -45,6 +46,7 @@ AGENTS.md
 | `docs/` | Documentation root and indexes |
 | `docs/founder-decisions/` | Founder Decisions (highest business authority) |
 | `docs/core/` | Core product / business documentation |
+| `docs/ui-ux/` | Living UI/UX Architecture 2.0 (target UX; never overrides FDs) |
 | `docs/engineering/` | Engineering and AI-expert standards |
 | `docs/phase-2/` … `docs/phase-18/` | Phase implementation-readiness plans (architecture → scale) |
 | `docs/phase-2/adrs/` | Technical Architecture Decision Records |
@@ -79,7 +81,7 @@ Location: `docs/core/`
 | 10 | `10_AI_Lead_Assist.md` | AI Lead Assist workflow |
 | 11 | `11_Database.md` | Database schema and relationships |
 | 12 | `12_Dashboards.md` | Dashboard specifications |
-| 13 | `13_UI_Guidelines.md` | UI/UX guidelines |
+| 13 | `13_UI_Guidelines.md` | Historical UI narrative (superseded by `docs/ui-ux/` + MASTER) |
 | 14 | `14_Business_Rules.md` | Complete business rules |
 | 15 | `15_API_Workflows.md` | Backend API workflows |
 | 16 | `16_Authentication.md` | Authentication workflow |
@@ -169,9 +171,10 @@ Cursor must always follow this order before generating or modifying code:
 5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
 6. `.cursor/rules/`
 7. `docs/engineering/`
-8. `design-system/MASTER.md`
-9. `.cursor/skills/`
-10. Official Next.js Documentation (`node_modules/next/dist/docs/`)
+8. `docs/ui-ux/` (UI/UX Architecture 2.0 — target UX; must not override FDs)
+9. `design-system/MASTER.md`
+10. `.cursor/skills/`
+11. Official Next.js Documentation (`node_modules/next/dist/docs/`)
 
 If documents overlap, higher-priority sources win. This matches `AGENTS.md`. **Never amend a Founder Decision to match older docs.** Technical ADRs are not Founder business law (FD-039).
 
@@ -262,13 +265,19 @@ Additional mandatory behaviors:
 | Phase 14 testing plan | `docs/phase-14/PHASE_14_TESTING_MIGRATION_DATA_VALIDATION.md` | Testing / migration / data validation plan |
 | Phase 14A validation report | `docs/phase-14/PHASE_14A_PLATFORM_BACKEND_VALIDATION_REPORT.md` | Backend/platform validation evidence pack |
 | Phase 14A checklist | `docs/phase-14/PHASE_14A_VALIDATION_CHECKLIST.md` | Phase 14A exit checklist |
-| Frontend gap audit | `docs/frontend/FINAL_GCE_FRONTEND_GAP_AUDIT.md` | Final Website/PWA gap audit (planning) |
-| Frontend page inventory | `docs/frontend/FINAL_GCE_PAGE_AND_DASHBOARD_INVENTORY.md` | Master page/dashboard list |
-| Frontend IA | `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` | Product information architecture |
+| Frontend gap audit | `docs/frontend/FINAL_GCE_FRONTEND_GAP_AUDIT.md` | Final Website/PWA gap audit (historical planning) |
+| Frontend page inventory | `docs/frontend/FINAL_GCE_PAGE_AND_DASHBOARD_INVENTORY.md` | Master page/dashboard list (historical) |
+| Frontend IA | `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` | Historical IA snapshot — living IA is `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md` |
+| UI/UX 2.0 architecture | `docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md` | Target one-platform / three-vertical UX |
+| UI/UX 2.0 IA | `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md` | Living public vs workspace IA |
+| UI/UX 2.0 design system usage | `docs/ui-ux/GCE_DESIGN_SYSTEM.md` | How pages compose MASTER |
+| UI/UX 2.0 workspace patterns | `docs/ui-ux/GCE_WORKSPACE_PATTERNS.md` | Shells, attention-first homes |
+| UI/UX 2.0 responsive / a11y | `docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md` | 390 / 768 / 1366 |
+| UI/UX 2.0 implementation roadmap | `docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md` | KEEP / IMPROVE / REDESIGN / RETIRE |
 | Frontend components | `docs/frontend/FRONTEND_COMPONENT_INVENTORY.md` | Component + shadcn matrix |
 | Frontend contract map | `docs/frontend/FINAL_FRONTEND_BACKEND_CONTRACT_MAP.md` | Page→API contracts |
 | Frontend backend gaps | `docs/frontend/FRONTEND_BACKEND_GAP_REGISTER.md` | Backend gaps for UI |
-| Frontend route migration | `docs/frontend/FRONTEND_ROUTE_MIGRATION_PLAN.md` | Redirects/retires |
+| Frontend route migration | `docs/frontend/FRONTEND_ROUTE_MIGRATION_PLAN.md` | Batch 10 redirect evidence — living audit is `docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md` |
 | Frontend legacy copy | `docs/frontend/FRONTEND_LEGACY_COPY_REPLACEMENT_REGISTER.md` | Stale copy register |
 | Frontend batch plan | `docs/frontend/FINAL_GCE_REDEVELOPMENT_BATCH_PLAN.md` | Batches 0–10 + tooling |
 | Cursor tooling plan | `docs/frontend/CURSOR_TOOLING_AND_SKILLS_PLAN.md` | Skills/MCP/shadcn/21st plan |

@@ -26,6 +26,7 @@ docs/
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
 ├── core/
+├── ui-ux/
 ├── engineering/
 ├── phase-2/ … phase-18/
 ├── state-machines/
@@ -35,13 +36,35 @@ docs/
 ```
 
 1. Core Project Documentation — `docs/core/`
-2. AI Expert Documentation — `docs/engineering/`
+2. UI/UX Architecture 2.0 (living target) — `docs/ui-ux/`
+3. AI Expert Documentation — `docs/engineering/`
 3. Phase 2–18 implementation-readiness — `docs/phase-*`
 4. ADRs — `docs/phase-2/adrs/`
 5. State machines / data / security / compliance — supporting architecture packs
 6. Program masters — roadmap, open decisions, backlog
 
 Cursor Rules live separately in `.cursor/rules/`.
+
+---
+
+# UI/UX Architecture 2.0 (living)
+
+Location: `docs/ui-ux/`
+
+Target UX framework (does **not** override Founder Decisions). Visual tokens remain `design-system/MASTER.md`.
+
+| File | Owns |
+|------|------|
+| `GCE_UI_UX_ARCHITECTURE.md` | One platform / three verticals, PublicShell vs WorkspaceShell, target metaphors |
+| `GCE_INFORMATION_ARCHITECTURE.md` | Public vs authenticated trees and canonical routes |
+| `GCE_DESIGN_SYSTEM.md` | How pages compose MASTER (not a second MASTER) |
+| `GCE_WORKSPACE_PATTERNS.md` | Attention-first homes, vertical nav/page patterns |
+| `GCE_RESPONSIVE_ACCESSIBILITY.md` | 390 / 768 / 1366, a11y, PWA |
+| `GCE_UI_IMPLEMENTATION_ROADMAP.md` | KEEP / IMPROVE / REDESIGN / RETIRE + implementation order |
+
+When feature work materially changes navigation, workspaces, IA, patterns, responsive rules, or vertical UX, update the relevant file in the same task.
+
+Older `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` and related Batch 0–10 frontend plans are historical.
 
 ---
 
@@ -83,7 +106,7 @@ Location: `docs/core/`
 | 10_AI_Lead_Assist.md | AI Lead Assist workflow |
 | 11_Database.md | Database schema and relationships |
 | 12_Dashboards.md | Dashboard specifications |
-| 13_UI_Guidelines.md | UI/UX guidelines |
+| 13_UI_Guidelines.md | Historical UI narrative (superseded by `docs/ui-ux/` + MASTER) |
 | 14_Business_Rules.md | Complete business rules |
 | 15_API_Workflows.md | Backend API workflows |
 | 16_Authentication.md | Authentication workflow |

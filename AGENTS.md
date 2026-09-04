@@ -39,9 +39,10 @@ Before generating or modifying code, always follow this order:
 5. `docs/state-machines/`, `docs/data/`, `docs/security/`, `docs/compliance/` (as applicable)
 6. `.cursor/rules/*.mdc`
 7. `docs/engineering/`
-8. `design-system/MASTER.md`
-9. `.cursor/skills/`
-10. Official Next.js documentation (`node_modules/next/dist/docs/`)
+8. `docs/ui-ux/` (UI/UX Architecture 2.0 — target UX; must never override Founder Decisions)
+9. `design-system/MASTER.md` (visual identity)
+10. `.cursor/skills/`
+11. Official Next.js documentation (`node_modules/next/dist/docs/`)
 
 If documents overlap, higher-priority sources win. **Never change a Founder Decision to match older documentation.** When a lower-level document conflicts with a Founder Decision, update the lower-level document.
 
@@ -66,6 +67,7 @@ Project documentation root and index.
 - `docs/phase-2/` … `docs/phase-18/` — implementation-readiness plans
 - `docs/phase-2/adrs/` — technical ADRs
 - `docs/state-machines/` · `docs/data/` · `docs/security/` · `docs/compliance/` — architecture support packs
+- `docs/ui-ux/` — living UI/UX Architecture 2.0 (target shells, IA, patterns, roadmap)
 
 ### `docs/core/`
 
@@ -116,6 +118,19 @@ Always use the full vertical names: **GCE Connect**, **GCE Marketplace**, **GCE 
 
 Approved BDP short names: **Connect BDP**, **Marketplace BDP**, **Enterprise BDP**.
 
+### `docs/ui-ux/`
+
+Living UI/UX Architecture 2.0 — **target** product UX (shells, IA, workspace patterns, responsive rules, route audit). Must never override Founder Decisions. Visual identity remains `design-system/MASTER.md`.
+
+| Document | Owns |
+|----------|------|
+| `docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md` | One platform, three verticals, PublicShell vs WorkspaceShell |
+| `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md` | Public vs authenticated trees |
+| `docs/ui-ux/GCE_DESIGN_SYSTEM.md` | Composition against MASTER |
+| `docs/ui-ux/GCE_WORKSPACE_PATTERNS.md` | Attention-first homes, vertical patterns |
+| `docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md` | 390 / 768 / 1366, a11y, PWA |
+| `docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md` | KEEP / IMPROVE / REDESIGN / RETIRE |
+
 ### `docs/engineering/`
 
 Engineering and AI-expert standards: frontend animations, UI/UX Pro Max usage, architecture, database engineering, security/performance practices, Cursor coding rules, and the component library.
@@ -144,7 +159,8 @@ Installed Cursor skills (including UI UX Pro Max and related design skills). Use
    Inspect existing architecture, routes, components, hooks, libs, and patterns. Reuse and extend before creating anything new.
 
 2. **Frontend UI**
-   Always follow the **UI UX Pro Max** skill (under `.cursor/skills/`) when creating or modifying any frontend UI. Also follow `docs/engineering/28_UI_UX_Pro_Max_Expert.md`, `docs/core/13_UI_Guidelines.md`, and `design-system/MASTER.md` as applicable.
+   Follow living UI/UX Architecture 2.0 in `docs/ui-ux/` (target UX). Visual identity remains `design-system/MASTER.md`. Also follow the **UI UX Pro Max** skill, `docs/engineering/28_UI_UX_Pro_Max_Expert.md`, and `.cursor/rules/02_UI_Rules.mdc`. `docs/core/13_UI_Guidelines.md` is historical only.
+   If a feature materially changes navigation, workspaces, IA, shared UI patterns, responsive rules, or vertical UX, update the relevant `docs/ui-ux/` document in the same task.
 
 3. **Animations**
    Always follow Motion / animation documentation for frontend animations (`docs/engineering/27_Frontend_Animations.md` and related Cursor Rules). Prefer the project’s installed `motion` package patterns.
@@ -170,6 +186,7 @@ scripts/             Deploy and ops scripts
 supabase/            Database migrations and Supabase config
 docs/                Project documentation (core + engineering)
 docs/founder-decisions/ Founder Decisions (highest business authority)
+docs/ui-ux/          Living UI/UX Architecture 2.0 (target UX)
 design-system/       Design system source of truth for UI tokens
 .cursor/rules/       Cursor Rules (.mdc)
 .cursor/skills/      Cursor Skills (UI UX Pro Max, etc.)

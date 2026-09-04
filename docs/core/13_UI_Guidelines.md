@@ -1,4 +1,6 @@
- UI Guidelines
+# UI Guidelines
+
+> **Superseded for architecture, tokens, and IA.** Living UI/UX 2.0 is `docs/ui-ux/`. Visual tokens: `design-system/MASTER.md`. Do not use this file’s `#F97316` primary / white-background story over MASTER (`#EA580C`, cream `#FFF7ED`). Kept as historical narrative only.
 
  Overview
 

@@ -15,17 +15,18 @@ Do not average conflicting guidance. Higher authority wins.
 
 1. Founder Decisions / latest Founder supersession
 2. Canonical GCE product/business rules
-3. `design-system/MASTER.md`
-4. Canonical design-language / motion tokens / components
-5. `.cursor/rules/02_UI_Rules.mdc`
-6. This rule (`.cursor/rules/09_Design_Tooling_Governance.mdc`)
-7. ui-ux-pro-max
-8. ui-styling
-9. Taste Skill (`design-taste-frontend`, `redesign-existing-projects`)
-10. Impeccable
-11. Emil Kowalski skills
-12. 21st.dev structural inspiration (search-only)
-13. Generic AI/design suggestions
+3. `docs/ui-ux/` (UI/UX Architecture 2.0 — target IA, shells, workspace patterns; must not override FDs)
+4. `design-system/MASTER.md` (visual identity)
+5. Canonical design-language / motion tokens / components
+6. `.cursor/rules/02_UI_Rules.mdc`
+7. This rule (`.cursor/rules/09_Design_Tooling_Governance.mdc`)
+8. ui-ux-pro-max
+9. ui-styling
+10. Taste Skill (`design-taste-frontend`, `redesign-existing-projects`)
+11. Impeccable
+12. Emil Kowalski skills
+13. 21st.dev structural inspiration (search-only)
+14. Generic AI/design suggestions
 
 Examples:
 

@@ -1,8 +1,10 @@
 # Frontend Responsive, PWA, Accessibility, SEO, Performance Plans
 
+> **Living target:** `docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md`. This file remains Batch 10 implementation evidence.
+
 | Field | Value |
 |-------|-------|
-| **Status** | **Batch 10 baseline complete** — Checkpoint E |
+| **Status** | **Batch 10 baseline complete** — Checkpoint E (historical evidence) |
 | **Date** | 2026-08-11 |
 | **Evidence** | `docs/frontend/implementation/BATCH_10_PWA_RESPONSIVE_A11Y_GLOBAL_POLISH_IMPLEMENTATION.md` |
 

@@ -1,8 +1,10 @@
 # Final GCE Information Architecture
 
+> **Superseded as living IA.** Use `docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md` and `docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md`. This file is a Batch 14A planning snapshot (2026-08-08).
+
 | Field | Value |
 |-------|-------|
-| **Status** | Planning |
+| **Status** | Historical (superseded by UI/UX 2.0) |
 | **Date** | 2026-08-08 |
 | **Authority** | FD-001 / FD-034 / FD-035 / vertical FDs; Phase 14A |
 

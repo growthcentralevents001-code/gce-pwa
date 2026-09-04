@@ -37,11 +37,22 @@ Read the following documentation before implementing frontend features.
 
 \#\# Primary UI Documentation
 
-\`\`\`  
-13\_UI\_Guidelines.md  
+Living UI/UX Architecture 2.0 (target UX — must not override Founder Decisions):
+
+\`\`\`
+docs/ui-ux/GCE_UI_UX_ARCHITECTURE.md
+docs/ui-ux/GCE_INFORMATION_ARCHITECTURE.md
+docs/ui-ux/GCE_DESIGN_SYSTEM.md
+docs/ui-ux/GCE_WORKSPACE_PATTERNS.md
+docs/ui-ux/GCE_RESPONSIVE_ACCESSIBILITY.md
+docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md
 \`\`\`
 
-This document defines the official GCE Design System.
+Visual tokens remain \`design-system/MASTER.md\` plus \`lib/frontend/design-language.ts\` and \`lib/frontend/motion.ts\`.
+
+\`docs/core/13_UI_Guidelines.md\` is historical narrative only (stale palette). Do not treat it as the design system.
+
+When a feature materially changes navigation, workspaces, IA, shared UI patterns, responsive rules, or vertical UX, update the relevant \`docs/ui-ux/\` file in the same task.
 
 \---
 

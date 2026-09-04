@@ -1,5 +1,7 @@
 # Frontend Route Migration Plan
 
+> **Living KEEP / IMPROVE / REDESIGN / RETIRE:** `docs/ui-ux/GCE_UI_IMPLEMENTATION_ROADMAP.md`. This file remains Batch 10 redirect evidence.
+
 | Field | Value |
 |-------|-------|
 | **Status** | **Batch 10 cutover applied** for planned retires — Phase 14B may delete dead sources |

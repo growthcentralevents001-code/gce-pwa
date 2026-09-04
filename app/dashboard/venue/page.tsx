@@ -75,7 +75,7 @@ export default async function VenueDashboardPage() {
     );
   }
 
-  const { report, venue, events, offers, bookings, claims, entitlements, engagement } =
+  const { report, venue, events, offers, bookings, claims, entitlements, engagement, insights } =
     bundle;
   const venueShare = entitlements.reduce(
     (s, e) => s + Number(e.venue_share_minor ?? 0),
@@ -163,6 +163,9 @@ export default async function VenueDashboardPage() {
       <p className="mb-6 text-sm text-muted-foreground">
         Views (backend): profile {engagement?.venueViews ?? 0} · events{" "}
         {engagement?.eventViews ?? 0} · offers {engagement?.offerViews ?? 0}.
+        {insights && insights.hasQualifyingActivity
+          ? ` Unique customers (30d): ${insights.customers.uniqueInPeriod}.`
+          : ""}
       </p>
 
       <div className="grid gap-6 lg:grid-cols-5">

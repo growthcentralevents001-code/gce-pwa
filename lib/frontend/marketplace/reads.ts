@@ -3,6 +3,7 @@ import {
   buildMbdpDashboard,
   buildVenueDashboard,
   buildVenueEngagementMetrics,
+  buildVenueBusinessInsights,
   listMbdpUnitsForUser,
 } from "@/lib/architecture/marketplace";
 import { listUserOrganisations } from "@/lib/architecture/organisations/memberships";
@@ -26,6 +27,7 @@ export type VenueBundle = {
   venue: Record<string, unknown> | null;
   report: Awaited<ReturnType<typeof buildVenueDashboard>>;
   engagement: Awaited<ReturnType<typeof buildVenueEngagementMetrics>> | null;
+  insights: Awaited<ReturnType<typeof buildVenueBusinessInsights>> | null;
   events: Record<string, unknown>[];
   offers: Record<string, unknown>[];
   bookings: Record<string, unknown>[];
@@ -179,6 +181,7 @@ export async function loadVenueBundle(
       venue: null,
       report: null,
       engagement: null,
+      insights: null,
       events: [],
       offers: [],
       bookings: [],
@@ -191,12 +194,14 @@ export async function loadVenueBundle(
   const [
     report,
     engagement,
+    insights,
     { data: events },
     { data: offers },
     { data: entitlements },
   ] = await Promise.all([
     buildVenueDashboard(adminClient, venueId),
     buildVenueEngagementMetrics(adminClient, venueId).catch(() => null),
+    buildVenueBusinessInsights(adminClient, venueId).catch(() => null),
     adminClient
       .from("marketplace_events")
       .select("*")
@@ -287,6 +292,7 @@ export async function loadVenueBundle(
     venue,
     report,
     engagement,
+    insights,
     events: (events as Record<string, unknown>[]) ?? [],
     offers: (offers as Record<string, unknown>[]) ?? [],
     bookings,

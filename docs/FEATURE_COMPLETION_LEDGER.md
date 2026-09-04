@@ -217,6 +217,7 @@ Claims must reflect actual implementation and must not imply guaranteed leads, b
 | Feature / subsystem | Status | Canonical subsystem | Evidence | Tests | Re-audit when |
 |---------------------|--------|---------------------|----------|-------|---------------|
 | Marketplace + MBDP + Venue (Phase 7, Batch 5) | **COMPLETE_WITH_P2** | `lib/architecture/marketplace/*`; `/marketplace-bdp/*`; `/venue/*` | Phase 7 notes; Batch 5 doc; 14B report | Phase 7 unit; customer/venue E2E in 14B | MoR/refund economics validation (OD-001/006) |
+| **Venue Partner business insights** (customer reach / repeat / visibility) | **COMPLETE_WITH_P2** | `lib/architecture/marketplace/insights.ts`; `/venue/performance`; `GET /api/venue/insights` | Venue insights delta 2026-09-04; qualifying-activity definition in insights module | `tests/unit/venue-business-insights.test.ts` | Qualifying-activity or customer-identity schema change; customer feedback UI **P2**; rank **INACTIVE** |
 | Enterprise Client/BDP/Expert (Phase 8, Batch 6) | **COMPLETE_WITH_P2** | `lib/architecture/enterprise/*`; enterprise routes | Phase 8 notes; Batch 6 doc | Enterprise E2E in 14B | FD-038 / co-sign threshold change |
 | Finance / commission / settlement spine (Phase 9, Batch 7) | **COMPLETE** (execution **INACTIVE**) | `lib/architecture/finance/*` | Phase 9 notes; settlement flags OFF | Finance unit + 14B probes | Money go-live / Phase 15 gates |
 | Notifications / audit / security (Phase 12) | **COMPLETE_WITH_P2** | Phase 12 modules | Phase 12 notes | Security/audit tests | Live provider activation |
@@ -256,3 +257,4 @@ Source: FD-039 Part J · `INACTIVE_FEATURE_FLAGS` · `docs/MASTER_IMPLEMENTATION
 |------|--------|
 | 2026-09-04 | Ledger created. Indexed Phase 2–14 completion evidence without full re-audit. Recorded Connect member experience and structured Circle meetings as **COMPLETE_WITH_P2** using English-normalized requirements. |
 | 2026-09-04 | English-only closeout: removed source-material titles from completion rows; added normalized Connect scope section. |
+| 2026-09-04 | Venue Partner business insights layer recorded as **COMPLETE_WITH_P2** (customer reach, repeat classification, visibility vs engagement). |

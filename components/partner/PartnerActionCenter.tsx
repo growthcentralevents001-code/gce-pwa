@@ -64,7 +64,7 @@ export type PartnerActionItem = {
  * Reusable Partner Action Center — Checkpoint C baseline for Batches 5/6.
  */
 export function PartnerActionCenter({
-  title = "Action center",
+  title = "Needs your attention",
   items,
   emptyLabel = "No actions required right now.",
   className,

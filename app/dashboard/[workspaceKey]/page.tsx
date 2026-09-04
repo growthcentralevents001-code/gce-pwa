@@ -28,8 +28,7 @@ import {
 import { getCustomerDashboard } from "@/lib/architecture/customer-cx";
 import type { WorkspaceKey } from "@/lib/architecture/types";
 import { WORKSPACE_KEYS } from "@/lib/architecture/types";
-import { WorkspaceSwitcher } from "./workspace-switcher";
-import Link from "next/link";
+import { WorkspaceKeyHomeView } from "@/components/workspace/WorkspaceKeyHomeView";
 
 type PageProps = {
   params: Promise<{ workspaceKey: string }>;
@@ -139,10 +138,10 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
   const showVenuePanel = canAccess && key === "venue";
   // Venue detail reports require venueId — show portfolio hint only to avoid dirty UI routes
   let venueHint =
-    "Canonical Venue Partner workspace. Manage Events/Offers via /api/marketplace/bdp. Legacy /dashboard/venue/* remains prototype WIP.";
+    "Use check-in, events, and redemptions in the Venue Partner workspace.";
   if (showVenuePanel) {
     venueHint =
-      "Canonical Venue Partner workspace (FD-033/037). Use Marketplace API for Event/Offer/claim. Avoid legacy prototype routes for new data.";
+      "Venue Partner operations (FD-033/037). Canonical tools are under /venue/* — not legacy /dashboard/venue CRUD.";
   }
 
   const showEbdpPanel = canAccess && key === "enterprise-bdp";
@@ -222,14 +221,13 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
   }
 
   const showCustomerCxPanel = canAccess && key === "personal";
-  let cxHint: { upcoming: number; claims: number; trust: number } | null = null;
+  let cxHint: { upcoming: number; claims: number } | null = null;
   if (showCustomerCxPanel) {
     try {
       const dash = await getCustomerDashboard(supabase, user.id);
       cxHint = {
         upcoming: dash.upcomingBookings.length,
         claims: dash.activeClaims.length,
-        trust: dash.trustRank.score,
       };
     } catch {
       cxHint = null;
@@ -246,403 +244,36 @@ export default async function WorkspaceDashboardPage({ params }: PageProps) {
     }
   }
 
-  if (!canAccess) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight">Access denied</h1>
-        <p className="mt-2 text-sm text-neutral-600">
-          Workspace <code>{workspaceKey}</code> is not available for your active
-          role assignments. Legacy dashboard routes do not grant entitlement.
-        </p>
-        <WorkspaceSwitcher
-          current={identity.currentWorkspace}
-          allowed={identity.workspaces}
-        />
-        {activeCount === 0 ? (
-          <p className="mt-4 text-sm text-amber-800">
-            No active role assignments. You may use the personal workspace only.
-          </p>
-        ) : null}
-        {suspendedCount > 0 ? (
-          <p className="mt-2 text-sm text-amber-800">
-            {suspendedCount} assignment(s) suspended — those workspaces are excluded.
-          </p>
-        ) : null}
-      </main>
-    );
-  }
-
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Workspace: {workspaceKey}
-        </h1>
-        <p className="text-xs text-neutral-500">
-          Role/source: {identity.entitlements.source}
-        </p>
-      </div>
-      <p className="mt-2 text-sm text-neutral-600">
-        Entitlement authority is <code>role_assignments</code> (FD-035). Membership
-        activation is separate from Circle allocation (FD-036).
-      </p>
-      {/* Workspace switcher lives in PartnerShell (Batch 0). */}
-      <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-        <h2 className="text-sm font-medium">Access</h2>
-        <p className="mt-1 text-sm">
-          Active assignment admits this workspace (or personal baseline).
-        </p>
-        <p className="mt-3 text-xs text-neutral-500">
-          Allowed workspaces: {identity.workspaces.join(", ")}
-        </p>
-        <p className="mt-1 text-xs text-neutral-500">
-          Active assignments: {activeCount}
-          {suspendedCount > 0 ? ` · suspended: ${suspendedCount}` : ""}
-        </p>
-      </section>
-      {showConnectPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">GCE Connect membership</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Associate Plan ₹6,000/quarter · max 4 Tags · active may be unallocated
-          </p>
-          {membershipSummary.length === 0 ? (
-            <p className="mt-3 text-sm text-neutral-600">No memberships yet.</p>
-          ) : (
-            <ul className="mt-3 space-y-2 text-sm">
-              {membershipSummary.map((m) => (
-                <li key={m.id} className="border-t border-neutral-100 pt-2">
-                  <span className="font-medium">{m.status}</span>
-                  {" · "}
-                  allocation: {m.allocationStatus}
-                  {" · "}
-                  tags: {m.tagCount}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showBdpPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Connect BDP Franchise Unit</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Target 5 Circles / 10 months · commission 20% attributed only · recovery
-            max ₹5,000/cycle
-          </p>
-          {bdpReports.length === 0 || !bdpReports[0] ? (
-            <p className="mt-3 text-sm text-neutral-600">
-              No Connect BDP Franchise Unit yet. Apply via{" "}
-              <code>/api/connect/bdp</code>.
-            </p>
-          ) : (
-            <ul className="mt-3 space-y-3 text-sm">
-              {bdpReports.filter(Boolean).map((r) =>
-                r ? (
-                  <li key={r.unitId} className="border-t border-neutral-100 pt-2">
-                    <div className="font-medium">{r.applicationStatus}</div>
-                    <div className="mt-1 text-xs text-neutral-600">
-                      Package: {r.packageOption} · remaining recoverable: ₹
-                      {(r.remainingRecoverableMinor / 100).toLocaleString("en-IN")}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Target: {r.creditedCircles}/{r.targetCircles} credited ·
-                      portfolio {r.activeCirclePortfolio} · months{" "}
-                      {r.monthsElapsed ?? "—"}/{r.targetMonths}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Maintenance: {r.maintenanceStatus} · disputes open:{" "}
-                      {r.openDisputes} · attributed members:{" "}
-                      {r.attributedMemberships}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Gross commission: ₹
-                      {(r.grossEligibleCommissionMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}{" "}
-                      · recovery: ₹
-                      {(r.recoveryDeductionsMinor / 100).toLocaleString("en-IN")}{" "}
-                      · net: ₹
-                      {(r.netPayableCommissionMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}
-                    </div>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showMbdpPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Marketplace BDP Franchise Unit</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            20 Venues/unit · max 2 units · attributed 80/10/10 · unattributed 80/0/20
-          </p>
-          {mbdpReports.length === 0 || !mbdpReports[0] ? (
-            <p className="mt-3 text-sm text-neutral-600">
-              No Marketplace BDP unit yet. Apply via{" "}
-              <code>/api/marketplace/bdp</code>.
-            </p>
-          ) : (
-            <ul className="mt-3 space-y-3 text-sm">
-              {mbdpReports.filter(Boolean).map((r) =>
-                r ? (
-                  <li key={r.unitId} className="border-t border-neutral-100 pt-2">
-                    <div className="font-medium">{r.applicationStatus}</div>
-                    <div className="mt-1 text-xs text-neutral-600">
-                      Package: {r.packageOption} · venues {r.activeVenueCount}/
-                      {r.venueCapacity} · proposed {r.proposedAttributions}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Recoverable remaining: ₹
-                      {(r.remainingRecoverableMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}{" "}
-                      · MBDP entitlement: ₹
-                      {(r.grossMbdpEntitlementMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}{" "}
-                      · net: ₹
-                      {(r.netMbdpPayableMinor / 100).toLocaleString("en-IN")}
-                    </div>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showVenuePanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Venue Partner</h2>
-          <p className="mt-1 text-xs text-neutral-500">{venueHint}</p>
-        </section>
-      ) : null}
-      {showEbdpPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Enterprise BDP Franchise Pack</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Client-based attribution · 30 clients/pack · EBDP = 25% of GCE platform
-            commission · Finance co-sign &gt; ₹5L
-          </p>
-          {ebdpReports.length === 0 || !ebdpReports[0] ? (
-            <p className="mt-3 text-sm text-neutral-600">
-              No Enterprise BDP pack yet. Apply via <code>/api/enterprise</code>.
-            </p>
-          ) : (
-            <ul className="mt-3 space-y-3 text-sm">
-              {ebdpReports.filter(Boolean).map((r) =>
-                r ? (
-                  <li key={r.packId} className="border-t border-neutral-100 pt-2">
-                    <div className="font-medium">{r.applicationStatus}</div>
-                    <div className="mt-1 text-xs text-neutral-600">
-                      Package: {r.packageOption} · clients {r.activeClientCount}/
-                      {r.clientsCapacity} · proposed {r.proposedAttributions}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Opportunities: {r.openOpportunities} · projects:{" "}
-                      {r.activeProjects} · handovers: {r.reassignmentEvents}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Eligible entitlement: ₹
-                      {(r.grossEligibleCommissionMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}{" "}
-                      · recoverable left: ₹
-                      {(r.remainingRecoverableMinor / 100).toLocaleString(
-                        "en-IN"
-                      )}
-                    </div>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showEnterpriseClientPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Enterprise Client</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Organisation workspace — internal margins/commission hidden
-          </p>
-          {clientReports.length === 0 || !clientReports[0] ? (
-            <p className="mt-3 text-sm text-neutral-600">
-              No Enterprise Client organisations linked to your representative
-              profile.
-            </p>
-          ) : (
-            <ul className="mt-3 space-y-3 text-sm">
-              {clientReports.filter(Boolean).map((r) =>
-                r ? (
-                  <li key={r.clientId} className="border-t border-neutral-100 pt-2">
-                    <div className="font-medium">{r.displayName}</div>
-                    <div className="mt-1 text-xs text-neutral-600">
-                      {r.status} · {r.engagementStatus}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Opportunities: {r.opportunities} · quotes pending:{" "}
-                      {r.quotesAwaitingAcceptance} · projects: {r.projects}
-                    </div>
-                    <div className="text-xs text-neutral-600">
-                      Milestones due: {r.milestonesDue} · disputes:{" "}
-                      {r.openDisputes}
-                    </div>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showExpertPanel && expertReport ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">
-            Enterprise operations / Finance boundary
-          </h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Requirement structuring · proposals · Finance co-sign queue (Phase 9
-            settlement not included)
-          </p>
-          <div className="mt-3 text-sm text-neutral-700">
-            Assigned opportunities: {expertReport.assignedOpportunities} · draft
-            proposals: {expertReport.draftProposals} · quotes pending Finance
-            co-sign: {expertReport.quotesPendingFinanceCosign}
-          </div>
-        </section>
-      ) : null}
-      {showCustomerCxPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Customer Marketplace CX</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Events / Offers / Tickets · live payments gated OFF
-          </p>
-          {cxHint ? (
-            <p className="mt-3 text-sm text-neutral-700">
-              Upcoming {cxHint.upcoming} · active claims {cxHint.claims} · trust
-              score {cxHint.trust} (formula unresolved)
-            </p>
-          ) : (
-            <p className="mt-3 text-sm text-neutral-600">
-              Open customer workspace for full detail.
-            </p>
-          )}
-          <p className="mt-2 text-sm">
-            <Link href="/customer" className="underline">
-              Open /customer
-            </Link>
-          </p>
-        </section>
-      ) : null}
-      {showLeadAssistPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">AI Lead Assist (Stage 1 unpaid)</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            Formal in-app leads · Circle-first routing · no ₹500 fee · use{" "}
-            <code>/api/lead-assist</code>
-          </p>
-          <div className="mt-3 text-xs text-neutral-700">
-            Received assignments: {receivedLeadCount}
-          </div>
-          {sentLeads.length === 0 ? (
-            <p className="mt-3 text-sm text-neutral-600">No sent leads yet.</p>
-          ) : (
-            <ul className="mt-3 space-y-2 text-sm">
-              {sentLeads.map((l) => (
-                <li key={l.id} className="border-t border-neutral-100 pt-2">
-                  <span className="font-medium">{l.title}</span>
-                  {" · "}
-                  {l.workStatus}
-                  {l.city ? ` · ${l.city}` : ""}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showOpportunityDeskPanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Opportunity Desk queue</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            FD-031/035 — human review · classification · reassignment · no
-            finance entitlement
-          </p>
-          {deskQueue.length === 0 ? (
-            <p className="mt-3 text-sm text-neutral-600">Queue empty.</p>
-          ) : (
-            <ul className="mt-3 space-y-2 text-sm">
-              {deskQueue.slice(0, 10).map((q) => (
-                <li key={q.id} className="border-t border-neutral-100 pt-2">
-                  <span className="font-medium">{q.reason}</span>
-                  {" · "}
-                  {q.status}
-                  {" · lead "}
-                  {q.lead_id}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ) : null}
-      {showFinancePanel ? (
-        <section className="mt-6 rounded-lg border border-neutral-200 p-4">
-          <h2 className="text-sm font-medium">Finance / Settlement spine</h2>
-          <p className="mt-1 text-xs text-neutral-500">
-            FD-020/021/028/029 — payment ≠ revenue ≠ settlement. Payout execution
-            gated OFF. Use <code>/api/finance</code>.
-          </p>
-          {!financeReport ? (
-            <p className="mt-3 text-sm text-neutral-600">
-              Finance dashboard unavailable for this session.
-            </p>
-          ) : (
-            <div className="mt-3 space-y-1 text-xs text-neutral-700">
-              <div>
-                Recognised components: {financeReport.recognisedRevenueComponents}{" "}
-                · pending entitlements: {financeReport.pendingEntitlements} ·
-                settlement-eligible:{" "}
-                {financeReport.settlementEligibleEntitlements}
-              </div>
-              <div>
-                Holds: {financeReport.activeHolds} · batches:{" "}
-                {financeReport.settlementBatches} · payout-ready:{" "}
-                {financeReport.payoutReadyItems}
-              </div>
-              <div>
-                Offline unmatched: {financeReport.offlineUnmatched} · recon
-                exceptions: {financeReport.reconciliationExceptions} ·
-                reversals: {financeReport.reversals}
-              </div>
-              <div>
-                Vertical gross — Connect ₹
-                {(financeReport.totals.connectGross / 100).toLocaleString(
-                  "en-IN"
-                )}{" "}
-                · Marketplace ₹
-                {(financeReport.totals.marketplaceGross / 100).toLocaleString(
-                  "en-IN"
-                )}{" "}
-                · Enterprise ₹
-                {(financeReport.totals.enterpriseGross / 100).toLocaleString(
-                  "en-IN"
-                )}
-              </div>
-              <div>
-                Money flags: settlement_execution=
-                {String(financeReport.moneyFlags.settlement_execution ?? false)}{" "}
-                · payout_execution=
-                {String(financeReport.moneyFlags.payout_execution ?? false)} ·
-                ticket_payments=
-                {String(
-                  financeReport.moneyFlags.marketplace_ticket_payments ?? false
-                )}
-              </div>
-            </div>
-          )}
-        </section>
-      ) : null}
-    </main>
+    <WorkspaceKeyHomeView
+      workspaceKey={key}
+      identity={identity}
+      canAccess={canAccess}
+      activeCount={activeCount}
+      suspendedCount={suspendedCount}
+      membershipSummary={membershipSummary}
+      bdpReports={bdpReports}
+      mbdpReports={mbdpReports}
+      venueHint={venueHint}
+      ebdpReports={ebdpReports}
+      clientReports={clientReports}
+      expertReport={expertReport}
+      financeReport={financeReport}
+      sentLeads={sentLeads}
+      receivedLeadCount={receivedLeadCount}
+      cxHint={cxHint}
+      deskQueue={deskQueue}
+      showConnectPanel={showConnectPanel}
+      showBdpPanel={showBdpPanel}
+      showMbdpPanel={showMbdpPanel}
+      showVenuePanel={showVenuePanel}
+      showEbdpPanel={showEbdpPanel}
+      showEnterpriseClientPanel={showEnterpriseClientPanel}
+      showExpertPanel={showExpertPanel}
+      showFinancePanel={showFinancePanel}
+      showLeadAssistPanel={showLeadAssistPanel}
+      showCustomerCxPanel={showCustomerCxPanel}
+      showOpportunityDeskPanel={showOpportunityDeskPanel}
+    />
   );
 }

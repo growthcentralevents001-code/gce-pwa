@@ -45,7 +45,7 @@ export default async function CustomerHomePage() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
+    <div className="space-y-8 pb-8 lg:pb-0">
       <CxPageHeader
         title="Your activity"
         description="Tickets, bookings, and claims — what needs you today."
@@ -239,7 +239,7 @@ export default async function CustomerHomePage() {
           </section>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 

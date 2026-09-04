@@ -4,7 +4,6 @@ import { Users, Shield } from "lucide-react";
 import { ConnectPageHeader } from "@/components/connect/ConnectPageHeader";
 import { MembershipCard } from "@/components/connect/MembershipCard";
 import { CircleCard } from "@/components/connect/CircleCard";
-import { KpiCard } from "@/components/connect/KpiCard";
 import { LeadCard } from "@/components/connect/LeadCard";
 import { PowerSectorGrid } from "@/components/connect/PowerSectorGrid";
 import { EmptyState } from "@/components/states/EmptyState";
@@ -24,6 +23,7 @@ import {
 import { findSeatForMembership } from "@/lib/frontend/connect/reads";
 import { CIRCLE_CAPACITY_MAX } from "@/lib/frontend/connect/format";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
+import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
 import type { PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 
 export const metadata = {
@@ -47,7 +47,7 @@ export default async function ConnectMemberHomePage() {
 
   if (!identity.workspaces.includes("connect-member")) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <ConnectPageHeader
           title="Connect Member"
           description="This workspace requires an active Circle Member (or governance) assignment."
@@ -58,7 +58,7 @@ export default async function ConnectMemberHomePage() {
           primaryAction={{ label: "Memberships", href: "/memberships" }}
           secondaryAction={{ label: "Personal workspace", href: "/dashboard/personal" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -87,7 +87,7 @@ export default async function ConnectMemberHomePage() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8 pb-16">
+    <div className="space-y-6">
       <ConnectPageHeader
         title="Connect overview"
         description="What needs your attention in the network today — membership, Circle, and Lead Assist."
@@ -99,7 +99,6 @@ export default async function ConnectMemberHomePage() {
       />
 
       <PartnerActionCenter
-        className="mb-8"
         items={
           [
             receivedCount > 0
@@ -139,22 +138,31 @@ export default async function ConnectMemberHomePage() {
         }
       />
 
-      <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Membership" value={primary?.status ?? "—"} href="/connect/membership" />
-        <KpiCard
-          label="Allocation"
-          value={(primary?.allocationStatus ?? "—").replaceAll("_", " ")}
-          href="/connect/waitlist"
-        />
-        <KpiCard label="Tags" value={`${tags.length}/4`} href="/connect/tags" icon="tag" />
-        <KpiCard
-          label="Leads"
-          value={`${sent.length} / ${receivedCount}`}
-          href="/connect/leads"
-          icon="target"
-          hint="sent / received"
-        />
-      </div>
+      <PartnerStatusStrip
+        items={[
+          {
+            id: "membership",
+            label: "Membership",
+            value: primary?.status ?? "—",
+            tone: primary?.status === "active" ? "success" : "neutral",
+          },
+          {
+            id: "allocation",
+            label: "Allocation",
+            value: (primary?.allocationStatus ?? "—").replaceAll("_", " "),
+          },
+          {
+            id: "tags",
+            label: "Tags",
+            value: `${tags.length}/4`,
+          },
+          {
+            id: "leads",
+            label: "Leads sent / received",
+            value: `${sent.length} / ${receivedCount}`,
+          },
+        ]}
+      />
 
       {!primary ? (
         <EmptyState
@@ -260,6 +268,6 @@ export default async function ConnectMemberHomePage() {
         title="Paid Lead Assist gated"
         description="No ₹500 pay-to-receive, escrow, forfeiture, voucher, or success fee in Stage 1."
       />
-    </main>
+    </div>
   );
 }

@@ -5,9 +5,8 @@ import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadEnterpriseExpertBundle } from "@/lib/frontend/enterprise/reads";
-import { GCE_EXECUTION_ROLE_COPY } from "@/lib/frontend/enterprise/format";
+import { GCE_EXECUTION_ROLE_COPY, formatContractualRole } from "@/lib/frontend/enterprise/format";
 import { redirect } from "next/navigation";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = { robots: { index: false, follow: false }, title: "Projects · Enterprise Expert" };
 
@@ -20,11 +19,11 @@ export default async function Page() {
   const projects = bundle?.projects ?? [];
   const components = bundle?.components ?? [];
   return (
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8 ${GCE_SPACING.section}`}>
+    <div className="space-y-8">
       <PartnerPageHeader title="Project operational views" description={GCE_EXECUTION_ROLE_COPY} />
       {projects.length === 0 ? <EmptyState title="No projects in view" /> : (
         <div className="grid gap-3 sm:grid-cols-2">{projects.map((p) => (
-          <ProjectCard key={String(p.id)} id={String(p.id)} title={String(p.title ?? "Project")} status={String(p.status ?? "")} executionNote={typeof p.gce_execution_role === "string" ? String(p.gce_execution_role) : GCE_EXECUTION_ROLE_COPY} />
+          <ProjectCard key={String(p.id)} id={String(p.id)} title={String(p.title ?? "Project")} status={String(p.status ?? "")} executionNote={typeof p.gce_execution_role === "string" ? formatContractualRole(p.gce_execution_role) : GCE_EXECUTION_ROLE_COPY} />
         ))}</div>
       )}
       <section>
@@ -35,6 +34,6 @@ export default async function Page() {
           ))}</div>
         )}
       </section>
-    </main>
+    </div>
   );
 }

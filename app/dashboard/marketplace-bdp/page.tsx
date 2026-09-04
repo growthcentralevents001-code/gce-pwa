@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   PartnerPageHeader,
-  KpiCard,
   Timeline,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
@@ -22,12 +21,10 @@ import {
   MARKETPLACE_BDP_ROLE_LABEL,
   MBDP_PERSON_MAX_UNITS,
   MBDP_STANDARD_MAX_VENUES,
-  UNATTRIBUTED_SPLIT_COPY,
-  formatMinorInr,
-  mbdpPackageOptionLabel,
-  venueStatusLabel,
+          UNATTRIBUTED_SPLIT_COPY,
+          mbdpPackageOptionLabel,
+          venueStatusLabel,
 } from "@/lib/frontend/marketplace/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -55,7 +52,7 @@ export default async function MarketplaceBdpDashboardPage() {
 
   if (!identity.workspaces.includes("marketplace-bdp") && !bundle?.unit) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader
           title={MARKETPLACE_BDP_ROLE_LABEL}
           description="Sole Marketplace venue onboarding field relationship — venue-attribution based, not city ownership."
@@ -65,19 +62,19 @@ export default async function MarketplaceBdpDashboardPage() {
           description="Apply for a Franchise Unit, or ask Platform Ops if you expect an assignment. Marketplace Affiliate is inactive."
           primaryAction={{ label: "Apply", href: "/marketplace-bdp/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
   if (!bundle?.unit || !bundle.report) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={MARKETPLACE_BDP_ROLE_LABEL} />
         <EmptyState
           title="Start your application"
           primaryAction={{ label: "Apply", href: "/marketplace-bdp/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -137,7 +134,7 @@ export default async function MarketplaceBdpDashboardPage() {
   ];
 
   return (
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}>
+    <div className="space-y-6">
       <PartnerPageHeader
         title="Marketplace BDP overview"
         description="Venue onboarding recommendations, portfolio, and entitlement display. Platform Marketplace Ops final-approves. Settlement remains Finance Ops."
@@ -178,38 +175,7 @@ export default async function MarketplaceBdpDashboardPage() {
         ]}
       />
 
-      <div className="mb-8">
-        <PartnerActionCenter items={actions} />
-      </div>
-
-      <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          label="Active venues"
-          value={`${report.activeVenueCount}`}
-          hint={`Capacity ${report.venueCapacity} / unit`}
-          href="/marketplace-bdp/venues"
-          icon="store"
-        />
-        <KpiCard
-          label="Proposed"
-          value={`${report.proposedAttributions}`}
-          href="/marketplace-bdp/attribution"
-          icon="users"
-        />
-        <KpiCard
-          label="Gross MBDP entitlement"
-          value={formatMinorInr(report.grossMbdpEntitlementMinor)}
-          hint="Backend-calculated · attributed only"
-          href="/marketplace-bdp/entitlements"
-          icon="circle-dollar"
-        />
-        <KpiCard
-          label="Portfolio venues"
-          value={`${venues.length}`}
-          href="/marketplace-bdp/recommendations"
-          icon="target"
-        />
-      </div>
+      <PartnerActionCenter items={actions} />
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
@@ -267,6 +233,6 @@ export default async function MarketplaceBdpDashboardPage() {
           />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

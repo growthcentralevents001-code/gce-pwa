@@ -53,7 +53,7 @@ export default async function CustomerOffersPage({
   const hasMore = nextOffset < total;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
+    <div className="pb-8 lg:pb-0">
       <CxPageHeader
         title="Offers"
         description="Active Offer Events · claim ≠ purchase · claim ≠ revenue."
@@ -119,6 +119,6 @@ export default async function CustomerOffersPage({
           ) : null}
         </>
       )}
-    </main>
+    </div>
   );
 }

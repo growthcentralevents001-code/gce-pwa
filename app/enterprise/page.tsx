@@ -2,8 +2,6 @@ import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { CtaBand } from "@/components/marketing/CtaBand";
-import { GCE_SURFACE } from "@/lib/frontend/design-language";
-import { cn } from "@/lib/utils";
 
 export const metadata = publicMetadata({
   title: "GCE Enterprise",
@@ -21,29 +19,34 @@ export default function EnterpriseLandingPage() {
         primaryCta={{ label: "Talk to us", href: "/contact" }}
         secondaryCta={{ label: "Partner pathways", href: "/for-partners" }}
         compact
+        showBrandMark={false}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <div className="grid gap-4 md:grid-cols-2">
-          {[
-            {
-              t: "What Enterprise is",
-              d: "A vertical for client programmes, Enterprise BDP representation, and structured commercial operating rules under Founder Decisions.",
-            },
-            {
-              t: "What we do not claim",
-              d: "We do not invent case studies, client logos, or promises that GCE physically delivers every workstream. Scope is engagement-specific.",
-            },
-          ].map((item, i) => (
-            <AnimatedSection key={item.t} delay={i * 0.05}>
-              <div className={cn(GCE_SURFACE.card, "h-full rounded-2xl p-6")}>
-                <h2 className="font-body text-lg font-semibold">{item.t}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {item.d}
-                </p>
-              </div>
-            </AnimatedSection>
-          ))}
+      <section className="mx-auto max-w-7xl px-4 pb-10 pt-2 sm:px-6">
+        <div className="grid gap-10 md:grid-cols-12">
+          <AnimatedSection className="md:col-span-7">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              What Enterprise is
+            </p>
+            <h2 className="mt-2 font-body text-xl font-semibold">
+              A vertical for client programmes
+            </h2>
+            <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted-foreground">
+              Enterprise Client organisations, Enterprise BDP representation, and
+              structured commercial operating rules under Founder Decisions.
+              Delivery structure is project-specific.
+            </p>
+          </AnimatedSection>
+          <AnimatedSection className="md:col-span-5" delay={0.05}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              What we do not claim
+            </p>
+            <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted-foreground">
+              We do not invent case studies, client logos, or promises that GCE
+              physically delivers every workstream. Scope is engagement-specific.
+              Interest is an inquiry — not automatic entitlement.
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 

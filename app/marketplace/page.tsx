@@ -4,8 +4,6 @@ import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { CtaBand } from "@/components/marketing/CtaBand";
 import { GCE_SURFACE } from "@/lib/frontend/design-language";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 export const metadata = publicMetadata({
   title: "GCE Marketplace",
@@ -27,78 +25,71 @@ const BUSINESS_TYPES = [
   "Other verified businesses",
 ] as const;
 
+const DISCOVERY = [
+  {
+    t: "Events",
+    d: "Published Marketplace Events from verified venues. Booking continues in the customer journey after you sign in.",
+    href: "/events",
+    action: "Browse Events",
+  },
+  {
+    t: "Offers",
+    d: "Offer Events customers can claim. Claiming is not a purchase and does not create revenue.",
+    href: "/offers",
+    action: "Browse Offers",
+  },
+  {
+    t: "Venues",
+    d: "Active Marketplace Venues with published listings. Onboarding remains approval-based.",
+    href: "/venues",
+    action: "Verified businesses",
+  },
+] as const;
+
 export default function MarketplaceLandingPage() {
   return (
     <>
       <MarketingHero
         headline="GCE Marketplace"
-        description="An open business marketplace where verified venues list Events and Offers, customers discover and engage, and businesses track measurable first-party engagement in their dashboard."
-        primaryCta={{ label: "Explore GCE Marketplace", href: "/events" }}
+        description="Discover published Events and Offers from verified businesses. Booking and claims continue after you sign in — only approved inventory appears here."
+        primaryCta={{ label: "Browse Events", href: "/events" }}
         secondaryCta={{ label: "Browse Offers", href: "/offers" }}
         compact
+        showBrandMark={false}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <div className="grid gap-5 md:grid-cols-2">
-          <AnimatedSection className="md:col-span-2">
-            <div className={`${GCE_SURFACE.card} rounded-2xl p-6`}>
-              <h2 className="font-body text-lg font-semibold">For customers</h2>
-              <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-                Discover published Events and Offers, explore verified
-                businesses, claim Offers (not purchases), and book Events through
-                the customer experience. Only approved published inventory appears
-                in discovery.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/events">Events</Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/offers">Offers</Link>
-                </Button>
-                <Button asChild size="sm" variant="outline">
-                  <Link href="/venues">Verified businesses</Link>
-                </Button>
-              </div>
-            </div>
-          </AnimatedSection>
-
-          {[
-            {
-              t: "Events",
-              d: "Curated Marketplace Events from verified venues. Booking uses the canonical customer journey.",
-              href: "/events",
-            },
-            {
-              t: "Offers",
-              d: "Offer Events customers can claim — claiming is not a purchase and does not create revenue.",
-              href: "/offers",
-            },
-            {
-              t: "Verified businesses",
-              d: "Active Marketplace Venues with published listings. Onboarding remains approval-based.",
-              href: "/venues",
-            },
-            {
-              t: "Measurable engagement",
-              d: "Venue partners see backend-derived views, bookings, and claims in their dashboard — not invented metrics.",
-              href: "/for-partners",
-            },
-          ].map((item, i) => (
-            <AnimatedSection key={item.t} delay={i * 0.05}>
-              <Link
-                href={item.href}
-                className={cn(
-                  GCE_SURFACE.cardInteractive,
-                  "block h-full rounded-2xl p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                )}
-              >
+      <section className="mx-auto max-w-7xl px-4 pb-10 pt-2 sm:px-6">
+        <ol className="grid gap-8 md:grid-cols-3">
+          {DISCOVERY.map((item, i) => (
+            <li key={item.href} className="border-t border-border pt-5">
+              <AnimatedSection delay={i * 0.04}>
                 <h2 className="font-body text-lg font-semibold">{item.t}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{item.d}</p>
-              </Link>
-            </AnimatedSection>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {item.d}
+                </p>
+                <Link
+                  href={item.href}
+                  className="mt-3 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  {item.action}
+                </Link>
+              </AnimatedSection>
+            </li>
           ))}
-        </div>
+        </ol>
+
+        <AnimatedSection className="mt-12">
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            Venue partners see backend-derived views, bookings, and claims in
+            their workspace — not invented metrics.{" "}
+            <Link
+              href="/for-partners"
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              Partner pathways
+            </Link>
+          </p>
+        </AnimatedSection>
       </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-8 sm:px-6">

@@ -19,11 +19,6 @@ import {
   EBDP_ENTITLEMENT_COPY,
   ENTERPRISE_BDP_ROLE_LABEL,
 } from "@/lib/frontend/enterprise/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
-import { PartnerShell } from "@/components/app-shell/PartnerShell";
-import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
-import { workspacesForAssignments } from "@/lib/architecture/workspace/registry";
-import { INACTIVE_FEATURE_FLAGS } from "@/lib/architecture/types";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -43,37 +38,15 @@ export default async function EnterpriseBdpDashboardPage() {
     email: user.email,
     requestedWorkspace: "enterprise-bdp",
   });
-  const entitlements = await resolveActiveEntitlements(supabase, user.id);
-  const allowed = workspacesForAssignments(entitlements.activeAssignments);
   const admin = createPrivilegedSupabaseClient();
   const bundle = await loadEnterpriseBdpBundle(supabase, admin, user.id).catch(
     () => null
   );
 
-  const shell = (children: React.ReactNode) => (
-    <PartnerShell
-      forcedWorkspaceKey="enterprise-bdp"
-      allowedWorkspaces={
-        allowed.includes("enterprise-bdp")
-          ? allowed
-          : [...allowed, "enterprise-bdp"]
-      }
-      userEmail={user.email}
-      displayName={
-        (user.user_metadata?.full_name as string | undefined) ||
-        user.email ||
-        null
-      }
-      roleLabel={ENTERPRISE_BDP_ROLE_LABEL}
-      inactiveFeatureFlags={[...INACTIVE_FEATURE_FLAGS]}
-    >
-      {children}
-    </PartnerShell>
-  );
 
   if (!identity.workspaces.includes("enterprise-bdp") && !bundle?.pack) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader
           title={ENTERPRISE_BDP_ROLE_LABEL}
           description="Client-based attribution — no territory ownership. Entitlement is 25% of eligible GCE platform commission."
@@ -83,19 +56,19 @@ export default async function EnterpriseBdpDashboardPage() {
           description="Apply for a Franchise Pack. Platform activates packs — roles are never self-granted."
           primaryAction={{ label: "Apply", href: "/enterprise-bdp/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
   if (!bundle?.pack || !bundle.report) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={ENTERPRISE_BDP_ROLE_LABEL} />
         <EmptyState
           title="Start your application"
           primaryAction={{ label: "Apply", href: "/enterprise-bdp/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -160,10 +133,8 @@ export default async function EnterpriseBdpDashboardPage() {
       : []),
   ];
 
-  return shell(
-    <main
-      className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}
-    >
+  return (
+    <div className="space-y-6">
       <PartnerPageHeader
         title={ENTERPRISE_BDP_ROLE_LABEL}
         description="Client-based attribution. No city or zone ownership."
@@ -240,6 +211,6 @@ export default async function EnterpriseBdpDashboardPage() {
           at: typeof o.created_at === "string" ? o.created_at : null,
         }))}
       />
-    </main>
+    </div>
   );
 }

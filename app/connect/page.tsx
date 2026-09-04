@@ -58,10 +58,11 @@ export default async function ConnectLandingPage() {
         primaryCta={{ label: "View memberships", href: "/memberships" }}
         secondaryCta={{ label: "How Circles work", href: "/how-membership-works" }}
         compact
+        showBrandMark={false}
         seamless
       />
 
-      <section className="mx-auto max-w-7xl px-4 pb-6 pt-4 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pb-6 pt-0 sm:px-6">
         <div className="grid gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-[1.2fr_1fr_1fr]">
           {FEATURES.map((item, i) => (
             <AnimatedSection key={item.t} delay={i * 0.05}>

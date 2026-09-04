@@ -4,7 +4,6 @@ import { EmptyState } from "@/components/states/EmptyState";
 import { Button } from "@/components/ui/button";
 import {
   PartnerPageHeader,
-  KpiCard,
   Timeline,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
@@ -20,14 +19,11 @@ import { loadConnectBdpBundle } from "@/lib/frontend/connect-bdp/reads";
 import {
   applicationStatusLabel,
   attributionStatusLabel,
-  formatCommissionRateLabel,
-  formatMinorInr,
   maintenanceStatusLabel,
   packageOptionLabel,
   CONNECT_BDP_ROLE_LABEL,
   CONNECT_BDP_CIRCLES_PER_UNIT,
 } from "@/lib/frontend/partner/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -55,7 +51,7 @@ export default async function ConnectBdpDashboardPage() {
 
   if (!identity.workspaces.includes("connect-bdp") && !bundle?.unit) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader
           title={CONNECT_BDP_ROLE_LABEL}
           description="Independent commercial partner workspace for Connect Franchise Units."
@@ -69,20 +65,20 @@ export default async function ConnectBdpDashboardPage() {
             href: "/dashboard/personal",
           }}
         />
-      </main>
+      </div>
     );
   }
 
   if (!bundle?.unit || !bundle.report) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={CONNECT_BDP_ROLE_LABEL} />
         <EmptyState
           title="Start your application"
           description="Create a Connect BDP Franchise Unit application to unlock the partner dashboard."
           primaryAction={{ label: "Apply", href: "/connect-bdp/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -197,7 +193,7 @@ export default async function ConnectBdpDashboardPage() {
   ];
 
   return (
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}>
+    <div className="space-y-6">
       <PartnerPageHeader
         title="Connect BDP overview"
         description="Franchise Unit operations — Circles, attribution, targets, and commercial read-outs. Settlement and payout remain Finance Ops."
@@ -238,41 +234,20 @@ export default async function ConnectBdpDashboardPage() {
             value: `${report.activeCirclePortfolio} / ${CONNECT_BDP_CIRCLES_PER_UNIT}`,
             tone: "neutral",
           },
+          {
+            id: "credited",
+            label: "Credited Circles",
+            value: `${report.creditedCircles} / ${report.targetCircles}`,
+          },
+          {
+            id: "members",
+            label: "Attributed members",
+            value: String(report.attributedMemberships),
+          },
         ]}
       />
 
-      <div className="mb-8">
-        <PartnerActionCenter items={actions} />
-      </div>
-
-      <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          label="Credited Circles"
-          value={`${report.creditedCircles}`}
-          hint={`Target ${report.targetCircles} in ${report.targetMonths} months`}
-          href="/connect-bdp/targets"
-          icon="target"
-        />
-        <KpiCard
-          label="Attributed members"
-          value={`${report.attributedMemberships}`}
-          href="/connect-bdp/members"
-          icon="users"
-        />
-        <KpiCard
-          label="Gross commission"
-          value={formatMinorInr(report.grossEligibleCommissionMinor)}
-          hint={`${formatCommissionRateLabel()} of attributed eligible revenue`}
-          href="/connect-bdp/entitlements"
-          icon="circle-dollar"
-        />
-        <KpiCard
-          label="Active Circles"
-          value={`${report.activeCirclePortfolio}`}
-          href="/connect-bdp/circles"
-          icon="git-branch"
-        />
-      </div>
+      <PartnerActionCenter items={actions} />
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
@@ -327,6 +302,6 @@ export default async function ConnectBdpDashboardPage() {
           <Timeline items={timeline} />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

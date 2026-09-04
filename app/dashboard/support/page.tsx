@@ -2,15 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
-import { PartnerShell } from "@/components/app-shell/PartnerShell";
 import { EmptyState } from "@/components/states/EmptyState";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
 import { workspacesForAssignments } from "@/lib/architecture/workspace/registry";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
-import { INACTIVE_FEATURE_FLAGS } from "@/lib/architecture/types";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -32,37 +29,21 @@ export default async function SupportDashboardPage() {
     actorHasOpsAdminPermission(assignments, "ops.support") ||
     allowed.includes("support");
 
-  const shell = (children: React.ReactNode) => (
-    <PartnerShell
-      forcedWorkspaceKey="support"
-      allowedWorkspaces={allowed}
-      userEmail={user.email}
-      displayName={
-        (user.user_metadata?.full_name as string | undefined) ||
-        user.email ||
-        null
-      }
-      roleLabel="Support"
-      inactiveFeatureFlags={[...INACTIVE_FEATURE_FLAGS]}
-    >
-      {children}
-    </PartnerShell>
-  );
 
   if (!can) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PageHeader title="Support" />
         <EmptyState
           title="Support access required"
           description="Requires support_admin assignment (or ops.support)."
         />
-      </main>
+      </div>
     );
   }
 
-  return shell(
-    <main className={GCE_SPACING.section}>
+  return (
+    <div className="space-y-6">
       <PageHeader
         title="Support"
         description="Case queue and signal promotion. Cannot bypass protected business state machines. No fake SLA."
@@ -86,6 +67,6 @@ export default async function SupportDashboardPage() {
       <Button asChild variant="outline" size="sm">
         <Link href="/ops/support">Open Support Ops</Link>
       </Button>
-    </main>
+    </div>
   );
 }

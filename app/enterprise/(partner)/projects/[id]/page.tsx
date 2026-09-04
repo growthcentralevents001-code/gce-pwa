@@ -6,8 +6,12 @@ import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { loadEnterpriseClientBundle } from "@/lib/frontend/enterprise/reads";
-import { GCE_EXECUTION_ROLE_COPY, projectStatusLabel } from "@/lib/frontend/enterprise/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
+import {
+  GCE_EXECUTION_ROLE_COPY,
+  formatContractualRole,
+  milestoneStatusLabel,
+  projectStatusLabel,
+} from "@/lib/frontend/enterprise/format";
 
 export const metadata = { robots: { index: false, follow: false }, title: "Project Command Center · GCE Enterprise" };
 
@@ -28,10 +32,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     return status === "overdue" || status === "blocked" || status === "submitted";
   });
   return (
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8 ${GCE_SPACING.section}`}>
+    <div className="space-y-8">
       <PartnerPageHeader
         title={String(project.title ?? "Project")}
-        description={typeof project.gce_execution_role === "string" ? `Contractual role: ${project.gce_execution_role}` : GCE_EXECUTION_ROLE_COPY}
+        description={
+          typeof project.gce_execution_role === "string"
+            ? `Contractual role: ${formatContractualRole(project.gce_execution_role)}`
+            : GCE_EXECUTION_ROLE_COPY
+        }
       />
       <PartnerStatusStrip
         items={[
@@ -45,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           ...overdue.slice(0, 5).map((m) => ({
             id: String(m.id),
             title: String(m.name ?? "Milestone needs attention"),
-            description: String(m.status ?? "").replaceAll("_", " "),
+            description: milestoneStatusLabel(String(m.status ?? "")),
             severity: "warning" as const,
           })),
           {
@@ -110,6 +118,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </div>
         <ChangeOrderForm projectId={id} />
       </section>
-    </main>
+    </div>
   );
 }

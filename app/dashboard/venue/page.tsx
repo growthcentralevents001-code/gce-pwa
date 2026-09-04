@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   PartnerPageHeader,
-  KpiCard,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
 import { PartnerActionCenter } from "@/components/partner/PartnerActionCenter";
@@ -22,7 +21,6 @@ import {
   venueStatusLabel,
   OFFER_CLAIM_VALIDITY_HOURS,
 } from "@/lib/frontend/marketplace/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -50,7 +48,7 @@ export default async function VenueDashboardPage() {
 
   if (!identity.workspaces.includes("venue") && !bundle?.venue) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader
           title={VENUE_PARTNER_ROLE_LABEL}
           description="Venue organisation workspace for Marketplace Events, Offers, bookings, and check-in."
@@ -60,20 +58,20 @@ export default async function VenueDashboardPage() {
           description="Complete Venue onboarding or ask Platform Ops if you expect a venue_representative assignment."
           primaryAction={{ label: "Apply", href: "/venue/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
   if (!bundle?.venue || !bundle.report) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={VENUE_PARTNER_ROLE_LABEL} />
         <EmptyState
           title="No Marketplace Venue linked"
           description="Link or apply for a Venue organisation to unlock operational tools."
           primaryAction={{ label: "Apply", href: "/venue/apply" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -114,7 +112,7 @@ export default async function VenueDashboardPage() {
   ];
 
   return (
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}>
+    <div className="space-y-6">
       <PartnerPageHeader
         title={report.displayName}
         description={`${report.city} · Marketplace Venue operations. Settlement/payout remain Finance Ops.`}
@@ -151,19 +149,21 @@ export default async function VenueDashboardPage() {
             value: String(engagement?.totalBookings ?? bookings.length),
             tone: "neutral",
           },
+          {
+            id: "claims",
+            label: "Claims",
+            value: String(engagement?.totalClaims ?? claims.length),
+            tone: "neutral",
+          },
         ]}
       />
 
-      <div className="mb-8">
-        <PartnerActionCenter items={actions} />
-      </div>
+      <PartnerActionCenter items={actions} />
 
-      <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Profile views" value={`${engagement?.venueViews ?? 0}`} href="/venue/performance" icon="building" />
-        <KpiCard label="Event views" value={`${engagement?.eventViews ?? 0}`} href="/venue/performance" icon="calendar" />
-        <KpiCard label="Offer views" value={`${engagement?.offerViews ?? 0}`} href="/venue/performance" icon="store" />
-        <KpiCard label="Claims" value={`${engagement?.totalClaims ?? claims.length}`} href="/venue/redemptions" icon="ticket-check" />
-      </div>
+      <p className="mb-6 text-sm text-muted-foreground">
+        Views (backend): profile {engagement?.venueViews ?? 0} · events{" "}
+        {engagement?.eventViews ?? 0} · offers {engagement?.offerViews ?? 0}.
+      </p>
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
@@ -244,6 +244,6 @@ export default async function VenueDashboardPage() {
         </div>
       </div>
       <p className="sr-only">Venue id {String(venue.id)}</p>
-    </main>
+    </div>
   );
 }

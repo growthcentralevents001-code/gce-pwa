@@ -17,8 +17,6 @@ import { getCurrentIdentity } from "@/lib/architecture/identity/current";
 import { actorHasFinancePermission } from "@/lib/architecture/finance/permissions";
 import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
 import { workspacesForAssignments } from "@/lib/architecture/workspace/registry";
-import { PartnerShell } from "@/components/app-shell/PartnerShell";
-import { INACTIVE_FEATURE_FLAGS } from "@/lib/architecture/types";
 import { loadFinanceBundle } from "@/lib/frontend/finance/reads";
 import {
   FINANCE_ROLE_LABEL,
@@ -28,7 +26,6 @@ import {
   formatMinorInr,
   moneyFlagIsOff,
 } from "@/lib/frontend/finance/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -65,22 +62,6 @@ export default async function FinanceDashboardPage() {
     requestedWorkspace: "finance",
   });
 
-  const shell = (children: React.ReactNode) => (
-    <PartnerShell
-      forcedWorkspaceKey="finance"
-      allowedWorkspaces={allowed}
-      userEmail={user.email}
-      displayName={
-        (user.user_metadata?.full_name as string | undefined) ||
-        user.email ||
-        null
-      }
-      roleLabel={FINANCE_ROLE_LABEL}
-      inactiveFeatureFlags={[...INACTIVE_FEATURE_FLAGS]}
-    >
-      {children}
-    </PartnerShell>
-  );
 
   if (!canRead && !identity.workspaces.includes("finance")) {
     redirect(
@@ -94,11 +75,11 @@ export default async function FinanceDashboardPage() {
   const admin = createPrivilegedSupabaseClient();
   const bundle = await loadFinanceBundle(admin).catch(() => null);
   if (!bundle?.report) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={FINANCE_ROLE_LABEL} />
         <EmptyState title="Finance report unavailable" />
-      </main>
+      </div>
     );
   }
 
@@ -153,10 +134,8 @@ export default async function FinanceDashboardPage() {
       : []),
   ];
 
-  return shell(
-    <main
-      className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}
-    >
+  return (
+    <div className="space-y-6">
       <PartnerPageHeader
         title={FINANCE_ROLE_LABEL}
         description={`${PAYMENT_VS_REVENUE_COPY} ${report.note}`}
@@ -186,38 +165,15 @@ export default async function FinanceDashboardPage() {
             value: "Payment ≠ revenue",
             tone: "info",
           },
+          {
+            id: "holds",
+            label: "Active holds",
+            value: String(report.activeHolds),
+            tone: report.activeHolds > 0 ? "warning" : "neutral",
+          },
         ]}
       />
-      <div className="mb-6">
-        <PartnerActionCenter items={actions} />
-      </div>
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard
-          label="Recognised components"
-          value={String(report.recognisedRevenueComponents)}
-          icon="circle-dollar"
-          href="/finance/revenue"
-        />
-        <KpiCard
-          label="Pending entitlements"
-          value={String(report.pendingEntitlements)}
-          icon="users"
-          href="/finance/entitlements"
-        />
-        <KpiCard
-          label="Active holds"
-          value={String(report.activeHolds)}
-          icon="shield"
-          href="/finance/holds"
-        />
-        <KpiCard
-          label="Payout-ready"
-          value={String(report.payoutReadyItems)}
-          icon="target"
-          href="/finance/payout-readiness"
-          hint="Execution gated"
-        />
-      </div>
+      <PartnerActionCenter items={actions} />
       <div className="mb-6">
         <PartnerCommercialSummary
           title="Entitlement totals (backend)"
@@ -253,7 +209,7 @@ export default async function FinanceDashboardPage() {
           footerNote="Totals from stakeholder_entitlements. Not client-side commission calculation."
         />
       </div>
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Settlement batches"
           value={String(report.settlementBatches)}
@@ -315,6 +271,6 @@ export default async function FinanceDashboardPage() {
           },
         ]}
       />
-    </main>
+    </div>
   );
 }

@@ -60,7 +60,7 @@ export default async function CustomerEventsPage({
   const hasMore = nextOffset < total;
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-10">
+    <div className="pb-8 lg:pb-0">
       <CxPageHeader
         title="Events"
         description="Published Marketplace inventory · filters use server discovery."
@@ -130,6 +130,6 @@ export default async function CustomerEventsPage({
           ) : null}
         </>
       )}
-    </main>
+    </div>
   );
 }

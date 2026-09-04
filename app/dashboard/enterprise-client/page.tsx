@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { CircleDollarSign, Scale, Target } from "lucide-react";
 import {
   PartnerPageHeader,
-  KpiCard,
   Timeline,
 } from "@/components/partner";
 import { PartnerStatusStrip } from "@/components/partner/PartnerStatusStrip";
@@ -22,11 +21,6 @@ import {
   GCE_EXECUTION_ROLE_COPY,
   ORG_VS_REP_COPY,
 } from "@/lib/frontend/enterprise/format";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
-import { PartnerShell } from "@/components/app-shell/PartnerShell";
-import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEntitlements";
-import { workspacesForAssignments } from "@/lib/architecture/workspace/registry";
-import { INACTIVE_FEATURE_FLAGS } from "@/lib/architecture/types";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -46,38 +40,15 @@ export default async function EnterpriseClientDashboardPage() {
     email: user.email,
     requestedWorkspace: "enterprise-client",
   });
-  const entitlements = await resolveActiveEntitlements(supabase, user.id);
-  const allowed = workspacesForAssignments(entitlements.activeAssignments);
-
   const admin = createPrivilegedSupabaseClient();
   const bundle = await loadEnterpriseClientBundle(supabase, admin, user.id).catch(
     () => null
   );
 
-  const shell = (children: React.ReactNode) => (
-    <PartnerShell
-      forcedWorkspaceKey="enterprise-client"
-      allowedWorkspaces={
-        allowed.includes("enterprise-client")
-          ? allowed
-          : [...allowed, "enterprise-client"]
-      }
-      userEmail={user.email}
-      displayName={
-        (user.user_metadata?.full_name as string | undefined) ||
-        user.email ||
-        null
-      }
-      roleLabel="Enterprise Client Representative"
-      inactiveFeatureFlags={[...INACTIVE_FEATURE_FLAGS]}
-    >
-      {children}
-    </PartnerShell>
-  );
 
   if (!identity.workspaces.includes("enterprise-client") && !bundle?.client) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader
           title={ENTERPRISE_CLIENT_ROLE_LABEL}
           description={ORG_VS_REP_COPY}
@@ -87,20 +58,20 @@ export default async function EnterpriseClientDashboardPage() {
           description="Ask Platform Ops to link your representative assignment, or start an Enterprise enquiry."
           primaryAction={{ label: "Enterprise signup", href: "/enterprise/signup" }}
         />
-      </main>
+      </div>
     );
   }
 
   if (!bundle?.client || !bundle.report) {
-    return shell(
-      <main className="mx-auto max-w-3xl px-4 py-10">
+    return (
+      <div className="mx-auto max-w-3xl">
         <PartnerPageHeader title={ENTERPRISE_CLIENT_ROLE_LABEL} />
         <EmptyState
           title="Organisation profile pending"
           description="Your representative account is active, but no client organisation is linked yet."
           primaryAction={{ label: "Signup", href: "/enterprise/signup" }}
         />
-      </main>
+      </div>
     );
   }
 
@@ -165,8 +136,8 @@ export default async function EnterpriseClientDashboardPage() {
       : []),
   ];
 
-  return shell(
-    <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 ${GCE_SPACING.section}`}>
+  return (
+    <div className="space-y-6">
       <PartnerPageHeader
         title={report.displayName}
         description={`${ENTERPRISE_CLIENT_ROLE_LABEL} · ${ORG_VS_REP_COPY}`}
@@ -195,41 +166,25 @@ export default async function EnterpriseClientDashboardPage() {
             value: "Client representative",
             tone: "info",
           },
+          {
+            id: "projects",
+            label: "Projects",
+            value: String(report.projects),
+          },
+          {
+            id: "milestones",
+            label: "Milestones due",
+            value: String(report.milestonesDue),
+            tone: report.milestonesDue > 0 ? "warning" : "neutral",
+          },
         ]}
       />
-      <div className="mb-6">
-        <PartnerActionCenter items={actions} />
-      </div>
+      <PartnerActionCenter items={actions} />
       <EnterpriseRelationshipCard
         organisationName={report.displayName}
         representativeNote={ORG_VS_REP_COPY}
-        className="mb-6"
       />
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard
-          label="Opportunities"
-          value={String(report.opportunities)}
-          icon="target"
-        />
-        <KpiCard
-          label="Quotes awaiting"
-          value={String(report.quotesAwaitingAcceptance)}
-          icon="circle-dollar"
-        />
-        <KpiCard
-          label="Projects"
-          value={String(report.projects)}
-          icon="briefcase"
-        />
-        <KpiCard
-          label="Milestones due"
-          value={String(report.milestonesDue)}
-          icon="file-check"
-        />
-      </div>
-      <div className="mb-6 grid gap-4 lg:grid-cols-2">
-        <PartnerPipelineList title="Opportunity stages" stages={stages} />
-      </div>
+      <PartnerPipelineList title="Opportunity stages" stages={stages} />
       <p className="mb-6 text-xs text-muted-foreground">{GCE_EXECUTION_ROLE_COPY}</p>
       <FeatureGated
         title="Representative management"
@@ -282,6 +237,6 @@ export default async function EnterpriseClientDashboardPage() {
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

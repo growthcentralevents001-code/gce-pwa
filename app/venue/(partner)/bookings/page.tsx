@@ -28,6 +28,9 @@ export default async function VenueBookingsPage() {
     eventId: String(b.event_id ?? "").slice(0, 8),
     qty: Number(b.quantity ?? 0),
     status: String(b.status ?? ""),
+    ticketsIssued: Number(b.ticketsIssued ?? 0),
+    ticketsCheckedIn: Number(b.ticketsCheckedIn ?? 0),
+    ticketsCancelled: Number(b.ticketsCancelled ?? 0),
     createdAt: b.created_at ? String(b.created_at) : null,
   }));
   return (
@@ -40,6 +43,7 @@ export default async function VenueBookingsPage() {
           { id: "id", header: "Booking", cell: (r) => r.id.slice(0, 8) },
           { id: "event", header: "Event", cell: (r) => r.eventId },
           { id: "qty", header: "Qty", cell: (r) => String(r.qty) },
+          { id: "tickets", header: "Tickets", cell: (r) => `${r.ticketsCheckedIn}/${r.qty} in`, hideOnMobile: true },
           { id: "status", header: "Status", cell: (r) => <StatusBadge label={r.status.replace(/_/g, " ")} /> },
           { id: "created", header: "Created", cell: (r) => (r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-IN") : "—") },
         ]}

@@ -157,4 +157,51 @@ test.describe("venue check-in", () => {
     ).toBeGreaterThanOrEqual(400);
     await venueCtx.close();
   });
+
+  test("cancelled booking cannot be checked in", async ({ browser }) => {
+    test.skip(!existsSync(authStatePath("customer")), "no customer");
+    test.skip(!existsSync(authStatePath("venue")), "no venue");
+    const customerCtx = await browser.newContext({
+      storageState: authStatePath("customer"),
+    });
+    const customerPage = await customerCtx.newPage();
+    const created = await customerAction(customerPage, {
+      action: "create_booking",
+      eventId: ids.mkt_event_checkin,
+      quantity: 1,
+      acceptPolicyVersion: "fd039-48h-default-v1",
+      idempotencyKey: `e2e-cancel-checkin-${Date.now()}`,
+    });
+    expect(created.status).toBeLessThan(300);
+    const bookingId = created.json.booking?.id as string;
+    const confirmed = await customerAction(customerPage, {
+      action: "confirm_booking_sandbox",
+      bookingId,
+    });
+    expect(confirmed.status).toBeLessThan(300);
+    const cancelTicketId = confirmed.json.tickets?.[0]?.id as string;
+    const cancelToken = confirmed.json.qrTokens?.[0] as string;
+    const cancelled = await customerAction(customerPage, {
+      action: "cancel_booking",
+      bookingId,
+      reason: "e2e operational cancel before check-in",
+    });
+    expect(cancelled.status).toBeLessThan(300);
+    await customerCtx.close();
+
+    const venueCtx = await browser.newContext({
+      storageState: authStatePath("venue"),
+    });
+    const venuePage = await venueCtx.newPage();
+    const res = await customerAction(venuePage, {
+      action: "check_in_ticket",
+      ticketId: cancelTicketId,
+      presentedToken: cancelToken,
+    });
+    expect(
+      res.status,
+      "Cancelled booking ticket must not check in"
+    ).toBeGreaterThanOrEqual(400);
+    await venueCtx.close();
+  });
 });

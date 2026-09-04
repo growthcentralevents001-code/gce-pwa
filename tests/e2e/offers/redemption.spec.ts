@@ -89,4 +89,67 @@ test.describe("offer claim → redemption", () => {
     );
     await ctx.close();
   });
+
+  test("invalid redemption token is rejected", async ({ browser }) => {
+    test.skip(!existsSync(authStatePath("customer-b")), "no customer B");
+    test.skip(!existsSync(authStatePath("venue")), "no venue");
+    await resetFixtureOfferClaims(ids.mkt_offer);
+    const customerCtx = await browser.newContext({
+      storageState: authStatePath("customer-b"),
+    });
+    const customerPage = await customerCtx.newPage();
+    const claimed = await customerAction(customerPage, {
+      action: "claim_offer",
+      offerEventId: ids.mkt_offer,
+    });
+    expect(claimed.status).toBeLessThan(300);
+    const claimId = claimed.json.claim?.id as string;
+    await customerCtx.close();
+
+    const venueCtx = await browser.newContext({
+      storageState: authStatePath("venue"),
+    });
+    const venuePage = await venueCtx.newPage();
+    const bad = await customerAction(venuePage, {
+      action: "redeem_offer",
+      claimId,
+      presentedToken: "wrong-claim-token-value",
+    });
+    expect(bad.status).toBeGreaterThanOrEqual(400);
+    await venueCtx.close();
+  });
+
+  test("venue A cannot redeem venue B claim (scope)", async ({ browser }) => {
+    test.skip(!existsSync(authStatePath("customer-b")), "no customer B");
+    test.skip(!existsSync(authStatePath("venue")), "no venue");
+    test.skip(!ids.mkt_offer_expired, "no separate venue B offer fixture");
+    await resetFixtureOfferClaims(ids.mkt_offer_expired);
+    const customerCtx = await browser.newContext({
+      storageState: authStatePath("customer-b"),
+    });
+    const customerPage = await customerCtx.newPage();
+    const claimed = await customerAction(customerPage, {
+      action: "claim_offer",
+      offerEventId: ids.mkt_offer_expired,
+    });
+    test.skip(claimed.status >= 300, "could not claim venue B offer");
+    const claimId = claimed.json.claim?.id as string;
+    const rawToken = claimed.json.rawClaimToken as string;
+    await customerCtx.close();
+
+    const venueCtx = await browser.newContext({
+      storageState: authStatePath("venue"),
+    });
+    const venuePage = await venueCtx.newPage();
+    const res = await customerAction(venuePage, {
+      action: "redeem_offer",
+      claimId,
+      presentedToken: rawToken,
+    });
+    expect(
+      res.status,
+      "Venue A must not redeem Venue B claims (scope IDOR)"
+    ).toBeGreaterThanOrEqual(400);
+    await venueCtx.close();
+  });
 });

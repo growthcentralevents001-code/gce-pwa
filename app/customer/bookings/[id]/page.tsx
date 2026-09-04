@@ -3,13 +3,14 @@ import { notFound, redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { BookingActions } from "@/components/customer/BookingActions";
 import { BookingQrReveal } from "@/components/customer/BookingQrReveal";
+import { BookingTimeline } from "@/components/customer/BookingTimeline";
 import { GlassPanel } from "@/components/marketing/GlassPanel";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { FeatureGated } from "@/components/states/FeatureGated";
 import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
-import { getMyBookings } from "@/lib/architecture/customer-cx";
+import { getMyBookings, getMyTickets } from "@/lib/architecture/customer-cx";
 import {
   bookingStatusTone,
   formatInrMinor,
@@ -40,13 +41,26 @@ export default async function CustomerBookingDetailPage({
 
   const admin = createPrivilegedSupabaseClient();
   let bookings: Awaited<ReturnType<typeof getMyBookings>> = [];
+  let tickets: Awaited<ReturnType<typeof getMyTickets>> = [];
   try {
-    bookings = await getMyBookings(admin, user.id);
+    [bookings, tickets] = await Promise.all([
+      getMyBookings(admin, user.id),
+      getMyTickets(admin, user.id),
+    ]);
   } catch {
     bookings = [];
+    tickets = [];
   }
   const booking = bookings.find((b) => b.id === id);
   if (!booking) notFound();
+  const bookingTickets = tickets.filter((t) => t.booking_id === id);
+  const firstTicket = bookingTickets[0];
+  const checkedInAt =
+    bookingTickets.find((t) => t.checked_in_at)?.checked_in_at ?? null;
+  const metadata =
+    typeof booking.metadata === "object" && booking.metadata
+      ? (booking.metadata as Record<string, unknown>)
+      : {};
 
   const ev = Array.isArray(booking.marketplace_events)
     ? booking.marketplace_events[0]
@@ -114,6 +128,28 @@ export default async function CustomerBookingDetailPage({
             <Link href="/customer">Customer home</Link>
           </Button>
         </div>
+      </div>
+
+      <div className="mt-8 border-t border-border pt-6">
+        <h3 className="mb-3 text-sm font-semibold">Booking status</h3>
+        <BookingTimeline
+          booking={{
+            status: booking.status,
+            bookedAt: booking.created_at ? String(booking.created_at) : null,
+            confirmedAt:
+              isConfirmed && booking.updated_at
+                ? String(booking.updated_at)
+                : null,
+            ticketIssuedAt: firstTicket?.issued_at
+              ? String(firstTicket.issued_at)
+              : null,
+            checkedInAt: checkedInAt ? String(checkedInAt) : null,
+            cancelledAt:
+              typeof metadata.cancelledAt === "string"
+                ? metadata.cancelledAt
+                : null,
+          }}
+        />
       </div>
 
       <div className="mt-8 border-t border-border pt-6">

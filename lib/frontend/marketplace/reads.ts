@@ -226,6 +226,10 @@ export async function loadVenueBundle(
     String(e.id)
   );
   let bookings: Record<string, unknown>[] = [];
+  const ticketSummaryByBooking = new Map<
+    string,
+    { issued: number; checkedIn: number; cancelled: number }
+  >();
   if (eventIds.length > 0) {
     const { data } = await adminClient
       .from("marketplace_bookings")
@@ -234,6 +238,26 @@ export async function loadVenueBundle(
       .order("created_at", { ascending: false })
       .limit(50);
     bookings = (data as Record<string, unknown>[]) ?? [];
+    const bookingIds = bookings.map((b) => String(b.id));
+    if (bookingIds.length > 0) {
+      const { data: ticketRows } = await adminClient
+        .from("marketplace_tickets")
+        .select("booking_id,status")
+        .in("booking_id", bookingIds);
+      for (const t of ticketRows ?? []) {
+        const bid = String(t.booking_id);
+        const summary = ticketSummaryByBooking.get(bid) ?? {
+          issued: 0,
+          checkedIn: 0,
+          cancelled: 0,
+        };
+        const st = String(t.status ?? "");
+        if (st === "checked_in") summary.checkedIn += 1;
+        else if (st === "cancelled" || st === "voided") summary.cancelled += 1;
+        else if (st === "issued") summary.issued += 1;
+        ticketSummaryByBooking.set(bid, summary);
+      }
+    }
   }
 
   const offerIds = ((offers as Record<string, unknown>[]) ?? []).map((o) =>
@@ -295,7 +319,15 @@ export async function loadVenueBundle(
     insights,
     events: (events as Record<string, unknown>[]) ?? [],
     offers: (offers as Record<string, unknown>[]) ?? [],
-    bookings,
+    bookings: bookings.map((b) => {
+      const summary = ticketSummaryByBooking.get(String(b.id));
+      return {
+        ...b,
+        ticketsIssued: summary?.issued ?? 0,
+        ticketsCheckedIn: summary?.checkedIn ?? 0,
+        ticketsCancelled: summary?.cancelled ?? 0,
+      };
+    }),
     claims,
     entitlements: (entitlements as Record<string, unknown>[]) ?? [],
   };

@@ -133,10 +133,10 @@ BEGIN
     offer_id, buyer, encode(digest(tok, 'sha256'), 'hex'), 'claimed', now(), now() + interval '72 hours'
   ) RETURNING id INTO claim_id;
 
-  red := public.gce_marketplace_redeem_claim(claim_id, encode(digest(tok||'-red', 'sha256'), 'hex'), u1, false, null);
+  red := public.gce_marketplace_redeem_claim(claim_id, encode(digest(tok, 'sha256'), 'hex'), u1, false, null);
 
   BEGIN
-    PERFORM public.gce_marketplace_redeem_claim(claim_id, encode(digest(tok||'-red2', 'sha256'), 'hex'), u1, false, null);
+    PERFORM public.gce_marketplace_redeem_claim(claim_id, encode(digest(tok||'-wrong', 'sha256'), 'hex'), u1, false, null);
     RAISE EXCEPTION 'EXPECTED_REDEMPTION_REPLAY_FAIL';
   EXCEPTION WHEN others THEN
     IF SQLERRM LIKE '%EXPECTED_REDEMPTION_REPLAY_FAIL%' THEN RAISE; END IF;

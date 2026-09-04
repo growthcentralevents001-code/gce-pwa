@@ -22,6 +22,7 @@ docs/
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
 ├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── FEATURE_COMPLETION_LEDGER.md
 ├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
@@ -73,6 +74,7 @@ Older `docs/frontend/FINAL_GCE_INFORMATION_ARCHITECTURE.md` and related Batch 0�
 | Document | Description |
 |----------|-------------|
 | `MASTER_IMPLEMENTATION_ROADMAP.md` | Phase 1–18 status, dependencies, exit criteria |
+| `FEATURE_COMPLETION_LEDGER.md` | Verified feature completion index + delta-audit evidence map |
 | `OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Founder/Legal/Tax/Privacy validation items only |
 | `IMPLEMENTATION_BACKLOG.md` | P0–Future implementation epics |
 | `phase-2/PHASE_2_TECHNICAL_ARCHITECTURE_MASTER_PLAN.md` | Phase 2 technical blueprint |

@@ -12,6 +12,7 @@ docs/
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
 ├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── FEATURE_COMPLETION_LEDGER.md
 ├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
@@ -26,7 +27,7 @@ docs/
 ```
 
 - Master inventory: `docs/Documentation_Manifest.md`
-- Program roadmap / open decisions / backlog: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`, `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`, `docs/IMPLEMENTATION_BACKLOG.md`
+- Program roadmap / open decisions / backlog / completion ledger: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`, `docs/FEATURE_COMPLETION_LEDGER.md`, `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`, `docs/IMPLEMENTATION_BACKLOG.md`
 - Core / business docs: `docs/core/`
 - UI/UX Architecture 2.0 (living target UX): `docs/ui-ux/`
 - Engineering / expert docs: `docs/engineering/`
@@ -47,6 +48,12 @@ For implementation work after Founder Decisions:
 2. Read the relevant `docs/phase-N/` plan and linked ADRs / state machines.
 3. Check `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` — do not invent validation-gated legal/tax/privacy conclusions.
 4. Prefer technical ADRs for stack defaults (Supabase Auth, Razorpay candidate, `/dashboard/{workspaceKey}`, migrations SoT, etc.).
+
+For **feature audits**, PDF reconciliations, or Feature Delta Brief work:
+
+1. Read `docs/FEATURE_COMPLETION_LEDGER.md` first (`.cursor/rules/10_Feature_Completion_Ledger.mdc`).
+2. Reuse **COMPLETE** / **COMPLETE_WITH_P2** entries; do not comprehensively re-audit unless a material trigger applies.
+3. Update the ledger when the task completes.
 
 ---
 

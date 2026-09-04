@@ -39,10 +39,11 @@ Before generating or modifying code, always follow this order:
 5. `docs/phase-*/` and `docs/phase-2/adrs/` (approved feature architecture; ADRs are not Founder business law)
 6. `docs/ui-ux/` (GCE UI/UX Architecture 2.0 — target UX for **existing and future** UI; must never override layers 1–5)
 7. `design-system/MASTER.md` plus `lib/frontend/design-language.ts` / `motion.ts` (visual identity)
-8. `.cursor/rules/*.mdc` (enforcement, including permanent UI rule `02_UI_Rules.mdc`)
-9. `docs/engineering/`
-10. `.cursor/skills/` (advisory craft; ui-ux-pro-max does not own IA/shells)
-11. Official Next.js documentation (`node_modules/next/dist/docs/`)
+8. `.cursor/rules/*.mdc` (enforcement, including permanent UI rule `02_UI_Rules.mdc` and feature completion ledger `10_Feature_Completion_Ledger.mdc`)
+9. `docs/FEATURE_COMPLETION_LEDGER.md` (verified feature completion index — consult before feature audits; delta-only re-audit)
+10. `docs/engineering/`
+11. `.cursor/skills/` (advisory craft; ui-ux-pro-max does not own IA/shells)
+12. Official Next.js documentation (`node_modules/next/dist/docs/`)
 
 If documents overlap, higher-priority sources win. **Never change a Founder Decision to match older documentation.** When a lower-level document conflicts with a higher layer, update the **lower-authority** document.
 
@@ -50,7 +51,7 @@ UI/UX Architecture 2.0 is **permanent, retroactive, and prospective**. Future fe
 
 Anything marked Unresolved, Proposed, Future, Pending Founder Approval, Pending Technical Design, or Pending Legal/Accounting Review must remain unresolved — do not invent final rules. Technical ADRs are implementation defaults, not Founder business law (FD-039).
 
-Program status: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`. Non-routine open items: `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`. Engineering backlog: `docs/IMPLEMENTATION_BACKLOG.md`.
+Program status: `docs/MASTER_IMPLEMENTATION_ROADMAP.md`. Non-routine open items: `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md`. Engineering backlog: `docs/IMPLEMENTATION_BACKLOG.md`. **Feature completion index:** `docs/FEATURE_COMPLETION_LEDGER.md` (consult before feature audits — `.cursor/rules/10_Feature_Completion_Ledger.mdc`).
 
 ---
 

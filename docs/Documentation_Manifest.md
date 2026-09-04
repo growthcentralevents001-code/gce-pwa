@@ -23,6 +23,7 @@ docs/
 ├── Docs_Guide.md
 ├── Documentation_Manifest.md
 ├── MASTER_IMPLEMENTATION_ROADMAP.md
+├── FEATURE_COMPLETION_LEDGER.md
 ├── OPEN_DECISIONS_AND_VALIDATION_REGISTER.md
 ├── IMPLEMENTATION_BACKLOG.md
 ├── founder-decisions/
@@ -56,6 +57,7 @@ AGENTS.md
 | `docs/compliance/` | Applicable Law & Compliance Register plus Phase 15 professional-review pack |
 | `legal/drafts/` | Phase 15 draft legal instruments (not for publication or execution) |
 | `docs/MASTER_IMPLEMENTATION_ROADMAP.md` | Program roadmap Phases 1–18 |
+| `docs/FEATURE_COMPLETION_LEDGER.md` | Living index of verified feature completion + delta-audit evidence |
 | `docs/OPEN_DECISIONS_AND_VALIDATION_REGISTER.md` | Founder/Legal/Tax/Privacy validation items |
 | `docs/IMPLEMENTATION_BACKLOG.md` | Implementation epics / features |
 | `.cursor/rules/` | Mandatory Cursor Rules (`.mdc`) |
@@ -135,6 +137,8 @@ Location: `.cursor/rules/`
 | `06_Performance_Rules.mdc` | Performance optimization rules for frontend, backend, database, APIs, and infrastructure. |
 | `07_AI_Rules.mdc` | AI development rules. Follow AI architecture, Lead Assist workflows, business rules, and AI decision logic for AI-powered functionality. |
 | `08_21st_Dev_MCP.mdc` | 21st.dev MCP is search-only inspiration; no generate/install without explicit approval. |
+| `09_Design_Tooling_Governance.mdc` | Taste, Impeccable, Emil advisory hierarchy under MASTER and Architecture 2.0. |
+| `10_Feature_Completion_Ledger.mdc` | Consult Feature Completion Ledger before feature audits; delta-only re-audit; update ledger on completion. |
 
 ## Cursor Skills
 
@@ -309,7 +313,7 @@ Phase docs defer to Founder Decisions for business rules and to ADRs for technic
 | Last Updated | 2026-08-08 |
 | Total Core Documents | 32 |
 | Total Engineering Documents | 8 |
-| Total Cursor Rules | 9 |
+| Total Cursor Rules | 11 |
 | Total Founder Decisions | 21 |
 | Total Installed Skills | 7 |
 | Total Documentation Files (`docs/`) | 127 |
@@ -395,7 +399,7 @@ Total documentation files under `docs/` ≈ 32 core + 8 engineering + 21 Founder
 - Initial Documentation Architecture
 - 27 Core Documents
 - 8 Engineering Documents
-- 8 Cursor Rules
+- 11 Cursor Rules
 - AGENTS.md integrated
 - Documentation_Manifest.md created
 - Overview filename normalized to `01_GCE_Overview.md`

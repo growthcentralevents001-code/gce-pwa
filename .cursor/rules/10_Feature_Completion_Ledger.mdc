@@ -1,0 +1,87 @@
+---
+description: Feature Completion Ledger governance — consult before feature audits; delta-only re-audit; update ledger on completion.
+alwaysApply: true
+---
+
+# GCE Feature Completion Ledger Governance
+
+Canonical ledger: `docs/FEATURE_COMPLETION_LEDGER.md`
+
+This rule is **permanent**. It applies to all feature audits, PDF reconciliations, and Feature Delta Brief implementations.
+
+## Authority
+
+The ledger is an **index and evidence map** only. It is subordinate to:
+
+1. Founder Decisions  
+2. Canonical business / state-machine / security docs  
+3. Approved phase architecture + ADRs  
+4. UI/UX Architecture 2.0 (for UX scope)  
+5. This ledger  
+6. Feature Delta Brief / PDF input (non-authoritative)
+
+Never treat the ledger as business law or a substitute for Founder Decisions.
+
+## Mandatory first step
+
+Before auditing or implementing a feature that may overlap existing product areas:
+
+1. Read `docs/FEATURE_COMPLETION_LEDGER.md`.
+2. Identify matching rows by **canonical subsystem** (not marketing names).
+3. Reuse indexed evidence; implement **delta only**.
+
+Do **not** comprehensively re-audit subsystems marked **COMPLETE** or **COMPLETE_WITH_P2** merely because a new brief mentions them.
+
+## Material re-audit triggers
+
+Re-open a completed ledger entry only when:
+
+- genuinely new requirement not covered by indexed evidence
+- dependency, schema, or RLS change affecting the subsystem
+- newer Founder Decision or canonical conflict
+- failing relevant test for that subsystem
+- missing or weak completion evidence discovered during the new task
+- security / privacy / RLS regression
+- direct semantic conflict with governed behavior
+
+Otherwise extend or fix the delta and preserve prior completion status.
+
+## Requirement classification
+
+Agents may classify normalized requirements as:
+
+- **CORE / BLOCKING** — implement or fix
+- **SUPPORTING / NON-BLOCKING** — implement if cheap; else P2
+- **ALREADY SATISFIED / DUPLICATE** — cite ledger; no parallel system
+- **SUPERSEDED** — follow newer authority
+- **INTENTIONALLY_INACTIVE** — FeatureGated / flags; never live
+- **MARKETING / CLAIM-ONLY** — copy safety only
+- **NON-SOFTWARE BUSINESS OUTCOME** — no CRM/score engine unless governed operational requirement exists
+
+Agents **may not** dismiss Founder Decisions, security, economic rules, legal requirements, or core user journeys as “non-important.” Report conflicts.
+
+## Future input
+
+Feature work normally arrives as a **Feature Delta Brief** (clean English), not raw PDF authority.
+
+PDFs and marketing scripts are **inputs**. Higher repository authority wins on conflict.
+
+## On task completion
+
+Update `docs/FEATURE_COMPLETION_LEDGER.md` in the same task when material feature work completes:
+
+- final status  
+- canonical subsystem  
+- key routes / tables / services  
+- security / RLS evidence pointer  
+- relevant tests  
+- completion commit (or note uncommitted branch state)  
+- remaining P2  
+- inactive / superseded items  
+- re-audit trigger  
+
+Keep entries concise. Do not duplicate full phase specs.
+
+## No parallel systems
+
+If the ledger shows a canonical subsystem for referrals, meetings, Circles, membership, payments, or notifications — **extend it**. Do not build a second engine with different naming.

@@ -94,6 +94,19 @@ Match vertical metaphor, not a generic SaaS grid.
 
 Avoid: three equal KPI cards as the default page; decorative 3D on authenticated work; `liquid-glass` / extra glass switchers as product chrome.
 
+## Quality principles (learned)
+
+These are architectural, not per-page cosmetics:
+
+1. **Job before widget.** If a screen’s job is a queue, use a list. If it is discovery, use catalogue. If it is a project, use a command center. Do not default to four KPI tiles + an attention card.
+2. **Status strips are compact and wrap.** Mobile: two columns (or stacked). Desktop: a single wrapping row. Do not force equal `flex-1` cells that collide at 390.
+3. **Attention is quiet when empty.** No warning icon for “nothing waiting.” Nested action rows only when there are actions.
+4. **Customer width.** Phone: `max-w-lg` + bottom nav. `lg+`: page frame up to `max-w-6xl`, bottom nav hidden, primary items in the header so Events/Offers master–detail has room.
+5. **Shells are singular.** Nested WorkspaceShells duplicate chrome (seen on `/dashboard/finance`). Pathname → workspace key in `PartnerShell` is enough inside `app/dashboard/layout.tsx`.
+6. **Muted UI is warm, not blue-slate.** `--muted-foreground` must not sit in the blue hue range; status dots inherit it.
+7. **Marketing composition.** Hero + immediate vertical body in the first viewport. Asymmetric vertical stories on the homepage — never three clones with the same orange CTA.
+8. **Copy is human.** `platform_intermediary` → “Platform intermediary”. Do not leak enum keys into headers.
+
 ---
 
 ## Motion
@@ -101,6 +114,8 @@ Avoid: three equal KPI cards as the default page; decorative 3D on authenticated
 Use `lib/frontend/motion.ts` (`motionDuration`, `gceTransition`, `gceHoverLift`).
 
 Allowed: feedback, spatial continuity, state change, short entrance (≤350ms), hover lift on interactive cards.
+
+Entrance motion must never hide content (`opacity: 0` as the resting first paint). Prefer transform-only reveals so SSR, reduced-motion, and screenshot/QA still show the page.
 
 Not allowed: animate-everything, `transition: all`, long UI transitions, width/height animation for layout, uninterruptible motion, ignoring `prefers-reduced-motion`.
 

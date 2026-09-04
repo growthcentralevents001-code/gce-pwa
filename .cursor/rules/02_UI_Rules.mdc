@@ -124,6 +124,20 @@ Workspace homes follow `GCE_WORKSPACE_PATTERNS.md`: attention list → in-flight
 
 `docs/core/12_Dashboards.md` may list **which business modules exist**. It does not prescribe UX layout.
 
+## Visual quality (release baseline)
+
+Composition must match the **job**, not a reusable widget. Marketing is editorial. Partner homes are operational. Customer is activity. Ops/Finance are dense. Do not copy the same card stack onto every page because `KpiCard` or `PartnerActionCenter` exists.
+
+- **Hierarchy first.** One primary action, then status, then work. Empty cream folds and identical three-up tiles are defects.
+- **Density is contextual.** Status strips wrap at 390 (`grid`, never `flex-1` four-up). Customer catalogue is `max-w-lg` on phone and **widens at `lg+`** so master–detail can exist. Bottom nav is phone-only.
+- **Containers are earned.** Nested rounded cards inside rounded cards, glass on tables, and warning-triangle “attention” chrome when nothing is waiting are not allowed.
+- **One shell.** Never nest `PartnerShell` / `OpsShell` / `CustomerShell`. Dashboard layout already provides the partner chrome.
+- **No decorative blue** — including slate-blue muted dots. Info and pending map to orange. Humanize `snake_case` in UI copy.
+- **Marketing first viewport** must include vertical explanation, not only a hero. Homepage verticals must not be three identical cards. Entrance motion must not start from invisible (`opacity: 0`) — first paint must be readable.
+- **Whitespace is a tool.** A blank fold after the hero is unfinished, not premium.
+
+Do not invent metrics, payments, or inactive features to fill a layout.
+
 ## Navigation
 
 Keep **public vertical navigation** and **authenticated workspace switching** separate. Do not mix marketing verticals into partner sidebars as if they were roles. Customer bottom nav is an activity specialization, not a fourth vertical.

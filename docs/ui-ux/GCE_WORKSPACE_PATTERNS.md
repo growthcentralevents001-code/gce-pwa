@@ -50,6 +50,14 @@ Authenticated work. Specializations share: skip link, account, theme toggle, not
 
 `/dashboard/[workspaceKey]` already loads the right domain reports. Target composition: **action list first**, reports as supporting detail — not the reverse.
 
+**Do not** put a four-up `KpiCard` grid on every home. Counts that are already in the status strip should not be repeated as hero tiles. Optional triage is one compact row of **real** exception counts only.
+
+**Do not** nest `PartnerShell` inside `app/dashboard/layout.tsx`. Map `/dashboard/{key}` in `workspaceFromPathname` instead.
+
+### Customer desktop
+
+Bottom nav and `max-w-lg` are for **390**. At **1366**, CustomerShell widens so Events/Offers can use master–detail. That is still the Customer activity specialization — not a fourth vertical and not PartnerShell.
+
 ---
 
 ## Vertical patterns

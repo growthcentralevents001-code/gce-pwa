@@ -10,8 +10,7 @@ export type PartnerStatusItem = {
 };
 
 /**
- * Canonical partner status strip — Checkpoint C.
- * Compact operational state row under PageHeader.
+ * Compact operational status — wraps at 390, never equal-width colliding cells.
  */
 export function PartnerStatusStrip({
   items,
@@ -24,9 +23,9 @@ export function PartnerStatusStrip({
   return (
     <div
       className={cn(
-        GCE_RADIUS.card,
-        GCE_SURFACE.glassLight,
-        "mb-6 flex flex-wrap gap-3 p-3 sm:p-4",
+        GCE_RADIUS.panel,
+        GCE_SURFACE.muted,
+        "mb-6 grid grid-cols-2 gap-px overflow-hidden sm:flex sm:flex-wrap sm:gap-0 sm:bg-transparent sm:overflow-visible",
         className
       )}
       role="list"
@@ -36,12 +35,14 @@ export function PartnerStatusStrip({
         <div
           key={item.id}
           role="listitem"
-          className="flex min-w-0 flex-1 flex-col gap-1 rounded-xl border border-border/60 bg-background/70 px-3 py-2"
+          className="min-w-0 bg-background/80 px-3 py-2 sm:mr-6 sm:bg-transparent sm:px-0 sm:py-0"
         >
           <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
             {item.label}
           </p>
-          <StatusBadge label={item.value} tone={item.tone ?? "neutral"} />
+          <div className="mt-1">
+            <StatusBadge label={item.value} tone={item.tone ?? "neutral"} />
+          </div>
         </div>
       ))}
     </div>

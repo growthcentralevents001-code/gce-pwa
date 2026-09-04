@@ -4,6 +4,7 @@ import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 import {
   formatMinorInr,
   milestoneStatusLabel,
+  milestoneTimelineTone,
 } from "@/lib/frontend/enterprise/format";
 import { cn } from "@/lib/utils";
 
@@ -90,6 +91,7 @@ export function MilestoneList({
       .filter(Boolean)
       .join(" · "),
     at: m.dueOn ?? null,
+    tone: milestoneTimelineTone(m.status),
   }));
 
   return (

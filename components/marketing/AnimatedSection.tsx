@@ -32,20 +32,20 @@ export function AnimatedSection({
   const motionProps =
     variant === "rise"
       ? {
-          initial: { y: 40, scale: 0.97 },
-          whileInView: { y: 0, scale: 1 },
+          initial: { y: 16 },
+          whileInView: { y: 0 },
           transition: { duration: 0.35, delay, ease: EASE_OUT },
         }
       : {
-          initial: { opacity: 0, y: 16 },
-          whileInView: { opacity: 1, y: 0 },
+          initial: { y: 10 },
+          whileInView: { y: 0 },
           transition: { duration: 0.3, delay, ease: EASE_OUT },
         };
 
   return (
     <motion.div
       className={cn(className)}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: 0.15 }}
       {...motionProps}
     >
       {children}

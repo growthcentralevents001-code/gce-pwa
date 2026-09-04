@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { AlertTriangle, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { KpiIconName } from "@/components/connect/KpiCard";
 import {
+  AlertTriangle,
   Briefcase,
   Building2,
   Calendar,
@@ -25,7 +26,6 @@ import {
   TicketCheck,
   Users,
 } from "lucide-react";
-import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 import { cn } from "@/lib/utils";
 
 const ACTION_ICONS: Record<KpiIconName, LucideIcon> = {
@@ -61,12 +61,13 @@ export type PartnerActionItem = {
 };
 
 /**
- * Reusable Partner Action Center — Checkpoint C baseline for Batches 5/6.
+ * Attention list — a work list, not a nested card stack.
+ * Empty state is quiet (no warning icon).
  */
 export function PartnerActionCenter({
   title = "Needs your attention",
   items,
-  emptyLabel = "No actions required right now.",
+  emptyLabel = "Nothing waiting on you right now.",
   className,
 }: {
   title?: string;
@@ -74,41 +75,33 @@ export function PartnerActionCenter({
   emptyLabel?: string;
   className?: string;
 }) {
+  const hasWork = items.length > 0;
+
   return (
-    <section
-      className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "p-5", className)}
-      aria-labelledby="partner-action-center-title"
-    >
-      <div className="mb-4 flex items-center gap-2">
-        <AlertTriangle className="h-4 w-4 text-primary" aria-hidden />
-        <h2 id="partner-action-center-title" className="text-base font-semibold">
-          {title}
-        </h2>
-      </div>
-      {items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{emptyLabel}</p>
-      ) : (
-        <ul className="space-y-2">
+    <section className={cn("mb-6", className)} aria-labelledby="partner-action-center-title">
+      <h2
+        id="partner-action-center-title"
+        className="text-sm font-semibold tracking-tight"
+      >
+        {title}
+      </h2>
+      {hasWork ? (
+        <ul className="mt-3 divide-y divide-border border-y border-border">
           {items.map((item) => {
             const Icon = item.icon ? ACTION_ICONS[item.icon] : undefined;
-            const border =
+            const tone =
               item.severity === "critical"
-                ? "border-destructive/40"
+                ? "text-destructive"
                 : item.severity === "warning"
-                  ? "border-warning/40"
-                  : "border-border";
+                  ? "text-warning"
+                  : "text-primary";
             const body = (
-              <div
-                className={cn(
-                  "flex items-start justify-between gap-3 rounded-xl border bg-muted/30 p-3",
-                  border
-                )}
-              >
-                <div className="flex gap-3">
+              <div className="flex min-h-11 items-start justify-between gap-3 py-3">
+                <div className="flex min-w-0 gap-3">
                   {Icon ? (
-                    <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                    <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", tone)} aria-hidden />
                   ) : null}
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-sm font-medium">{item.title}</p>
                     {item.description ? (
                       <p className="mt-0.5 text-xs text-muted-foreground">
@@ -118,7 +111,10 @@ export function PartnerActionCenter({
                   </div>
                 </div>
                 {item.href ? (
-                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                  <ArrowRight
+                    className="mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                    aria-hidden
+                  />
                 ) : null}
               </div>
             );
@@ -127,7 +123,7 @@ export function PartnerActionCenter({
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="block rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {body}
                   </Link>
@@ -138,6 +134,8 @@ export function PartnerActionCenter({
             );
           })}
         </ul>
+      ) : (
+        <p className="mt-2 text-sm text-muted-foreground">{emptyLabel}</p>
       )}
     </section>
   );

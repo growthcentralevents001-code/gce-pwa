@@ -105,6 +105,33 @@ export function opportunityStatusLabel(status: string): string {
   return map[status] ?? status.replace(/_/g, " ");
 }
 
+/** Display-only. Never leak snake_case enum keys into headers. */
+export function formatContractualRole(role: string): string {
+  if (role === "platform_intermediary") return "Platform intermediary";
+  return role.replace(/_/g, " ");
+}
+
+export function milestoneTimelineTone(
+  status: string
+): "neutral" | "success" | "warning" | "pending" {
+  switch (status) {
+    case "approved":
+    case "paid":
+    case "waived":
+      return "success";
+    case "due":
+    case "submitted":
+    case "overdue":
+    case "blocked":
+      return "warning";
+    case "cancelled":
+      return "neutral";
+    case "planned":
+    default:
+      return "pending";
+  }
+}
+
 export function projectStatusLabel(status: string): string {
   const map: Record<string, string> = {
     setup: "Setup",

@@ -99,7 +99,7 @@ export function KpiCard({
         </p>
         {Icon ? <Icon className="h-4 w-4 text-primary" aria-hidden /> : null}
       </div>
-      <p className="mt-2 text-2xl font-semibold tabular-nums text-foreground">
+      <p className="mt-1 text-lg font-semibold tabular-nums text-foreground">
         {value}
       </p>
       {hint ? (
@@ -110,7 +110,7 @@ export function KpiCard({
 
   const body = (
     <motion.div
-      className={cn(GCE_RADIUS.card, GCE_SURFACE.cardInteractive, "p-4", className)}
+      className={cn(GCE_RADIUS.control, GCE_SURFACE.card, "p-3", className)}
       whileHover={reduce || !href ? undefined : { y: GCE_MOTION.hoverY }}
       transition={{ type: "spring", stiffness: 400, damping: 28 }}
     >

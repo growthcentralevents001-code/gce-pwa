@@ -41,7 +41,7 @@ export function MarketingHero({
       className={cn(
         "relative isolate overflow-hidden",
         !seamless && "border-b border-border",
-        compact ? "py-14 sm:py-16" : "py-16 sm:py-24"
+        compact ? "py-8 sm:py-10" : "py-12 sm:py-16"
       )}
     >
       {!seamless ? (
@@ -96,7 +96,7 @@ export function MarketingHero({
         {(primaryCta || secondaryCta) && (
           <div
             className={cn(
-              "mt-8 flex flex-wrap gap-3",
+              "mt-5 flex flex-wrap gap-3",
               align === "center" && "justify-center"
             )}
           >

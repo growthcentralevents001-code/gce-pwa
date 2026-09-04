@@ -221,8 +221,8 @@ export default function HeroBanner() {
     reduceMotion
       ? { initial: false as const, animate: { opacity: 1, y: 0 } }
       : {
-          initial: { opacity: 0, y: 22 },
-          animate: { opacity: 1, y: 0 },
+          initial: { y: 12 },
+          animate: { y: 0 },
           transition: { duration: 0.4, ease: "easeOut" as const, delay },
         };
 

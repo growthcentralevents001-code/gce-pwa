@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { PartnerActionCenter, type PartnerActionItem } from "@/components/partner/PartnerActionCenter";
 import { PartnerStatusStrip, type PartnerStatusItem } from "@/components/partner/PartnerStatusStrip";
-import { GCE_SPACING } from "@/lib/frontend/design-language";
 import { cn } from "@/lib/utils";
 
 /**
@@ -30,8 +29,7 @@ export function AttentionHome({
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-6xl px-4 py-8 pb-16",
-        GCE_SPACING.section,
+        "mx-auto w-full max-w-6xl space-y-6 pb-8",
         className
       )}
     >

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { DiscoveryFilters } from "@/components/customer/DiscoveryFilters";
-import { EventCard } from "@/components/customer/EventCard";
+import { EventCatalogue } from "@/components/customer/CatalogueMasterDetail";
 import { EmptyState } from "@/components/states/EmptyState";
 import { ErrorState } from "@/components/states/ErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,6 +36,7 @@ export default async function CustomerEventsPage({
   const category = typeof sp.category === "string" ? sp.category : null;
   const offset =
     typeof sp.offset === "string" ? Math.max(0, Number(sp.offset) || 0) : 0;
+  const selected = typeof sp.selected === "string" ? sp.selected : null;
   const limit = 12;
 
   const admin = createPrivilegedSupabaseClient();
@@ -86,25 +87,31 @@ export default async function CustomerEventsPage({
         />
       ) : (
         <>
-          <p className="mb-4 text-xs text-muted-foreground">
-            Showing {items.length} of {total}
-          </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((e) => (
-              <EventCard
-                key={e.id}
-                event={{
-                  id: e.id,
-                  title: e.title,
-                  category: e.category,
-                  startsAt: e.startsAt,
-                  priceMinor: e.priceMinor,
-                  currency: e.currency,
-                  venue: e.venue,
-                }}
-              />
-            ))}
-          </div>
+            <p className="mb-4 text-xs text-muted-foreground">
+              Showing {items.length} of {total}
+            </p>
+            <EventCatalogue
+              items={items.map((e) => ({
+                id: e.id,
+                title: e.title,
+                category: e.category,
+                startsAt: e.startsAt,
+                priceMinor: e.priceMinor,
+                currency: e.currency,
+                venue: e.venue,
+              }))}
+              selectedId={selected}
+              basePath="/customer/events"
+              detailHref={(id) => `/customer/events/${id}`}
+              query={(() => {
+                const p = new URLSearchParams();
+                if (q) p.set("q", q);
+                if (city) p.set("city", city);
+                if (category) p.set("category", category);
+                if (offset) p.set("offset", String(offset));
+                return p;
+              })()}
+            />
           {hasMore ? (
             <div className="mt-8 flex justify-center">
               <Button asChild variant="outline" className="min-h-11">

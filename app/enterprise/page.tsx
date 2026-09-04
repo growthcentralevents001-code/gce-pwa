@@ -16,8 +16,8 @@ export default function EnterpriseLandingPage() {
   return (
     <>
       <MarketingHero
-        headline="Enterprise — programmes with commercial clarity"
-        description="GCE Enterprise supports organisational engagements through quotations, milestones, and componentised settlement rules. GCE does not automatically physically execute every project."
+        headline="Enterprise — project and milestone programmes"
+        description="GCE Enterprise is a Project Command Center: opportunities, quotations, milestones, and componentised commercial rules. Settlement lives in Finance. GCE does not automatically physically execute every project."
         primaryCta={{ label: "Talk to us", href: "/contact" }}
         secondaryCta={{ label: "Partner pathways", href: "/for-partners" }}
         compact

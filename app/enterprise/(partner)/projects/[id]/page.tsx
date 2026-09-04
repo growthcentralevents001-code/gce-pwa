@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { PartnerPageHeader, PartnerStatusStrip } from "@/components/partner";
+import { PartnerPageHeader, PartnerStatusStrip, PartnerActionCenter } from "@/components/partner";
 import { ProjectComponentCard, MilestoneList, ChangeOrderCard } from "@/components/enterprise/ProjectOpsCards";
 import { ChangeOrderForm } from "@/components/enterprise/EnterpriseActionForms";
 import { EmptyState } from "@/components/states/EmptyState";
@@ -9,7 +9,7 @@ import { loadEnterpriseClientBundle } from "@/lib/frontend/enterprise/reads";
 import { GCE_EXECUTION_ROLE_COPY, projectStatusLabel } from "@/lib/frontend/enterprise/format";
 import { GCE_SPACING } from "@/lib/frontend/design-language";
 
-export const metadata = { robots: { index: false, follow: false }, title: "Project · Enterprise Client" };
+export const metadata = { robots: { index: false, follow: false }, title: "Project Command Center · GCE Enterprise" };
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -23,6 +23,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const components = (bundle?.components ?? []).filter((c) => String(c.project_id) === id);
   const milestones = (bundle?.milestones ?? []).filter((m) => String(m.project_id) === id);
   const changeOrders = (bundle?.changeOrders ?? []).filter((c) => String(c.project_id) === id);
+  const overdue = milestones.filter((m) => {
+    const status = String(m.status ?? "");
+    return status === "overdue" || status === "blocked" || status === "submitted";
+  });
   return (
     <main className={`mx-auto max-w-6xl px-4 py-8 pb-16 space-y-8 ${GCE_SPACING.section}`}>
       <PartnerPageHeader
@@ -36,6 +40,35 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           { id: "milestones", label: "Milestones", value: String(milestones.length) },
         ]}
       />
+      <PartnerActionCenter
+        items={[
+          ...overdue.slice(0, 5).map((m) => ({
+            id: String(m.id),
+            title: String(m.name ?? "Milestone needs attention"),
+            description: String(m.status ?? "").replaceAll("_", " "),
+            severity: "warning" as const,
+          })),
+          {
+            id: "vendors",
+            title: "Vendors on this project",
+            href: "/enterprise/vendors",
+            severity: "info" as const,
+            icon: "store" as const,
+          },
+        ]}
+      />
+      <section>
+        <h2 className="mb-3 text-base font-semibold">Milestone timeline</h2>
+        <MilestoneList
+          milestones={milestones.map((m) => ({
+            id: String(m.id),
+            name: String(m.name ?? "Milestone"),
+            status: String(m.status ?? "planned"),
+            dueOn: typeof m.due_on === "string" ? m.due_on : null,
+            amountMinor: typeof m.amount_minor === "number" ? m.amount_minor : null,
+          }))}
+        />
+      </section>
       <section>
         <h2 className="mb-3 text-base font-semibold">Project components</h2>
         {components.length === 0 ? (
@@ -55,18 +88,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             ))}
           </div>
         )}
-      </section>
-      <section>
-        <h2 className="mb-3 text-base font-semibold">Milestones</h2>
-        <MilestoneList
-          milestones={milestones.map((m) => ({
-            id: String(m.id),
-            name: String(m.name ?? "Milestone"),
-            status: String(m.status ?? "planned"),
-            dueOn: typeof m.due_on === "string" ? m.due_on : null,
-            amountMinor: typeof m.amount_minor === "number" ? m.amount_minor : null,
-          }))}
-        />
       </section>
       <section className="grid gap-4 lg:grid-cols-2">
         <div>

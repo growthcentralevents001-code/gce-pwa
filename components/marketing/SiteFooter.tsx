@@ -17,7 +17,7 @@ const COLUMNS = [
       { href: "/offers", label: "Offers" },
       { href: "/venues", label: "Venues" },
       { href: "/memberships", label: "Memberships" },
-      { href: "/the-circle", label: "Circles" },
+      { href: "/how-membership-works", label: "How membership works" },
     ],
   },
   {

@@ -56,7 +56,7 @@ export default async function ConnectLandingPage() {
         headline="Connect — curated business networking"
         description="Join Circles organised around geography and specialisation. Share referrals in-app, manage Tags, and grow through disciplined networking — not spam."
         primaryCta={{ label: "View memberships", href: "/memberships" }}
-        secondaryCta={{ label: "How Circles work", href: "/the-circle" }}
+        secondaryCta={{ label: "How Circles work", href: "/how-membership-works" }}
         compact
         seamless
       />
@@ -99,7 +99,7 @@ export default async function ConnectLandingPage() {
                 in the app — not via WhatsApp or verbal exchange. Referrals are
                 not guaranteed.{" "}
                 <Link
-                  href="/the-circle#referrals"
+                  href="/how-referrals"
                   className="text-primary hover:underline"
                 >
                   Referral details
@@ -172,9 +172,12 @@ export default async function ConnectLandingPage() {
         </AnimatedSection>
 
         <p className="mt-10 pb-4 text-center text-sm text-muted-foreground">
-          Prefer Circles detail?{" "}
-          <Link href="/the-circle" className="text-primary hover:underline">
-            Read about Circles
+          Prefer the membership walkthrough?{" "}
+          <Link
+            href="/how-membership-works"
+            className="text-primary hover:underline"
+          >
+            How membership works
           </Link>
         </p>
       </div>

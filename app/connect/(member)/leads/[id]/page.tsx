@@ -119,6 +119,22 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
         description="Classification and ranking never override eligibility, RBAC, or privacy. Deterministic backend rules remain authoritative."
       />
 
+      <section className="mb-8">
+        <h2 className="mb-3 text-sm font-semibold">Governed timeline</h2>
+        <Timeline items={timelineItems} />
+      </section>
+
+      <section className="mb-8">
+        <h2 className="mb-3 text-sm font-semibold">Actions</h2>
+        <LeadActions
+          leadId={id}
+          workStatus={safe.workStatus}
+          contactAvailable={safe.contactAvailable}
+          role={role}
+          outcome={outcome}
+        />
+      </section>
+
       <section className="mb-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
         <h2 className="text-sm font-semibold">Requirement</h2>
         <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
@@ -180,22 +196,6 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
           </p>
         </section>
       ) : null}
-
-      <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold">Journey</h2>
-        <Timeline items={timelineItems} />
-      </section>
-
-      <section>
-        <h2 className="mb-3 text-sm font-semibold">Actions</h2>
-        <LeadActions
-          leadId={id}
-          workStatus={safe.workStatus}
-          contactAvailable={safe.contactAvailable}
-          role={role}
-          outcome={outcome}
-        />
-      </section>
     </main>
   );
 }

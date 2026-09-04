@@ -58,6 +58,12 @@ export const CUSTOMER_SECONDARY_NAV: NavItem[] = [
     mobileVisible: false,
   },
   {
+    id: "claims",
+    label: "Claims",
+    href: "/customer/claims",
+    mobileVisible: false,
+  },
+  {
     id: "wishlist",
     label: "Wishlist",
     href: "/customer/wishlist",

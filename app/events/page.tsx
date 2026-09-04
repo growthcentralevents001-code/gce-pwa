@@ -3,7 +3,7 @@ import Link from "next/link";
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import { MarketingHero } from "@/components/marketing/MarketingHero";
 import { DiscoveryFilters } from "@/components/customer/DiscoveryFilters";
-import { EventCard } from "@/components/customer/EventCard";
+import { EventCatalogue } from "@/components/customer/CatalogueMasterDetail";
 import { EmptyState } from "@/components/states/EmptyState";
 import { ErrorState } from "@/components/states/ErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,6 +32,7 @@ export default async function PublicEventsPage({
   const category = typeof sp.category === "string" ? sp.category : null;
   const offset =
     typeof sp.offset === "string" ? Math.max(0, Number(sp.offset) || 0) : 0;
+  const selected = typeof sp.selected === "string" ? sp.selected : null;
   const limit = 12;
 
   const admin = createPrivilegedSupabaseClient();
@@ -91,23 +92,28 @@ export default async function PublicEventsPage({
             <p className="mb-4 text-xs text-muted-foreground">
               Showing {items.length} of {total}
             </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((event) => (
-                <EventCard
-                  key={event.id}
-                  href={`/events/${event.id}`}
-                  event={{
-                    id: event.id,
-                    title: event.title,
-                    category: event.category,
-                    startsAt: event.startsAt,
-                    priceMinor: event.priceMinor,
-                    currency: event.currency,
-                    venue: event.venue,
-                  }}
-                />
-              ))}
-            </div>
+            <EventCatalogue
+              items={items.map((event) => ({
+                id: event.id,
+                title: event.title,
+                category: event.category,
+                startsAt: event.startsAt,
+                priceMinor: event.priceMinor,
+                currency: event.currency,
+                venue: event.venue,
+              }))}
+              selectedId={selected}
+              basePath="/events"
+              detailHref={(id) => `/events/${id}`}
+              query={(() => {
+                const p = new URLSearchParams();
+                if (q) p.set("q", q);
+                if (city) p.set("city", city);
+                if (category) p.set("category", category);
+                if (offset) p.set("offset", String(offset));
+                return p;
+              })()}
+            />
             {hasMore ? (
               <div className="mt-8 flex justify-center">
                 <Button asChild variant="outline" className="min-h-11">

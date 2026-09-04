@@ -65,7 +65,7 @@ export function CustomerShell({
           </div>
         </div>
         {secondary.length > 0 ? (
-          <div className="mx-auto hidden max-w-lg gap-2 px-4 pb-2 sm:flex">
+          <div className="mx-auto flex max-w-lg flex-wrap gap-x-3 gap-y-1 px-4 pb-2">
             {secondary.map((item) => (
               <Link
                 key={item.id}

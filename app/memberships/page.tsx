@@ -91,7 +91,7 @@ export default async function MembershipsPage() {
         headline="How GCE Connect Membership Works"
         description="Membership is a governed business Circle experience — not merely an account or subscription. Apply, get reviewed, activate, receive Circle allocation, then discover professionals and manage referrals in the GCE app."
         primaryCta={{ label: applyLabel, href: applyHref }}
-        secondaryCta={{ label: "How Circles work", href: "/the-circle" }}
+        secondaryCta={{ label: "GCE Connect", href: "/connect" }}
         compact
         seamless
       />
@@ -226,7 +226,7 @@ export default async function MembershipsPage() {
             access.
           </p>
           <Button asChild variant="link" className="mt-4 h-auto p-0">
-            <Link href="/the-circle#taxonomy">Read about Circle taxonomy</Link>
+            <Link href="/connect">Read the GCE Connect story</Link>
           </Button>
         </AnimatedSection>
 
@@ -242,7 +242,7 @@ export default async function MembershipsPage() {
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Button asChild variant="outline" size="sm">
-              <Link href="/the-circle#referrals">How referrals work</Link>
+              <Link href="/how-referrals">How referrals work</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link href="/login?next=/connect/leads">Lead Assist (members)</Link>

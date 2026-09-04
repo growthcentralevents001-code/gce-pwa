@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { CxPageHeader } from "@/components/customer/CxPageHeader";
 import { DiscoveryFilters } from "@/components/customer/DiscoveryFilters";
-import { OfferCard } from "@/components/customer/OfferCard";
+import { OfferCatalogue } from "@/components/customer/CatalogueMasterDetail";
 import { EmptyState } from "@/components/states/EmptyState";
 import { ErrorState } from "@/components/states/ErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -35,6 +35,7 @@ export default async function CustomerOffersPage({
   const q = typeof sp.q === "string" ? sp.q : null;
   const offset =
     typeof sp.offset === "string" ? Math.max(0, Number(sp.offset) || 0) : 0;
+  const selected = typeof sp.selected === "string" ? sp.selected : null;
   const limit = 12;
 
   const admin = createPrivilegedSupabaseClient();
@@ -80,22 +81,27 @@ export default async function CustomerOffersPage({
           <p className="mb-4 text-xs text-muted-foreground">
             Showing {items.length} of {total}
           </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((o) => (
-              <OfferCard
-                key={o.id}
-                offer={{
-                  id: o.id,
-                  title: o.title,
-                  remainingClaims: o.remainingClaims,
-                  claimValidityHours: o.claimValidityHours,
-                  customerCap: o.customerCap,
-                  venue: o.venue,
-                  campaignEndsAt: o.campaignEndsAt,
-                }}
-              />
-            ))}
-          </div>
+          <OfferCatalogue
+            items={items.map((o) => ({
+              id: o.id,
+              title: o.title,
+              remainingClaims: o.remainingClaims,
+              claimValidityHours: o.claimValidityHours,
+              customerCap: o.customerCap,
+              venue: o.venue,
+              campaignEndsAt: o.campaignEndsAt,
+            }))}
+            selectedId={selected}
+            basePath="/customer/offers"
+            detailHref={(id) => `/customer/offers/${id}`}
+            query={(() => {
+              const p = new URLSearchParams();
+              if (q) p.set("q", q);
+              if (city) p.set("city", city);
+              if (offset) p.set("offset", String(offset));
+              return p;
+            })()}
+          />
           {hasMore ? (
             <div className="mt-8 flex justify-center">
               <Button asChild variant="outline" className="min-h-11">

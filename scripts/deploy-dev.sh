@@ -4,6 +4,10 @@
 # Never restarts or modifies gce-prod / production.
 set -Eeuo pipefail
 
+# systemd-run often has no HOME; without this, PM2 uses /etc/.pm2 and misses the real apps.
+export HOME="${HOME:-/root}"
+export PM2_HOME="${PM2_HOME:-/root/.pm2}"
+
 LIVE_DIR="/root/gce-pwa-dev"
 STAGING_DIR="/root/gce-pwa-dev-staging"
 DEV_BRANCH="development"
@@ -93,8 +97,12 @@ wait_healthy() {
 
 home_ok() {
   local code="000"
-  code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$HOME_URL" || true)"
-  [[ "$code" == "200" ]]
+  code="$(curl -sS -o /tmp/gce-dev-home.html -w '%{http_code}' --max-time 15 "$HOME_URL" || true)"
+  [[ "$code" == "200" ]] || return 1
+  # Catch Client Manifest / hydration-blank failures that still return 200 shell HTML.
+  grep -q "Explore Events" /tmp/gce-dev-home.html || return 1
+  ! grep -q "gce-pwa-dev-staging" /tmp/gce-dev-home.html || return 1
+  return 0
 }
 
 require_build_id() {
@@ -142,6 +150,38 @@ build_staging() {
   log "npm run build (staging) — live .next is not deleted"
   npm run build
   require_build_id "${STAGING_DIR}/.next" >/dev/null
+  rewrite_staging_paths_in_next "${STAGING_DIR}/.next"
+}
+
+# Next embeds absolute worktree paths in RSC client manifests. After moving
+# .next into LIVE_DIR those keys must point at /root/gce-pwa-dev, not staging.
+rewrite_staging_paths_in_next() {
+  local next_dir="$1"
+  [[ -d "$next_dir" ]] || die "rewrite target missing: ${next_dir}"
+  log "rewriting ${STAGING_DIR} → ${LIVE_DIR} inside $(basename "$(dirname "$next_dir")")/$(basename "$next_dir")"
+  local count
+  count="$(find "$next_dir" -type f \( \
+      -name '*.js' -o -name '*.json' -o -name '*.map' -o -name '*.ts' -o -name '*.tsx' -o -name '*.nft.json' \
+    \) -print0 \
+    | xargs -0 -r grep -lF "$STAGING_DIR" \
+    | tee /tmp/gce-dev-path-rewrite.list \
+    | wc -l | tr -d ' ')"
+  if [[ "$count" -eq 0 ]]; then
+    log "no staging absolute paths found (unexpected for a staging build)"
+  else
+    while IFS= read -r f; do
+      [[ -n "$f" ]] || continue
+      sed -i "s|${STAGING_DIR}|${LIVE_DIR}|g" "$f"
+    done </tmp/gce-dev-path-rewrite.list
+    log "rewrote staging paths in ${count} files"
+  fi
+  if grep -RqlF "$STAGING_DIR" "$next_dir" \
+      --exclude=trace \
+      --exclude-dir=diagnostics \
+      --exclude-dir=cache \
+      2>/dev/null; then
+    die "staging paths remain in ${next_dir} after rewrite — refusing swap"
+  fi
 }
 
 lockfile_changed() {
@@ -152,13 +192,15 @@ lockfile_changed() {
 }
 
 sync_node_modules_if_needed() {
-  if lockfile_changed; then
-    log "package-lock changed — rsync staging node_modules to live immediately before restart"
-    mkdir -p "${LIVE_DIR}/node_modules"
-    rsync -a --delete "${STAGING_DIR}/node_modules/" "${LIVE_DIR}/node_modules/"
+  # Always sync: .next was compiled against staging node_modules.
+  log "rsync staging node_modules → live (match compiled .next)"
+  mkdir -p "${LIVE_DIR}/node_modules"
+  rsync -a --delete "${STAGING_DIR}/node_modules/" "${LIVE_DIR}/node_modules/"
+  if [[ -f "${STAGING_DIR}/package-lock.json" ]]; then
     cp -a "${STAGING_DIR}/package-lock.json" "${LIVE_DIR}/package-lock.json"
-  else
-    log "package-lock unchanged — leaving live node_modules in place"
+  fi
+  if lockfile_changed; then
+    log "package-lock differed before sync (now aligned)"
   fi
 }
 
@@ -208,6 +250,7 @@ run_deploy() {
   if [[ "$SKIP_BUILD" -eq 1 ]]; then
     log "skip-build: requiring existing staging .next"
     require_build_id "${STAGING_DIR}/.next" >/dev/null
+    rewrite_staging_paths_in_next "${STAGING_DIR}/.next"
   else
     build_staging
   fi

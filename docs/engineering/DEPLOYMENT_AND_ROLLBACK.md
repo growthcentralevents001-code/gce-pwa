@@ -26,12 +26,13 @@ Live PM2 `gce-dev` serves `/root/gce-pwa-dev/.next` on `127.0.0.1:3000`. Nginx i
 3. Copy `.env.local` / `.env` into staging (values not logged).
 4. `npm ci` + `npm run build` in staging. Live `.next` is not deleted.
 5. Abort if staging `.next/BUILD_ID` is missing. Live site stays on the previous artifact.
-6. If `package-lock.json` changed, rsync staging `node_modules` to live immediately before restart.
-7. Atomic swap: live `.next` → `.next.prev`, staging `.next` → live `.next`.
-8. `pm2 restart gce-dev` only. Never restart `gce-prod`.
-9. Probe `http://127.0.0.1:3000/api/health/live` and `/` for HTTP 200.
-10. On success: `pm2 save`; keep one `.next.prev`.
-11. On health failure: restore `.next.prev`, restart `gce-dev`, re-probe.
+6. Rewrite absolute `/root/gce-pwa-dev-staging` paths inside staging `.next` to `/root/gce-pwa-dev` (RSC client manifests embed the build worktree path).
+7. Rsync staging `node_modules` → live so runtime matches the compiled artifact.
+8. Atomic swap: live `.next` → `.next.prev`, staging `.next` → live `.next`.
+9. `pm2 restart gce-dev` only (`HOME=/root`, `PM2_HOME=/root/.pm2`). Never restart `gce-prod`.
+10. Probe `/api/health/live` and `/` for HTTP 200 **and** homepage HTML containing `Explore Events`.
+11. On success: `pm2 save`; keep one `.next.prev`.
+12. On health failure: restore `.next.prev`, restart `gce-dev`, re-probe.
 
 GitHub Actions (`.github/workflows/deploy-dev.yml`) runs this script via `systemd-run --wait --collect` so an SSH blip does not SIGHUP a mid-build deploy. The live tree is **not** `git pull`ed by this script (Cursor/workspace may be dirty).
 

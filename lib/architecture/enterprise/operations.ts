@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { AppError } from "../errors";
 import { writeAuditEvent } from "../audit/write";
+import { createOrganisation } from "../organisations/create";
 import {
   calculateEnterpriseEntitlement,
   ebdpPackageAmounts,
@@ -267,6 +268,31 @@ export async function proposeClientAttribution(
     correlationId?: string;
   }
 ) {
+  const { data: pack, error: packErr } = await client
+    .from("enterprise_bdp_packs")
+    .select("id, user_id, application_status")
+    .eq("id", input.packId)
+    .single();
+  if (packErr || !pack) {
+    throw new AppError("NOT_FOUND", "Enterprise BDP pack not found", {
+      status: 404,
+    });
+  }
+  if (String(pack.user_id) !== input.bdpUserId) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Pack does not belong to the specified Enterprise BDP",
+      { status: 403 }
+    );
+  }
+  if (input.actorUserId === input.bdpUserId && pack.application_status !== "active") {
+    throw new AppError(
+      "FORBIDDEN",
+      "Active Enterprise BDP pack required to propose attribution",
+      { status: 403 }
+    );
+  }
+
   const { data, error } = await client
     .from("enterprise_client_attributions")
     .insert({
@@ -450,6 +476,68 @@ export async function reassignEnterpriseClient(
     correlationId: input.correlationId,
   });
   return { previous: current, next, handover };
+}
+
+/** BDP proposes a corporate prospect — organisation + client profile + attribution (proposed). */
+export async function proposeCorporateClient(
+  client: SupabaseClient,
+  input: {
+    packId: string;
+    bdpUserId: string;
+    legalName: string;
+    displayName: string;
+    industry?: string | null;
+    contactName?: string | null;
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    basis?: string | null;
+    actorUserId: string;
+    correlationId?: string;
+  }
+) {
+  const org = await createOrganisation(
+    client,
+    {
+      kind: "enterprise_client",
+      legalName: input.legalName.trim(),
+      tradingName: input.displayName.trim(),
+      countryCode: "IN",
+    },
+    { userId: input.actorUserId, correlationId: input.correlationId }
+  );
+
+  const profile = await createEnterpriseClient(client, {
+    organisationId: String(org.id),
+    displayName: input.displayName.trim(),
+    industry: input.industry ?? null,
+    actorUserId: input.actorUserId,
+    correlationId: input.correlationId,
+  });
+
+  await client
+    .from("enterprise_client_profiles")
+    .update({
+      engagement_status: "prospect",
+      metadata: {
+        bdpLead: true,
+        contactName: input.contactName ?? null,
+        contactEmail: input.contactEmail ?? null,
+        contactPhone: input.contactPhone ?? null,
+      },
+    })
+    .eq("id", profile.id);
+
+  const attribution = await proposeClientAttribution(client, {
+    clientId: String(profile.id),
+    packId: input.packId,
+    bdpUserId: input.bdpUserId,
+    actorUserId: input.actorUserId,
+    provenance: "bdp_sourced",
+    basis: input.basis ?? "Corporate lead proposed by Enterprise BDP",
+    correlationId: input.correlationId,
+  });
+
+  return { organisation: org, client: profile, attribution };
 }
 
 export async function createOpportunity(
@@ -1286,6 +1374,15 @@ export async function createEnterpriseEntitlement(
     hasValidAttribution: Boolean(attr),
   });
 
+  const { data: existingEntitlement } = await client
+    .from("enterprise_revenue_entitlements")
+    .select("*")
+    .eq("earning_event_key", input.earningEventKey)
+    .maybeSingle();
+  if (existingEntitlement) {
+    return existingEntitlement;
+  }
+
   // Claim component before insert — fails if Marketplace (or other) already commissioned
   const { error: claimErr } = await client.rpc("gce_claim_revenue_component", {
     p_key: input.revenueComponentKey,
@@ -1321,6 +1418,14 @@ export async function createEnterpriseEntitlement(
     })
     .select("*")
     .single();
+  if (error?.code === "23505") {
+    const { data: raced } = await client
+      .from("enterprise_revenue_entitlements")
+      .select("*")
+      .eq("earning_event_key", input.earningEventKey)
+      .maybeSingle();
+    if (raced) return raced;
+  }
   if (error || !data) {
     throw new AppError("INTERNAL_ERROR", "Failed to create entitlement boundary", {
       cause: error,

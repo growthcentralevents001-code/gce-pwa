@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { AppError } from "../errors";
 
 export async function buildEbdpDashboard(
   client: SupabaseClient,
@@ -211,4 +212,80 @@ export async function canActorReadEnterpriseClient(
     .eq("expert_user_id", input.userId)
     .limit(1);
   return Boolean(assigned && assigned.length > 0);
+}
+
+export async function canActorReadEnterpriseProject(
+  client: SupabaseClient,
+  input: {
+    userId: string;
+    projectId: string;
+    packIds: string[];
+    isPlatformAdmin: boolean;
+  }
+): Promise<boolean> {
+  if (input.isPlatformAdmin) return true;
+  const { data: project } = await client
+    .from("enterprise_projects")
+    .select("id, client_id, pack_id, attribution_id")
+    .eq("id", input.projectId)
+    .maybeSingle();
+  if (!project) return false;
+  if (project.pack_id && input.packIds.includes(String(project.pack_id))) {
+    return true;
+  }
+  return canActorReadEnterpriseClient(client, {
+    userId: input.userId,
+    clientId: String(project.client_id),
+    packIds: input.packIds,
+    isPlatformAdmin: false,
+  });
+}
+
+/** Active Enterprise BDP pack owned by user — required for BDP-sourced writes. */
+export async function getActiveEbdpPackForUser(
+  client: SupabaseClient,
+  userId: string
+) {
+  const { data, error } = await client
+    .from("enterprise_bdp_packs")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("application_status", "active")
+    .order("activated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load Enterprise BDP pack", {
+      cause: error,
+    });
+  }
+  return data;
+}
+
+export async function assertEbdpActiveClientAccess(
+  client: SupabaseClient,
+  input: { userId: string; clientId: string; packId: string }
+) {
+  const { data, error } = await client
+    .from("enterprise_client_attributions")
+    .select("id, status, bdp_user_id, pack_id")
+    .eq("client_id", input.clientId)
+    .eq("pack_id", input.packId)
+    .in("status", ["active", "proposed"])
+    .maybeSingle();
+  if (error || !data) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Enterprise BDP is not attributed to this client",
+      { status: 403 }
+    );
+  }
+  if (String(data.bdp_user_id) !== input.userId) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Cannot access another Enterprise BDP's client",
+      { status: 403 }
+    );
+  }
+  return data;
 }

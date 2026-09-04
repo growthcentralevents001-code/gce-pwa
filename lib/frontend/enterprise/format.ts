@@ -41,6 +41,15 @@ export const ENTERPRISE_EXPERT_ROLE_LABEL = "Enterprise Platform Expert";
 export const EBDP_ENTITLEMENT_COPY =
   "Enterprise BDP entitlement is based on the eligible GCE platform commission for attributed components — not 25% of total project value.";
 
+export const EBDP_EARNINGS_DISCLAIMER =
+  "Enterprise BDP earnings are performance-linked on successful eligible attributed projects. Entitlement is 25% of eligible GCE platform commission — not project value, GMV, or quotation amount. No guaranteed projects, contracts, salary, or monthly income.";
+
+export const EBDP_ATTRIBUTION_COPY =
+  "Attribution is client-based with platform confirmation. Enterprise BDP does not receive permanent geographic territory ownership.";
+
+export const EBDP_HANDOFF_COPY =
+  "Qualified corporate requirements enter the canonical GCE Enterprise solution workflow — proposal, quotation, and project execution remain with Platform Experts and governed roles.";
+
 /** FD-038: strictly greater than ₹5,00,000 — never "₹5L and above". */
 export const FINANCE_COSIGN_COPY =
   "Finance co-sign required for proposals above ₹5,00,000";

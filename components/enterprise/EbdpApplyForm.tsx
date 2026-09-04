@@ -41,7 +41,7 @@ export function EbdpApplyForm({ className }: { className?: string }) {
         if (!res.ok) {
           throw new Error(json?.error?.message || json?.message || "Apply failed");
         }
-        router.push("/dashboard/enterprise-bdp");
+        router.push("/enterprise-bdp/apply");
         router.refresh();
       } catch (e) {
         setError(e instanceof Error ? e.message : "Apply failed");

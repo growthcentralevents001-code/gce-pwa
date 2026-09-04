@@ -28,9 +28,15 @@ const INTENTS = [
     href: "/venue/apply",
   },
   {
-    id: "enterprise",
-    title: "Enterprise",
-    description: "Enterprise Client / BDP inquiry — routed for review.",
+    id: "enterprise-bdp",
+    title: "Enterprise BDP",
+    description: "Independent commercial partner — corporate opportunity development for GCE Enterprise.",
+    href: "/enterprise-bdp",
+  },
+  {
+    id: "enterprise-client",
+    title: "Enterprise Client",
+    description: "Corporate requirement intake for verified Enterprise Client organisations.",
     href: "/enterprise/intake",
   },
   {

@@ -642,3 +642,113 @@ export async function activateEnterpriseProject(
   });
   return updated;
 }
+
+/**
+ * Enterprise BDP requests handoff into canonical Enterprise Core.
+ * Creates requirement v1 when absent and moves opportunity to qualifying.
+ */
+export async function requestEnterpriseCoreHandoff(
+  client: SupabaseClient,
+  input: {
+    opportunityId: string;
+    rawRequirement: string;
+    actorUserId: string;
+    packId: string;
+    correlationId?: string;
+  }
+) {
+  const opportunity = await loadOpportunity(client, input.opportunityId);
+  if (String(opportunity.attributed_bdp_user_id ?? "") !== input.actorUserId) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Only the attributed Enterprise BDP may request handoff",
+      { status: 403 }
+    );
+  }
+  if (String(opportunity.pack_id ?? "") !== input.packId) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Opportunity is not attributed to this Enterprise BDP pack",
+      { status: 403 }
+    );
+  }
+  if (!input.rawRequirement.trim()) {
+    throw new AppError("VALIDATION_ERROR", "Requirement summary is required", {
+      status: 400,
+    });
+  }
+
+  const { data: existingReq } = await client
+    .from("enterprise_requirements")
+    .select("*")
+    .eq("opportunity_id", input.opportunityId)
+    .maybeSingle();
+
+  let requirement = existingReq;
+  if (!requirement) {
+    const { data: created, error: reqErr } = await client
+      .from("enterprise_requirements")
+      .insert({
+        opportunity_id: input.opportunityId,
+        current_version: 1,
+        readiness_status: "submitted",
+        structured_by: null,
+        metadata: {
+          handoffRequestedAt: new Date().toISOString(),
+          handoffRequestedBy: input.actorUserId,
+          source: "enterprise_bdp",
+        },
+      })
+      .select("*")
+      .single();
+    if (reqErr || !created) {
+      throw new AppError("INTERNAL_ERROR", "Failed to create requirement", {
+        cause: reqErr,
+      });
+    }
+    requirement = created;
+
+    const { error: vErr } = await client
+      .from("enterprise_requirement_versions")
+      .insert({
+        requirement_id: requirement.id,
+        version_no: 1,
+        raw_requirement: input.rawRequirement.trim(),
+        change_reason: "Enterprise BDP handoff into Enterprise Core",
+        created_by: input.actorUserId,
+        approval_status: "submitted",
+      });
+    if (vErr) {
+      throw new AppError("INTERNAL_ERROR", "Failed to create requirement version", {
+        cause: vErr,
+      });
+    }
+  }
+
+  const { data: updated, error: oppErr } = await client
+    .from("enterprise_opportunities")
+    .update({
+      status: "qualifying",
+      source: opportunity.source ?? "bdp_sourced",
+    })
+    .eq("id", input.opportunityId)
+    .select("*")
+    .single();
+  if (oppErr || !updated) {
+    throw new AppError("INTERNAL_ERROR", "Failed to update opportunity for handoff", {
+      cause: oppErr,
+    });
+  }
+
+  await writeAuditEvent(client, {
+    actorUserId: input.actorUserId,
+    action: "enterprise_opportunity.request_handoff",
+    resourceType: "enterprise_opportunity",
+    resourceId: input.opportunityId,
+    before: opportunity,
+    after: updated,
+    correlationId: input.correlationId,
+  });
+
+  return { opportunity: updated, requirement };
+}

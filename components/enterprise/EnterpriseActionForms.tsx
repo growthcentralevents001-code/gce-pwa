@@ -516,3 +516,157 @@ export function CreateOpportunityForm({
     </form>
   );
 }
+
+export function ProposeCorporateClientForm({
+  packId,
+  className,
+}: {
+  packId: string;
+  className?: string;
+}) {
+  const router = useRouter();
+  const [legalName, setLegalName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [basis, setBasis] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <form
+      className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "space-y-3 p-4", className)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        setError(null);
+        startTransition(async () => {
+          try {
+            await postEnterprise({
+              action: "propose_corporate_client",
+              packId,
+              legalName,
+              displayName,
+              industry: industry || undefined,
+              contactName: contactName || undefined,
+              contactEmail: contactEmail || undefined,
+              contactPhone: contactPhone || undefined,
+              basis: basis || undefined,
+            });
+            setLegalName("");
+            setDisplayName("");
+            setIndustry("");
+            setContactName("");
+            setContactEmail("");
+            setContactPhone("");
+            setBasis("");
+            router.refresh();
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed");
+          }
+        });
+      }}
+    >
+      <h3 className="text-sm font-semibold">Propose corporate lead</h3>
+      <p className="text-xs text-muted-foreground">
+        Creates a prospect client organisation and proposes attribution. Platform
+        activates attribution — this is not automatic entitlement.
+      </p>
+      <div className="space-y-1">
+        <Label htmlFor="corp-legal">Legal organisation name</Label>
+        <Input id="corp-legal" value={legalName} onChange={(e) => setLegalName(e.target.value)} required maxLength={300} />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="corp-display">Display name</Label>
+        <Input id="corp-display" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required maxLength={300} />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="corp-industry">Industry</Label>
+        <Input id="corp-industry" value={industry} onChange={(e) => setIndustry(e.target.value)} maxLength={200} />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-1">
+          <Label htmlFor="corp-contact">Contact person</Label>
+          <Input id="corp-contact" value={contactName} onChange={(e) => setContactName(e.target.value)} maxLength={200} />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="corp-phone">Phone</Label>
+          <Input id="corp-phone" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} maxLength={40} />
+        </div>
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="corp-email">Contact email</Label>
+        <Input id="corp-email" type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} maxLength={200} />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="corp-basis">Relationship basis</Label>
+        <Textarea id="corp-basis" value={basis} onChange={(e) => setBasis(e.target.value)} rows={2} maxLength={500} />
+      </div>
+      {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
+      <Button type="submit" className="min-h-11" disabled={pending}>
+        {pending ? "Submitting…" : "Propose corporate lead"}
+      </Button>
+    </form>
+  );
+}
+
+export function RequestHandoffForm({
+  opportunityId,
+  packId,
+  className,
+}: {
+  opportunityId: string;
+  packId: string;
+  className?: string;
+}) {
+  const router = useRouter();
+  const [rawRequirement, setRawRequirement] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <form
+      className={cn(GCE_RADIUS.card, GCE_SURFACE.muted, "space-y-3 p-4", className)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        setError(null);
+        startTransition(async () => {
+          try {
+            await postEnterprise({
+              action: "request_handoff",
+              opportunityId,
+              packId,
+              rawRequirement,
+            });
+            setRawRequirement("");
+            router.refresh();
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed");
+          }
+        });
+      }}
+    >
+      <h3 className="text-sm font-semibold">Request Enterprise Core handoff</h3>
+      <p className="text-xs text-muted-foreground">
+        Submit structured requirement summary for Platform Expert qualification.
+        Does not approve proposals or quotations.
+      </p>
+      <div className="space-y-1">
+        <Label htmlFor="handoff-req">Requirement summary</Label>
+        <Textarea
+          id="handoff-req"
+          value={rawRequirement}
+          onChange={(e) => setRawRequirement(e.target.value)}
+          rows={4}
+          required
+          maxLength={20000}
+        />
+      </div>
+      {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
+      <Button type="submit" className="min-h-11" disabled={pending}>
+        {pending ? "Submitting…" : "Request handoff"}
+      </Button>
+    </form>
+  );
+}

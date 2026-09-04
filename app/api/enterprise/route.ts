@@ -30,8 +30,12 @@ import {
   listClientsForRepresentative,
   listEbdpPacksForUser,
   canActorReadEnterpriseClient,
+  canActorReadEnterpriseProject,
+  getActiveEbdpPackForUser,
+  assertEbdpActiveClientAccess,
   openEnterpriseDispute,
   proposeClientAttribution,
+  proposeCorporateClient,
   reassignEnterpriseClient,
   recordEbdpPackPayment,
   suspendEnterpriseBdpPack,
@@ -42,6 +46,7 @@ import {
   qualifyEnterpriseRequirement,
   assignExpertToOpportunity,
   closeEnterpriseOpportunity,
+  requestEnterpriseCoreHandoff,
   publishProposalToClient,
   updateProjectMilestoneStatus,
   activateEnterpriseProject,
@@ -231,27 +236,103 @@ export const POST = withAuthedRoute(async (request, ctx) => {
       return jsonSuccess({ client }, ctx, 201);
     }
     case "propose_attribution": {
-      requirePerm("enterprise.attribution.manage");
+      requirePerm("enterprise.attribution.propose");
       const parsed = z
         .object({
           action: z.literal("propose_attribution"),
           clientId: z.string().uuid(),
           packId: z.string().uuid(),
-          bdpUserId: z.string().uuid(),
+          bdpUserId: z.string().uuid().optional(),
           provenance: z.string().max(100).optional(),
           basis: z.string().max(500).optional(),
         })
         .parse(body);
+      const packs = await listEbdpPacksForUser(ctx.supabase, ctx.user.id);
+      const owned = packs.find((p) => String(p.id) === parsed.packId);
+      const isOps = actorHasEnterprisePermission(
+        assignments,
+        "enterprise.attribution.manage"
+      );
+      if (!owned && !isOps) {
+        throw new AppError("FORBIDDEN", "Not your Enterprise BDP pack", {
+          status: 403,
+        });
+      }
+      const bdpUserId = owned
+        ? ctx.user.id
+        : String(
+            (
+              await admin
+                .from("enterprise_bdp_packs")
+                .select("user_id")
+                .eq("id", parsed.packId)
+                .single()
+            ).data?.user_id ?? ""
+          );
+      if (!bdpUserId) {
+        throw new AppError("NOT_FOUND", "Enterprise BDP pack not found", {
+          status: 404,
+        });
+      }
+      if (parsed.bdpUserId && parsed.bdpUserId !== bdpUserId) {
+        throw new AppError(
+          "FORBIDDEN",
+          "Cannot propose attribution for another Enterprise BDP",
+          { status: 403 }
+        );
+      }
       const attribution = await proposeClientAttribution(admin, {
         clientId: parsed.clientId,
         packId: parsed.packId,
-        bdpUserId: parsed.bdpUserId,
+        bdpUserId,
         actorUserId: ctx.user.id,
         provenance: parsed.provenance,
         basis: parsed.basis,
         correlationId: ctx.correlationId,
       });
       return jsonSuccess({ attribution }, ctx, 201);
+    }
+    case "propose_corporate_client": {
+      requirePerm("enterprise.client.propose");
+      const parsed = z
+        .object({
+          action: z.literal("propose_corporate_client"),
+          packId: z.string().uuid(),
+          legalName: z.string().min(1).max(300),
+          displayName: z.string().min(1).max(300),
+          industry: z.string().max(200).optional().nullable(),
+          contactName: z.string().max(200).optional().nullable(),
+          contactEmail: z.string().email().optional().nullable(),
+          contactPhone: z.string().max(40).optional().nullable(),
+          basis: z.string().max(500).optional().nullable(),
+        })
+        .parse(body);
+      const packs = await listEbdpPacksForUser(ctx.supabase, ctx.user.id);
+      const owned = packs.find(
+        (p) =>
+          String(p.id) === parsed.packId && p.application_status === "active"
+      );
+      if (!owned) {
+        throw new AppError(
+          "FORBIDDEN",
+          "Active Enterprise BDP pack required",
+          { status: 403 }
+        );
+      }
+      const result = await proposeCorporateClient(admin, {
+        packId: parsed.packId,
+        bdpUserId: ctx.user.id,
+        legalName: parsed.legalName,
+        displayName: parsed.displayName,
+        industry: parsed.industry,
+        contactName: parsed.contactName,
+        contactEmail: parsed.contactEmail,
+        contactPhone: parsed.contactPhone,
+        basis: parsed.basis,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx, 201);
     }
     case "activate_attribution": {
       requirePerm("enterprise.attribution.manage");
@@ -309,8 +390,31 @@ export const POST = withAuthedRoute(async (request, ctx) => {
           clientRepUserId: z.string().uuid().optional().nullable(),
         })
         .parse(body);
+      const isBdp = actorIsEnterpriseBdp(assignments);
+      let packId = parsed.packId ?? null;
+      let attributedBdpUserId = parsed.attributedBdpUserId ?? null;
+      if (isBdp) {
+        const activePack = await getActiveEbdpPackForUser(ctx.supabase, ctx.user.id);
+        if (!activePack) {
+          throw new AppError(
+            "FORBIDDEN",
+            "Active Enterprise BDP pack required",
+            { status: 403 }
+          );
+        }
+        packId = String(activePack.id);
+        attributedBdpUserId = ctx.user.id;
+        await assertEbdpActiveClientAccess(admin, {
+          userId: ctx.user.id,
+          clientId: parsed.clientId,
+          packId,
+        });
+      }
       const opportunity = await createOpportunity(admin, {
         ...parsed,
+        packId,
+        attributedBdpUserId,
+        source: parsed.source ?? (isBdp ? "bdp_sourced" : parsed.source),
         actorUserId: ctx.user.id,
         correlationId: ctx.correlationId,
       });
@@ -683,6 +787,35 @@ export const POST = withAuthedRoute(async (request, ctx) => {
         correlationId: ctx.correlationId,
       });
       return jsonSuccess({ opportunity }, ctx);
+    }
+    case "request_handoff": {
+      requirePerm("enterprise.handoff.request");
+      const parsed = z
+        .object({
+          action: z.literal("request_handoff"),
+          opportunityId: z.string().uuid(),
+          rawRequirement: z.string().min(1).max(20000),
+          packId: z.string().uuid(),
+        })
+        .parse(body);
+      const packs = await listEbdpPacksForUser(ctx.supabase, ctx.user.id);
+      const owned = packs.find(
+        (p) =>
+          String(p.id) === parsed.packId && p.application_status === "active"
+      );
+      if (!owned) {
+        throw new AppError("FORBIDDEN", "Active Enterprise BDP pack required", {
+          status: 403,
+        });
+      }
+      const result = await requestEnterpriseCoreHandoff(admin, {
+        opportunityId: parsed.opportunityId,
+        rawRequirement: parsed.rawRequirement,
+        packId: parsed.packId,
+        actorUserId: ctx.user.id,
+        correlationId: ctx.correlationId,
+      });
+      return jsonSuccess(result, ctx);
     }
     case "close_opportunity": {
       requirePerm("enterprise.opportunity.write");

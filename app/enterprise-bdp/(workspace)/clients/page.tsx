@@ -1,5 +1,5 @@
 import { PartnerPageHeader, PartnerDataTable } from "@/components/partner";
-import { ProposeAttributionForm } from "@/components/enterprise/EnterpriseActionForms";
+import { ProposeAttributionForm, ProposeCorporateClientForm } from "@/components/enterprise/EnterpriseActionForms";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -42,8 +42,11 @@ export default async function Page() {
           mobileTitle={(r) => r.clientName}
         />
       )}
-      {bundle?.pack ? (
-        <ProposeAttributionForm packId={bundle.pack.id} bdpUserId={user.id} />
+      {bundle?.pack && bundle.pack.application_status === "active" ? (
+        <>
+          <ProposeCorporateClientForm packId={String(bundle.pack.id)} />
+          <ProposeAttributionForm packId={bundle.pack.id} bdpUserId={user.id} />
+        </>
       ) : null}
     </main>
   );

@@ -16,9 +16,12 @@ export const ENTERPRISE_PERMISSIONS = [
   "enterprise.project.read",
   "enterprise.project.write",
   "enterprise.vendor.manage",
+  "enterprise.attribution.propose",
   "enterprise.attribution.manage",
+  "enterprise.client.propose",
   "enterprise.entitlement.read",
   "enterprise.dispute.open",
+  "enterprise.handoff.request",
 ] as const;
 
 export type EnterprisePermission = (typeof ENTERPRISE_PERMISSIONS)[number];
@@ -35,11 +38,14 @@ const ROLE_PERMS: Record<string, readonly EnterprisePermission[]> = {
   ],
   enterprise_bdp: [
     "enterprise.client.read",
+    "enterprise.client.propose",
     "enterprise.opportunity.read",
     "enterprise.opportunity.write",
+    "enterprise.attribution.propose",
     "enterprise.project.read",
     "enterprise.entitlement.read",
     "enterprise.dispute.open",
+    "enterprise.handoff.request",
   ],
   enterprise_platform_expert: [
     "enterprise.client.read",

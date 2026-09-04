@@ -32,10 +32,16 @@ const TRACKS = [
     href: "/apply/role?intent=venue",
   },
   {
-    id: "enterprise",
-    title: "Enterprise",
-    body: "Enterprise Client or Enterprise BDP interest is routed for review — not automatic entitlement.",
-    href: "/apply/role?intent=enterprise",
+    id: "enterprise-bdp",
+    title: "Enterprise BDP",
+    body: "Develop corporate opportunities and bring qualified B2B requirements into GCE Enterprise. Performance-linked earning on eligible attributed projects — application required.",
+    href: "/enterprise-bdp",
+  },
+  {
+    id: "enterprise-client",
+    title: "Enterprise Client",
+    body: "Submit corporate event requirements as an Enterprise Client organisation. Routed into the canonical Enterprise intake workflow.",
+    href: "/enterprise/intake",
   },
 ] as const;
 

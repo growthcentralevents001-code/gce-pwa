@@ -5,6 +5,7 @@ import {
   buildExpertDashboard,
   listClientsForRepresentative,
   listEbdpPacksForUser,
+  canActorReadEnterpriseProject,
 } from "@/lib/architecture/enterprise";
 
 export type EnterpriseClientRow = Record<string, unknown> & { id: string };
@@ -373,6 +374,73 @@ export async function loadEnterpriseBdpBundle(
     entitlements,
     handovers,
     disputes,
+  };
+}
+
+export async function loadEnterpriseBdpProjectDetail(
+  userClient: SupabaseClient,
+  adminClient: SupabaseClient,
+  userId: string,
+  projectId: string
+) {
+  const packs = await listEbdpPacksForUser(userClient, userId);
+  const packIds = packs.map((p) => String(p.id));
+  const isPlatformAdmin = false;
+
+  const allowed = await canActorReadEnterpriseProject(adminClient, {
+    userId,
+    projectId,
+    packIds,
+    isPlatformAdmin,
+  });
+  if (!allowed) return null;
+
+  const { data: project } = await adminClient
+    .from("enterprise_projects")
+    .select("*")
+    .eq("id", projectId)
+    .maybeSingle();
+  if (!project) return null;
+
+  const opportunityId = project.opportunity_id
+    ? String(project.opportunity_id)
+    : null;
+
+  const [{ data: milestones }, { data: components }, { data: quotes }] =
+    await Promise.all([
+      adminClient
+        .from("enterprise_milestones")
+        .select("*")
+        .eq("project_id", projectId)
+        .order("sort_order", { ascending: true }),
+      adminClient
+        .from("enterprise_project_components")
+        .select("*")
+        .eq("project_id", projectId)
+        .order("created_at", { ascending: false }),
+      opportunityId
+        ? adminClient
+            .from("enterprise_quotes")
+            .select("id, status, total_proposed_minor, quote_ref, finance_cosign_required")
+            .eq("opportunity_id", opportunityId)
+            .order("created_at", { ascending: false })
+            .limit(5)
+        : Promise.resolve({ data: [] as Record<string, unknown>[] }),
+    ]);
+
+  const { data: entitlements } = await adminClient
+    .from("enterprise_revenue_entitlements")
+    .select("*")
+    .eq("project_id", projectId)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  return {
+    project,
+    milestones: (milestones as Record<string, unknown>[]) ?? [],
+    components: (components as Record<string, unknown>[]) ?? [],
+    quotes: (quotes as Record<string, unknown>[]) ?? [],
+    entitlements: (entitlements as Record<string, unknown>[]) ?? [],
   };
 }
 

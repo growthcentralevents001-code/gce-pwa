@@ -211,6 +211,26 @@ export default async function EnterpriseBdpDashboardPage() {
           at: typeof o.created_at === "string" ? o.created_at : null,
         }))}
       />
+      {(bundle.projects ?? []).length > 0 ? (
+        <section className="space-y-3">
+          <h2 className="text-sm font-semibold">Attributed projects</h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {bundle.projects.slice(0, 4).map((p) => (
+              <li key={String(p.id)}>
+                <Link
+                  href={`/enterprise-bdp/projects/${String(p.id)}`}
+                  className="block rounded-2xl border border-border/80 bg-card p-4 text-sm hover:shadow-md"
+                >
+                  <span className="font-medium">{String(p.title ?? "Project")}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">
+                    {String(p.status ?? "").replace(/_/g, " ")} · read-only
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 }

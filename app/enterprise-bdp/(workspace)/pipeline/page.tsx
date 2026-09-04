@@ -1,6 +1,6 @@
 import { PartnerPageHeader, PartnerPipelineList } from "@/components/partner";
 import { OpportunityCard } from "@/components/enterprise/OpportunityProjectCards";
-import { CreateOpportunityForm } from "@/components/enterprise/EnterpriseActionForms";
+import { CreateOpportunityForm, RequestHandoffForm } from "@/components/enterprise/EnterpriseActionForms";
 import { EmptyState } from "@/components/states/EmptyState";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
@@ -44,7 +44,22 @@ export default async function Page() {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {opps.map((o) => (
-            <OpportunityCard key={String(o.id)} id={String(o.id)} title={String(o.title ?? "Opportunity")} status={String(o.status ?? "")} summary={typeof o.summary === "string" ? o.summary : null} />
+            <div key={String(o.id)} className="space-y-3">
+              <OpportunityCard
+                id={String(o.id)}
+                title={String(o.title ?? "Opportunity")}
+                status={String(o.status ?? "")}
+                summary={typeof o.summary === "string" ? o.summary : null}
+              />
+              {bundle?.pack &&
+              bundle.pack.application_status === "active" &&
+              ["open", "qualifying"].includes(String(o.status)) ? (
+                <RequestHandoffForm
+                  opportunityId={String(o.id)}
+                  packId={String(bundle.pack.id)}
+                />
+              ) : null}
+            </div>
           ))}
         </div>
       )}

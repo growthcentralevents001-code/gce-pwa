@@ -131,6 +131,21 @@ describe("Phase 8 RBAC boundaries", () => {
     expect(actorHasEnterprisePermission(a, "enterprise.entitlement.read")).toBe(
       true
     );
+    expect(actorHasEnterprisePermission(a, "enterprise.attribution.propose")).toBe(
+      true
+    );
+    expect(actorHasEnterprisePermission(a, "enterprise.attribution.manage")).toBe(
+      false
+    );
+    expect(actorHasEnterprisePermission(a, "enterprise.client.propose")).toBe(
+      true
+    );
+    expect(actorHasEnterprisePermission(a, "enterprise.client.write")).toBe(
+      false
+    );
+    expect(actorHasEnterprisePermission(a, "enterprise.handoff.request")).toBe(
+      true
+    );
   });
 
   it("lets Finance co-sign and Expert issue", () => {

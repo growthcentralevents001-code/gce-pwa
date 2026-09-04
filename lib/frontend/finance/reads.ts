@@ -16,6 +16,7 @@ export type FinanceBundle = {
   refunds: Record<string, unknown>[];
   chargebacks: Record<string, unknown>[];
   ledgerEntries: Record<string, unknown>[];
+  marketplaceCommercialEntitlements: Record<string, unknown>[];
 };
 
 const LIST_LIMIT = 80;
@@ -37,6 +38,7 @@ export async function loadFinanceBundle(
     refundRes,
     cbRes,
     ledgerRes,
+    mktCommercialRes,
   ] = await Promise.all([
     buildFinanceDashboard(client),
     client
@@ -111,6 +113,13 @@ export async function loadFinanceBundle(
       .select("id, direction, amount_minor, ledger_account_id, created_at")
       .order("created_at", { ascending: false })
       .limit(LIST_LIMIT),
+    client
+      .from("marketplace_revenue_entitlements")
+      .select(
+        "id, earning_event_key, source_type, source_id, venue_id, eligible_revenue_minor, venue_share_minor, mbdp_share_minor, gce_share_minor, has_valid_attribution, state, rule_version, created_at"
+      )
+      .order("created_at", { ascending: false })
+      .limit(LIST_LIMIT),
   ]);
 
   const entitlements = (entRes.data as Record<string, unknown>[]) ?? [];
@@ -133,5 +142,7 @@ export async function loadFinanceBundle(
     refunds: (refundRes.data as Record<string, unknown>[]) ?? [],
     chargebacks: (cbRes.data as Record<string, unknown>[]) ?? [],
     ledgerEntries: (ledgerRes.data as Record<string, unknown>[]) ?? [],
+    marketplaceCommercialEntitlements:
+      (mktCommercialRes.data as Record<string, unknown>[]) ?? [],
   };
 }

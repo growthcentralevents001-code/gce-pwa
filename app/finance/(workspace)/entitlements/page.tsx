@@ -80,6 +80,37 @@ export default async function Page({ searchParams }: PageProps) {
         </>
       )}
       <section>
+        <h2 className="mb-2 text-base font-semibold">Marketplace commercial entitlements</h2>
+        <p className="mb-3 text-xs text-muted-foreground">
+          Vertical-layer allocations from <code className="text-xs">marketplace_revenue_entitlements</code> — the split source of truth. Post to{" "}
+          <code className="text-xs">stakeholder_entitlements</code> via Finance write actions when ready for settlement reconciliation. Calculation ≠ payout.
+        </p>
+        {(bundle?.marketplaceCommercialEntitlements ?? []).length === 0 ? (
+          <p className="text-sm text-muted-foreground">No marketplace commercial entitlements yet.</p>
+        ) : (
+          <PartnerDataTable
+            columns={[
+              { id: "key", header: "Earning event", cell: (r) => String(r.earning_event_key ?? "—") },
+              { id: "state", header: "State", cell: (r) => entitlementStatusLabel(String(r.state ?? "")) },
+              { id: "gross", header: "Eligible gross", cell: (r) => formatMinorInr(Number(r.eligible_revenue_minor ?? 0)) },
+              { id: "venue", header: "Venue", cell: (r) => formatMinorInr(Number(r.venue_share_minor ?? 0)), hideOnMobile: true },
+              { id: "mbdp", header: "MBDP", cell: (r) => formatMinorInr(Number(r.mbdp_share_minor ?? 0)), hideOnMobile: true },
+              { id: "gce", header: "GCE", cell: (r) => formatMinorInr(Number(r.gce_share_minor ?? 0)), hideOnMobile: true },
+            ]}
+            rows={(bundle?.marketplaceCommercialEntitlements ?? []).map((r) => ({
+              id: String(r.id),
+              earning_event_key: r.earning_event_key,
+              state: r.state,
+              eligible_revenue_minor: r.eligible_revenue_minor,
+              venue_share_minor: r.venue_share_minor,
+              mbdp_share_minor: r.mbdp_share_minor,
+              gce_share_minor: r.gce_share_minor,
+            }))}
+            mobileTitle={(r) => String(r.earning_event_key ?? "Marketplace")}
+          />
+        )}
+      </section>
+      <section>
         <h2 className="mb-2 text-base font-semibold">Adjustments / reversals / corrections</h2>
         <p className="mb-3 text-xs text-muted-foreground">Original gross is not overwritten. Reversal and correction rows are separate.</p>
         {(reversals.length + corrections.length) === 0 ? <p className="text-sm text-muted-foreground">No reversals or corrections yet.</p> : (

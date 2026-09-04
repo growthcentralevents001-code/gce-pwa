@@ -723,10 +723,10 @@ export async function cancelBooking(
   });
 
   if (isEligibleMarketplaceBookingStatus(String(booking.status))) {
-    const { reverseMarketplaceBookingAllocation } = await import(
+    const { holdMarketplaceBookingAllocationForRefundPending } = await import(
       "../marketplace/allocation"
     );
-    await reverseMarketplaceBookingAllocation(client, {
+    await holdMarketplaceBookingAllocationForRefundPending(client, {
       bookingId: input.bookingId,
       actorUserId: input.buyerUserId,
       reason: input.reason,

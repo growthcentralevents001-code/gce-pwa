@@ -75,6 +75,27 @@ export async function buildFinanceDashboard(client: SupabaseClient) {
     if (row.source_vertical === "enterprise") totals.enterpriseGross += g;
   }
 
+  const { data: marketplaceCommercial } = await client
+    .from("marketplace_revenue_entitlements")
+    .select("state, eligible_revenue_minor, venue_share_minor, mbdp_share_minor, gce_share_minor");
+
+  const marketplaceCommercialSummary = {
+    rowCount: marketplaceCommercial?.length ?? 0,
+    eligibleGrossMinor: 0,
+    onHoldMinor: 0,
+    reversedMinor: 0,
+    earnedMinor: 0,
+  };
+  for (const row of marketplaceCommercial ?? []) {
+    const gross = Number(row.eligible_revenue_minor ?? 0);
+    marketplaceCommercialSummary.eligibleGrossMinor += gross;
+    const state = String(row.state ?? "");
+    if (state === "on_hold") marketplaceCommercialSummary.onHoldMinor += gross;
+    else if (state === "reversed") marketplaceCommercialSummary.reversedMinor += gross;
+    else if (state === "earned" || state === "settlement_eligible")
+      marketplaceCommercialSummary.earnedMinor += gross;
+  }
+
   return {
     recognisedRevenueComponents: recognised ?? 0,
     pendingEntitlements: pendingEntitlements ?? 0,
@@ -86,6 +107,9 @@ export async function buildFinanceDashboard(client: SupabaseClient) {
     reconciliationExceptions: exceptions ?? 0,
     reversals: reversals ?? 0,
     totals,
+    marketplaceCommercialSummary,
+    marketplaceCommercialNote:
+      "marketplace_revenue_entitlements is the vertical commercial-entitlement layer (split SoT). stakeholder_entitlements is the Finance settlement layer posted via Finance write actions.",
     moneyFlags: Object.fromEntries(
       (flags ?? []).map((f) => [f.key, Boolean(f.enabled)])
     ),

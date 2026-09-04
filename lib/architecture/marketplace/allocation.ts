@@ -180,8 +180,78 @@ export async function allocateMarketplaceBookingRevenue(
 }
 
 /**
- * Preserve allocation history; mark reversed when booking is cancelled/refunded.
- * Does not invent refund percentages — status-only adjustment boundary.
+ * Customer cancellation creates a refund *request* — not an approved refund.
+ * Hold commercial entitlement pending Finance resolution; do not mark reversed
+ * until an approved financial reversal exists (FD-039 / Phase 11).
+ */
+export async function holdMarketplaceBookingAllocationForRefundPending(
+  client: SupabaseClient,
+  input: {
+    bookingId: string;
+    actorUserId: string;
+    reason: string;
+    correlationId?: string;
+  }
+) {
+  const key = marketplaceBookingEarningEventKey(input.bookingId);
+  const { data: existing, error } = await client
+    .from("marketplace_revenue_entitlements")
+    .select("*")
+    .eq("earning_event_key", key)
+    .maybeSingle();
+
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load allocation", {
+      cause: error,
+    });
+  }
+  if (!existing || existing.state === "reversed" || existing.state === "on_hold") {
+    return existing;
+  }
+
+  const metadata =
+    typeof existing.metadata === "object" && existing.metadata
+      ? (existing.metadata as Record<string, unknown>)
+      : {};
+
+  const { data: updated, error: upErr } = await client
+    .from("marketplace_revenue_entitlements")
+    .update({
+      state: "on_hold",
+      metadata: {
+        ...metadata,
+        refundPendingAt: new Date().toISOString(),
+        refundPendingReason: input.reason,
+        holdReason: "customer_refund_request_pending",
+      },
+    })
+    .eq("id", existing.id)
+    .select("*")
+    .single();
+
+  if (upErr || !updated) {
+    throw new AppError("INTERNAL_ERROR", "Failed to hold allocation", {
+      cause: upErr,
+    });
+  }
+
+  await writeAuditEvent(client, {
+    actorUserId: input.actorUserId,
+    action: "marketplace_allocation.refund_pending_hold",
+    resourceType: "marketplace_revenue_entitlement",
+    resourceId: String(updated.id),
+    before: existing,
+    after: updated,
+    reason: input.reason,
+    correlationId: input.correlationId,
+  });
+
+  return updated;
+}
+
+/**
+ * Finance-approved reversal only. Preserves allocation history.
+ * Does not invent refund percentages — caller supplies approved amount context.
  */
 export async function reverseMarketplaceBookingAllocation(
   client: SupabaseClient,

@@ -1,4 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/architecture/audit/write", () => ({
+  writeAuditEvent: vi.fn().mockResolvedValue(undefined),
+}));
+
 import {
   calculateMarketplaceSplit,
   MARKETPLACE_RULE_VERSION,
@@ -123,6 +128,55 @@ describe("marketplace revenue allocation", () => {
         { venueId, snapshotAttributionId: attrId }
       );
       expect(result.hasValidAttribution).toBe(false);
+    });
+  });
+
+  describe("cancellation vs reversal semantics", () => {
+    it("holds allocation on refund pending instead of reversing", async () => {
+      const bookingId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+      const existing = {
+        id: "ent-1",
+        state: "earned",
+        metadata: {},
+        earning_event_key: `mkt:booking:${bookingId}`,
+      };
+      const updated = { ...existing, state: "on_hold" };
+
+      const updateChain = {
+        eq: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({ data: updated, error: null }),
+          }),
+        }),
+      };
+      const client = {
+        from: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              maybeSingle: vi
+                .fn()
+                .mockResolvedValue({ data: existing, error: null }),
+            }),
+          }),
+          update: vi.fn().mockReturnValue(updateChain),
+        }),
+      } as never;
+
+      const { holdMarketplaceBookingAllocationForRefundPending } = await import(
+        "@/lib/architecture/marketplace/allocation"
+      );
+
+      const result = await holdMarketplaceBookingAllocationForRefundPending(
+        client,
+        {
+          bookingId,
+          actorUserId: "user-1",
+          reason: "customer cancel within cutoff",
+        }
+      );
+
+      expect(result?.state).toBe("on_hold");
+      expect(result?.state).not.toBe("reversed");
     });
   });
 });

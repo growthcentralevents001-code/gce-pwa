@@ -61,6 +61,12 @@ const nextConfig: NextConfig = {
         destination: "/venue/bookings",
         permanent: false,
       },
+      // Legacy Enterprise signup — canonical requirement intake (Enterprise Core integrity gate)
+      {
+        source: "/enterprise/signup",
+        destination: "/enterprise/intake",
+        permanent: false,
+      },
     ];
   },
 };

@@ -985,6 +985,13 @@ export async function createProjectFromAcceptedQuote(
     .select("*")
     .single();
   if (pErr || !project) {
+    if (pErr?.code === "23505") {
+      throw new AppError(
+        "CONFLICT",
+        "An active project already exists for this opportunity or accepted quote",
+        { status: 409, cause: pErr }
+      );
+    }
     throw new AppError("INTERNAL_ERROR", "Failed to create project", {
       cause: pErr,
     });

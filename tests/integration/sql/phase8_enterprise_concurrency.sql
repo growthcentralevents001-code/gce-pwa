@@ -160,6 +160,43 @@ BEGIN
     NULL;
   END;
 
+  INSERT INTO public.enterprise_quotes (
+    id, opportunity_id, client_id, quote_ref, total_proposed_minor,
+    status, finance_cosign_required, finance_cosigned_by, finance_cosigned_at,
+    issued_by, issued_at, accepted_by, accepted_at
+  ) VALUES (
+    '55555555-5555-5555-5555-555555555555',
+    '22222222-2222-2222-2222-222222222222',
+    'ffffffff-ffff-ffff-ffff-ffffffffffff',
+    'EQ-TEST-5L-' || substr(gen_random_uuid()::text, 1, 8),
+    50000001,
+    'accepted',
+    true,
+    u_admin,
+    now(),
+    u_admin,
+    now(),
+    u_admin,
+    now()
+  );
+
+  BEGIN
+    INSERT INTO public.enterprise_projects (
+      client_id, opportunity_id, accepted_quote_id, project_ref, title, status, commercial_total_minor
+    ) VALUES (
+      'ffffffff-ffff-ffff-ffff-ffffffffffff',
+      '22222222-2222-2222-2222-222222222222',
+      '55555555-5555-5555-5555-555555555555',
+      'EP-TEST-DUP-OPP',
+      'Dup Opp Active',
+      'setup',
+      1
+    );
+    RAISE EXCEPTION 'EXPECTED_FAIL_duplicate_active_opportunity_project';
+  EXCEPTION WHEN unique_violation THEN
+    NULL;
+  END;
+
   INSERT INTO public.enterprise_milestones (project_id, name, percentage_bps, sort_order)
   VALUES
     ('44444444-4444-4444-4444-444444444444', 'Kickoff', 1000, 1),

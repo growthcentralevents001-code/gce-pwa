@@ -62,4 +62,10 @@ test.describe("Phase 14B — legacy redirects", () => {
     expect([301, 302, 307, 308]).toContain(res.status());
     expect(res.headers()["location"]).toMatch(/\/customer\/wishlist/);
   });
+
+  test("/enterprise/signup redirects to canonical intake", async ({ request }) => {
+    const res = await request.get("/enterprise/signup", { maxRedirects: 0 });
+    expect([301, 302, 307, 308]).toContain(res.status());
+    expect(res.headers()["location"]).toMatch(/\/enterprise\/intake/);
+  });
 });

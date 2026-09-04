@@ -25,27 +25,29 @@ const describeDb = dbAvailable() ? describe : describe.skip;
 
 describeDb("Phase 8 Enterprise concurrency (local Postgres)", () => {
   it("enforces Finance co-sign, attribution uniqueness, no double commission, project idempotency", () => {
-    execFileSync(
-      PSQL,
-      [
-        "-h",
-        PGHOST,
-        "-p",
-        PGPORT,
-        "-U",
-        PGUSER,
-        "-d",
-        PGDATABASE,
-        "-v",
-        "ON_ERROR_STOP=1",
-        "-f",
-        path.join(
-          process.cwd(),
-          "supabase/migrations/20260808190000_phase8_enterprise.sql"
-        ),
-      ],
-      { encoding: "utf8", stdio: "pipe", env: process.env }
-    );
+    for (const migration of [
+      "supabase/migrations/20260808190000_phase8_enterprise.sql",
+      "supabase/migrations/20260905120000_enterprise_integrity_gate.sql",
+    ]) {
+      execFileSync(
+        PSQL,
+        [
+          "-h",
+          PGHOST,
+          "-p",
+          PGPORT,
+          "-U",
+          PGUSER,
+          "-d",
+          PGDATABASE,
+          "-v",
+          "ON_ERROR_STOP=1",
+          "-f",
+          path.join(process.cwd(), migration),
+        ],
+        { encoding: "utf8", stdio: "pipe", env: process.env }
+      );
+    }
 
     const out = execFileSync(
       PSQL,

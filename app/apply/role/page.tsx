@@ -31,7 +31,7 @@ const INTENTS = [
     id: "enterprise",
     title: "Enterprise",
     description: "Enterprise Client / BDP inquiry — routed for review.",
-    href: "/enterprise/signup",
+    href: "/enterprise/intake",
   },
   {
     id: "connect-member",

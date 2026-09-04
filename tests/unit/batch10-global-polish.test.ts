@@ -47,6 +47,8 @@ describe("Batch 10 — design tokens (no decorative blue)", () => {
     expect(css).toMatch(/--info:\s*24\s+95%\s+53%/);
     expect(css).not.toMatch(/--info:.*210/);
     expect(css).toMatch(/prefers-reduced-motion:\s*reduce/);
+    // Warm muted — not Tailwind slate-blue (hue ~215)
+    expect(css).toMatch(/--muted-foreground:\s*20\s+10%\s+38%/);
   });
 
   it("canonical radius families are controlled", () => {
@@ -133,6 +135,33 @@ describe("Batch 10 — productization guards", () => {
     for (const k of required) {
       expect(INACTIVE_FEATURE_FLAGS as readonly string[]).toContain(k);
     }
+  });
+
+  it("composition guards: wrap status, widen customer, singular dashboard shell", () => {
+    const strip = read("components/partner/PartnerStatusStrip.tsx");
+    expect(strip).toMatch(/grid-cols-2/);
+    expect(strip).not.toMatch(/flex-1/);
+
+    const customer = read("components/app-shell/CustomerShell.tsx");
+    expect(customer).toMatch(/lg:max-w-6xl/);
+    expect(customer).toMatch(/lg:hidden/);
+
+    const partner = read("components/app-shell/PartnerShell.tsx");
+    expect(partner).toMatch(/\/dashboard\/platform-ops/);
+    expect(partner).toMatch(/\/dashboard\/compliance/);
+    expect(partner).toMatch(/\/dashboard\/support/);
+    expect(partner).toMatch(/\/dashboard\/opportunity-desk/);
+
+    const financeDash = read("app/dashboard/finance/page.tsx");
+    expect(financeDash).not.toMatch(/PartnerShell/);
+
+    const homeVerticals = read("components/marketing/Vertical3dSection.tsx");
+    expect(homeVerticals).not.toMatch(/InteractiveTravelCard/);
+    expect(homeVerticals).toMatch(/Three verticals\. One GCE/);
+
+    const animated = read("components/marketing/AnimatedSection.tsx");
+    expect(animated).not.toMatch(/opacity:\s*0/);
+    expect(animated).not.toMatch(/margin:\s*"-80px"/);
   });
 });
 

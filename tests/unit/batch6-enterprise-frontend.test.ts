@@ -21,6 +21,8 @@ import {
   ebdpPackageOptionLabel,
   financeCosignRequired,
   financeCosignStatusLabel,
+  formatContractualRole,
+  milestoneTimelineTone,
 } from "@/lib/frontend/enterprise/format";
 import { calculateEnterpriseEntitlement } from "@/lib/architecture/enterprise/constants";
 import {
@@ -123,5 +125,14 @@ describe("Batch 6 Enterprise Client / BDP / Expert presentation", () => {
     expect(WORKSPACE_LEGACY_QUARANTINE.some((q) => q.id === "super-admin")).toBe(
       true
     );
+  });
+
+  it("humanizes contractual role keys in Project Command Center copy", () => {
+    expect(formatContractualRole("platform_intermediary")).toBe(
+      "Platform intermediary"
+    );
+    expect(formatContractualRole("platform_intermediary")).not.toMatch(/_/);
+    expect(milestoneTimelineTone("planned")).toBe("pending");
+    expect(milestoneTimelineTone("approved")).toBe("success");
   });
 });

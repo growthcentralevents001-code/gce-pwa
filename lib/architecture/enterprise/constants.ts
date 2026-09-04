@@ -1,4 +1,9 @@
-/** Phase 8 Enterprise commercial constants — FD-026/028/029/038. */
+/** Phase 8 Enterprise commercial constants — governed by Founder Decisions.
+ *  Platform commission default: FD-026 §52 (20% of eligible Enterprise event revenue).
+ *  EBDP entitlement: FD-026 §55 / FD-029 §38 / FD-038 (25% of eligible GCE platform commission).
+ *  Franchise Pack fees: FD-026 §21–§24; payment channel: FD-039 §803.
+ *  Do not infer Enterprise economics from Marketplace splits (FD-037 is Marketplace-only).
+ */
 
 /** Enterprise BDP Franchise Pack — direct ₹30,000 */
 export const EBDP_DIRECT_TOTAL_MINOR = 3_000_000;

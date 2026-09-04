@@ -96,11 +96,37 @@ export async function recordEbdpPackPayment(
     correlationId?: string;
   }
 ) {
+  const { data: existing, error: loadErr } = await client
+    .from("enterprise_bdp_packs")
+    .select("*")
+    .eq("id", input.packId)
+    .single();
+  if (loadErr || !existing) {
+    throw new AppError("NOT_FOUND", "Enterprise BDP pack not found", {
+      status: 404,
+    });
+  }
+  if (!existing.terms_accepted_at) {
+    throw new AppError("CONFLICT", "Terms must be accepted before payment", {
+      status: 409,
+    });
+  }
+  if (
+    existing.application_status !== "pending_payment" &&
+    existing.application_status !== "submitted"
+  ) {
+    throw new AppError(
+      "CONFLICT",
+      "Pack is not awaiting payment evidence",
+      { status: 409 }
+    );
+  }
+
   const { data, error } = await client
     .from("enterprise_bdp_packs")
     .update({
-      payment_intent_id: input.paymentIntentId ?? null,
-      offline_payment_ref: input.offlinePaymentRef ?? null,
+      payment_intent_id: input.paymentIntentId ?? existing.payment_intent_id,
+      offline_payment_ref: input.offlinePaymentRef ?? existing.offline_payment_ref,
       application_status: "pending_approval",
     })
     .eq("id", input.packId)
@@ -116,6 +142,7 @@ export async function recordEbdpPackPayment(
     action: "enterprise_bdp.record_payment",
     resourceType: "enterprise_bdp_pack",
     resourceId: input.packId,
+    before: existing,
     after: data,
     correlationId: input.correlationId,
   });
@@ -152,6 +179,23 @@ export async function activateEnterpriseBdpPack(
     throw new AppError("CONFLICT", "Terms must be accepted before activation", {
       status: 409,
     });
+  }
+  if (pack.application_status === "active") {
+    return pack;
+  }
+  if (pack.application_status !== "pending_approval") {
+    throw new AppError(
+      "CONFLICT",
+      "Enterprise BDP pack must complete payment before activation review",
+      { status: 409 }
+    );
+  }
+  if (!pack.payment_intent_id && !pack.offline_payment_ref) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      "Franchise Pack payment evidence required before activation (FD-026)",
+      { status: 400 }
+    );
   }
 
   const metadata = {

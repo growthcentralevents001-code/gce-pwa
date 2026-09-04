@@ -69,6 +69,27 @@ describe("Enterprise BDP delta — earning boundary", () => {
   });
 });
 
+describe("Enterprise BDP delta — commercial authority (FD-026 / FD-029)", () => {
+  it("uses Enterprise-specific platform commission default, not Marketplace economics", async () => {
+    const { ENTERPRISE_PLATFORM_COMMISSION_BPS } = await import(
+      "@/lib/architecture/enterprise/constants"
+    );
+    expect(ENTERPRISE_PLATFORM_COMMISSION_BPS).toBe(2000);
+  });
+
+  it("calculates EBDP as 25% of platform commission per FD-026 §55 / FD-029 §38", () => {
+    const revenue = 5_000_000; // ₹5L eligible event revenue
+    const calc = calculateEnterpriseEntitlement({
+      eligibleEventRevenueMinor: revenue,
+      hasValidAttribution: true,
+      platformCommissionBps: 2000,
+    });
+    expect(calc.platformCommissionMinor).toBe(1_000_000);
+    expect(calc.ebdpEntitlementMinor).toBe(250_000);
+    expect(calc.ebdpEntitlementMinor).not.toBe(Math.floor((revenue * 2500) / 10_000));
+  });
+});
+
 describe("Enterprise BDP delta — public routes", () => {
   it("exports public opportunity page module", async () => {
     const page = await import("@/app/enterprise-bdp/page");

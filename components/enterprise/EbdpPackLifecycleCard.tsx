@@ -79,9 +79,9 @@ export function EbdpPackLifecycleCard({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Applicants cannot self-approve. Platform Ops activates approved packs.
-        Live online pack checkout remains gated — offline payment reference may be
-        recorded for review.
+        Franchise Pack fees are governed by Founder Decision FD-026 (₹30,000 direct
+        or ₹36,000 financed with ₹5,000 initial). Applicants cannot self-approve.
+        Platform Ops activates approved packs. Live online checkout remains gated.
       </p>
 
       {status === "submitted" ? (

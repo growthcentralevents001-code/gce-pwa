@@ -18,12 +18,16 @@ export function MembershipCard({
   status,
   allocationStatus,
   tagCount,
+  businessName,
+  specialisationLabel,
   href = "/connect/membership",
   className,
 }: {
   status: string;
   allocationStatus: string;
   tagCount?: number;
+  businessName?: string | null;
+  specialisationLabel?: string | null;
   href?: string;
   className?: string;
 }) {
@@ -43,6 +47,12 @@ export function MembershipCard({
           GCE Connect
         </p>
         <h2 className="mt-1 text-lg font-semibold">{associatePlanLabel()}</h2>
+        {businessName ? (
+          <p className="mt-1 text-sm text-foreground">{businessName}</p>
+        ) : null}
+        {specialisationLabel ? (
+          <p className="mt-0.5 text-xs text-muted-foreground">{specialisationLabel}</p>
+        ) : null}
         <div className="mt-3 flex flex-wrap gap-2">
           <StatusBadge label={status} tone={membershipStatusTone(status)} />
           <StatusBadge

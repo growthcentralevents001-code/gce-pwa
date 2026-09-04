@@ -123,7 +123,8 @@ test.describe("circle meetings lifecycle", () => {
       const body = await page.locator("body").innerText();
       expect(body).toMatch(/Upcoming meeting/i);
       expect(body).toMatch(new RegExp(MEETING_TITLE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-      expect(body).toMatch(/Referrals stay in the app/i);
+      expect(body).toMatch(/Create referral/i);
+      expect(body).toMatch(/I will attend/i);
       const overflow = await page.evaluate(
         () =>
           document.documentElement.scrollWidth >
@@ -133,6 +134,81 @@ test.describe("circle meetings lifecycle", () => {
       await ctx.close();
     });
   }
+
+  test("member RSVPs and home shows next meeting", async ({ browser }) => {
+    test.skip(!meetingId, "schedule step did not produce meeting id");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("connect-member"),
+    });
+    const page = await ctx.newPage();
+    const rsvp = await postJson(page.request, "/api/connect/circle-meetings", {
+      action: "rsvp",
+      meetingId,
+      status: "scheduled",
+    });
+    expect(rsvp.status).toBe(200);
+    expect(rsvp.json.attendance?.status).toBe("scheduled");
+    expect(rsvp.json.attendance?.meetingId).toBe(meetingId);
+
+    const listed = await getJson(
+      page.request,
+      `/api/connect/circle-meetings?circleId=${E2E_CIRCLE_ID}`
+    );
+    expect(listed.status).toBe(200);
+    expect(listed.json.myAttendance?.status).toBe("scheduled");
+
+    await page.goto("/dashboard/connect-member");
+    await page.waitForLoadState("domcontentloaded");
+    const body = await page.locator("body").innerText();
+    expect(body).toMatch(/Next meeting/i);
+    expect(body).toMatch(/Upcoming meeting/i);
+    expect(body).toMatch(
+      new RegExp(MEETING_TITLE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    );
+    await ctx.close();
+  });
+
+  test("member cannot record attendance as Ops", async ({ browser }) => {
+    test.skip(!meetingId, "schedule step did not produce meeting id");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("connect-member"),
+    });
+    const page = await ctx.newPage();
+    const res = await postJson(page.request, "/api/connect/circle-meetings", {
+      action: "record_attendance",
+      meetingId,
+      userId: "00000000-0000-4000-8000-000000000001",
+      status: "attended",
+    });
+    expect(res.status).toBe(403);
+    await ctx.close();
+  });
+
+  test("meeting context creates Lead Assist referral, not a second engine", async ({
+    browser,
+  }) => {
+    test.skip(!meetingId, "schedule step did not produce meeting id");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("connect-member"),
+    });
+    const page = await ctx.newPage();
+    const created = await postJson(page.request, "/api/lead-assist", {
+      action: "create",
+      title: "E2E meeting follow-up referral",
+      requirementSummary:
+        "Need general business support captured from the Circle meeting.",
+      city: "Bengaluru",
+      originCircleId: E2E_CIRCLE_ID,
+      specialisationId: "9c442a98-3674-4d84-a6b3-8d56e42eaf0e",
+      meetingId,
+      privacyLevel: "standard",
+      tagCodes: [],
+    });
+    expect(created.status).toBeLessThan(300);
+    expect(created.json.lead?.source).toBe("meeting_followup");
+    expect(created.json.lead?.meeting_id).toBe(meetingId);
+    await ctx.close();
+  });
 
   test("Ops marks meeting completed — member sees history", async ({
     browser,
@@ -195,6 +271,23 @@ test.describe("circle meetings API RBAC", () => {
       status: "cancelled",
     });
     expect(update.status).toBe(403);
+    await ctx.close();
+  });
+
+  test("unrelated customer cannot RSVP to Circle meetings", async ({
+    browser,
+  }) => {
+    test.skip(!existsSync(authStatePath("customer-b")), "no customer B");
+    const ctx = await browser.newContext({
+      storageState: authStatePath("customer-b"),
+    });
+    const page = await ctx.newPage();
+    const res = await postJson(page.request, "/api/connect/circle-meetings", {
+      action: "rsvp",
+      meetingId: "00000000-0000-4000-8000-000000000001",
+      status: "scheduled",
+    });
+    expect([403, 404]).toContain(res.status);
     await ctx.close();
   });
 

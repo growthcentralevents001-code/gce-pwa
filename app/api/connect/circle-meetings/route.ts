@@ -11,6 +11,14 @@ import {
   scheduleCircleMeeting,
   updateCircleMeetingStatus,
   CIRCLE_MEETING_STATUSES,
+  CIRCLE_MEETING_ATTENDANCE_STATUSES,
+  MEMBER_RSVP_STATUSES,
+  getCircleMeeting,
+  getMyMeetingAttendance,
+  listMeetingAttendance,
+  attendanceCounts,
+  upsertMeetingAttendance,
+  listCircleSeatUserIds,
 } from "@/lib/architecture/connect/meetings";
 import { AppError } from "@/lib/architecture/errors";
 import { z } from "zod";
@@ -29,6 +37,17 @@ const postSchema = z.discriminatedUnion("action", [
     meetingId: z.string().uuid(),
     status: z.enum(CIRCLE_MEETING_STATUSES),
     notes: z.string().max(2000).optional().nullable(),
+  }),
+  z.object({
+    action: z.literal("rsvp"),
+    meetingId: z.string().uuid(),
+    status: z.enum(MEMBER_RSVP_STATUSES),
+  }),
+  z.object({
+    action: z.literal("record_attendance"),
+    meetingId: z.string().uuid(),
+    userId: z.string().uuid(),
+    status: z.enum(CIRCLE_MEETING_ATTENDANCE_STATUSES),
   }),
 ]);
 
@@ -90,21 +109,107 @@ export const GET = withAuthedRoute(async (request, ctx) => {
 
   const meetings = await listCircleMeetings(ctx.supabase, circleId);
   const partitioned = partitionCircleMeetings(meetings);
+  const isOps = actorHasOpsAdminPermission(
+    ctx.entitlements.activeAssignments,
+    "ops.connect"
+  );
+  const admin = isOps ? createPrivilegedSupabaseClient() : null;
+
+  let myAttendance = null;
+  let upcomingAttendance = null;
+  if (partitioned.upcoming) {
+    myAttendance = await getMyMeetingAttendance(
+      ctx.supabase,
+      partitioned.upcoming.id,
+      ctx.user.id
+    ).catch(() => null);
+    if (isOps && admin) {
+      const rows = await listMeetingAttendance(
+        admin,
+        partitioned.upcoming.id
+      ).catch(() => []);
+      const seats = await listCircleSeatUserIds(admin, circleId).catch(() => []);
+      upcomingAttendance = {
+        counts: attendanceCounts(rows),
+        records: rows,
+        seats,
+      };
+    }
+  }
+
   return jsonSuccess(
     {
       meetings,
       upcoming: partitioned.upcoming,
       previous: partitioned.previous,
       cadenceDays: 15,
+      myAttendance,
+      upcomingAttendance,
     },
     ctx
   );
 });
 
 export const POST = withAuthedRoute(async (request, ctx) => {
-  assertOpsCanManageMeetings(ctx);
   const admin = createPrivilegedSupabaseClient();
   const body = postSchema.parse(await request.json());
+
+  if (body.action === "rsvp") {
+    const meeting = await getCircleMeeting(admin, body.meetingId);
+    if (!meeting) {
+      throw new AppError("NOT_FOUND", "Circle meeting not found", { status: 404 });
+    }
+    if (meeting.status !== "scheduled") {
+      throw new AppError(
+        "VALIDATION_ERROR",
+        "Attendance can only be confirmed for a scheduled meeting",
+        { status: 400 }
+      );
+    }
+    const allowed = await userCanReadCircleMeetings(ctx, meeting.circleId);
+    if (!allowed) {
+      throw new AppError("FORBIDDEN", "Not authorized for this Circle", {
+        status: 403,
+      });
+    }
+    const seats = await listCircleSeatUserIds(admin, meeting.circleId);
+    const mine = seats.find((s) => s.userId === ctx.user.id);
+    if (!mine) {
+      throw new AppError("FORBIDDEN", "Only allocated Circle members can RSVP", {
+        status: 403,
+      });
+    }
+    const attendance = await upsertMeetingAttendance(admin, {
+      meetingId: body.meetingId,
+      userId: ctx.user.id,
+      membershipId: mine.membershipId,
+      status: body.status,
+      actorUserId: ctx.user.id,
+      correlationId: ctx.correlationId,
+    });
+    return jsonSuccess({ attendance }, ctx);
+  }
+
+  if (body.action === "record_attendance") {
+    assertOpsCanManageMeetings(ctx);
+    const meeting = await getCircleMeeting(admin, body.meetingId);
+    if (!meeting) {
+      throw new AppError("NOT_FOUND", "Circle meeting not found", { status: 404 });
+    }
+    const seats = await listCircleSeatUserIds(admin, meeting.circleId);
+    const target = seats.find((s) => s.userId === body.userId);
+    const attendance = await upsertMeetingAttendance(admin, {
+      meetingId: body.meetingId,
+      userId: body.userId,
+      membershipId: target?.membershipId ?? null,
+      status: body.status,
+      actorUserId: ctx.user.id,
+      correlationId: ctx.correlationId,
+    });
+    return jsonSuccess({ attendance }, ctx);
+  }
+
+  assertOpsCanManageMeetings(ctx);
 
   if (body.action === "schedule") {
     const result = await scheduleCircleMeeting(admin, {

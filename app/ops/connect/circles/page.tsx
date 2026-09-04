@@ -12,6 +12,10 @@ import { resolveActiveEntitlements } from "@/lib/architecture/identity/resolveEn
 import { actorHasOpsAdminPermission } from "@/lib/architecture/ops-admin";
 import { loadCircleBundle } from "@/lib/frontend/connect/reads";
 import {
+  listCircleMeetings,
+  partitionCircleMeetings,
+} from "@/lib/architecture/connect/meetings";
+import {
   countMembersByPowerSector,
   specialisationsByPowerSector,
   CIRCLE_CAPACITY_MAX,
@@ -49,6 +53,10 @@ export default async function ConnectOpsCirclesPage() {
   for (const row of rows ?? []) {
     try {
       const bundle = await loadCircleBundle(admin, String(row.id));
+      const meetings = await listCircleMeetings(admin, String(row.id)).catch(
+        () => []
+      );
+      const upcoming = partitionCircleMeetings(meetings).upcoming;
       summaries.push({
         id: String(row.id),
         name: String(row.name),
@@ -60,6 +68,12 @@ export default async function ConnectOpsCirclesPage() {
         constitutionStatus: String(row.constitution_status),
         sectorCounts: countMembersByPowerSector(bundle.directory),
         sectorSpecs: specialisationsByPowerSector(bundle.directory),
+        upcomingMeetingLabel: upcoming
+          ? new Date(upcoming.scheduledAt).toLocaleString("en-IN", {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })
+          : null,
       });
     } catch {
       const activeSeats = Number(row.active_seat_count ?? 0);
@@ -78,6 +92,7 @@ export default async function ConnectOpsCirclesPage() {
         constitutionStatus: String(row.constitution_status),
         sectorCounts: {},
         sectorSpecs: {},
+        upcomingMeetingLabel: null,
       });
     }
   }

@@ -17,6 +17,7 @@ import {
   loadCircleBundle,
 } from "@/lib/frontend/connect/reads";
 import {
+  getMyMeetingAttendance,
   listCircleMeetings,
   partitionCircleMeetings,
 } from "@/lib/architecture/connect/meetings";
@@ -95,6 +96,13 @@ export default async function MyCirclePage() {
   const sectorCounts = countMembersByPowerSector(directory);
   const sectorSpecs = specialisationsByPowerSector(directory);
   const meetingPartition = partitionCircleMeetings(meetings);
+  const myAttendance = meetingPartition.upcoming
+    ? await getMyMeetingAttendance(
+        admin,
+        meetingPartition.upcoming.id,
+        user.id
+      ).catch(() => null)
+    : null;
   const isFull = availability.remaining <= 0;
 
   return (
@@ -167,6 +175,8 @@ export default async function MyCirclePage() {
         <CircleMeetingsPanel
           upcoming={meetingPartition.upcoming}
           previous={meetingPartition.previous}
+          myAttendance={myAttendance}
+          allowRsvp
         />
       </section>
 

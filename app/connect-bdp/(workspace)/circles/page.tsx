@@ -9,13 +9,17 @@ import { loadCircleBundle } from "@/lib/frontend/connect/reads";
 import {
   countMembersByPowerSector,
   specialisationsByPowerSector,
+  CIRCLE_CAPACITY_MAX,
 } from "@/lib/frontend/connect/format";
 import { ConnectCircleStructurePanel } from "@/components/ops/ConnectCircleStructurePanel";
 import {
   CONNECT_BDP_CIRCLES_PER_UNIT,
   unitCircleCapacityLabel,
 } from "@/lib/frontend/partner/format";
-import { CIRCLE_CAPACITY_MAX } from "@/lib/frontend/connect/format";
+import {
+  listCircleMeetings,
+  partitionCircleMeetings,
+} from "@/lib/architecture/connect/meetings";
 import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 
 export const metadata = {
@@ -61,6 +65,8 @@ export default async function ConnectBdpCirclesPage() {
       const c = (circle ?? {}) as Record<string, unknown>;
       try {
         const b = await loadCircleBundle(admin, circleId);
+        const meetings = await listCircleMeetings(admin, circleId).catch(() => []);
+        const upcoming = partitionCircleMeetings(meetings).upcoming;
         return {
           id: circleId,
           name: String(c.name ?? `Circle ${circleId.slice(0, 8)}`),
@@ -74,6 +80,12 @@ export default async function ConnectBdpCirclesPage() {
           ),
           sectorCounts: countMembersByPowerSector(b.directory),
           sectorSpecs: specialisationsByPowerSector(b.directory),
+          upcomingMeetingLabel: upcoming
+            ? new Date(upcoming.scheduledAt).toLocaleString("en-IN", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })
+            : null,
         };
       } catch {
         const seats = Number(c.active_seat_count ?? 0);
@@ -90,6 +102,7 @@ export default async function ConnectBdpCirclesPage() {
           ),
           sectorCounts: {},
           sectorSpecs: {},
+          upcomingMeetingLabel: null,
         };
       }
     })

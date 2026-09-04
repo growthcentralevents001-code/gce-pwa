@@ -9,6 +9,7 @@ import type {
   MembershipStatus,
 } from "./types";
 import { GRACE_DAYS, PRICING_RULE_VERSION } from "./types";
+import { normalizeMembershipApplicationMetadata } from "./application";
 
 function mapMembership(row: Record<string, unknown>): ConnectMembership {
   return {
@@ -27,6 +28,8 @@ function mapMembership(row: Record<string, unknown>): ConnectMembership {
     activatedAt: (row.activated_at as string | null) ?? null,
     startsAt: (row.starts_at as string | null) ?? null,
     endsAt: (row.ends_at as string | null) ?? null,
+    businessName:
+      normalizeMembershipApplicationMetadata(row.metadata)?.businessName ?? null,
   };
 }
 

@@ -12,8 +12,15 @@ import { Button } from "@/components/ui/button";
 import { createServerSupabaseClient } from "@/lib/supabase/clients";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase";
 import { getCurrentIdentity } from "@/lib/architecture/identity/current";
+import { CircleMeetingsPanel } from "@/components/connect/CircleMeetingsPanel";
 import { listMembershipsForUser } from "@/lib/architecture/connect/memberships";
 import { listMembershipTags } from "@/lib/architecture/connect/tags";
+import { listActiveSpecialisations } from "@/lib/architecture/connect/specialisations";
+import {
+  listCircleMeetings,
+  getMyMeetingAttendance,
+  partitionCircleMeetings,
+} from "@/lib/architecture/connect/meetings";
 import {
   getMyReceivedLeads,
   getMySentLeads,
@@ -70,11 +77,35 @@ export default async function ConnectMemberHomePage() {
   const tags = primary
     ? await listMembershipTags(supabase, primary.id).catch(() => [])
     : [];
+  const specialisations = await listActiveSpecialisations(admin).catch(() => []);
+  const specialisationLabel = primary?.specialisationId
+    ? specialisations.find((s) => s.id === primary.specialisationId)?.label ?? null
+    : null;
   const seat = primary
     ? await findSeatForMembership(admin, primary.id).catch(() => null)
     : null;
   const circleRaw = seat?.connect_circles;
   const circle = Array.isArray(circleRaw) ? circleRaw[0] : circleRaw;
+  const circleId = seat?.circle_id as string | undefined;
+
+  let upcomingMeeting = null;
+  let previousMeetings: Awaited<
+    ReturnType<typeof listCircleMeetings>
+  > = [];
+  let myAttendance = null;
+  if (circleId) {
+    const meetings = await listCircleMeetings(admin, circleId).catch(() => []);
+    const partitioned = partitionCircleMeetings(meetings);
+    upcomingMeeting = partitioned.upcoming;
+    previousMeetings = partitioned.previous;
+    if (upcomingMeeting) {
+      myAttendance = await getMyMeetingAttendance(
+        admin,
+        upcomingMeeting.id,
+        user.id
+      ).catch(() => null);
+    }
+  }
 
   let sent: ReturnType<typeof presentLeadPrivacySafe>[] = [];
   let receivedCount = 0;
@@ -119,6 +150,19 @@ export default async function ConnectMemberHomePage() {
                   severity: "warning" as const,
                 }
               : null,
+            upcomingMeeting
+              ? {
+                  id: "meeting",
+                  title: `Upcoming Circle meeting: ${upcomingMeeting.title?.trim() || "Circle meeting"}`,
+                  description: new Date(upcomingMeeting.scheduledAt).toLocaleString(
+                    "en-IN",
+                    { dateStyle: "medium", timeStyle: "short" }
+                  ),
+                  href: "/connect/circle",
+                  severity: "info" as const,
+                  icon: "calendar" as const,
+                }
+              : null,
             !primary
               ? {
                   id: "join",
@@ -157,6 +201,17 @@ export default async function ConnectMemberHomePage() {
             value: `${tags.length}/4`,
           },
           {
+            id: "meeting",
+            label: "Next meeting",
+            value: upcomingMeeting
+              ? new Date(upcomingMeeting.scheduledAt).toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                })
+              : "Not scheduled",
+            tone: upcomingMeeting ? "pending" : "neutral",
+          },
+          {
             id: "leads",
             label: "Leads sent / received",
             value: `${sent.length} / ${receivedCount}`,
@@ -176,6 +231,8 @@ export default async function ConnectMemberHomePage() {
             status={primary.status}
             allocationStatus={primary.allocationStatus}
             tagCount={tags.length}
+            businessName={primary.businessName}
+            specialisationLabel={specialisationLabel}
           />
           {circle ? (
             <CircleCard
@@ -203,6 +260,16 @@ export default async function ConnectMemberHomePage() {
           )}
         </div>
       )}
+
+      {circleId ? (
+        <CircleMeetingsPanel
+          upcoming={upcomingMeeting}
+          previous={previousMeetings}
+          myAttendance={myAttendance}
+          allowRsvp
+          compact
+        />
+      ) : null}
 
       <section className="mt-10">
         <div className="mb-3 flex items-center justify-between">

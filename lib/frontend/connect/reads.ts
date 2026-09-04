@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getCircle } from "@/lib/architecture/connect/circles";
 import { getSeatAvailability } from "@/lib/architecture/connect/allocation";
 import { CIRCLE_CAPACITY_MAX } from "@/lib/architecture/connect/types";
+import { normalizeMembershipApplicationMetadata } from "@/lib/architecture/connect/application";
 import {
   formatPowerSectorLabel,
   type CircleDirectoryCard,
@@ -33,7 +34,7 @@ export async function listCircleDirectory(
   const { data, error } = await client
     .from("connect_circle_seats")
     .select(
-      "id,membership_id,specialisation_id,status,connect_memberships(id,user_id,status,allocation_status,specialisation_id)"
+      "id,membership_id,specialisation_id,status,connect_memberships(id,user_id,status,allocation_status,specialisation_id,metadata)"
     )
     .eq("circle_id", circleId)
     .in("status", ["reserved", "protected_grace", "allocated"])
@@ -49,6 +50,7 @@ function membershipFromSeat(row: {
   user_id?: string;
   status?: string;
   specialisation_id?: string | null;
+  metadata?: unknown;
 } | null {
   const raw = row.connect_memberships;
   const m = Array.isArray(raw) ? raw[0] : raw;
@@ -58,6 +60,7 @@ function membershipFromSeat(row: {
         user_id?: string;
         status?: string;
         specialisation_id?: string | null;
+        metadata?: unknown;
       })
     : null;
 }
@@ -146,10 +149,12 @@ export async function presentCircleDirectory(
       (row.specialisation_id as string | null) ?? m?.specialisation_id ?? null;
     const spec = specId ? specById.get(specId) : undefined;
     const display = m?.user_id ? nameByUser.get(m.user_id) : null;
+    const businessName =
+      normalizeMembershipApplicationMetadata(m?.metadata)?.businessName ?? null;
     const sectorRaw = spec?.sector ?? null;
     return {
       id: String(row.id),
-      name: display?.trim() || "Circle member",
+      name: businessName || display?.trim() || "Circle member",
       specialisation: spec?.label ?? null,
       sectorLabel: formatPowerSectorLabel(sectorRaw),
       tagLabels: m?.id ? tagsByMembership.get(m.id) ?? [] : [],

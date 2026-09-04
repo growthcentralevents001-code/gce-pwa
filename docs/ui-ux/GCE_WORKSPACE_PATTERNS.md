@@ -66,7 +66,9 @@ Bottom nav and `max-w-lg` are for **390**. At **1366**, CustomerShell widens so 
 
 **Member nav (target order):** Overview → Membership → My Circle → Lead Assist → Waitlist / Transfer → Specialisation / Tags → Governance (gated).
 
-**Home:** membership/allocation status, Circle seat or waitlist, leads awaiting Accept/Decline/Clarify.
+**Home:** membership/allocation status, next Circle meeting (when allocated), Circle seat or waitlist, leads awaiting Accept/Decline/Clarify.
+
+**Circle meetings:** scheduled by Platform Ops (`/ops/connect/meetings`). Members RSVP and create referrals from `/connect/circle` via **Lead Assist** (`/connect/leads?meetingId=`). Meetings do not own a second referral or opportunity engine. Connect BDP sees upcoming meetings read-only on the Circle portfolio.
 
 **Referral / Lead Assist pattern:**
 

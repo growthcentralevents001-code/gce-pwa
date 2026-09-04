@@ -3,6 +3,7 @@ import { AppError } from "../errors";
 import { writeAuditEvent } from "../audit/write";
 import { tagSurchargeForSlot } from "./rules";
 import { ASSOCIATE_PRICE_MINOR, MAX_TAGS, PRICING_RULE_VERSION } from "./types";
+import { findAssociateTag } from "./tagCatalog";
 
 export async function setMembershipTags(
   client: SupabaseClient,
@@ -27,6 +28,13 @@ export async function setMembershipTags(
     if (t.slot < 1 || t.slot > MAX_TAGS) {
       throw new AppError("VALIDATION_ERROR", "Invalid tag slot", { status: 400 });
     }
+    const catalog = findAssociateTag(t.tagKey);
+    if (!catalog) {
+      throw new AppError("VALIDATION_ERROR", `Unknown Tag key: ${t.tagKey}`, {
+        status: 400,
+      });
+    }
+    t.tagLabel = catalog.label;
   }
 
   // Replace active tags for membership

@@ -35,6 +35,7 @@ export const CreateLeadInputSchema = z.object({
   confidentialityPreference: z.string().max(200).optional().nullable(),
   originCircleId: z.string().uuid().optional().nullable(),
   giverMembershipId: z.string().uuid().optional().nullable(),
+  meetingId: z.string().uuid().optional().nullable(),
   idempotencyKey: z.string().min(8).max(100).optional(),
 });
 

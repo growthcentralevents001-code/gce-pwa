@@ -20,7 +20,19 @@ export const metadata = {
   title: "Lead Assist · GCE Connect",
 };
 
-export default async function LeadAssistHomePage() {
+export default async function LeadAssistHomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ meetingId?: string }>;
+}) {
+  const params = await searchParams;
+  const meetingId =
+    params.meetingId &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      params.meetingId
+    )
+      ? params.meetingId
+      : null;
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -72,6 +84,7 @@ export default async function LeadAssistHomePage() {
       <LeadComposer
         giverMembershipId={primary?.id}
         originCircleId={(seat?.circle_id as string | undefined) ?? null}
+        meetingId={meetingId}
       />
 
       {sent.length > 0 ? (

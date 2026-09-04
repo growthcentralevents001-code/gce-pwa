@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { AppError } from "../errors";
 import { writeAuditEvent } from "../audit/write";
 import { getCircle } from "./circles";
+import { createNotificationIntent } from "../ops-governance/operations";
 
 export const CIRCLE_MEETING_STATUSES = [
   "scheduled",
@@ -12,6 +13,28 @@ export const CIRCLE_MEETING_STATUSES = [
 export type CircleMeetingStatus = (typeof CIRCLE_MEETING_STATUSES)[number];
 
 export const CIRCLE_MEETING_CADENCE_DAYS = 15;
+
+export const CIRCLE_MEETING_ATTENDANCE_STATUSES = [
+  "scheduled",
+  "attended",
+  "absent",
+  "excused",
+] as const;
+
+export type CircleMeetingAttendanceStatus =
+  (typeof CIRCLE_MEETING_ATTENDANCE_STATUSES)[number];
+
+export const MEMBER_RSVP_STATUSES = ["scheduled", "excused"] as const;
+
+export type CircleMeetingAttendance = {
+  id: string;
+  meetingId: string;
+  userId: string;
+  membershipId: string | null;
+  status: CircleMeetingAttendanceStatus;
+  recordedBy: string | null;
+  updatedAt: string;
+};
 
 export type ConnectCircleMeeting = {
   id: string;
@@ -172,6 +195,13 @@ export async function scheduleCircleMeeting(
     .single();
 
   if (error || !data) {
+    if (error?.code === "23505") {
+      throw new AppError(
+        "VALIDATION_ERROR",
+        "A meeting is already scheduled for this Circle at that time",
+        { status: 409 }
+      );
+    }
     throw new AppError("INTERNAL_ERROR", "Failed to schedule Circle meeting", {
       cause: error,
     });
@@ -186,6 +216,13 @@ export async function scheduleCircleMeeting(
     after: meeting,
     correlationId: input.correlationId,
     metadata: { cadenceAdvisory },
+  });
+
+  await notifyCircleMeetingSeats(client, {
+    circleId: meeting.circleId,
+    meetingId: meeting.id,
+    summary: `A Circle meeting is scheduled for ${meeting.scheduledAt}.`,
+    correlationId: input.correlationId,
   });
 
   return { meeting, cadenceAdvisory };
@@ -242,7 +279,208 @@ export async function updateCircleMeetingStatus(
     correlationId: input.correlationId,
   });
 
+  if (input.status === "cancelled") {
+    await notifyCircleMeetingSeats(client, {
+      circleId: meeting.circleId,
+      meetingId: meeting.id,
+      summary: "A Circle meeting was cancelled.",
+      correlationId: input.correlationId,
+    });
+  }
+
   return meeting;
+}
+
+function mapAttendance(row: Record<string, unknown>): CircleMeetingAttendance {
+  return {
+    id: String(row.id),
+    meetingId: String(row.meeting_id),
+    userId: String(row.user_id),
+    membershipId: (row.membership_id as string | null) ?? null,
+    status: row.status as CircleMeetingAttendanceStatus,
+    recordedBy: (row.recorded_by as string | null) ?? null,
+    updatedAt: String(row.updated_at),
+  };
+}
+
+export async function getCircleMeeting(
+  client: SupabaseClient,
+  meetingId: string
+): Promise<ConnectCircleMeeting | null> {
+  const { data, error } = await client
+    .from("connect_circle_meetings")
+    .select("*")
+    .eq("id", meetingId)
+    .maybeSingle();
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load Circle meeting", {
+      cause: error,
+    });
+  }
+  return data ? mapMeeting(data as Record<string, unknown>) : null;
+}
+
+export async function listCircleSeatUserIds(
+  client: SupabaseClient,
+  circleId: string
+): Promise<Array<{ userId: string; membershipId: string }>> {
+  const { data, error } = await client
+    .from("connect_circle_seats")
+    .select("membership_id, connect_memberships!inner(user_id)")
+    .eq("circle_id", circleId)
+    .in("status", ["allocated", "reserved", "protected_grace"]);
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to list Circle seats", {
+      cause: error,
+    });
+  }
+  const out: Array<{ userId: string; membershipId: string }> = [];
+  for (const row of data ?? []) {
+    const membership = row.connect_memberships as
+      | { user_id?: string }
+      | { user_id?: string }[]
+      | null;
+    const nested = Array.isArray(membership) ? membership[0] : membership;
+    const userId = nested?.user_id;
+    if (userId && row.membership_id) {
+      out.push({
+        userId: String(userId),
+        membershipId: String(row.membership_id),
+      });
+    }
+  }
+  return out;
+}
+
+export async function listMeetingAttendance(
+  client: SupabaseClient,
+  meetingId: string
+): Promise<CircleMeetingAttendance[]> {
+  const { data, error } = await client
+    .from("connect_circle_meeting_attendance")
+    .select("*")
+    .eq("meeting_id", meetingId)
+    .order("updated_at", { ascending: false });
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load attendance", {
+      cause: error,
+    });
+  }
+  return (data ?? []).map((row) => mapAttendance(row as Record<string, unknown>));
+}
+
+export async function getMyMeetingAttendance(
+  client: SupabaseClient,
+  meetingId: string,
+  userId: string
+): Promise<CircleMeetingAttendance | null> {
+  const { data, error } = await client
+    .from("connect_circle_meeting_attendance")
+    .select("*")
+    .eq("meeting_id", meetingId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) {
+    throw new AppError("INTERNAL_ERROR", "Failed to load own attendance", {
+      cause: error,
+    });
+  }
+  return data ? mapAttendance(data as Record<string, unknown>) : null;
+}
+
+export function attendanceCounts(
+  rows: CircleMeetingAttendance[]
+): Record<CircleMeetingAttendanceStatus, number> {
+  const counts: Record<CircleMeetingAttendanceStatus, number> = {
+    scheduled: 0,
+    attended: 0,
+    absent: 0,
+    excused: 0,
+  };
+  for (const row of rows) {
+    counts[row.status] += 1;
+  }
+  return counts;
+}
+
+export async function upsertMeetingAttendance(
+  client: SupabaseClient,
+  input: {
+    meetingId: string;
+    userId: string;
+    membershipId?: string | null;
+    status: CircleMeetingAttendanceStatus;
+    actorUserId: string;
+    correlationId?: string;
+  }
+): Promise<CircleMeetingAttendance> {
+  const meeting = await getCircleMeeting(client, input.meetingId);
+  if (!meeting) {
+    throw new AppError("NOT_FOUND", "Circle meeting not found", { status: 404 });
+  }
+
+  const { data, error } = await client
+    .from("connect_circle_meeting_attendance")
+    .upsert(
+      {
+        meeting_id: input.meetingId,
+        user_id: input.userId,
+        membership_id: input.membershipId ?? null,
+        status: input.status,
+        recorded_by: input.actorUserId,
+      },
+      { onConflict: "meeting_id,user_id" }
+    )
+    .select("*")
+    .single();
+
+  if (error || !data) {
+    throw new AppError("INTERNAL_ERROR", "Failed to save attendance", {
+      cause: error,
+    });
+  }
+
+  const attendance = mapAttendance(data as Record<string, unknown>);
+  await writeAuditEvent(client, {
+    actorUserId: input.actorUserId,
+    action: "circle_meeting.attendance",
+    resourceType: "connect_circle_meeting_attendance",
+    resourceId: attendance.id,
+    after: attendance,
+    correlationId: input.correlationId,
+    metadata: { meetingId: input.meetingId, status: input.status },
+  });
+  return attendance;
+}
+
+export async function notifyCircleMeetingSeats(
+  client: SupabaseClient,
+  input: {
+    circleId: string;
+    meetingId: string;
+    summary: string;
+    correlationId?: string;
+  }
+): Promise<void> {
+  const seats = await listCircleSeatUserIds(client, input.circleId);
+  for (const seat of seats) {
+    try {
+      await createNotificationIntent(client, {
+        recipientUserId: seat.userId,
+        templateKey: "connect.circle_meeting",
+        channel: "in_app",
+        category: "operational",
+        payload: { summary: input.summary },
+        deepLink: "/connect/circle",
+        sourceEventId: input.meetingId,
+        sourceDomain: "connect_circle_meeting",
+        idempotencyKey: `connect.meeting:${input.meetingId}:${seat.userId}:${input.summary.slice(0, 40)}`,
+        correlationId: input.correlationId,
+      });
+    } catch {
+      // Notification flags may suppress; meeting write remains canonical.
+    }
+  }
 }
 
 export async function listCirclesForOps(

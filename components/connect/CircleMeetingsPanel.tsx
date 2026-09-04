@@ -1,13 +1,19 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import { CalendarDays, Smartphone } from "lucide-react";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { EmptyState } from "@/components/states/EmptyState";
+import { Button } from "@/components/ui/button";
 import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
 import { cn } from "@/lib/utils";
-import type { ConnectCircleMeeting } from "@/lib/architecture/connect/meetings";
+import type {
+  CircleMeetingAttendance,
+  ConnectCircleMeeting,
+} from "@/lib/architecture/connect/meetings";
 import { CIRCLE_MEETING_CADENCE_DAYS } from "@/lib/architecture/connect/meetings";
+import { extractApiError } from "@/lib/frontend/connect/format";
 
 function formatMeetingWhen(iso: string): string {
   const d = new Date(iso);
@@ -36,13 +42,44 @@ function meetingStatusTone(
 export function CircleMeetingsPanel({
   upcoming,
   previous,
+  myAttendance = null,
+  allowRsvp = false,
+  compact = false,
   className,
 }: {
   upcoming: ConnectCircleMeeting | null;
   previous: ConnectCircleMeeting[];
+  myAttendance?: CircleMeetingAttendance | null;
+  allowRsvp?: boolean;
+  compact?: boolean;
   className?: string;
 }) {
   const pastVisible = useMemo(() => previous.slice(0, 8), [previous]);
+  const [attendance, setAttendance] = useState(myAttendance);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function rsvp(status: "scheduled" | "excused") {
+    if (!upcoming || pending) return;
+    setError(null);
+    startTransition(async () => {
+      const res = await fetch("/api/connect/circle-meetings", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          action: "rsvp",
+          meetingId: upcoming.id,
+          status,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(extractApiError(json, "Could not save attendance"));
+        return;
+      }
+      setAttendance(json.attendance ?? null);
+    });
+  }
 
   return (
     <div className={cn(GCE_RADIUS.card, GCE_SURFACE.card, "p-5", className)}>
@@ -82,6 +119,53 @@ export function CircleMeetingsPanel({
                   tone={meetingStatusTone(upcoming.status)}
                 />
               </div>
+              {attendance ? (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Your attendance:{" "}
+                  <span className="font-medium text-foreground">
+                    {attendance.status.replaceAll("_", " ")}
+                  </span>
+                </p>
+              ) : null}
+              {upcoming.notes ? (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {upcoming.notes}
+                </p>
+              ) : null}
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button asChild size="sm" className="min-h-11">
+                  <Link href={`/connect/leads?meetingId=${upcoming.id}`}>
+                    Create referral
+                  </Link>
+                </Button>
+                {allowRsvp ? (
+                  <>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="min-h-11"
+                      disabled={pending}
+                      onClick={() => rsvp("scheduled")}
+                    >
+                      I will attend
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="min-h-11"
+                      disabled={pending}
+                      onClick={() => rsvp("excused")}
+                    >
+                      Request excuse
+                    </Button>
+                  </>
+                ) : null}
+              </div>
+              {error ? (
+                <p className="mt-2 text-xs text-destructive">{error}</p>
+              ) : null}
             </div>
           ) : (
             <div className="mt-4">
@@ -94,7 +178,7 @@ export function CircleMeetingsPanel({
         </div>
       </div>
 
-      {pastVisible.length > 0 ? (
+      {compact ? null : pastVisible.length > 0 ? (
         <section className="mt-5 border-t border-border pt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Previous meetings

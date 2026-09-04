@@ -19,6 +19,7 @@ import {
   WORK_STATUS_TRANSITIONS,
 } from "./constants";
 import type { CreateLeadInput } from "./schemas";
+import { getCircleMeeting, listCircleSeatUserIds } from "../connect/meetings";
 
 const defaultProvider = new DeterministicLeadAssistProvider();
 
@@ -133,6 +134,28 @@ export async function createLead(
     }
   }
 
+  let source: "in_app" | "meeting_followup" | "desk_created" = "in_app";
+  let meetingId: string | null = input.meetingId ?? null;
+  let originCircleId = input.originCircleId ?? null;
+  if (meetingId) {
+    const meeting = await getCircleMeeting(client, meetingId);
+    if (!meeting) {
+      throw new AppError("NOT_FOUND", "Circle meeting not found", { status: 404 });
+    }
+    const seats = await listCircleSeatUserIds(client, meeting.circleId);
+    if (!seats.some((s) => s.userId === input.giverUserId)) {
+      throw new AppError(
+        "FORBIDDEN",
+        "Only Circle members can attach a meeting to a referral",
+        { status: 403 }
+      );
+    }
+    source = "meeting_followup";
+    if (!originCircleId) {
+      originCircleId = meeting.circleId;
+    }
+  }
+
   const leadRef = `AL-${Date.now().toString(36)}-${randomUUID().slice(0, 8)}`;
   const expiresAt = new Date(
     Date.now() + DEFAULT_LEAD_TTL_HOURS * 60 * 60 * 1000
@@ -144,8 +167,9 @@ export async function createLead(
       lead_ref: leadRef,
       giver_user_id: input.giverUserId,
       giver_membership_id: input.giverMembershipId ?? null,
-      origin_circle_id: input.originCircleId ?? null,
-      source: "in_app",
+      origin_circle_id: originCircleId,
+      source,
+      meeting_id: meetingId,
       title: input.title,
       work_status: "draft",
       quality_status: "unverified",

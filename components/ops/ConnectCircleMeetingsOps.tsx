@@ -6,7 +6,10 @@ import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/states/StatusBadge";
 import { EmptyState } from "@/components/states/EmptyState";
 import { GCE_RADIUS, GCE_SURFACE } from "@/lib/frontend/design-language";
-import type { ConnectCircleMeeting } from "@/lib/architecture/connect/meetings";
+import type {
+  CircleMeetingAttendance,
+  ConnectCircleMeeting,
+} from "@/lib/architecture/connect/meetings";
 import { extractApiError } from "@/lib/frontend/connect/format";
 
 type CircleOption = {
@@ -24,6 +27,16 @@ export function ConnectCircleMeetingsOps({
   const [circleId, setCircleId] = useState(circles[0]?.id ?? "");
   const [meetings, setMeetings] = useState<ConnectCircleMeeting[]>([]);
   const [upcoming, setUpcoming] = useState<ConnectCircleMeeting | null>(null);
+  const [attendance, setAttendance] = useState<CircleMeetingAttendance[]>([]);
+  const [seats, setSeats] = useState<Array<{ userId: string; membershipId: string }>>(
+    []
+  );
+  const [attendanceCounts, setAttendanceCounts] = useState<{
+    scheduled: number;
+    attended: number;
+    absent: number;
+    excused: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [advisory, setAdvisory] = useState<string | null>(null);
@@ -47,10 +60,16 @@ export function ConnectCircleMeetingsOps({
       }
       setMeetings(json.meetings ?? []);
       setUpcoming(json.upcoming ?? null);
+      setAttendance(json.upcomingAttendance?.records ?? []);
+      setSeats(json.upcomingAttendance?.seats ?? []);
+      setAttendanceCounts(json.upcomingAttendance?.counts ?? null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load meetings");
       setMeetings([]);
       setUpcoming(null);
+      setAttendance([]);
+      setSeats([]);
+      setAttendanceCounts(null);
     } finally {
       setLoading(false);
     }
@@ -89,6 +108,36 @@ export function ConnectCircleMeetingsOps({
       await loadMeetings();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Schedule failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function recordAttendance(
+    userId: string,
+    status: CircleMeetingAttendance["status"]
+  ) {
+    if (!upcoming) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/connect/circle-meetings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "record_attendance",
+          meetingId: upcoming.id,
+          userId,
+          status,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(extractApiError(json, "Failed to record attendance"));
+      }
+      await loadMeetings();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Attendance update failed");
     } finally {
       setSubmitting(false);
     }
@@ -271,6 +320,61 @@ export function ConnectCircleMeetingsOps({
           </ul>
         )}
       </section>
+
+      {upcoming ? (
+        <section className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>
+          <h2 className="text-sm font-semibold">Upcoming attendance</h2>
+          {attendanceCounts ? (
+            <p className="mt-2 text-xs text-muted-foreground tabular-nums">
+              Confirmed {attendanceCounts.scheduled} · Attended{" "}
+              {attendanceCounts.attended} · Excused {attendanceCounts.excused} ·
+              Absent {attendanceCounts.absent}
+            </p>
+          ) : null}
+          {seats.length === 0 ? (
+            <p className="mt-3 text-sm text-muted-foreground">
+              No allocated seats to record yet.
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {seats.map((seat) => {
+                const row = attendance.find((a) => a.userId === seat.userId);
+                const status = row?.status ?? "unrecorded";
+                return (
+                  <li
+                    key={seat.userId}
+                    className="flex flex-col gap-2 rounded-lg border border-border px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="text-sm">
+                      <p className="font-medium font-mono text-xs">
+                        {seat.userId.slice(0, 8)}…
+                      </p>
+                      <StatusBadge
+                        label={status.replaceAll("_", " ")}
+                        tone="neutral"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {(["attended", "absent", "excused"] as const).map((s) => (
+                        <Button
+                          key={s}
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          disabled={submitting}
+                          onClick={() => void recordAttendance(seat.userId, s)}
+                        >
+                          {s}
+                        </Button>
+                      ))}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      ) : null}
     </div>
   );
 }

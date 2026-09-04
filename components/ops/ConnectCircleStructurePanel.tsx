@@ -17,6 +17,7 @@ export type CircleStructureSummary = {
   constitutionStatus: string;
   sectorCounts: Partial<Record<GcPowerSectorId, number>>;
   sectorSpecs: Partial<Record<GcPowerSectorId, string[]>>;
+  upcomingMeetingLabel?: string | null;
 };
 
 /**
@@ -71,6 +72,20 @@ export function ConnectCircleStructurePanel({
                   Four fixed GC Power Sectors — flexible distribution, not equal
                   10/10/10/10.
                 </p>
+                {circle.upcomingMeetingLabel ? (
+                  <p className="mt-3 text-sm">
+                    <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      Next meeting
+                    </span>
+                    <span className="mt-1 block tabular-nums">
+                      {circle.upcomingMeetingLabel}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    No upcoming meeting scheduled.
+                  </p>
+                )}
               </div>
             </div>
             <div className="mt-6">

@@ -101,8 +101,9 @@ Canonical: `/customer/*`. Nav: `lib/frontend/navigation/customer.ts`.
 connect-member
 ├── /dashboard/connect-member     Attention home
 ├── /connect/membership
-├── /connect/circle
+├── /connect/circle               Seat, directory, scheduled meetings + RSVP
 ├── /connect/leads                Lead Assist hub (timeline, not Kanban)
+│   ├── /connect/leads?meetingId  Same composer; meeting-linked source only
 │   ├── /connect/leads/sent
 │   ├── /connect/leads/received
 │   └── /connect/leads/[id]       Timeline + governed actions

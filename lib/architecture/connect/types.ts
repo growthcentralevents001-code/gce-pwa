@@ -83,6 +83,7 @@ export type ConnectMembership = {
   activatedAt: string | null;
   startsAt: string | null;
   endsAt: string | null;
+  businessName: string | null;
 };
 
 export type ConnectCircle = {

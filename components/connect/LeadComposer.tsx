@@ -23,9 +23,11 @@ type TagEntry = { key: string; label: string };
 export function LeadComposer({
   giverMembershipId,
   originCircleId,
+  meetingId,
 }: {
   giverMembershipId?: string | null;
   originCircleId?: string | null;
+  meetingId?: string | null;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -90,6 +92,7 @@ export function LeadComposer({
             city: city || null,
             giverMembershipId: giverMembershipId ?? null,
             originCircleId: originCircleId ?? null,
+            meetingId: meetingId ?? null,
             specialisationId: specialisationId ?? null,
             tagCodes,
             urgency: "normal",
@@ -132,6 +135,12 @@ export function LeadComposer({
         title="Unpaid Stage 1 Lead Assist"
         description="Formal referrals are created in-app. Paid Lead Assist, escrow, ₹500 fees, and success fees remain OFF."
       />
+      {meetingId ? (
+        <p className="text-xs text-muted-foreground">
+          This referral is linked to your Circle meeting. It uses the same Lead
+          Assist workflow — not a separate meeting opportunity engine.
+        </p>
+      ) : null}
       <div>
         <Label htmlFor="lead-title">Title</Label>
         <Input

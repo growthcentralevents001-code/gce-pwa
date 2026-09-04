@@ -92,6 +92,7 @@ export default async function ConnectMembershipPage() {
               status={primary.status}
               allocationStatus={primary.allocationStatus}
               tagCount={tags.length}
+              businessName={primary.businessName}
             />
             {primary.status === "draft" ? (
               <div className={`${GCE_RADIUS.card} ${GCE_SURFACE.card} p-5`}>

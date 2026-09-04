@@ -8,11 +8,11 @@
 | **Does not own** | Business activation of inactive flags; production deploys |
 | **Supersedes for route intent** | `docs/frontend/FRONTEND_ROUTE_MIGRATION_PLAN.md` as living target (that file remains Batch 10 redirect evidence) |
 
-This is **not** a mandate to redesign the whole site now.
+This is **not** a mandate to redesign the whole site in a single future task. Architecture 2.0 **site-wide migration of existing canonical UI** started 2026-09-04 (attention-first homes, Connect timeline, catalogue master–detail, Project Command Center composition).
 
 - New UI follows UI/UX 2.0.
 - Materially changed screens adopt 2.0 in the same change.
-- Functional screens stay until their step below.
+- Remaining KEEP screens stay until next touch.
 
 Classifications describe **product UX intent**, not “delete the file today”. RETIRE means do not extend; keep redirects; remove from nav.
 
@@ -63,9 +63,9 @@ Do not activate inactive payments/rank to “complete” UI.
 | `/connect` | **IMPROVE** | Vertical landing for Network + Workflow |
 | `/marketplace` | **IMPROVE** | Vertical landing, not the catalogue; CTAs to Events/Offers/Venues |
 | `/enterprise` | **IMPROVE** | Project + Milestone story; not settlement |
-| `/events` | **KEEP** | Catalogue list; add master–detail only when rebuilt (then IMPROVE→pattern) |
+| `/events` | **KEEP** | Desktop master–detail; mobile list → full detail |
 | `/events/[id]` | **KEEP** | Full detail; transaction continues in customer after auth |
-| `/offers` | **KEEP** | Same as events |
+| `/offers` | **KEEP** | Desktop master–detail; mobile list → full detail |
 | `/offers/[id]` | **KEEP** | |
 | `/venues` | **KEEP** | Directory |
 | `/venues/[id]` | **KEEP** | |
@@ -79,7 +79,7 @@ Do not activate inactive payments/rank to “complete” UI.
 | `/terms` | **KEEP** | |
 | `/privacy` | **KEEP** | |
 | `/offline` | **KEEP** | PWA |
-| `/the-circle` | **RETIRE** | Do not nav; migrate copy to Connect |
+| `/the-circle` | **RETIRE** | Routed alias + `/how-referrals` redirect only; do not nav |
 | `/partners` | **RETIRE** | Use `/for-partners` |
 | `/venue/plans` | **RETIRE** | Redirect → `/venue/apply` |
 | `/zbp`, `/zbp/apply` | **RETIRE** | Redirect → `/for-partners` |
@@ -109,17 +109,17 @@ Do not activate inactive payments/rank to “complete” UI.
 
 | Route | Class | Notes |
 |-------|-------|-------|
-| `/customer` | **IMPROVE** | Closest to attention-first; lead with tickets/claims |
-| `/customer/events` | **KEEP** | List; desktop master–detail when rebuilt |
+| `/customer` | **KEEP** | Attention-first activity; Trust Rank not productized |
+| `/customer/events` | **KEEP** | Desktop master–detail; mobile list → detail |
 | `/customer/events/[id]` | **KEEP** | |
 | `/customer/events/[id]/book` | **KEEP** | Payments remain gated |
-| `/customer/offers` | **KEEP** | |
+| `/customer/offers` | **KEEP** | Desktop master–detail; mobile list → detail |
 | `/customer/offers/[id]` | **KEEP** | Claim, not purchase |
 | `/customer/tickets` | **KEEP** | |
 | `/customer/tickets/[id]` | **KEEP** | QR |
 | `/customer/bookings` | **KEEP** | |
 | `/customer/bookings/[id]` | **KEEP** | |
-| `/customer/claims` | **IMPROVE** | Canonical; add to secondary nav |
+| `/customer/claims` | **KEEP** | In secondary customer nav |
 | `/customer/wishlist` | **KEEP** | Secondary |
 | `/customer/profile` | **IMPROVE** | Prefer `/settings/profile` as SoT |
 | `/booking/[eventId]`, `/bookings`, `/checkout`, `/wishlist` | **RETIRE** | Redirects to customer |
@@ -132,16 +132,16 @@ Do **not** add `/customer/wallet`. Do not productize rank on these pages.
 
 | Route | Class | Notes |
 |-------|-------|-------|
-| `/dashboard` | **IMPROVE** | Switcher / picker only |
-| `/dashboard/[workspaceKey]` | **REDESIGN** | Right data, report-first composition; target attention-first |
-| `/dashboard/connect-member` | **IMPROVE** | Prefer shared home pattern |
-| `/dashboard/connect-bdp` | **IMPROVE** | |
-| `/dashboard/marketplace-bdp` | **IMPROVE** | |
-| `/dashboard/venue` | **REDESIGN** | Make day-of-ops home; hint text still points at legacy WIP |
-| `/dashboard/enterprise-bdp` | **REDESIGN** | Pipeline/clients first; not commercial KPI wall |
-| `/dashboard/enterprise-client` | **REDESIGN** | Project attention, not settlement |
+| `/dashboard` | **KEEP** | Assignment-scoped picker; not an activity dashboard |
+| `/dashboard/[workspaceKey]` | **KEEP** | Attention-first fallback home (dedicated role homes remain canonical) |
+| `/dashboard/connect-member` | **KEEP** | Attention-first |
+| `/dashboard/connect-bdp` | **KEEP** | Attention-first |
+| `/dashboard/marketplace-bdp` | **KEEP** | Attention-first |
+| `/dashboard/venue` | **KEEP** | Day-of-ops attention first |
+| `/dashboard/enterprise-bdp` | **KEEP** | Pipeline/attention first; commercial secondary |
+| `/dashboard/enterprise-client` | **KEEP** | Project attention first |
 | `/dashboard/enterprise` | **RETIRE** | Ambiguous; assignment-scoped routes exist |
-| `/dashboard/finance` | **IMPROVE** | Ledger attention (holds/recon) |
+| `/dashboard/finance` | **KEEP** | Ledger attention first |
 | `/dashboard/platform-ops` | **IMPROVE** | Deep-link `/ops` |
 | `/dashboard/opportunity-desk` | **IMPROVE** | Queue first |
 | `/dashboard/compliance` | **KEEP** | |
@@ -163,7 +163,7 @@ Do **not** add `/customer/wallet`. Do not productize rank on these pages.
 | `/connect/leads` | **IMPROVE** | Hub OK; reinforce timeline, not board |
 | `/connect/leads/sent` | **KEEP** | |
 | `/connect/leads/received` | **KEEP** | |
-| `/connect/leads/[id]` | **REDESIGN** | Target: governed **timeline** + action strip |
+| `/connect/leads/[id]` | **KEEP** | Governed timeline + action strip first |
 | `/connect/waitlist` | **KEEP** | |
 | `/connect/transfer` | **KEEP** | |
 | `/connect/specialisation` | **KEEP** | |
@@ -220,7 +220,7 @@ Do **not** add `/customer/wallet`. Do not productize rank on these pages.
 | `/enterprise/proposals` | **KEEP** | |
 | `/enterprise/quotes` | **KEEP** | Finance co-sign remains business rule |
 | `/enterprise/projects` | **IMPROVE** | Portfolio into command center |
-| `/enterprise/projects/[id]` | **REDESIGN** | **Project Command Center** target |
+| `/enterprise/projects/[id]` | **KEEP** | Project Command Center composition |
 | `/enterprise/vendors` | **KEEP** | |
 | `/enterprise/disputes` | **KEEP** | |
 | `/enterprise-bdp/apply` | **KEEP** | |
@@ -242,7 +242,7 @@ Do **not** add `/customer/wallet`. Do not productize rank on these pages.
 
 | Route | Class | Notes |
 |-------|-------|-------|
-| `/ops` | **IMPROVE** | Hub = awaiting review, not charts |
+| `/ops` | **KEEP** | Hub = awaiting review first |
 | `/ops/approvals` | **KEEP** | |
 | `/ops/exceptions` | **KEEP** | |
 | `/ops/cases`, `/ops/cases/[id]` | **KEEP** | |
@@ -273,24 +273,23 @@ Do **not** add `/customer/wallet`. Do not productize rank on these pages.
 
 ---
 
-## Major UI inconsistencies (current vs 2.0)
+## Major UI inconsistencies (post 2026-09-04 migration)
 
-These are findings, not a redesign sprint.
+Addressed in this migration: attention-first homes, Connect lead timeline, desktop catalogue master–detail, Project Command Center composition, claims in customer secondary nav, Trust Rank not productized on customer/personal homes, `/dashboard` picker (no fake KPIs), `/the-circle` removed from public/footer nav.
 
-1. **Public vertical nav vs workspace chrome are mostly separate** — good. Signed-in PublicShell still feels like marketing; that is correct. Do not put the switcher in PublicShell.
-2. **Workspace homes are still report/KPI-oriented** (`/dashboard/[workspaceKey]`, Enterprise BDP KPI cards). Target is attention-first.
-3. **Two Venue consoles** — canonical `/venue/(partner)/*` vs leftover `/dashboard/venue/*` CRUD.
-4. **Two customer homes** — `/customer` vs personal workspace vs legacy `/dashboard/member` (wallet).
-5. **Connect lead detail is card/CRM-like**, not a governed timeline.
-6. **Marketplace catalogue is list→page at all breakpoints**; desktop master–detail is target, not built.
-7. **`/marketplace` is a landing**, while users may expect a catalogue — IA must keep landing vs Events/Offers/Venues distinct in copy.
-8. **Enterprise project page exists but is not a Command Center**; some homes can read commercial-first.
-9. **Claims exist but are not in customer primary/secondary nav.**
-10. **Personal dashboard can surface `trustRank`** — do not treat rank as a live product.
-11. **Legacy admin/ZBP/Affiliate sources still in the tree**, already redirected — do not restyle them.
-12. **`docs/core/13_UI_Guidelines.md` token story is stale** (old primary/background). MASTER + this folder win.
-13. **Glass / 3D marketing components** (`liquid-glass`, home 3D tiles) must not leak into Ops/Finance/check-in.
-14. **No generic Wallet in nav** (correct). Do not add one. FD-020 remains ledger architecture, not a customer tab.
+Remaining:
+
+1. **PublicShell vs WorkspaceShell stay separate** — correct. Do not put the switcher in PublicShell.
+2. **Two Venue consoles** — canonical `/venue/(partner)/*` vs leftover `/dashboard/venue/*` CRUD (**RETIRE**, do not extend).
+3. **Personal vs customer** — personal workspace now deep-links to `/customer`; legacy `/dashboard/member` remains RETIRE.
+4. **`/marketplace` is a landing**, not the catalogue — keep copy distinct from Events/Offers/Venues.
+5. **Legacy admin/ZBP/Affiliate sources** remain redirected — do not restyle them.
+6. **`docs/core/13_UI_Guidelines.md`** remains historical (stale palette).
+7. **Marketing 3D/glass** must not leak into Ops/Finance/check-in.
+8. **No generic Wallet** — do not add one.
+9. **`/the-circle` still routed** as a RETIRE alias (`/how-referrals` redirects there). Do not add it back to PUBLIC_NAV or footers.
+
+P1 polish still open: denser Venue “today” queue from live check-in data, Opportunity Desk detail as the same timeline language, remaining marketing landings, full E2E a11y on every workspace.
 
 ---
 

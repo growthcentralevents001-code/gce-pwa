@@ -6,6 +6,7 @@ import {
   LEGACY_NAV_IDS,
   PUBLIC_NAV,
   CUSTOMER_PRIMARY_NAV,
+  CUSTOMER_SECONDARY_NAV,
   WORKSPACE_LEGACY_QUARANTINE,
   workspaceNavSections,
   OPS_NAV_SECTIONS,
@@ -86,6 +87,19 @@ describe("Batch 0 navigation", () => {
     const mobile = filterNavItems(CUSTOMER_PRIMARY_NAV, { mobile: true });
     expect(mobile.length).toBeLessThanOrEqual(5);
     expect(mobile.every((i) => i.href.startsWith("/customer"))).toBe(true);
+  });
+
+  it("keeps claims in customer secondary nav, not bottom nav", () => {
+    expect(
+      CUSTOMER_SECONDARY_NAV.some((i) => i.href === "/customer/claims")
+    ).toBe(true);
+    expect(
+      CUSTOMER_PRIMARY_NAV.some((i) => i.href === "/customer/claims")
+    ).toBe(false);
+  });
+
+  it("does not put retired Circle marketing on public nav", () => {
+    expect(PUBLIC_NAV.map((i) => i.href)).not.toContain("/the-circle");
   });
 });
 

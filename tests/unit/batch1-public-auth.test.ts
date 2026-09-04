@@ -39,6 +39,7 @@ describe("Batch 1 public navigation", () => {
     expect(hrefs).toContain("/enterprise");
     expect(hrefs).toContain("/for-partners");
     expect(hrefs).not.toContain("/partners");
+    expect(hrefs).not.toContain("/the-circle");
   });
 
   it("has no legacy role marketing in public nav", () => {

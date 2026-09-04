@@ -88,7 +88,7 @@ Canonical: `/customer/*`. Nav: `lib/frontend/navigation/customer.ts`.
 │   └── /customer/tickets/[id]
 ├── /customer/bookings        Booking records
 │   └── /customer/bookings/[id]
-├── /customer/claims          Offer claims (target: visible from home + secondary nav)
+├── /customer/claims          Offer claims (home + secondary nav)
 ├── /customer/wishlist
 └── /customer/profile         Account shortcut → settings
 ```

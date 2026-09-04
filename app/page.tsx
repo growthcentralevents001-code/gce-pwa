@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { publicMetadata } from "@/lib/frontend/seo/metadata";
 import HeroBanner from "@/app/components/HeroBanner";
-import { VerticalShowcase } from "@/components/marketing/VerticalShowcase";
+import { Vertical3dSection } from "@/components/marketing/Vertical3dSection";
 import { AnimatedSection } from "@/components/marketing/AnimatedSection";
 import { PageAtmosphere } from "@/components/marketing/PageAtmosphere";
 import { ParallaxLayer } from "@/components/marketing/ParallaxLayer";
@@ -44,7 +44,7 @@ export default function HomePage() {
           </ParallaxLayer>
         </div>
 
-        <VerticalShowcase />
+        <Vertical3dSection />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 sm:px-6">
           <AnimatedSection>
